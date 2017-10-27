@@ -15,7 +15,7 @@
     "extension"
   ],
   "keywords": [
-    "",
+    "vuejs",
     "nodecg-bundle"
   ],
   "nodecg": {
@@ -38,5 +38,27 @@
     ]
   },
   "repository": "https://github.com/nodecg/nodecg.git",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "test": "xo"
+  },
+  "devDependencies": {
+    "xo": "^0.18.2"
+  },
+  "xo": {
+    "semicolon": true,
+    "rules": {
+      "new-cap": [
+        2,
+        {
+          "capIsNewExceptions": [
+            "nodecg.Replicant"
+          ]
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "superagent": "^3.8.0"
+  }
 }
