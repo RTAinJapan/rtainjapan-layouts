@@ -1,0 +1,42 @@
+{
+  "name": "rtainjapan",
+  "version": "0.0.0",
+  "description": "The on-stream layout for RTA in Japan speedrunning marathon event",
+  "homepage": "https://rtainjapan.net/",
+  "author": {
+    "name": "Hoishin",
+    "email": "hoishinxii@gmail.com",
+    "url": "https://twitter.com/hoishinxii"
+  },
+  "files": [
+    "dashboard",
+    "graphics",
+    "extension.js",
+    "extension"
+  ],
+  "keywords": [
+    "",
+    "nodecg-bundle"
+  ],
+  "nodecg": {
+    "compatibleRange": "0.9.8",
+    "dashboardPanels": [
+      {
+        "name": "checklist",
+        "title": "Checklist",
+        "width": 2,
+        "file": "checklist.html",
+        "headerColor": "#9f9bbd"
+      }
+    ],
+    "graphics": [
+      {
+        "file": "index.html",
+        "width": 1280,
+        "height": 720
+      }
+    ]
+  },
+  "repository": "https://github.com/nodecg/nodecg.git",
+  "license": "MIT"
+}
