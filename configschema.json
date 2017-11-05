@@ -1,0 +1,15 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"horaro": {
+			"type": "object",
+			"properties": {
+				"scheduleId": {
+					"type": "string",
+					"description": "The ID for the Horaro schedule used for the event"
+				}
+			}
+		}
+	}
+}

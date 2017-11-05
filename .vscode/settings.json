@@ -1,0 +1,9 @@
+{
+	"xo.enable": true,
+	"editor.insertSpaces": false,
+	"files.eol": "\n",
+	"[json]": {
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2
+	}
+}
