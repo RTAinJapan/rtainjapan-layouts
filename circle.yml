@@ -27,7 +27,3 @@ test:
 #     branch: master
 #     commands:
 #       - ./deploy.sh
-
-notify:
-  webhooks:
-    - url: https://discordapp.com/api/webhooks/376644598271049728/tQKlT4bnQWzQMiNYzC94bAMCA1uMINgmX09kFeSOzCmr_wl8ZYdeou-2DwyDoTJ33Idi
