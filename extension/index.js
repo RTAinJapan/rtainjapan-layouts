@@ -9,7 +9,7 @@ module.exports = nodecg => {
 	const scheduleRep = nodecg.Replicant('schedule')
 	const horaroRep = nodecg.Replicant('horaro')
 	const gameListRep = nodecg.Replicant('gameList', {defaultValue: defaultGameList})
-	const runnerListRep = nodecg.Replicant('runner', {defaultValue: defaultRunnerList})
+	const runnerListRep = nodecg.Replicant('runnerList', {defaultValue: defaultRunnerList})
 	const currentRunRep = nodecg.Replicant('currentRun')
 	const nextRunRep = nodecg.Replicant('nextRun')
 
