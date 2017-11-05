@@ -11,15 +11,10 @@
   "files": [
     "dashboard",
     "graphics",
-    "extension.js",
     "extension"
   ],
-  "keywords": [
-    "",
-    "nodecg-bundle"
-  ],
   "nodecg": {
-    "compatibleRange": "0.9.8",
+    "compatibleRange": "^0.9.8",
     "dashboardPanels": [
       {
         "name": "checklist",
@@ -37,6 +32,33 @@
       }
     ]
   },
+  "xo": {
+    "semicolon": false,
+    "rules": {
+      "new-cap": [
+        2,
+        {
+          "capIsNewExceptions": [
+            "nodecg.Replicant"
+          ]
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "clone": "^2.1.1",
+    "deep-diff": "^0.3.8",
+    "superagent": "^3.8.0"
+  },
+  "devDependencies": {
+    "xo": "^0.18.2"
+  },
+  "keywords": [
+    "nodecg-bundle"
+  ],
   "repository": "https://github.com/nodecg/nodecg.git",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "test": "xo"
+  }
 }
