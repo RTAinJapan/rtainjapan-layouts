@@ -1,0 +1,33 @@
+machine:
+  timezone:
+    Asia/Tokyo
+  node:
+    version: 8
+
+dependencies:
+  override:
+    - npm install -g npm@5
+    - npm install -g xo
+    - npm install -g greenkeeper-lockfile
+    - npm install
+  cache_directories:
+    - "node_modules"
+    - "bower_components"
+
+test:
+  pre:
+    - greenkeeper-lockfile-update
+  override:
+    - xo
+  post:
+    - greenkeeper-lockfile-upload
+
+# deployment:
+#   production:
+#     branch: master
+#     commands:
+#       - ./deploy.sh
+
+notify:
+  webhooks:
+    - url: https://discordapp.com/api/webhooks/376644598271049728/tQKlT4bnQWzQMiNYzC94bAMCA1uMINgmX09kFeSOzCmr_wl8ZYdeou-2DwyDoTJ33Idi
