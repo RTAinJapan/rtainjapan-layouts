@@ -6,7 +6,8 @@
     "category": "Any% Popkaless",
     "hardware": "PS2",
     "pk": 20,
-    "runnerPkAry": [1,2]
+	"runnerPkAry": [1,2],
+	"commentatorPkAry": [4]
   },
   {
     "title": "スプラトゥーン2",
@@ -15,7 +16,8 @@
     "category": "Any%",
     "hardware": "PS2",
     "pk": 5,
-    "runnerPkAry": [3]
+    "runnerPkAry": [3],
+	"commentatorPkAry": [4]
   },
   {
     "title": "スーパーマリオ64",
@@ -24,7 +26,8 @@
     "category": "Any% – 2 players 1 controller",
     "hardware": "PS2",
     "pk": 1,
-    "runnerPkAry": [4,5]
+    "runnerPkAry": [4,5],
+	"commentatorPkAry": [4,1]
   },
   {
     "title": "スーパードンキーコングシリーズ１，２，３ トリロジーリレー",
@@ -33,7 +36,8 @@
     "category": "",
     "hardware": "PS2",
     "pk": 16,
-    "runnerPkAry": [6,7,8]
+    "runnerPkAry": [6,7,8],
+	"commentatorPkAry": [4]
   },
   {
     "title": "Tetris: The Grand Master series(TGM1・2・3)",
@@ -42,6 +46,7 @@
     "category": "",
     "hardware": "PS2",
     "pk": 10,
-    "runnerPkAry": [9,10,11,12,13,14,15]
+    "runnerPkAry": [9,10,11,12,13,14,15],
+	"commentatorPkAry": [4]
   }
 ]
