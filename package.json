@@ -33,7 +33,7 @@
     ]
   },
   "xo": {
-    "semicolon": false,
+    "semicolon": true,
     "rules": {
       "new-cap": [
         2,

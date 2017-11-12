@@ -1,65 +1,65 @@
-const path = require('path')
-const NanoTimer = require('nanotimer')
+const path = require('path');
+const NanoTimer = require('nanotimer');
 
-const TimeObject = require(path.join(__dirname, '../shared/classes/time-object'))
+const TimeObject = require(path.join(__dirname, '../shared/classes/time-object'));
 
 module.exports = nodecg => {
-	const timer = new NanoTimer()
+	const timer = new NanoTimer();
 	// Requires checklist.js to be loaded
-	const checklistComplete = nodecg.Replicant('checklistComplete')
+	const checklistComplete = nodecg.Replicant('checklistComplete');
 	// Requires schedule.js to be loaded
-	const currentRun = nodecg.Replicant('currentRun')
+	const currentRun = nodecg.Replicant('currentRun');
 	const stopwatch = nodecg.Replicant('stopwatch', {
 		defaultValue: (() => {
-			const to = new TimeObject(0)
-			to.state = 0
-			to.results = [null, null, null, null]
-			return to
+			const to = new TimeObject(0);
+			to.state = 0;
+			to.results = [null, null, null, null];
+			return to;
 		})()
-	})
+	});
 
 	// If the timer was running when NodeCG was shut down last time,
 	// resume the timer according to how long it has been since the shutdown time.
 	if (stopwatch.value.state === 1) {
-		const missedSeconds = Math.round((Date.now() - stopwatch.value.timestamp) / 1000)
-		TimeObject.setSeconds(stopwatch.value, stopwatch.value.raw + missedSeconds)
-		start(true)
+		const missedSeconds = Math.round((Date.now() - stopwatch.value.timestamp) / 1000);
+		TimeObject.setSeconds(stopwatch.value, stopwatch.value.raw + missedSeconds);
+		start(true);
 	}
 
 	// Listen to start/stop/reset event from master timer
-	nodecg.listenFor('startTimer', start)
-	nodecg.listenFor('stopTimer', stop)
-	nodecg.listenFor('resetTimer', reset)
+	nodecg.listenFor('startTimer', start);
+	nodecg.listenFor('stopTimer', stop);
+	nodecg.listenFor('resetTimer', reset);
 
 	// Listen to completeRunner event for a runner, or all runners if it's coop
 	// @param data = {index, forfeit}
 	nodecg.listenFor('completeRunner', data => {
 		if (currentRun.value.coop) {
-			completeAllRunners(data.forfeit)
+			completeAllRunners(data.forfeit);
 		} else {
-			completeRunner(data)
+			completeRunner(data);
 		}
-	})
+	});
 
 	// Listen to resumeRunner event for a runner, or all runners if it's coop
 	nodecg.listenFor('resumeRunner', index => {
 		if (currentRun.value.coop) {
-			resumeAllRunners()
+			resumeAllRunners();
 		} else {
-			resumeRunner(index)
+			resumeRunner(index);
 		}
-	})
+	});
 
 	// Listen to editTime event
 	// @param {index, newTime}
-	nodecg.listenFor('editTime', editTime)
+	nodecg.listenFor('editTime', editTime);
 
 	/**
 	 * Increments the timer by one second.
 	 */
 	function tick() {
-		TimeObject.increment(stopwatch.value)
-		console.log(new Date().toLocaleString('ja-JP'))
+		TimeObject.increment(stopwatch.value);
+		console.log(new Date().toLocaleString('ja-JP'));
 	}
 
 	/**
@@ -68,33 +68,33 @@ module.exports = nodecg => {
 	 */
 	function start(force) {
 		if (!checklistComplete) {
-			return
+			return;
 		}
 
 		if (!force && stopwatch.value.state === 1) {
-			return
+			return;
 		}
 
-		timer.clearInterval()
-		stopwatch.value.state = 1
-		timer.setInterval(tick, '', '1s')
+		timer.clearInterval();
+		stopwatch.value.state = 1;
+		timer.setInterval(tick, '', '1s');
 	}
 
 	/**
 	 * Stops the timer.
 	 */
 	function stop() {
-		timer.clearInterval()
-		stopwatch.value.state = 0
+		timer.clearInterval();
+		stopwatch.value.state = 0;
 	}
 
 	/**
 	 * Stops and resets the timer, and clears the timer and results.
 	 */
 	function reset() {
-		stop()
-		TimeObject.setSeconds(stopwatch.value, 0)
-		stopwatch.value.result = [null, null, null, null]
+		stop();
+		TimeObject.setSeconds(stopwatch.value, 0);
+		stopwatch.value.result = [null, null, null, null];
 	}
 
 	/**
@@ -104,10 +104,10 @@ module.exports = nodecg => {
 	 */
 	function completeRunner(data) {
 		if (!stopwatch.value.results[data.index]) {
-			stopwatch.value.results[data.index] = new TimeObject(stopwatch.value.raw)
+			stopwatch.value.results[data.index] = new TimeObject(stopwatch.value.raw);
 		}
-		stopwatch.value.results[data.index].forfeit = data.forfeit
-		recalcPlaces()
+		stopwatch.value.results[data.index].forfeit = data.forfeit;
+		recalcPlaces();
 	}
 
 	/**
@@ -116,8 +116,8 @@ module.exports = nodecg => {
 	 */
 	function completeAllRunners(forfeit) {
 		currentRun.value.runners.forEach((r, index) => {
-			completeRunner({index, forfeit})
-		})
+			completeRunner({index, forfeit});
+		});
 	}
 
 	/**
@@ -125,12 +125,12 @@ module.exports = nodecg => {
 	 * @param {Number} index - The runner to modify.
 	 */
 	function resumeRunner(index) {
-		stopwatch.value.results[index] = null
-		recalcPlaces()
+		stopwatch.value.results[index] = null;
+		recalcPlaces();
 		if (stopwatch.value.state === 2) {
-			const missedSeconds = Math.round((Date.now() - stopwatch.value.timestamp) / 1000)
-			TimeObject.setSeconds(stopwatch.value, stopwatch.value.raw + missedSeconds)
-			start()
+			const missedSeconds = Math.round((Date.now() - stopwatch.value.timestamp) / 1000);
+			TimeObject.setSeconds(stopwatch.value, stopwatch.value.raw + missedSeconds);
+			start();
 		}
 	}
 
@@ -139,8 +139,8 @@ module.exports = nodecg => {
 	 */
 	function resumeAllRunners() {
 		currentRun.value.runners.forEach((r, index) => {
-			resumeRunner(index)
-		})
+			resumeRunner(index);
+		});
 	}
 
 	/**
@@ -150,21 +150,21 @@ module.exports = nodecg => {
 	 */
 	function editTime(index, newTime) {
 		if (!newTime) {
-			return
+			return;
 		}
 
-		const newSeconds = TimeObject.parseSeconds(newTime)
+		const newSeconds = TimeObject.parseSeconds(newTime);
 		if (isNaN(newSeconds)) {
-			return
+			return;
 		}
 
 		if (index === 'master') {
-			TimeObject.setSeconds(stopwatch.value, newSeconds)
+			TimeObject.setSeconds(stopwatch.value, newSeconds);
 		} else if (stopwatch.value.results[index]) {
-			TimeObject.setSeconds(stopwatch.value.results[index], newSeconds)
-			recalcPlaces()
+			TimeObject.setSeconds(stopwatch.value.results[index], newSeconds);
+			recalcPlaces();
 			if (currentRun.value.runners.length === 1) {
-				TimeObject.setSeconds(stopwatch.value, newSeconds)
+				TimeObject.setSeconds(stopwatch.value, newSeconds);
 			}
 		}
 	}
@@ -176,20 +176,20 @@ module.exports = nodecg => {
 		const finishedResults = stopwatch.value.results
 			.filter(result => {
 				if (result) {
-					result.place = 0
-					return !result.forfeit
+					result.place = 0;
+					return !result.forfeit;
 				}
-				return false
+				return false;
 			})
-			.sort((a, b) => a.raw - b.raw)
+			.sort((a, b) => a.raw - b.raw);
 		finishedResults.forEach((r, index) => {
-			r.place = index + 1
-		})
+			r.place = index + 1;
+		});
 
-		const allRunnersFinished = currentRun.value.runners.every((r, index) => stopwatch.value.results[index])
+		const allRunnersFinished = currentRun.value.runners.every((r, index) => stopwatch.value.results[index]);
 		if (allRunnersFinished) {
-			stop()
-			stopwatch.value.state = 2
+			stop();
+			stopwatch.value.state = 2;
 		}
 	}
-}
+};

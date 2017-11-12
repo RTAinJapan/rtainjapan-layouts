@@ -13,7 +13,7 @@ class TimeObject {
 	 * @param {Number} [seconds = 0] - The value to instantiate this TimeObject with, in seconds.
 	 */
 	constructor(seconds = 0) {
-		TimeObject.setSeconds(this, seconds)
+		TimeObject.setSeconds(this, seconds);
 	}
 
 	/**
@@ -22,15 +22,15 @@ class TimeObject {
 	 * @returns {TimeObject} - The TimeObject passed in as an argument.
 	 */
 	static increment(t) {
-		t.raw++
+		t.raw++;
 
-		const hms = TimeObject.secondsToHMS(t.raw)
-		t.hours = hms.h
-		t.minutes = hms.m
-		t.seconds = hms.s
-		t.formatted = TimeObject.formatHMS(hms)
-		t.timestamp = Date.now()
-		return t
+		const hms = TimeObject.secondsToHMS(t.raw);
+		t.hours = hms.h;
+		t.minutes = hms.m;
+		t.seconds = hms.s;
+		t.formatted = TimeObject.formatHMS(hms);
+		t.timestamp = Date.now();
+		return t;
 	}
 
 	/**
@@ -39,15 +39,15 @@ class TimeObject {
 	 * @returns {TimeObject} - The TimeObject passed in as an argument.
 	 */
 	static decrement(t) {
-		t.raw--
+		t.raw--;
 
-		const hms = TimeObject.secondsToHMS(t.raw)
-		t.hours = hms.h
-		t.minutes = hms.m
-		t.seconds = hms.s
-		t.formatted = TimeObject.formatHMS(hms)
-		t.timestamp = Date.now()
-		return t
+		const hms = TimeObject.secondsToHMS(t.raw);
+		t.hours = hms.h;
+		t.minutes = hms.m;
+		t.seconds = hms.s;
+		t.formatted = TimeObject.formatHMS(hms);
+		t.timestamp = Date.now();
+		return t;
 	}
 
 	/**
@@ -57,14 +57,14 @@ class TimeObject {
 	 * @returns {TimeObject} - The TimeObject passed in as an argument.
 	 */
 	static setSeconds(t, seconds) {
-		const hms = TimeObject.secondsToHMS(seconds)
-		t.hours = hms.h
-		t.minutes = hms.m
-		t.seconds = hms.s
-		t.formatted = TimeObject.formatHMS(hms)
-		t.raw = seconds
-		t.timestamp = Date.now()
-		return t
+		const hms = TimeObject.secondsToHMS(seconds);
+		t.hours = hms.h;
+		t.minutes = hms.m;
+		t.seconds = hms.s;
+		t.formatted = TimeObject.formatHMS(hms);
+		t.raw = seconds;
+		t.timestamp = Date.now();
+		return t;
 	}
 
 	/**
@@ -73,13 +73,13 @@ class TimeObject {
 	 * @returns {string} - The formatted time string.
 	 */
 	static formatHMS(hms) {
-		let str = ''
+		let str = '';
 		if (hms.h) {
-			str += `${hms.h}:`
+			str += `${hms.h}:`;
 		}
 
-		str += `${(hms.m < 10 ? `0${hms.m}` : hms.m)}:${(hms.s < 10 ? `0${hms.s}` : hms.s)}`
-		return str
+		str += `${(hms.m < 10 ? `0${hms.m}` : hms.m)}:${(hms.s < 10 ? `0${hms.s}` : hms.s)}`;
+		return str;
 	}
 
 	/**
@@ -88,8 +88,8 @@ class TimeObject {
 	 * @returns {string} - The formatted time sting.
 	 */
 	static formatSeconds(seconds) {
-		const hms = TimeObject.secondsToHMS(seconds)
-		return TimeObject.formatHMS(hms)
+		const hms = TimeObject.secondsToHMS(seconds);
+		return TimeObject.formatHMS(hms);
 	}
 
 	/**
@@ -102,7 +102,7 @@ class TimeObject {
 			h: Math.floor(seconds / 3600),
 			m: Math.floor(seconds % 3600 / 60),
 			s: Math.floor(seconds % 3600 % 60)
-		}
+		};
 	}
 
 	/**
@@ -111,23 +111,23 @@ class TimeObject {
 	 * @returns {number} - The parsed time string represented as seconds.
 	 */
 	static parseSeconds(timeString) {
-		const timeParts = timeString.split(':')
+		const timeParts = timeString.split(':');
 		if (timeParts.length === 3) {
-			return parseInt(timeParts[0] * 3600, 10) + parseInt(timeParts[1] * 60, 10) + parseInt(timeParts[2], 10)
+			return parseInt(timeParts[0] * 3600, 10) + parseInt(timeParts[1] * 60, 10) + parseInt(timeParts[2], 10);
 		}
 
 		if (timeParts.length === 2) {
-			return parseInt(timeParts[0] * 60, 10) + parseInt(timeParts[1], 10)
+			return parseInt(timeParts[0] * 60, 10) + parseInt(timeParts[1], 10);
 		}
 
 		if (timeParts.length === 1) {
-			return parseInt(timeParts[0], 10)
+			return parseInt(timeParts[0], 10);
 		}
 
-		throw new Error(`Unexpected format of timeString argument: ${timeString}`)
+		throw new Error(`Unexpected format of timeString argument: ${timeString}`);
 	}
 }
 
 if (typeof module === 'object' && typeof module.exports === 'object') {
-	module.exports = TimeObject
+	module.exports = TimeObject;
 }
