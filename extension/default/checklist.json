@@ -1,0 +1,42 @@
+[
+  {
+    "label": "hoge",
+    "items": [
+      {
+        "label": "hoge",
+        "defualt": false,
+        "value": false
+      },
+      {
+        "label": "hoge",
+        "defualt": false,
+        "value": false
+      },
+      {
+        "label": "hoge",
+        "defualt": false,
+        "value": false
+      }
+    ]
+  },
+  {
+    "label": "hoge",
+    "items": [
+      {
+        "label": "hoge",
+        "defualt": false,
+        "value": false
+      },
+      {
+        "label": "hoge",
+        "defualt": false,
+        "value": false
+      },
+      {
+        "label": "hoge",
+        "defualt": false,
+        "value": false
+      }
+    ]
+  }
+]
