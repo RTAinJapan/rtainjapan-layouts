@@ -35,7 +35,7 @@ module.exports = nodecg => {
 	 */
 	function updateChecklistCompleted() {
 		checklistCompleted.value = checklist.value.every(category => {
-			return category.items.every(item => item.value)
+			return category.items.every(item => item.value);
 		});
 	}
 };
