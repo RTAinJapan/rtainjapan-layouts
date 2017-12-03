@@ -1,22 +1,26 @@
 const path = require('path');
-const NanoTimer = require('nanotimer');
 
 const TimeObject = require(path.join(__dirname, '../shared/classes/time-object'));
 
+const TRY_TICK_INTERVAL = 100;
+
+const defaultStopwatch = () => {
+	const to = new TimeObject(0);
+	to.state = 0;
+	to.results = [null, null, null, null];
+	return to;
+};
+
 module.exports = nodecg => {
-	const timer = new NanoTimer();
 	// Requires checklist.js to be loaded
 	const checklistComplete = nodecg.Replicant('checklistComplete');
 	// Requires schedule.js to be loaded
 	const currentRun = nodecg.Replicant('currentRun');
-	const stopwatch = nodecg.Replicant('stopwatch', {
-		defaultValue: (() => {
-			const to = new TimeObject(0);
-			to.state = 0;
-			to.results = [null, null, null, null];
-			return to;
-		})()
-	});
+	const stopwatch = nodecg.Replicant('stopwatch', {defaultValue: defaultStopwatch()});
+	// The UNIX time when the timer incremented last time
+	let lastIncrement;
+	// Keeps the timeout object
+	let tickInterval;
 
 	// If the timer was running when NodeCG was shut down last time,
 	// resume the timer according to how long it has been since the shutdown time.
@@ -30,7 +34,6 @@ module.exports = nodecg => {
 	nodecg.listenFor('startTimer', start);
 	nodecg.listenFor('stopTimer', stop);
 	nodecg.listenFor('resetTimer', reset);
-
 	// Listen to completeRunner event for a runner, or all runners if it's coop
 	// @param data = {index, forfeit}
 	nodecg.listenFor('completeRunner', data => {
@@ -40,7 +43,6 @@ module.exports = nodecg => {
 			completeRunner(data);
 		}
 	});
-
 	// Listen to resumeRunner event for a runner, or all runners if it's coop
 	nodecg.listenFor('resumeRunner', index => {
 		if (currentRun.value.coop) {
@@ -49,17 +51,22 @@ module.exports = nodecg => {
 			resumeRunner(index);
 		}
 	});
-
 	// Listen to editTime event
 	// @param {index, newTime}
 	nodecg.listenFor('editTime', editTime);
 
 	/**
-	 * Increments the timer by one second.
+	 * Increments the timer by one second if at least one second
+	 * has passed since the last incerement.
+	 * If it does, increament lastIncerement for 1000.
+	 * Executing this function makes the timer very accurate to UNIX time,
+	 * and can be easily extended to millisecond timer.
 	 */
-	function tick() {
-		TimeObject.increment(stopwatch.value);
-		console.log(new Date().toLocaleString('ja-JP'));
+	function tryTick() {
+		if (Date.now() - lastIncrement > 1000) {
+			lastIncrement += 1000;
+			TimeObject.increment(stopwatch.value);
+		}
 	}
 
 	/**
@@ -75,16 +82,16 @@ module.exports = nodecg => {
 			return;
 		}
 
-		timer.clearInterval();
+		clearInterval(tickInterval);
 		stopwatch.value.state = 1;
-		timer.setInterval(tick, '', '1s');
+		tickInterval = setInterval(tryTick, TRY_TICK_INTERVAL);
 	}
 
 	/**
 	 * Stops the timer.
 	 */
 	function stop() {
-		timer.clearInterval();
+		clearInterval(tickInterval);
 		stopwatch.value.state = 0;
 	}
 

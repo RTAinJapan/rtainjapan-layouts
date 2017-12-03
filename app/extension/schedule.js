@@ -6,28 +6,33 @@ const defaultGameList = require(path.join(__dirname, 'default/game.json'));
 const defaultRunnerList = require(path.join(__dirname, 'default/runner.json'));
 
 module.exports = nodecg => {
-	const replicantPesistent = !nodecg.bundleConfig.replicantDevMode;
+	const horaroId = nodecg.bundleConfig.horaro.scheduleId;
+
 	const scheduleRep = nodecg.Replicant('schedule');
 	const horaroRep = nodecg.Replicant('horaro');
-	const gameListRep = nodecg.Replicant('gameList', {defaultValue: defaultGameList, persistent: replicantPesistent});
-	const runnerListRep = nodecg.Replicant('runnerList', {defaultValue: defaultRunnerList, persistent: replicantPesistent});
+	const gameListRep = nodecg.Replicant('gameList', {defaultValue: defaultGameList});
+	const runnerListRep = nodecg.Replicant('runnerList', {defaultValue: defaultRunnerList});
 	const currentRunRep = nodecg.Replicant('currentRun');
 	const nextRunRep = nodecg.Replicant('nextRun');
+
+	let updateInterval;
 
 	// Listen to schedule-related events
 	nodecg.listenFor('nextRun', toNextRun);
 	nodecg.listenFor('previousRun', toPreviousRun);
 	nodecg.listenFor('specificRun', updateCurrentRun);
-	nodecg.listenFor('manualUpdate', updateHoraroSchedule);
+	nodecg.listenFor('manualUpdate', manuallyUpdateHoraroSchedule);
 
-	// Listen to replicants changes
+	// Listen to replicants changes and merge them into schedule replicant
 	horaroRep.on('change', mergeSchedule);
 	gameListRep.on('change', mergeSchedule);
 	runnerListRep.on('change', mergeSchedule);
 
 	// Update schedule from Horaro once NodeCG is launched
-	if (nodecg.bundleConfig.horaro) {
+	if (horaroId) {
 		updateHoraroSchedule();
+		// Automatically update every 60 seconds
+		updateInterval = setInterval(updateHoraroSchedule, 60 * 1000);
 	} else {
 		nodecg.log.warn(`Horaro schedule isn't provided. Schedule won't be updated.`);
 	}
@@ -36,22 +41,31 @@ module.exports = nodecg => {
 	 * Retrieves schedule from Horaro and updates schedule Replicant
 	 */
 	function updateHoraroSchedule() {
-		const url = `https://horaro.org/-/api/v1/schedules/${nodecg.bundleConfig.horaro.scheduleId}`;
-		request.get(url).end((err, res) => {
+		const url = `https://horaro.org/-/api/v1/schedules/${horaroId}`;
+		request.get(url).end((err, {body: {data: horaroSchedule}}) => {
 			if (err) {
 				nodecg.log.error('Couldn\'t update Horaro schedule');
 			} else {
-				const horaroSchedule = res.body.data;
+				// Update horaro schedule
 				const indexOfPk = horaroSchedule.columns.indexOf('pk');
-				horaroRep.value = horaroSchedule.items.map(run => {
+				horaroRep.value = horaroSchedule.items.map(({data, scheduled_t: scheduled}) => {
 					return {
-						pk: parseInt(run.data[indexOfPk], 10),
-						scheduled: run.scheduled_t * 1000
+						pk: parseInt(data[indexOfPk], 10),
+						scheduled: scheduled * 1000 // Convert to UNIX time
 					};
 				});
-				nodecg.log.info('Schedule updated from Horaro at', new Date().toLocaleString('ja-JP'));
+				nodecg.log.info('Schedule updated from Horaro at', new Date().toLocaleString());
 			}
 		});
+	}
+
+	/**
+	 * Manually updates Horaro schedule
+	 */
+	function manuallyUpdateHoraroSchedule() {
+		updateHoraroSchedule();
+		clearInterval(updateInterval);
+		updateInterval = setInterval(updateHoraroSchedule, 60 * 1000);
 	}
 
 	/**
@@ -60,8 +74,15 @@ module.exports = nodecg => {
 	function mergeSchedule() {
 		const gameList = gameListRep.value;
 		const runnerList = runnerListRep.value;
+		if (!horaroRep.value) {
+			nodecg.log.info('Tried to merge schedule but Horaro schedule is empty.');
+			return;
+		}
 		scheduleRep.value = horaroRep.value.map((horaro, index) => {
 			const game = gameList.find(game => game.pk === horaro.pk);
+			if (!game && horaro.pk !== -1) {
+				nodecg.log.error(`Couldn't find the game ${horaro.pk}`);
+			}
 			const {pk, startsAt} = horaro;
 			const {
 				title = 'セットアップ',
@@ -72,6 +93,9 @@ module.exports = nodecg => {
 			} = game ? game : {};
 			const runners = runnerPkAry.map(runnerPk => {
 				const runner = runnerList.find(runner => runner.runnerPk === runnerPk);
+				if (!game) {
+					nodecg.log.error(`Couldn't find the runner ${runnerPk}`);
+				}
 				return {
 					name: runner.name,
 					twitch: runner.twitch,
@@ -81,6 +105,9 @@ module.exports = nodecg => {
 			});
 			const commentators = commentatorPkAry.map(commentatorPk => {
 				const runner = runnerList.find(runner => runner.runnerPk === commentatorPk);
+				if (!game) {
+					nodecg.log.error(`Couldn't find the runner ${commentatorPk}`);
+				}
 				return {
 					name: runner.name,
 					twitch: runner.twitch,
