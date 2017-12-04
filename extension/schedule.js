@@ -1,8 +1,8 @@
+import {clearInterval} from 'timers';
+
 const path = require('path');
 const request = require('superagent');
 const clone = require('clone');
-
-const UPDATE_INTERVAL_SECONDS = 60
 
 const defaultGameList = require(path.join(__dirname, 'default/game.json'));
 const defaultRunnerList = require(path.join(__dirname, 'default/runner.json'));
@@ -26,7 +26,6 @@ module.exports = nodecg => {
 	nodecg.listenFor('manualUpdate', manuallyUpdateHoraroSchedule);
 
 	// Listen to replicants changes and merge them into schedule replicant
-	horaroRep.on('change', mergeSchedule);
 	gameListRep.on('change', mergeSchedule);
 	runnerListRep.on('change', mergeSchedule);
 
@@ -56,6 +55,7 @@ module.exports = nodecg => {
 						scheduled: scheduled * 1000 // Convert to UNIX time
 					};
 				});
+				mergeSchedule();
 				nodecg.log.info(`Schedule updated from Horaro at ${new Date().toLocaleString()}`);
 			}
 		});
@@ -66,7 +66,7 @@ module.exports = nodecg => {
 	 */
 	function manuallyUpdateHoraroSchedule() {
 		updateHoraroSchedule();
-		clearInterval(updateInterval);
+		clearUpdateInterval();
 		setUpdateInterval();
 	}
 
@@ -134,7 +134,7 @@ module.exports = nodecg => {
 				commentators
 			};
 		});
-		nodecg.log.info(`Schedule successfully merged`)
+		nodecg.log.info(`Schedule successfully merged`);
 	}
 
 	/**
@@ -165,5 +165,12 @@ module.exports = nodecg => {
 	 */
 	function setUpdateInterval() {
 		updateInterval = setInterval(updateHoraroSchedule, 60 * 1000);
+	}
+
+	/**
+	 * Clear interval for automatic schedule update
+	 */
+	function clearUpdateInterval() {
+		clearInterval(updateInterval);
 	}
 };
