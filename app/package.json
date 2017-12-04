@@ -46,7 +46,7 @@
     }
   },
   "scripts": {
-    "test": "xo"
+    "lint": "node_modules/.bin/xo --fix"
   },
   "dependencies": {
     "clone": "^2.1.1",

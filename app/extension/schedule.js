@@ -54,7 +54,7 @@ module.exports = nodecg => {
 						scheduled: scheduled * 1000 // Convert to UNIX time
 					};
 				});
-				nodecg.log.info('Schedule updated from Horaro at', new Date().toLocaleString());
+				nodecg.log.info(`Schedule updated from Horaro at ${new Date().toLocaleString()}`);
 			}
 		});
 	}
