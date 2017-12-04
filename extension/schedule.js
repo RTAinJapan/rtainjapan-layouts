@@ -139,7 +139,7 @@ module.exports = nodecg => {
 	 * Updates currentRun and nextRun Replicants, default is first run in the schedule
 	 * @param {Number} index - Index of the current game in the schedule (Not the pk)
 	 */
-	function updateCurrentRun(index = 0) {
+	function updateCurrentRun(index) {
 		currentRunRep.value = clone(scheduleRep.value[index]);
 		nextRunRep.value = clone(scheduleRep.value[index + 1]);
 	}
