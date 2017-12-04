@@ -1,5 +1,3 @@
-import {clearInterval} from 'timers';
-
 const path = require('path');
 const request = require('superagent');
 const clone = require('clone');
@@ -83,7 +81,7 @@ module.exports = nodecg => {
 		// Map each game on the Horaro schedule
 		scheduleRep.value = horaroRep.value.map((horaro, index) => {
 			// Find the game on game list
-			const game = gameList.find(game => game.pk === horaro.pk) | {};
+			const game = gameList.find(game => game.pk === horaro.pk) || {};
 			if (!game && horaro.pk !== -1) {
 				nodecg.log.error(`Couldn't find the game ${horaro.pk}`);
 			}
