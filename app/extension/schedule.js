@@ -2,6 +2,8 @@ const path = require('path');
 const request = require('superagent');
 const clone = require('clone');
 
+const UPDATE_INTERVAL_SECONDS = 60
+
 const defaultGameList = require(path.join(__dirname, 'default/game.json'));
 const defaultRunnerList = require(path.join(__dirname, 'default/runner.json'));
 
@@ -28,11 +30,11 @@ module.exports = nodecg => {
 	gameListRep.on('change', mergeSchedule);
 	runnerListRep.on('change', mergeSchedule);
 
-	// Update schedule from Horaro once NodeCG is launched
 	if (horaroId) {
+		// Update schedule from Horaro once NodeCG is launched
 		updateHoraroSchedule();
 		// Automatically update every 60 seconds
-		updateInterval = setInterval(updateHoraroSchedule, 60 * 1000);
+		setUpdateInterval();
 	} else {
 		nodecg.log.warn(`Horaro schedule isn't provided. Schedule won't be updated.`);
 	}
@@ -65,7 +67,7 @@ module.exports = nodecg => {
 	function manuallyUpdateHoraroSchedule() {
 		updateHoraroSchedule();
 		clearInterval(updateInterval);
-		updateInterval = setInterval(updateHoraroSchedule, 60 * 1000);
+		setUpdateInterval();
 	}
 
 	/**
@@ -74,23 +76,28 @@ module.exports = nodecg => {
 	function mergeSchedule() {
 		const gameList = gameListRep.value;
 		const runnerList = runnerListRep.value;
+		// Exit if Horaro schdule is empty
 		if (!horaroRep.value) {
-			nodecg.log.info('Tried to merge schedule but Horaro schedule is empty.');
 			return;
 		}
+		// Map each game on the Horaro schedule
 		scheduleRep.value = horaroRep.value.map((horaro, index) => {
-			const game = gameList.find(game => game.pk === horaro.pk);
+			// Find the game on game list
+			const game = gameList.find(game => game.pk === horaro.pk) | {};
 			if (!game && horaro.pk !== -1) {
 				nodecg.log.error(`Couldn't find the game ${horaro.pk}`);
 			}
+			// Use pk and start time from Horaro
 			const {pk, startsAt} = horaro;
+			// Other info from game if exists
 			const {
 				title = 'セットアップ',
 				category,
 				hardware,
 				runnerPkAry = [],
 				commentatorPkAry = []
-			} = game ? game : {};
+			} = game;
+			// Find runner info for each
 			const runners = runnerPkAry.map(runnerPk => {
 				const runner = runnerList.find(runner => runner.runnerPk === runnerPk);
 				if (!game) {
@@ -103,6 +110,7 @@ module.exports = nodecg => {
 					twitter: runner.twitter
 				};
 			});
+			// Find commentator info for each
 			const commentators = commentatorPkAry.map(commentatorPk => {
 				const runner = runnerList.find(runner => runner.runnerPk === commentatorPk);
 				if (!game) {
@@ -126,6 +134,7 @@ module.exports = nodecg => {
 				commentators
 			};
 		});
+		nodecg.log.info(`Schedule successfully merged`)
 	}
 
 	/**
@@ -149,5 +158,12 @@ module.exports = nodecg => {
 	 */
 	function toPreviousRun() {
 		updateCurrentRun(currentRunRep.value.index - 1);
+	}
+
+	/**
+	 * Set interval for automatic schedule update
+	 */
+	function setUpdateInterval() {
+		updateInterval = setInterval(updateHoraroSchedule, 60 * 1000);
 	}
 };
