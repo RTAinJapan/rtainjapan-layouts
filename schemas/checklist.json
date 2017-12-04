@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+
+  "definitions": {
+    "checklistGroup": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "complete": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+
+  "type": "object",
+  "properties": {
+    "left": {
+      "$ref": "#/definitions/checklistGroup"
+    },
+    "right": {
+      "$ref": "#/definitions/checklistGroup"
+    }
+  }
+}

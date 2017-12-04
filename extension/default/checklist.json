@@ -1,42 +1,10 @@
-[
-  {
-    "label": "hoge",
-    "items": [
-      {
-        "label": "hoge",
-        "defualt": false,
-        "value": false
-      },
-      {
-        "label": "hoge",
-        "defualt": false,
-        "value": false
-      },
-      {
-        "label": "hoge",
-        "defualt": false,
-        "value": false
-      }
-    ]
-  },
-  {
-    "label": "hoge",
-    "items": [
-      {
-        "label": "hoge",
-        "defualt": false,
-        "value": false
-      },
-      {
-        "label": "hoge",
-        "defualt": false,
-        "value": false
-      },
-      {
-        "label": "hoge",
-        "defualt": false,
-        "value": false
-      }
-    ]
-  }
-]
+{
+  "left": [
+    {"name": "something", "complete": false},
+    {"name": "elsething", "complete": false}
+  ],
+  "right": [
+    {"name": "something", "complete": false},
+    {"name": "elsething", "complete": false}
+  ]
+}

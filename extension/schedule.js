@@ -86,7 +86,7 @@ module.exports = nodecg => {
 				nodecg.log.error(`Couldn't find the game ${horaro.pk}`);
 			}
 			// Use pk and start time from Horaro
-			const {pk, startsAt} = horaro;
+			const {pk, scheduled} = horaro;
 			// Other info from game if exists
 			const {
 				title = 'セットアップ',
@@ -124,7 +124,7 @@ module.exports = nodecg => {
 			return {
 				pk,
 				index,
-				startsAt,
+				scheduled,
 				title,
 				category,
 				hardware,
