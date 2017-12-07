@@ -17,16 +17,6 @@ module.exports = nodecg => {
 
 	let updateInterval;
 
-	// Listen to schedule-related events
-	nodecg.listenFor('nextRun', toNextRun);
-	nodecg.listenFor('previousRun', toPreviousRun);
-	nodecg.listenFor('specificRun', updateCurrentRun);
-	nodecg.listenFor('manualUpdate', manuallyUpdateHoraroSchedule);
-
-	// Listen to replicants changes and merge them into schedule replicant
-	gameListRep.on('change', mergeSchedule);
-	runnerListRep.on('change', mergeSchedule);
-
 	if (horaroId) {
 		// Update schedule from Horaro once NodeCG is launched
 		updateHoraroSchedule();
@@ -35,6 +25,18 @@ module.exports = nodecg => {
 	} else {
 		nodecg.log.warn(`Horaro schedule isn't provided. Schedule won't be updated.`);
 	}
+
+	// Listen to schedule-related events
+	nodecg.listenFor('nextRun', toNextRun);
+	nodecg.listenFor('previousRun', toPreviousRun);
+	nodecg.listenFor('specificRun', updateCurrentRun);
+	nodecg.listenFor('manualUpdate', manuallyUpdateHoraroSchedule);
+
+	// Listen to replicants changes and merge them into schedule replicant
+	horaroRep.on('change', mergeSchedule);
+	gameListRep.on('change', mergeSchedule);
+	runnerListRep.on('change', mergeSchedule);
+
 
 	/**
 	 * Retrieves schedule from Horaro and updates schedule Replicant
@@ -53,7 +55,6 @@ module.exports = nodecg => {
 						scheduled: scheduled * 1000 // Convert to UNIX time
 					};
 				});
-				mergeSchedule();
 				nodecg.log.info(`Schedule updated from Horaro at ${new Date().toLocaleString()}`);
 			}
 		});
@@ -90,6 +91,7 @@ module.exports = nodecg => {
 			// Other info from game if exists
 			const {
 				title = 'セットアップ',
+				engTitle,
 				category,
 				hardware,
 				runnerPkAry = [],
@@ -126,6 +128,7 @@ module.exports = nodecg => {
 				index,
 				scheduled,
 				title,
+				engTitle,
 				category,
 				hardware,
 				runners,
