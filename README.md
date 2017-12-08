@@ -1,5 +1,7 @@
 # RTA in Japan Layouts
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Hoishin/rtainjapan-layouts.svg)](https://greenkeeper.io/)
+
 This is a [NodeCG](http://github.com/nodecg/nodecg) application.
 
 It uses `nodecg/nodecg` Docker image. You will need to have `docker` and `docker-compose` available on your machine.
