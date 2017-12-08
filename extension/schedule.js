@@ -37,7 +37,6 @@ module.exports = nodecg => {
 	gameListRep.on('change', mergeSchedule);
 	runnerListRep.on('change', mergeSchedule);
 
-
 	/**
 	 * Retrieves schedule from Horaro and updates schedule Replicant
 	 */

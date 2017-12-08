@@ -15,7 +15,7 @@ module.exports = nodecg => {
 
 	let userStream;
 	buildUserStream();
-	
+
 	setInterval(() => {
 		nodecg.log.info('[twitter] Restarting Twitter connection');
 		userStream.close();
