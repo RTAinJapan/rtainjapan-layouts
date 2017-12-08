@@ -50,7 +50,9 @@
   },
   "dependencies": {
     "clone": "^2.1.1",
-    "superagent": "^3.8.0"
+    "superagent": "^3.8.0",
+    "twemoji": "^2.5.0",
+    "twitter-stream-api": "^0.5.2"
   },
   "devDependencies": {
     "xo": "^0.18.2"
