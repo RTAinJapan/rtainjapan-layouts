@@ -46,12 +46,13 @@
     }
   },
   "scripts": {
-    "test": "xo"
+    "lint": "node_modules/.bin/xo --fix"
   },
   "dependencies": {
     "clone": "^2.1.1",
-    "deep-diff": "^0.3.8",
-    "superagent": "^3.8.0"
+    "superagent": "^3.8.0",
+    "twemoji": "^2.5.0",
+    "twitter-stream-api": "^0.5.2"
   },
   "devDependencies": {
     "xo": "^0.18.2"

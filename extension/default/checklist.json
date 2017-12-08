@@ -1,0 +1,10 @@
+{
+  "left": [
+    {"name": "something", "complete": false},
+    {"name": "elsething", "complete": false}
+  ],
+  "right": [
+    {"name": "something", "complete": false},
+    {"name": "elsething", "complete": false}
+  ]
+}

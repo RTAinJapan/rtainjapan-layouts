@@ -17,6 +17,15 @@ module.exports = nodecg => {
 
 	let updateInterval;
 
+	if (horaroId) {
+		// Update schedule from Horaro once NodeCG is launched
+		updateHoraroSchedule();
+		// Automatically update every 60 seconds
+		setUpdateInterval();
+	} else {
+		nodecg.log.warn(`Horaro schedule isn't provided. Schedule won't be updated.`);
+	}
+
 	// Listen to schedule-related events
 	nodecg.listenFor('nextRun', toNextRun);
 	nodecg.listenFor('previousRun', toPreviousRun);
@@ -27,15 +36,6 @@ module.exports = nodecg => {
 	horaroRep.on('change', mergeSchedule);
 	gameListRep.on('change', mergeSchedule);
 	runnerListRep.on('change', mergeSchedule);
-
-	// Update schedule from Horaro once NodeCG is launched
-	if (horaroId) {
-		updateHoraroSchedule();
-		// Automatically update every 60 seconds
-		updateInterval = setInterval(updateHoraroSchedule, 60 * 1000);
-	} else {
-		nodecg.log.warn(`Horaro schedule isn't provided. Schedule won't be updated.`);
-	}
 
 	/**
 	 * Retrieves schedule from Horaro and updates schedule Replicant
@@ -54,7 +54,7 @@ module.exports = nodecg => {
 						scheduled: scheduled * 1000 // Convert to UNIX time
 					};
 				});
-				nodecg.log.info('Schedule updated from Horaro at', new Date().toLocaleString());
+				nodecg.log.info(`Schedule updated from Horaro at ${new Date().toLocaleString()}`);
 			}
 		});
 	}
@@ -64,8 +64,8 @@ module.exports = nodecg => {
 	 */
 	function manuallyUpdateHoraroSchedule() {
 		updateHoraroSchedule();
-		clearInterval(updateInterval);
-		updateInterval = setInterval(updateHoraroSchedule, 60 * 1000);
+		clearUpdateInterval();
+		setUpdateInterval();
 	}
 
 	/**
@@ -74,23 +74,29 @@ module.exports = nodecg => {
 	function mergeSchedule() {
 		const gameList = gameListRep.value;
 		const runnerList = runnerListRep.value;
+		// Exit if Horaro schdule is empty
 		if (!horaroRep.value) {
-			nodecg.log.info('Tried to merge schedule but Horaro schedule is empty.');
 			return;
 		}
+		// Map each game on the Horaro schedule
 		scheduleRep.value = horaroRep.value.map((horaro, index) => {
-			const game = gameList.find(game => game.pk === horaro.pk);
+			// Find the game on game list
+			const game = gameList.find(game => game.pk === horaro.pk) || {};
 			if (!game && horaro.pk !== -1) {
 				nodecg.log.error(`Couldn't find the game ${horaro.pk}`);
 			}
-			const {pk, startsAt} = horaro;
+			// Use pk and start time from Horaro
+			const {pk, scheduled} = horaro;
+			// Other info from game if exists
 			const {
 				title = 'セットアップ',
+				engTitle,
 				category,
 				hardware,
 				runnerPkAry = [],
 				commentatorPkAry = []
-			} = game ? game : {};
+			} = game;
+			// Find runner info for each
 			const runners = runnerPkAry.map(runnerPk => {
 				const runner = runnerList.find(runner => runner.runnerPk === runnerPk);
 				if (!game) {
@@ -103,6 +109,7 @@ module.exports = nodecg => {
 					twitter: runner.twitter
 				};
 			});
+			// Find commentator info for each
 			const commentators = commentatorPkAry.map(commentatorPk => {
 				const runner = runnerList.find(runner => runner.runnerPk === commentatorPk);
 				if (!game) {
@@ -118,21 +125,23 @@ module.exports = nodecg => {
 			return {
 				pk,
 				index,
-				startsAt,
+				scheduled,
 				title,
+				engTitle,
 				category,
 				hardware,
 				runners,
 				commentators
 			};
 		});
+		nodecg.log.info(`Schedule successfully merged`);
 	}
 
 	/**
 	 * Updates currentRun and nextRun Replicants, default is first run in the schedule
 	 * @param {Number} index - Index of the current game in the schedule (Not the pk)
 	 */
-	function updateCurrentRun(index = 0) {
+	function updateCurrentRun(index) {
 		currentRunRep.value = clone(scheduleRep.value[index]);
 		nextRunRep.value = clone(scheduleRep.value[index + 1]);
 	}
@@ -149,5 +158,19 @@ module.exports = nodecg => {
 	 */
 	function toPreviousRun() {
 		updateCurrentRun(currentRunRep.value.index - 1);
+	}
+
+	/**
+	 * Set interval for automatic schedule update
+	 */
+	function setUpdateInterval() {
+		updateInterval = setInterval(updateHoraroSchedule, 60 * 1000);
+	}
+
+	/**
+	 * Clear interval for automatic schedule update
+	 */
+	function clearUpdateInterval() {
+		clearInterval(updateInterval);
 	}
 };

@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "pk": {
+        "type": "number"
+      },
+      "index": {
+        "type": "number"
+      },
+      "scheduled": {
+        "type": "number"
+      },
+      "title": {
+        "type": "string"
+      },
+      "engTitle": {
+        "type": "string"
+      },
+      "category": {
+        "type": "string"
+      },
+      "hardware": {
+        "type": "string"
+      },
+      "runners": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "twitch": {
+              "type": "string"
+            },
+            "nico": {
+              "type": "string"
+            },
+            "twitter": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "commentators": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "twitch": {
+              "type": "string"
+            },
+            "nico": {
+              "type": "string"
+            },
+            "twitter": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

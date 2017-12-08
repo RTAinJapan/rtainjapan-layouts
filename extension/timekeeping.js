@@ -12,9 +12,7 @@ const defaultStopwatch = () => {
 };
 
 module.exports = nodecg => {
-	// Requires checklist.js to be loaded
 	const checklistComplete = nodecg.Replicant('checklistComplete');
-	// Requires schedule.js to be loaded
 	const currentRun = nodecg.Replicant('currentRun');
 	const stopwatch = nodecg.Replicant('stopwatch', {defaultValue: defaultStopwatch()});
 	// The UNIX time when the timer incremented last time
