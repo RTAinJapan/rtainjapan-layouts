@@ -1,0 +1,21 @@
+{
+  "name": "rtainjapan",
+  "description": "The on-stream layout for RTA in Japan speedrunning marathon event",
+  "main": "",
+  "license": "MIT",
+  "keywords": [
+    "nodecg-bundle"
+  ],
+  "homepage": "https://github.com/Hoishin/rtainjapan-layouts",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.3.1",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.1"
+  }
+}

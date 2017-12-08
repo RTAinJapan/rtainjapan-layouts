@@ -17,11 +17,11 @@
     "compatibleRange": "^0.9.8",
     "dashboardPanels": [
       {
-        "name": "checklist",
-        "title": "Checklist",
-        "width": 2,
-        "file": "checklist.html",
-        "headerColor": "#9f9bbd"
+        "name": "stream",
+        "title": "配信",
+        "file": "stream-tech.html",
+        "headerColor": "#9f9bbd",
+        "fullbleed": true
       }
     ],
     "graphics": [
