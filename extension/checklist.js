@@ -34,8 +34,9 @@ module.exports = nodecg => {
 	 * Updates checklistCompleted Replicant
 	 */
 	function updateChecklistCompleted() {
-		checklistCompleted.value = checklist.value.every(category => {
-			return category.items.every(item => item.value);
+		const categories = Object.keys(checklist.value);
+		checklistCompleted.value = categories.every(category => {
+			return checklist.value[category].every(item => item.complete);
 		});
 	}
 };
