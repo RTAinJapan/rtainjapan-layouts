@@ -1,10 +1,11 @@
 # RTA in Japan Layouts
 
+[ ![Codeship Status for Hoishin/rtainjapan-layouts](https://app.codeship.com/projects/1a66d6f0-c3e7-0135-2bd6-5e1e25c4f686/status?branch=master)](https://app.codeship.com/projects/260852)
 [![Greenkeeper badge](https://badges.greenkeeper.io/Hoishin/rtainjapan-layouts.svg)](https://greenkeeper.io/)
 
 This is a [NodeCG](http://github.com/nodecg/nodecg) application.
 
-## Usage
+## Usage with Docker
 
 It is built on `nodecg/nodecg` Docker image. You will need to have `docker` and `docker-compose` available on your machine/server.
 
@@ -24,7 +25,7 @@ docker-compose up
 
 ## Usage without Docker
 
-Alternatively, you can use Node.js to use this bundle. You will need to manually install Node.js before the following scripts.
+Alternatively, you can use Node.js to use this bundle. You will need to manually install Node.js 8.x before the following scripts.
 
 ```sh
 # Clone and install NodeCG
