@@ -39,7 +39,5 @@ cd bundles
 git clone https://github.com/Hoishin/rtainjapan-layouts.git
 cd rtainjapan-layouts
 npm install --production
-# bower install
+bower install
 ```
-
-Docker is recommended for easier setup and usage.
