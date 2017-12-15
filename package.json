@@ -78,7 +78,9 @@
     ]
   },
   "scripts": {
-    "lint": "node_modules/.bin/xo --fix"
+    "start": "pm2 start ../../index.js -i max - name=\"RTAiJ-Layouts\"",
+    "restart": "pm2 restart all",
+    "test": "node_modules/.bin/xo"
   },
   "dependencies": {
     "clone": "^2.1.1",

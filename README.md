@@ -2,7 +2,7 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/Hoishin/rtainjapan-layouts.svg)](https://greenkeeper.io/)
 
-This is a [NodeCG](http://github.com/nodecg/nodecg) application. 
+This is a [NodeCG](http://github.com/nodecg/nodecg) application.
 
 ## Usage
 
@@ -28,16 +28,16 @@ Alternatively, you can use Node.js to use this bundle. You will need to manually
 
 ```sh
 # Clone and install NodeCG
-npm install -g bower
+sudo npm install -g bower
 git clone https://github.com/nodecg/nodecg.git
 cd nodecg
-npm install --production
-bower install
+sudo npm install --production
+sudo bower install --allow-root
 
 # Clone and install the bundle
 cd bundles
 git clone https://github.com/Hoishin/rtainjapan-layouts.git
 cd rtainjapan-layouts
-npm install --production
-bower install
+sudo npm install --production
+sudo bower install --allow-root
 ```
