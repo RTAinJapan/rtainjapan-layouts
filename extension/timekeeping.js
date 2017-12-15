@@ -1,12 +1,13 @@
-const path = require('path');
+const TimeObject = require('../shared/classes/time-object');
 
-const TimeObject = require(path.join(__dirname, '../shared/classes/time-object'));
-
-const TRY_TICK_INTERVAL = 100;
+const TRY_TICK_INTERVAL = 10;
+const TIMER_STATE_STOPPED = 'stopped';
+const TIMER_STATE_RUNNING = 'running';
+const TIMER_STATE_FINISHED = 'finished';
 
 const defaultStopwatch = () => {
 	const to = new TimeObject(0);
-	to.state = 0;
+	to.state = TIMER_STATE_STOPPED;
 	to.results = [null, null, null, null];
 	return to;
 };
@@ -15,6 +16,7 @@ module.exports = nodecg => {
 	const checklistComplete = nodecg.Replicant('checklistComplete');
 	const currentRun = nodecg.Replicant('currentRun');
 	const stopwatch = nodecg.Replicant('stopwatch', {defaultValue: defaultStopwatch()});
+
 	// The UNIX time when the timer incremented last time
 	let lastIncrement;
 	// Keeps the timeout object
@@ -22,7 +24,7 @@ module.exports = nodecg => {
 
 	// If the timer was running when NodeCG was shut down last time,
 	// resume the timer according to how long it has been since the shutdown time.
-	if (stopwatch.value.state === 1) {
+	if (stopwatch.value.state === TIMER_STATE_RUNNING) {
 		const missedSeconds = Math.round((Date.now() - stopwatch.value.timestamp) / 1000);
 		TimeObject.setSeconds(stopwatch.value, stopwatch.value.raw + missedSeconds);
 		start(true);
@@ -32,6 +34,7 @@ module.exports = nodecg => {
 	nodecg.listenFor('startTimer', start);
 	nodecg.listenFor('stopTimer', stop);
 	nodecg.listenFor('resetTimer', reset);
+
 	// Listen to completeRunner event for a runner, or all runners if it's coop
 	// @param data = {index, forfeit}
 	nodecg.listenFor('completeRunner', data => {
@@ -41,6 +44,7 @@ module.exports = nodecg => {
 			completeRunner(data);
 		}
 	});
+
 	// Listen to resumeRunner event for a runner, or all runners if it's coop
 	nodecg.listenFor('resumeRunner', index => {
 		if (currentRun.value.coop) {
@@ -49,6 +53,7 @@ module.exports = nodecg => {
 			resumeRunner(index);
 		}
 	});
+
 	// Listen to editTime event
 	// @param {index, newTime}
 	nodecg.listenFor('editTime', editTime);
@@ -76,12 +81,13 @@ module.exports = nodecg => {
 			return;
 		}
 
-		if (!force && stopwatch.value.state === 1) {
+		if (!force && stopwatch.value.state === TIMER_STATE_RUNNING) {
 			return;
 		}
 
 		clearInterval(tickInterval);
-		stopwatch.value.state = 1;
+		stopwatch.value.state = TIMER_STATE_RUNNING;
+		lastIncrement = Date.now();
 		tickInterval = setInterval(tryTick, TRY_TICK_INTERVAL);
 	}
 
@@ -90,7 +96,7 @@ module.exports = nodecg => {
 	 */
 	function stop() {
 		clearInterval(tickInterval);
-		stopwatch.value.state = 0;
+		stopwatch.value.state = TIMER_STATE_STOPPED;
 	}
 
 	/**
@@ -99,7 +105,7 @@ module.exports = nodecg => {
 	function reset() {
 		stop();
 		TimeObject.setSeconds(stopwatch.value, 0);
-		stopwatch.value.result = [null, null, null, null];
+		stopwatch.value.results = [];
 	}
 
 	/**
@@ -132,7 +138,7 @@ module.exports = nodecg => {
 	function resumeRunner(index) {
 		stopwatch.value.results[index] = null;
 		recalcPlaces();
-		if (stopwatch.value.state === 2) {
+		if (stopwatch.value.state === TIMER_STATE_FINISHED) {
 			const missedSeconds = Math.round((Date.now() - stopwatch.value.timestamp) / 1000);
 			TimeObject.setSeconds(stopwatch.value, stopwatch.value.raw + missedSeconds);
 			start();
@@ -153,7 +159,7 @@ module.exports = nodecg => {
 	 * @param {Number} index - The runner to modify time of.
 	 * @param {String} newTime - A hh:mm:ss/mm:ss formatted new time.
 	 */
-	function editTime(index, newTime) {
+	function editTime({index, newTime}) {
 		if (!newTime) {
 			return;
 		}
@@ -194,7 +200,7 @@ module.exports = nodecg => {
 		const allRunnersFinished = currentRun.value.runners.every((r, index) => stopwatch.value.results[index]);
 		if (allRunnersFinished) {
 			stop();
-			stopwatch.value.state = 2;
+			stopwatch.value.state = TIMER_STATE_FINISHED;
 		}
 	}
 };

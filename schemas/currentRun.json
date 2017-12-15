@@ -16,6 +16,9 @@
     "title": {
       "type": "string"
     },
+    "engTitle": {
+      "type": "string"
+    },
     "category": {
       "type": "string"
     },

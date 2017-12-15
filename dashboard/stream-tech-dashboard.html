@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja-JP">
+
 <head>
 	<meta charset="UTF-8">
-	<title>配信ダッシュボード</title>
-	<script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-	<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
-
+	<title>Stream Tech</title>
+	<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="elements/rtaij-checklist/rtaij-checklist.html">
+	<link rel="import" href="elements/rtaij-timekeeper/rtaij-timekeeper.html">
 	<custom-style>
 		<style include="iron-flex iron-flex-alignment">
 			body {
@@ -37,31 +38,42 @@
 				@apply --layout-flex-none;
 			}
 
-			#left {
+			#leftColumn {
 				margin-left: 0;
 			}
 
-			#right {
+			#rightColumn {
 				margin-right: 0;
+			}
+
+			.bordered {
+				box-sizing: border-box;
+				background: white;
+				border: 1px solid black;
+			}
+
+			rtaij-checklist {
+				border-top: 0;
 			}
 		</style>
 	</custom-style>
 </head>
+
 <body>
 	<div id="wrapper">
 		<div id="container">
-			<div id="left" class="column">
-				hoge
+			<div id="leftColumn" class="column">
+				<rtaij-timekeeper class="bordered"></rtaij-timekeeper>
+				<rtaij-checklist class="bordered"></rtaij-checklist>
 			</div>
-
-			<div id="center" class="column">
-				fuga
+			<div id="centerColumn" class="column">
+				2
 			</div>
-			
-			<div id="right" class="column">
-				foo
+			<div id="leftColumn" class="column">
+				3
 			</div>
 		</div>
 	</div>
 </body>
+
 </html>

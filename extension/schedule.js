@@ -74,20 +74,23 @@ module.exports = nodecg => {
 	function mergeSchedule() {
 		const gameList = gameListRep.value;
 		const runnerList = runnerListRep.value;
+
 		// Exit if Horaro schdule is empty
 		if (!horaroRep.value) {
 			return;
 		}
+
 		// Map each game on the Horaro schedule
 		scheduleRep.value = horaroRep.value.map((horaro, index) => {
+			// Use pk and start time from Horaro
+			const {pk, scheduled} = horaro;
+
 			// Find the game on game list
 			const game = gameList.find(game => game.pk === horaro.pk) || {};
 			if (!game && horaro.pk !== -1) {
 				nodecg.log.error(`Couldn't find the game ${horaro.pk}`);
 			}
-			// Use pk and start time from Horaro
-			const {pk, scheduled} = horaro;
-			// Other info from game if exists
+			// Info from game if exists
 			const {
 				title = 'セットアップ',
 				engTitle,
@@ -96,6 +99,7 @@ module.exports = nodecg => {
 				runnerPkAry = [],
 				commentatorPkAry = []
 			} = game;
+
 			// Find runner info for each
 			const runners = runnerPkAry.map(runnerPk => {
 				const runner = runnerList.find(runner => runner.runnerPk === runnerPk);
@@ -109,6 +113,7 @@ module.exports = nodecg => {
 					twitter: runner.twitter
 				};
 			});
+
 			// Find commentator info for each
 			const commentators = commentatorPkAry.map(commentatorPk => {
 				const runner = runnerList.find(runner => runner.runnerPk === commentatorPk);
@@ -122,6 +127,7 @@ module.exports = nodecg => {
 					twitter: runner.twitter
 				};
 			});
+
 			return {
 				pk,
 				index,
@@ -134,23 +140,29 @@ module.exports = nodecg => {
 				commentators
 			};
 		});
-		nodecg.log.info(`Schedule successfully merged`);
+
+		// Put first game to current game if no current game exists
+		if (!currentRunRep.value.pk) {
+			updateCurrentRun(0);
+		}
 	}
 
 	/**
 	 * Updates currentRun and nextRun Replicants, default is first run in the schedule
 	 * @param {Number} index - Index of the current game in the schedule (Not the pk)
 	 */
-	function updateCurrentRun(index) {
+	function updateCurrentRun(index, cb) {
 		currentRunRep.value = clone(scheduleRep.value[index]);
 		nextRunRep.value = clone(scheduleRep.value[index + 1]);
+		cb();
 	}
 
 	/**
 	 * Moves currentRun to next game
 	 */
-	function toNextRun() {
+	function toNextRun(cb) {
 		updateCurrentRun(currentRunRep.value.index + 1);
+		cb();
 	}
 
 	/**
