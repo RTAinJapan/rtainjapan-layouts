@@ -1,42 +1,43 @@
-const path = require('path');
-
-const defaultChecklist = require(path.join(__dirname, 'default/checklist.json'));
+const defaultChecklist = require('./default/checklist.json');
 
 module.exports = nodecg => {
 	const checklist = nodecg.Replicant('checklist', {defaultValue: defaultChecklist});
-	const checklistCompleted = nodecg.Replicant('checklistCompleted', {defaultValue: false});
+	const checklistComplete = nodecg.Replicant('checklistComplete', {defaultValue: false});
 
-	nodecg.listenFor('toggleChecklist', toggleCheck);
+	nodecg.listenFor('toggleCheckbox', toggleCheckbox);
 	nodecg.listenFor('resetChecklist', reset);
 
-	checklist.on('change', updateChecklistCompleted);
+	checklist.on('change', updateChecklistComplete);
 
 	/**
-	 * Toggle an item
+	 * Toggles an item
 	 * @param {Boolean} isChecked - Whether or not the item is checked
 	 * @param {Number} category - Index of the category you want to modify
 	 * @param {Number} item - Index of item you want to modify
 	 */
-	function toggleCheck(isChecked, category, item) {
-		checklist.value[category].items[item].value = isChecked;
+	function toggleCheckbox({name, checked}) {
+		checklist.value.find(task => {
+			if (task.name === name) {
+				task.complete = checked;
+				return true;
+			}
+			return false;
+		});
 	}
 
 	/**
 	 * Resets all checklist to default
 	 */
 	function reset() {
-		checklist.value.left.forEach(item => {
-			item.value = item.default;
+		checklist.value.forEach(item => {
+			item.complete = false;
 		});
 	}
 
 	/**
-	 * Updates checklistCompleted Replicant
+	 * Updates checklistComplete Replicant
 	 */
-	function updateChecklistCompleted() {
-		const categories = Object.keys(checklist.value);
-		checklistCompleted.value = categories.every(category => {
-			return checklist.value[category].every(item => item.complete);
-		});
+	function updateChecklistComplete() {
+		checklistComplete.value = checklist.value.every(category => category.complete);
 	}
 };

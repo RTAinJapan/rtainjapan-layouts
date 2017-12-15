@@ -17,11 +17,11 @@
     "compatibleRange": "^0.9.8",
     "dashboardPanels": [
       {
-        "name": "checklist",
-        "title": "Checklist",
-        "width": 2,
-        "file": "checklist.html",
-        "headerColor": "#9f9bbd"
+        "name": "配信担当ダッシュボード",
+        "title": "配信担当ダッシュボード",
+        "file": "stream-tech-dashboard.html",
+        "headerColor": "#9f9bbd",
+        "fullbleed": true
       }
     ],
     "graphics": [
@@ -33,17 +33,49 @@
     ]
   },
   "xo": {
-    "semicolon": true,
+    "space": false,
     "rules": {
       "new-cap": [
-        2,
+        "error",
         {
           "capIsNewExceptions": [
             "nodecg.Replicant"
           ]
         }
+      ],
+      "strict": [
+        "error",
+        "global"
+      ],
+      "no-multiple-empty-lines": [
+        "error",
+        {
+          "max": 1,
+          "maxBOF": 0,
+          "maxEOF": 1
+        }
       ]
-    }
+    },
+    "semicolon": true,
+    "esnext": true,
+    "overrides": [
+      {
+        "files": "{dashboard,graphics}/**",
+        "envs": [
+          "browser"
+        ],
+        "globals": [
+          "nodecg",
+          "Polymer"
+        ]
+      },
+      {
+        "files": "extension/**",
+        "envs": [
+          "node"
+        ]
+      }
+    ]
   },
   "scripts": {
     "lint": "node_modules/.bin/xo --fix"
@@ -52,9 +84,13 @@
     "clone": "^2.1.1",
     "superagent": "^3.8.0",
     "twemoji": "^2.5.0",
-    "twitter-stream-api": "^0.5.2"
+    "twitter-stream-api": "^0.5.2",
+    "vue": "^2.5.9"
   },
   "devDependencies": {
+    "eslint": "^4.13.0",
+    "eslint-plugin-html": "^4.0.1",
+    "eslint-plugin-polymer": "^0.1.0",
     "xo": "^0.18.2"
   },
   "keywords": [
