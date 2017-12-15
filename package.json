@@ -61,9 +61,7 @@
     "overrides": [
       {
         "files": "{dashboard,graphics}/**",
-        "envs": [
-          "browser"
-        ],
+        "envs": ["browser"],
         "globals": [
           "nodecg",
           "Polymer"
@@ -71,9 +69,7 @@
       },
       {
         "files": "extension/**",
-        "envs": [
-          "node"
-        ]
+        "envs": ["node"]
       }
     ]
   },
