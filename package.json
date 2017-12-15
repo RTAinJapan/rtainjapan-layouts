@@ -96,5 +96,9 @@
   "keywords": [
     "nodecg-bundle"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hoishin/rtainjapan-layouts.git"
+  }
 }
