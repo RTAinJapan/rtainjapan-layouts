@@ -47,7 +47,6 @@
 					array[index] = item || false;
 				});
 				this.runners = runners;
-				this.coop = newVal.coop;
 			});
 
 			checklistComplete.on('change', newVal => {

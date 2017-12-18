@@ -1,7 +1,11 @@
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../../bower_components/nodecg-toast/nodecg-toast.html">
 <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
+<link rel="import" href="rtaij-schedule-runinfo.html">
 
 <dom-module id="rtaij-schedule">
 	<template>
@@ -105,25 +109,32 @@
 		<div id="selection-ctrls">
 			<paper-button id="previous" on-tap="previous" raised>
 				<iron-icon icon="arrow-back"></iron-icon>
-				Prev
+				前
 			</paper-button>
 
 			<div id="typeahead-container">
-				<vaadin-combo-box id="typeahead" placeholder="Search" raised on-keyup="typeaheadKeyup"></vaadin-combo-box>
+				<vaadin-combo-box
+					id="typeahead"
+					placeholder="Search"
+					raised
+					on-keyup="_typeaheadKeyup"
+				></vaadin-combo-box>
 				<paper-button id="take" on-click="takeTypeahead" raised>
-					<span>Take</span>
+					<span>スキップ</span>
 					<iron-icon icon="chevron-right"></iron-icon>
 				</paper-button>
 			</div>
 			
 			<paper-button id="next" on-tap="next" raised>
-				Next
+				次
 				<iron-icon icon="arrow-forward"></iron-icon>
 			</paper-button>
 		</div>
 
 		<div id="runs">
-			
+			<rtaij-schedule-runinfo id="currentRun" label="現在のゲーム"></rtaij-schedule-runinfo>
+			<div id="runs-spacer"></div>
+			<rtaij-schedule-runinfo id="nextRun" label="次のゲーム"></rtaij-schedule-runinfo>
 		</div>
 	</template>
 	<script src="rtaij-schedule.js"></script>

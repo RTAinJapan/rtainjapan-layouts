@@ -1,23 +1,17 @@
 {
   "name": "rtainjapan-layouts",
   "version": "0.0.0",
-  "description": "The on-stream layout for RTA in Japan speedrunning marathon event",
-  "homepage": "https://rtainjapan.net/",
   "author": {
     "name": "Hoishin",
     "email": "hoishinxii@gmail.com",
     "url": "https://twitter.com/hoishinxii"
   },
-  "files": [
-    "dashboard",
-    "graphics",
-    "extension"
-  ],
+  "description": "The on-stream layout for RTA in Japan speedrunning marathon event",
   "nodecg": {
     "compatibleRange": "^0.9.8",
     "dashboardPanels": [
       {
-        "name": "配信担当ダッシュボード",
+        "name": "stream",
         "title": "配信担当ダッシュボード",
         "file": "stream-tech-dashboard.html",
         "headerColor": "#9f9bbd",
@@ -35,26 +29,17 @@
   "xo": {
     "space": false,
     "rules": {
-      "new-cap": [
-        "error",
-        {
-          "capIsNewExceptions": [
-            "nodecg.Replicant"
-          ]
-        }
+      "new-cap": ["error", {
+        "capIsNewExceptions": [
+          "nodecg.Replicant"
+        ]}
       ],
-      "strict": [
-        "error",
-        "global"
-      ],
-      "no-multiple-empty-lines": [
-        "error",
-        {
-          "max": 1,
-          "maxBOF": 0,
-          "maxEOF": 1
-        }
-      ]
+      "strict": ["error", "global"],
+      "no-multiple-empty-lines": ["error", {
+        "max": 1,
+        "maxBOF": 0,
+        "maxEOF": 1
+      }]
     },
     "semicolon": true,
     "esnext": true,
@@ -74,7 +59,7 @@
     ]
   },
   "scripts": {
-    "start": "pm2 start ../../index.js -i max - name=\"RTAiJ-Layouts\"",
+    "start": "pm2 start ../../index.js -i max --name rtainjapan-layouts",
     "restart": "pm2 restart all",
     "test": "node_modules/.bin/xo"
   },
@@ -91,12 +76,10 @@
     "eslint-plugin-polymer": "^0.1.0",
     "xo": "^0.18.2"
   },
-  "keywords": [
-    "nodecg-bundle"
-  ],
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Hoishin/rtainjapan-layouts.git"
+  "repository": "Hoishin/rtainjapan-layouts",
+  "homepage": "https://rtainjapan.net/",
+  "engines": {
+    "node": "^8.9.3"
   }
 }

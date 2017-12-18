@@ -1,14 +1,11 @@
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
-
-<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
-
 <link rel="import" href="rtaij-timekeeper-runner.html">
 
 <dom-module id="rtaij-timekeeper">
@@ -137,7 +134,7 @@
 		<!-- Timer for each runner -->
 
 		<template is="dom-repeat" items="[[runners]]" as="runner">
-			<rtaij-timekeeper-runner runner="[[runner]]" index="[[index]]" results="[[results]]" state="[[state]]" hidden="[[coop]]" on-edit-time="editRunnerTime"></rtaij-timekeeper-runner>
+			<rtaij-timekeeper-runner runner="[[runner]]" index="[[index]]" results="[[results]]" state="[[state]]" on-edit-time="editRunnerTime"></rtaij-timekeeper-runner>
 		</template>
 
 		<!-- Dialogs -->

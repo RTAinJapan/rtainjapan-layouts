@@ -6,9 +6,11 @@
 	<title>Stream Tech</title>
 	<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 	<link rel="import" href="elements/rtaij-checklist/rtaij-checklist.html">
+	<link rel="import" href="elements/rtaij-schedule/rtaij-schedule.html">
 	<link rel="import" href="elements/rtaij-timekeeper/rtaij-timekeeper.html">
+	<link rel="import" href="elements/rtaij-twitter-controls/rtaij-twitter-controls.html">
 	<custom-style>
-		<style include="iron-flex iron-flex-alignment">
+		<style>
 			body {
 				background-color: #f5f5f5;
 				margin: 0;
@@ -67,10 +69,10 @@
 				<rtaij-checklist class="bordered"></rtaij-checklist>
 			</div>
 			<div id="centerColumn" class="column">
-				2
+				<rtaij-schedule class="bordered"></rtaij-schedule>
 			</div>
-			<div id="leftColumn" class="column">
-				3
+			<div id="rightColumn" class="column">
+				<rtaij-twitter-controls class="bordered"></rtaij-twitter-controls>
 			</div>
 		</div>
 	</div>

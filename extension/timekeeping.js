@@ -35,24 +35,12 @@ module.exports = nodecg => {
 	nodecg.listenFor('stopTimer', stop);
 	nodecg.listenFor('resetTimer', reset);
 
-	// Listen to completeRunner event for a runner, or all runners if it's coop
+	// Listen to completeRunner event for a runner
 	// @param data = {index, forfeit}
-	nodecg.listenFor('completeRunner', data => {
-		if (currentRun.value.coop) {
-			completeAllRunners(data.forfeit);
-		} else {
-			completeRunner(data);
-		}
-	});
+	nodecg.listenFor('completeRunner', completeRunner);
 
-	// Listen to resumeRunner event for a runner, or all runners if it's coop
-	nodecg.listenFor('resumeRunner', index => {
-		if (currentRun.value.coop) {
-			resumeAllRunners();
-		} else {
-			resumeRunner(index);
-		}
-	});
+	// Listen to resumeRunner event for a runner
+	nodecg.listenFor('resumeRunner', resumeRunner);
 
 	// Listen to editTime event
 	// @param {index, newTime}

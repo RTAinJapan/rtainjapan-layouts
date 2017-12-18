@@ -86,6 +86,8 @@ module.exports = nodecg => {
 			return;
 		}
 
+		console.log(tweets.value);
+
 		// Duplication check
 		if (tweets.value.some(t => t.id_str === tweet.id_str)) {
 			return;
