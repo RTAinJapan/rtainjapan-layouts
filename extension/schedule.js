@@ -1,13 +1,11 @@
-const path = require('path');
 const request = require('superagent');
 const clone = require('clone');
 
-const defaultGameList = require(path.join(__dirname, 'default/game.json'));
-const defaultRunnerList = require(path.join(__dirname, 'default/runner.json'));
+const defaultGameList = require('./default/game.json');
+const defaultRunnerList = require('./default/runner.json');
 
 module.exports = nodecg => {
 	const horaroId = nodecg.bundleConfig.horaro.scheduleId;
-
 	const scheduleRep = nodecg.Replicant('schedule');
 	const horaroRep = nodecg.Replicant('horaro');
 	const gameListRep = nodecg.Replicant('gameList', {defaultValue: defaultGameList});
@@ -17,25 +15,38 @@ module.exports = nodecg => {
 
 	let updateInterval;
 
+	// Only update if Horaro schedule is provided.
 	if (horaroId) {
 		// Update schedule from Horaro once NodeCG is launched
 		updateHoraroSchedule();
 		// Automatically update every 60 seconds
 		setUpdateInterval();
 	} else {
-		nodecg.log.warn(`Horaro schedule isn't provided. Schedule won't be updated.`);
+		nodecg.log.warn(`Schedule update is disabled since Horaro schedule is not provided.`);
 	}
-
-	// Listen to schedule-related events
-	nodecg.listenFor('nextRun', toNextRun);
-	nodecg.listenFor('previousRun', toPreviousRun);
-	nodecg.listenFor('specificRun', updateCurrentRun);
-	nodecg.listenFor('manualUpdate', manuallyUpdateHoraroSchedule);
 
 	// Listen to replicants changes and merge them into schedule replicant
 	horaroRep.on('change', mergeSchedule);
 	gameListRep.on('change', mergeSchedule);
 	runnerListRep.on('change', mergeSchedule);
+
+	// Listen to schedule-related events
+	nodecg.listenFor('nextRun', (data, cb) => {
+		_seekToNextRun();
+		cb();
+	});
+	nodecg.listenFor('previousRun', (data, cb) => {
+		_seekToPreviousRun();
+		cb();
+	});
+	nodecg.listenFor('setCurrentRunByIndex', (index, cb) => {
+		_updateCurrentRun();
+		cb();
+	});
+	nodecg.listenFor('manualUpdate', (data, cb) => {
+		_manualHoraroUpdate();
+		cb();
+	});
 
 	/**
 	 * Retrieves schedule from Horaro and updates schedule Replicant
@@ -62,7 +73,7 @@ module.exports = nodecg => {
 	/**
 	 * Manually updates Horaro schedule
 	 */
-	function manuallyUpdateHoraroSchedule() {
+	function _manualHoraroUpdate() {
 		updateHoraroSchedule();
 		clearUpdateInterval();
 		setUpdateInterval();
@@ -75,7 +86,7 @@ module.exports = nodecg => {
 		const gameList = gameListRep.value;
 		const runnerList = runnerListRep.value;
 
-		// Exit if Horaro schdule is empty
+		// Return if Horaro schdule is empty
 		if (!horaroRep.value) {
 			return;
 		}
@@ -143,7 +154,7 @@ module.exports = nodecg => {
 
 		// Put first game to current game if no current game exists
 		if (!currentRunRep.value.pk) {
-			updateCurrentRun(0);
+			_updateCurrentRun(0);
 		}
 	}
 
@@ -151,7 +162,10 @@ module.exports = nodecg => {
 	 * Updates currentRun and nextRun Replicants, default is first run in the schedule
 	 * @param {Number} index - Index of the current game in the schedule (Not the pk)
 	 */
-	function updateCurrentRun(index) {
+	function _updateCurrentRun(index) {
+		if (index < 0 && index > scheduleRep.value.length) {
+			return;
+		}
 		currentRunRep.value = clone(scheduleRep.value[index]);
 		nextRunRep.value = clone(scheduleRep.value[index + 1]);
 	}
@@ -159,15 +173,15 @@ module.exports = nodecg => {
 	/**
 	 * Moves currentRun to next game
 	 */
-	function toNextRun() {
-		updateCurrentRun(currentRunRep.value.index + 1);
+	function _seekToNextRun() {
+		_updateCurrentRun(currentRunRep.value.index + 1);
 	}
 
 	/**
 	 * Moves currentRun to previous game
 	 */
-	function toPreviousRun() {
-		updateCurrentRun(currentRunRep.value.index - 1);
+	function _seekToPreviousRun() {
+		_updateCurrentRun(currentRunRep.value.index - 1);
 	}
 
 	/**

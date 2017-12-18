@@ -33,52 +33,13 @@
 			nextRun.on('change', newVal => {
 				if (newVal) {
 					this.$.nextRun.setRun(newVal);
-					this.$.editNext.removeAttribute('disabled');
+					// this.$.editNext.removeAttribute('disabled');
 				} else {
 					this.$.nextRun.setRun({});
-					this.$.editNext.setAttribute('disabled', 'true');
+					// this.$.editNext.setAttribute('disabled', 'true');
 				}
 				this._checkButtons();
 			});
-		}
-
-		_checkButtons() {
-			if (schedule.status !== 'declared' || currentRun.status !== 'declared' || nextRun.status !== 'declared') {
-				return;
-			}
-
-			const prevRunExists = schedule.value.find(run => {
-				return run.index < currentRun.value.index;
-			});
-
-			const shouldDisableAll = this._pendingSetCurrentRunByOrderMessageResponse || this._pendingPreviousRunMessageResponse || this._pendingNextRunMessageResponse;
-
-			const shouldDisableNext = !nextRun.value;
-			const shouldDisablePrev = !currentRun.value || !prevRunExists;
-
-			if (shouldDisableAll || shouldDisableNext) {
-				this.$.next.setAttribute('disabled', 'true');
-			} else {
-				this.$.next.removeAttribute('disabled');
-			}
-
-			if (shouldDisableAll || shouldDisablePrev) {
-				this.$.previous.setAttribute('disabled', 'true');
-			} else {
-				this.$.previous.removeAttribute('disabled');
-			}
-
-			if (shouldDisableAll) {
-				this.$.take.setAttribute('disabled', 'true');
-			} else {
-				this.$.take.removeAttribute('disabled');
-			}
-		}
-
-		typeaheadKeyup(event) {
-			if (event.which === 13 && this.$.typeahead.inputValue) {
-				this.takeTypeahead();
-			}
 		}
 
 		/**
@@ -96,7 +57,7 @@
 				if (run.title.toLowerCase() === nameToFind.toLowerCase()) {
 					this._pendingSetCurrentRunByOrderMessageResponse = true;
 					this._checkButtons();
-					nodecg.sendMessage('specificRun', run.index, () => {
+					nodecg.sendMessage('setCurrentRunByIndex', run.index, () => {
 						this._pendingSetCurrentRunByOrderMessageResponse = false;
 						this._checkButtons();
 						this.$.typeahead.value = '';
@@ -118,6 +79,62 @@
 				this._pendingNextRunMessageResponse = false;
 				this._checkButtons();
 			});
+		}
+
+		previous() {
+			this._pendingPreviousRunMessageResponse = true;
+			this._checkButtons();
+			nodecg.sendMessage('previousRun', () => {
+				this._pendingPreviousRunMessageResponse = false;
+				this._checkButtons();
+			});
+		}
+		
+		_checkButtons() {
+			if (
+				schedule.status !== 'declared' || 
+				currentRun.status !== 'declared' || 
+				nextRun.status !== 'declared'
+			) {
+				return;
+			}
+
+			const prevRunExists = schedule.value.find(run => {
+				return run.index < currentRun.value.index;
+			});
+
+			const shouldDisableAll =
+				this._pendingSetCurrentRunByOrderMessageResponse ||
+				this._pendingPreviousRunMessageResponse ||
+				this._pendingNextRunMessageResponse;
+
+			const shouldDisableNext = !nextRun.value;
+			const shouldDisablePrev = !currentRun.value || !prevRunExists;
+			const shouldDisableTake = shouldDisableAll;
+
+			if (shouldDisableAll || shouldDisableNext) {
+				this.$.next.setAttribute('disabled', 'true');
+			} else {
+				this.$.next.removeAttribute('disabled');
+			}
+
+			if (shouldDisableAll || shouldDisablePrev) {
+				this.$.previous.setAttribute('disabled', 'true');
+			} else {
+				this.$.previous.removeAttribute('disabled');
+			}
+
+			if (shouldDisableTake) {
+				this.$.take.setAttribute('disabled', 'true');
+			} else {
+				this.$.take.removeAttribute('disabled');
+			}
+		}
+
+		_typeaheadKeyup(event) {
+			if (event.which === 13 && this.$.typeahead.inputValue) {
+				this.takeTypeahead();
+			}
 		}
 	}
 
