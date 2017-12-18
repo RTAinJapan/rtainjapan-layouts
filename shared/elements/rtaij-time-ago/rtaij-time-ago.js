@@ -1,4 +1,4 @@
-/* global moment */
+/* global moment Polymer */
 (function () {
 	moment.updateLocale('en', {
 		relativeTime: {
@@ -18,6 +18,7 @@
 		}
 	});
 
+	// eslint-disable-next-line new-cap
 	Polymer({
 		is: 'rtaij-time-ago',
 

@@ -33,10 +33,10 @@
 			nextRun.on('change', newVal => {
 				if (newVal) {
 					this.$.nextRun.setRun(newVal);
-					// this.$.editNext.removeAttribute('disabled');
+					// This.$.editNext.removeAttribute('disabled');
 				} else {
 					this.$.nextRun.setRun({});
-					// this.$.editNext.setAttribute('disabled', 'true');
+					// This.$.editNext.setAttribute('disabled', 'true');
 				}
 				this._checkButtons();
 			});
@@ -89,11 +89,11 @@
 				this._checkButtons();
 			});
 		}
-		
+
 		_checkButtons() {
 			if (
-				schedule.status !== 'declared' || 
-				currentRun.status !== 'declared' || 
+				schedule.status !== 'declared' ||
+				currentRun.status !== 'declared' ||
 				nextRun.status !== 'declared'
 			) {
 				return;

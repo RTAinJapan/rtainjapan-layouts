@@ -1,5 +1,5 @@
 const tweets = nodecg.Replicant('tweets');
-
+// eslint-disable-next-line new-cap
 class RtaijTwitterControls extends Polymer.MutableData(Polymer.Element) {
 	static get is() {
 		return 'rtaij-twitter-controls';

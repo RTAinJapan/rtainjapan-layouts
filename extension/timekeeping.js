@@ -113,11 +113,11 @@ module.exports = nodecg => {
 	 * Marks all runners as complete.
 	 * @param {Boolean} forfeit - Whether or not the runners forfeit.
 	 */
-	function completeAllRunners(forfeit) {
-		currentRun.value.runners.forEach((r, index) => {
-			completeRunner({index, forfeit});
-		});
-	}
+	// function completeAllRunners(forfeit) {
+	// 	currentRun.value.runners.forEach((r, index) => {
+	// 		completeRunner({index, forfeit});
+	// 	});
+	// }
 
 	/**
 	 * Marks a runner as still running.
@@ -136,11 +136,11 @@ module.exports = nodecg => {
 	/**
 	 * Marks all runners as still running.
 	 */
-	function resumeAllRunners() {
-		currentRun.value.runners.forEach((r, index) => {
-			resumeRunner(index);
-		});
-	}
+	// function resumeAllRunners() {
+	// 	currentRun.value.runners.forEach((r, index) => {
+	// 		resumeRunner(index);
+	// 	});
+	// }
 
 	/**
 	 * Edits the final time of a results.
