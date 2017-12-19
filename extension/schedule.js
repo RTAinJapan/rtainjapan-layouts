@@ -47,6 +47,21 @@ module.exports = nodecg => {
 		_manualHoraroUpdate();
 		cb();
 	});
+	nodecg.listenFor('modifyRun', (data, cb) => {
+		if (currentRunRep.value.pk === data.pk) {
+			Object.assign(currentRunRep.value, data);
+		} else if (nextRunRep.value.pk === data.pk) {
+			Object.assign(nextRunRep.value, data);
+		} else {
+			nodecg.log.warn('[modifyRun] run not found:', data);
+		}
+
+		console.log(currentRunRep.value);
+
+		if (typeof cb === 'function') {
+			cb();
+		}
+	});
 
 	/**
 	 * Retrieves schedule from Horaro and updates schedule Replicant

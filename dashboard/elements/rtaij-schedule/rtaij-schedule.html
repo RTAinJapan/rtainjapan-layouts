@@ -6,6 +6,7 @@
 <link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
 <link rel="import" href="rtaij-schedule-runinfo.html">
+<link rel="import" href="rtaij-run-editor.html">
 
 <dom-module id="rtaij-schedule">
 	<template>
@@ -82,11 +83,11 @@
 					background-color: #A50074;
 					color: white;
 				};
-				@apply --layout-flex-3;
+				@apply --layout-flex-5;
 			}
 
 			#fetchLatestSchedule {
-				@apply --layout-flex-6;
+				@apply --layout-flex-4;
 			}
 
 			paper-button {
@@ -136,6 +137,25 @@
 			<div id="runs-spacer"></div>
 			<rtaij-schedule-runinfo id="nextRun" label="次のゲーム"></rtaij-schedule-runinfo>
 		</div>
+		<div id="edit-ctrls">
+			<paper-button id="editCurrent" raised on-tap="editCurrent">
+				編集：現在のゲーム
+			</paper-button>
+			<paper-button id="fetchLatestSchedule" raised on-tap="fetchLatestSchedule">
+				手動更新
+			</paper-button>
+			<paper-button id="editNext" raised on-tap="editNext">
+				編集：次のゲーム
+			</paper-button>
+		</div>
+
+		<paper-dialog id="editDialog" with-backdrop>
+			<rtaij-run-editor id="editor"></rtaij-run-editor>
+			<div class="buttons">
+				<paper-button dialog-dismiss autofocus>Cancel</paper-button>
+			</div>
+		</paper-dialog>
 	</template>
+
 	<script src="rtaij-schedule.js"></script>
 </dom-module>

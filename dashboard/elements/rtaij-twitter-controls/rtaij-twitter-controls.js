@@ -1,5 +1,4 @@
 const tweets = nodecg.Replicant('tweets');
-// eslint-disable-next-line new-cap
 class RtaijTwitterControls extends Polymer.MutableData(Polymer.Element) {
 	static get is() {
 		return 'rtaij-twitter-controls';
@@ -15,8 +14,6 @@ class RtaijTwitterControls extends Polymer.MutableData(Polymer.Element) {
 		tweets.on('change', newVal => {
 			this.$.empty.style.display = newVal.length > 0 ? 'none' : 'flex';
 			this.tweets = newVal;
-			// TODO
-			console.log(newVal);
 		});
 	}
 

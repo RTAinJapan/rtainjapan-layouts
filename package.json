@@ -31,7 +31,9 @@
     "rules": {
       "new-cap": ["error", {
         "capIsNewExceptions": [
-          "nodecg.Replicant"
+          "nodecg.Replicant",
+          "Polymer",
+          "Polymer.MutableData"
         ]}
       ],
       "strict": ["error", "global"],

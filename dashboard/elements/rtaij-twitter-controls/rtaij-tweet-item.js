@@ -45,7 +45,7 @@ class RtaijTweetItem extends Polymer.Element {
 	}
 
 	reject() {
-		nodecg.sendMessage('rejectTweet', this.value.id_str);
+		nodecg.sendMessage('rejectTweet', this.value);
 	}
 }
 

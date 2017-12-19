@@ -1,0 +1,287 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-checkbox/paper-checkbox.html">
+
+<dom-module id="rtaij-run-editor">
+	<template>
+		<style>
+			:host {
+				@apply --layout-vertical;
+				@apply --layout-center;
+			}
+
+			#title {
+				font-size: 24px;
+				font-weight: 500;
+				margin-bottom: 16px;
+			}
+
+			#run,
+			#runners {
+				@apply --layout-vertical;
+				padding: 16px;
+			}
+
+			#run {
+				@apply --layout-flex;
+				margin-right: 4px;
+				padding-left: 0;
+			}
+
+			#runners {
+				@apply --layout-flex-2;
+				border: 1px solid #C1C1C1;
+				margin-left: 4px;
+			}
+
+			#runners> :nth-child(1) paper-input {
+				--paper-input-container-label: {
+					color: #32a7d3;
+				}
+				;
+				--paper-input-container-label-focus: {
+					color: #32a7d3;
+				}
+				;
+				--paper-input-container-underline-focus: {
+					background-color: #32a7d3;
+				}
+				;
+			}
+
+			#runners> :nth-child(2) paper-input {
+				--paper-input-container-label: {
+					color: #fa5959;
+				}
+				;
+				--paper-input-container-label-focus: {
+					color: #fa5959;
+				}
+				;
+				--paper-input-container-underline-focus: {
+					background-color: #fa5959;
+				}
+				;
+			}
+
+			#runners> :nth-child(3) paper-input {
+				--paper-input-container-label: {
+					color: #24c55d;
+				}
+				;
+				--paper-input-container-label-focus: {
+					color: #24c55d;
+				}
+				;
+				--paper-input-container-underline-focus: {
+					background-color: #24c55d;
+				}
+				;
+			}
+
+			#runners> :nth-child(4) paper-input {
+				--paper-input-container-label: {
+					color: #dd4dee;
+				}
+				;
+				--paper-input-container-label-focus: {
+					color: #dd4dee;
+				}
+				;
+				--paper-input-container-underline-focus: {
+					background-color: #dd4dee;
+				}
+				;
+			}
+
+			#buttons {
+				margin-top: 16px;
+			}
+
+			#resetRun {
+				--paper-button: {
+					background-color: #C9513E;
+					color: white;
+				}
+			}
+
+			#applyChanges {
+				--paper-button: {
+					background-color: #5BA664;
+					color: white;
+				}
+			}
+
+			.row {
+				@apply --layout-horizontal;
+			}
+
+			.row> :not(:last-child) {
+				margin-right: 12px;
+			}
+
+			.row> :not(:first-child) {
+				margin-left: 12px;
+			}
+
+			paper-input {
+				@apply --layout-flex;
+				--paper-input-container-disabled: {
+					opacity: 1;
+					background-color: #ffb0b3;
+				}
+			}
+
+			paper-checkbox[disabled] {
+				background-color: #ffb0b3;
+			}
+		</style>
+
+		<div id="title">[[title]]</div>
+
+		<div class="row">
+			<div id="run">
+
+				<paper-input label="タイトル" always-float-label value="{{title}}"></paper-input>
+				<paper-input label="カテゴリー" always-float-label value="{{category}}"></paper-input>
+				<paper-input label="予定タイム" always-float-label value="{{estimate}}"></paper-input>
+				<paper-input label="機種" always-float-label value="{{hardware}}"></paper-input>
+				
+				
+			</div>
+
+			<div id="runners">
+				<div class="row">
+					<div>
+						<paper-input
+							label="走者1"
+							always-float-label
+							value="{{runners.0.name}}"
+						></paper-input>
+					</div>
+					<div>
+						<paper-input
+							label="Twitch"
+							always-float-label
+							value="{{runners.0.twitch}}"
+						></paper-input>
+					</div>
+					<div>
+						<paper-input
+							label="ニコニコ"
+							always-float-label
+							value="{{runners.0.nico}}"
+						></paper-input>
+					</div>
+					<div>
+						<paper-input
+							label="Twitter"
+							always-float-label
+							value="{{runners.0.twitter}}"
+						></paper-input>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div>
+						<paper-input
+							label="走者2"
+							always-float-label
+							value="{{runners.1.name}}"
+						></paper-input>
+					</div>
+					<div>
+						<paper-input
+							label="Twitch"
+							always-float-label
+							value="{{runners.1.twitch}}"
+						></paper-input>
+					</div>
+					<div>
+						<paper-input
+							label="ニコニコ"
+							always-float-label
+							value="{{runners.1.nico}}"
+						></paper-input>
+					</div>
+					<div>
+						<paper-input
+							label="Twitter"
+							always-float-label
+							value="{{runners.1.twitter}}"
+						></paper-input>
+					</div>
+				</div>
+
+				<div class="row">
+					<div>
+						<paper-input
+							label="走者3"
+							always-float-label
+							value="{{runners.2.name}}"
+						></paper-input>
+					</div>
+					<div>
+						<paper-input
+							label="Twitch"
+							always-float-label
+							value="{{runners.2.twitch}}"
+						></paper-input>
+					</div>
+					<div>
+						<paper-input
+							label="ニコニコ"
+							always-float-label
+							value="{{runners.2.nico}}"
+						></paper-input>
+					</div>
+					<div>
+						<paper-input
+							label="Twitter"
+							always-float-label
+							value="{{runners.2.twitter}}"
+						></paper-input>
+					</div>
+				</div>
+
+				<div class="row">
+					<div>
+						<paper-input
+							label="走者4"
+							always-float-label
+							value="{{runners.3.name}}"
+						></paper-input>
+					</div>
+					<div>
+						<paper-input
+							label="Twitch"
+							always-float-label
+							value="{{runners.3.twitch}}"
+						></paper-input>
+					</div>
+					<div>
+						<paper-input
+							label="ニコニコ"
+							always-float-label
+							value="{{runners.3.nico}}"
+						></paper-input>
+					</div>
+					<div>
+						<paper-input
+							label="Twitter"
+							always-float-label
+							value="{{runners.3.twitter}}"
+						></paper-input>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="buttons">
+			<paper-button id="applyChanges" raised on-tap="applyChanges">APPLY CHANGES</paper-button>
+		</div>
+	</template>
+
+	<script src="rtaij-run-editor.js"></script>
+</dom-module>
