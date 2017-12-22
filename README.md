@@ -1,9 +1,10 @@
 # RTA in Japan Layouts
 
-[ ![Codeship Status for Hoishin/rtainjapan-layouts](https://app.codeship.com/projects/1a66d6f0-c3e7-0135-2bd6-5e1e25c4f686/status?branch=master)](https://app.codeship.com/projects/260852)
 [![Greenkeeper badge](https://badges.greenkeeper.io/Hoishin/rtainjapan-layouts.svg)](https://greenkeeper.io/)
 
 This is a [NodeCG](http://github.com/nodecg/nodecg) application.
+
+This project is based on [GamesDoneQuick Layouts](https://github.com/GamesDoneQuick/sgdq17-layouts). Thank you so much for the hard work put into the series of layouts. Thier work inspired me to get into software engineering.
 
 ## Usage with Docker
 
