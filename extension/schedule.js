@@ -46,7 +46,7 @@ module.exports = nodecg => {
 		cb();
 	});
 	nodecg.listenFor('setCurrentRunByIndex', (index, cb) => {
-		_updateCurrentRun();
+		_updateCurrentRun(index);
 		cb();
 	});
 	nodecg.listenFor('manualUpdate', (data, cb) => {
