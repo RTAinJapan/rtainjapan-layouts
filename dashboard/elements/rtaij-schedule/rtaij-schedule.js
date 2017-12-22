@@ -66,7 +66,9 @@ class RtaijSchedule extends Polymer.Element {
 			return false;
 		});
 		if (!matched) {
-			this.$.toast.show(`「${nameToFind}」という名前のゲームは見つかりませんでした`);
+			this.$.toast.show(
+				`「${nameToFind}」という名前のゲームは見つかりませんでした`
+			);
 		}
 	}
 

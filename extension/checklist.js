@@ -1,8 +1,12 @@
 const defaultChecklist = require('./default/checklist.json');
 
 module.exports = nodecg => {
-	const checklist = nodecg.Replicant('checklist', {defaultValue: defaultChecklist});
-	const checklistComplete = nodecg.Replicant('checklistComplete', {defaultValue: false});
+	const checklist = nodecg.Replicant('checklist', {
+		defaultValue: defaultChecklist
+	});
+	const checklistComplete = nodecg.Replicant('checklistComplete', {
+		defaultValue: false
+	});
 
 	nodecg.listenFor('toggleCheckbox', toggleCheckbox);
 	nodecg.listenFor('resetChecklist', reset);
@@ -38,6 +42,8 @@ module.exports = nodecg => {
 	 * Updates checklistComplete Replicant
 	 */
 	function updateChecklistComplete() {
-		checklistComplete.value = checklist.value.every(category => category.complete);
+		checklistComplete.value = checklist.value.every(
+			category => category.complete
+		);
 	}
 };

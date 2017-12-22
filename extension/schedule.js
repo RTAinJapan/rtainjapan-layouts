@@ -8,8 +8,12 @@ module.exports = nodecg => {
 	const horaroId = nodecg.bundleConfig.horaro.scheduleId;
 	const scheduleRep = nodecg.Replicant('schedule');
 	const horaroRep = nodecg.Replicant('horaro');
-	const gameListRep = nodecg.Replicant('gameList', {defaultValue: defaultGameList});
-	const runnerListRep = nodecg.Replicant('runnerList', {defaultValue: defaultRunnerList});
+	const gameListRep = nodecg.Replicant('gameList', {
+		defaultValue: defaultGameList
+	});
+	const runnerListRep = nodecg.Replicant('runnerList', {
+		defaultValue: defaultRunnerList
+	});
 	const currentRunRep = nodecg.Replicant('currentRun');
 	const nextRunRep = nodecg.Replicant('nextRun');
 
@@ -22,7 +26,9 @@ module.exports = nodecg => {
 		// Automatically update every 60 seconds
 		setUpdateInterval();
 	} else {
-		nodecg.log.warn(`Schedule update is disabled since Horaro schedule is not provided.`);
+		nodecg.log.warn(
+			`Schedule update is disabled since Horaro schedule is not provided.`
+		);
 	}
 
 	// Listen to replicants changes and merge them into schedule replicant
@@ -74,13 +80,17 @@ module.exports = nodecg => {
 			} else {
 				// Update horaro schedule
 				const indexOfPk = horaroSchedule.columns.indexOf('pk');
-				horaroRep.value = horaroSchedule.items.map(({data, scheduled_t: scheduled}) => {
-					return {
-						pk: parseInt(data[indexOfPk], 10),
-						scheduled: scheduled * 1000 // Convert to UNIX time
-					};
-				});
-				nodecg.log.info(`Schedule updated from Horaro at ${new Date().toLocaleString()}`);
+				horaroRep.value = horaroSchedule.items.map(
+					({data, scheduled_t: scheduled}) => {
+						return {
+							pk: parseInt(data[indexOfPk], 10),
+							scheduled: scheduled * 1000 // Convert to UNIX time
+						};
+					}
+				);
+				nodecg.log.info(
+					`Schedule updated from Horaro at ${new Date().toLocaleString()}`
+				);
 			}
 		});
 	}
@@ -142,7 +152,9 @@ module.exports = nodecg => {
 
 			// Find commentator info for each
 			const commentators = commentatorPkAry.map(commentatorPk => {
-				const runner = runnerList.find(runner => runner.runnerPk === commentatorPk);
+				const runner = runnerList.find(
+					runner => runner.runnerPk === commentatorPk
+				);
 				if (!game) {
 					nodecg.log.error(`Couldn't find the runner ${commentatorPk}`);
 				}

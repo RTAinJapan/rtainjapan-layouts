@@ -78,7 +78,9 @@ class TimeObject {
 			str += `${hms.h}:`;
 		}
 
-		str += `${(hms.m < 10 ? `0${hms.m}` : hms.m)}:${(hms.s < 10 ? `0${hms.s}` : hms.s)}`;
+		str += `${hms.m < 10 ? `0${hms.m}` : hms.m}:${
+			hms.s < 10 ? `0${hms.s}` : hms.s
+		}`;
 		return str;
 	}
 
@@ -100,8 +102,8 @@ class TimeObject {
 	static secondsToHMS(seconds) {
 		return {
 			h: Math.floor(seconds / 3600),
-			m: Math.floor(seconds % 3600 / 60),
-			s: Math.floor(seconds % 3600 % 60)
+			m: Math.floor((seconds % 3600) / 60),
+			s: Math.floor((seconds % 3600) % 60)
 		};
 	}
 
@@ -113,7 +115,11 @@ class TimeObject {
 	static parseSeconds(timeString) {
 		const timeParts = timeString.split(':');
 		if (timeParts.length === 3) {
-			return parseInt(timeParts[0] * 3600, 10) + parseInt(timeParts[1] * 60, 10) + parseInt(timeParts[2], 10);
+			return (
+				parseInt(timeParts[0] * 3600, 10) +
+				parseInt(timeParts[1] * 60, 10) +
+				parseInt(timeParts[2], 10)
+			);
 		}
 
 		if (timeParts.length === 2) {

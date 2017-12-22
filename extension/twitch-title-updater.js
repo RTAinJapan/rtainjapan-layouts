@@ -19,14 +19,20 @@ module.exports = nodecg => {
 
 		log.info(`Updateing Twitch title and game to ${newRun.engTitle}`);
 		lastEngTitle = newRun.engTitle;
-		const uri = `https://api.twitch.tv/kraken/channels/${nodecg.bundleConfig.twitch.channelId}`;
+		const uri = `https://api.twitch.tv/kraken/channels/${
+			nodecg.bundleConfig.twitch.channelId
+		}`;
 		const body = {
 			channel: {
-				status: nodecg.bundleConfig.twitch.titleTemplate.replace(/\${gameName}/ig, lastEngTitle),
+				status: nodecg.bundleConfig.twitch.titleTemplate.replace(
+					/\${gameName}/gi,
+					lastEngTitle
+				),
 				game: lastEngTitle
 			}
 		};
-		request.patch(uri)
+		request
+			.patch(uri)
 			.send(body)
 			.set('Accept', 'application/vnd.twitchtv.v5+json')
 			.set('Authorization', `OAuth ${nodecg.bundleConfig.twitch.oauthToken}`)
@@ -37,7 +43,9 @@ module.exports = nodecg => {
 					log.error('Failed to update Twitch title and game:');
 					log.error(err);
 				} else {
-					log.info(`Succesfully updated Twitch title and game to ${lastEngTitle}`);
+					log.info(
+						`Succesfully updated Twitch title and game to ${lastEngTitle}`
+					);
 				}
 			});
 	}

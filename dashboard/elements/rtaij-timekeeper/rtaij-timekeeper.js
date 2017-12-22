@@ -86,7 +86,9 @@
 		}
 
 		editRunnerTime(e) {
-			this.$['editDialog-text'].innerHTML = `新しい<b>${e.model.runner.name}</b>のタイム`;
+			this.$['editDialog-text'].innerHTML = `新しい<b>${
+				e.model.runner.name
+			}</b>のタイム`;
 			this.$.editDialog.setAttribute('data-index', e.model.index);
 			this.$['editDialog-input'].value = this.results[e.model.index].formatted;
 			this.$.editDialog.open();

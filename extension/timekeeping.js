@@ -15,7 +15,9 @@ const defaultStopwatch = () => {
 module.exports = nodecg => {
 	const checklistComplete = nodecg.Replicant('checklistComplete');
 	const currentRun = nodecg.Replicant('currentRun');
-	const stopwatch = nodecg.Replicant('stopwatch', {defaultValue: defaultStopwatch()});
+	const stopwatch = nodecg.Replicant('stopwatch', {
+		defaultValue: defaultStopwatch()
+	});
 
 	// The UNIX time when the timer incremented last time
 	let lastIncrement;
@@ -25,7 +27,9 @@ module.exports = nodecg => {
 	// If the timer was running when NodeCG was shut down last time,
 	// resume the timer according to how long it has been since the shutdown time.
 	if (stopwatch.value.state === TIMER_STATE_RUNNING) {
-		const missedSeconds = Math.round((Date.now() - stopwatch.value.timestamp) / 1000);
+		const missedSeconds = Math.round(
+			(Date.now() - stopwatch.value.timestamp) / 1000
+		);
 		TimeObject.setSeconds(stopwatch.value, stopwatch.value.raw + missedSeconds);
 		start(true);
 	}
@@ -127,8 +131,13 @@ module.exports = nodecg => {
 		stopwatch.value.results[index] = null;
 		recalcPlaces();
 		if (stopwatch.value.state === TIMER_STATE_FINISHED) {
-			const missedSeconds = Math.round((Date.now() - stopwatch.value.timestamp) / 1000);
-			TimeObject.setSeconds(stopwatch.value, stopwatch.value.raw + missedSeconds);
+			const missedSeconds = Math.round(
+				(Date.now() - stopwatch.value.timestamp) / 1000
+			);
+			TimeObject.setSeconds(
+				stopwatch.value,
+				stopwatch.value.raw + missedSeconds
+			);
 			start();
 		}
 	}
@@ -185,7 +194,9 @@ module.exports = nodecg => {
 			r.place = index + 1;
 		});
 
-		const allRunnersFinished = currentRun.value.runners.every((r, index) => stopwatch.value.results[index]);
+		const allRunnersFinished = currentRun.value.runners.every(
+			(r, index) => stopwatch.value.results[index]
+		);
 		if (allRunnersFinished) {
 			stop();
 			stopwatch.value.state = TIMER_STATE_FINISHED;

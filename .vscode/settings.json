@@ -3,5 +3,9 @@
 	"files.eol": "\n",
 	"xo.enable": true,
 	"files.autoSave": "afterDelay",
-	"polymer-ide.analyzeWholePackage": true
+	"polymer-ide.analyzeWholePackage": true,
+	"prettier.semi": true,
+	"prettier.singleQuote": true,
+	"prettier.useTabs": true,
+	"prettier.bracketSpacing": false
 }

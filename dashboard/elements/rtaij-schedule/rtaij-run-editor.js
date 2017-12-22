@@ -24,21 +24,22 @@ class RtaijRunEditor extends Polymer.Element {
 
 	applyChanges() {
 		const runners = [];
-		const runnerNameInputs = Polymer
-			.dom(this.$.runners)
-			.querySelectorAll('paper-input[label^="走者"]');
-		const runnerTwitchInputs = Polymer
-			.dom(this.$.runners)
-			.querySelectorAll('paper-input[label="Twitch"]');
-		const runnerNicoInputs = Polymer
-			.dom(this.$.runners)
-			.querySelectorAll('paper-input[label="ニコニコ"]');
-		const runnerTwitterInputs = Polymer
-			.dom(this.$.runners)
-			.querySelectorAll('paper-input[label="Twitter"]');
+		const runnerNameInputs = Polymer.dom(this.$.runners).querySelectorAll(
+			'paper-input[label^="走者"]'
+		);
+		const runnerTwitchInputs = Polymer.dom(this.$.runners).querySelectorAll(
+			'paper-input[label="Twitch"]'
+		);
+		const runnerNicoInputs = Polymer.dom(this.$.runners).querySelectorAll(
+			'paper-input[label="ニコニコ"]'
+		);
+		const runnerTwitterInputs = Polymer.dom(this.$.runners).querySelectorAll(
+			'paper-input[label="Twitter"]'
+		);
 
 		for (let i = 0; i < 4; i++) {
-			if (runnerNameInputs[i].value ||
+			if (
+				runnerNameInputs[i].value ||
 				runnerTwitchInputs[i].value ||
 				runnerNicoInputs[i].value ||
 				runnerTwitterInputs[i].value
@@ -51,16 +52,20 @@ class RtaijRunEditor extends Polymer.Element {
 				};
 			}
 		}
-		nodecg.sendMessage('modifyRun', {
-			title: this.title,
-			category: this.category,
-			// estimate: 'TODO',
-			hardware: this.hardware,
-			runners,
-			pk: this.pk
-		}, () => {
-			this.closest('paper-dialog').close();
-		});
+		nodecg.sendMessage(
+			'modifyRun',
+			{
+				title: this.title,
+				category: this.category,
+				// TODO: Estimate,
+				hardware: this.hardware,
+				runners,
+				pk: this.pk
+			},
+			() => {
+				this.closest('paper-dialog').close();
+			}
+		);
 	}
 }
 

@@ -16,7 +16,10 @@
 		}
 
 		finish() {
-			nodecg.sendMessage('completeRunner', {index: this.index, forfeit: false});
+			nodecg.sendMessage('completeRunner', {
+				index: this.index,
+				forfeit: false
+			});
 		}
 
 		resume() {
@@ -24,11 +27,16 @@
 		}
 
 		forfeit() {
-			nodecg.sendMessage('completeRunner', {index: this.index, forfeit: true});
+			nodecg.sendMessage('completeRunner', {
+				index: this.index,
+				forfeit: true
+			});
 		}
 
 		editTime() {
-			this.dispatchEvent(new CustomEvent(`edit-time`, {bubbles: true, composed: true}));
+			this.dispatchEvent(
+				new CustomEvent(`edit-time`, {bubbles: true, composed: true})
+			);
 		}
 
 		calcRunnerStatus(results, index) {

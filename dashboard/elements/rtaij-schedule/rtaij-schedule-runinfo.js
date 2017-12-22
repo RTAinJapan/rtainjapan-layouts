@@ -18,8 +18,9 @@ class RtaijScheduleRuninfo extends Polymer.Element {
 
 	_notesChanged(newVal) {
 		if (newVal) {
-			this.$.notes.querySelector('.value').innerHTML =
-				newVal.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>');
+			this.$.notes.querySelector('.value').innerHTML = newVal
+				.replace(/\r\n/g, '<br/>')
+				.replace(/\n/g, '<br/>');
 		} else {
 			this.$.notes.querySelector('.value').innerHTML = '';
 		}

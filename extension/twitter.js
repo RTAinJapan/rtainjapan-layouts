@@ -79,7 +79,11 @@ module.exports = nodecg => {
 		if (tweet.is_quote_status) {
 			return;
 		}
-		if (tweet.extended_entities && tweet.extended_entities.media && tweet.extended_entities.media.length > 0) {
+		if (
+			tweet.extended_entities &&
+			tweet.extended_entities.media &&
+			tweet.extended_entities.media.length > 0
+		) {
 			return;
 		}
 		if (tweet.retweeted_status) {
@@ -91,7 +95,7 @@ module.exports = nodecg => {
 			return;
 		}
 
-		tweet.text = twemoji.parse(tweet.text).replace(/\n/ig, ' ');
+		tweet.text = twemoji.parse(tweet.text).replace(/\n/gi, ' ');
 		tweets.value.push(tweet);
 	}
 
@@ -102,7 +106,9 @@ module.exports = nodecg => {
 	 */
 	function removeTweetById(idToRemove) {
 		if (typeof idToRemove !== 'string') {
-			throw new TypeError(`[twitter] Must provide a string ID when removing a tweet. ID provided was: ${idToRemove} (${typeof idToRemove})`);
+			throw new TypeError(
+				`[twitter] Must provide a string ID when removing a tweet. ID provided was: ${idToRemove} (${typeof idToRemove})`
+			);
 		}
 		return tweets.value.some((tweet, index) => {
 			if (tweet.id_str === idToRemove) {
@@ -113,4 +119,3 @@ module.exports = nodecg => {
 		});
 	}
 };
-
