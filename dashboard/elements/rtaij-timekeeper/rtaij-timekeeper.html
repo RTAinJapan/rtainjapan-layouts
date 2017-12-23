@@ -107,24 +107,24 @@
 				<div class="layout horizontal">
 					<paper-button raised class="green" on-click="startTimer" disabled="[[calcStartDisabled(checklistComplete, state)]]">
 						<iron-icon icon="av:play-arrow"></iron-icon>
-						&nbsp;Start
+						&nbsp;開始
 					</paper-button>
 
 					<paper-button raised class="yellow" on-click="stopTimer" disabled="[[calcPauseDisabled(state)]]">
 						<iron-icon icon="av:pause"></iron-icon>
-						&nbsp;Pause
+						&nbsp;停止
 					</paper-button>
 				</div>
 
 				<div class="layout horizontal">
 					<paper-button raised class="purple" on-click="confirmReset">
 						<iron-icon icon="refresh"></iron-icon>
-						&nbsp;Reset
+						&nbsp;リセット
 					</paper-button>
 
 					<paper-button raised class="purple" on-click="editMasterTime" disabled="[[!checklistComplete]]">
 						<iron-icon icon="editor:mode-edit"></iron-icon>
-						&nbsp;Edit
+						&nbsp;編集
 					</paper-button>
 				</div>
 			</div>

@@ -99,22 +99,22 @@
 			<div id="buttons">
 				<paper-button raised class="green" on-click="finish" hidden="[[calcFinishHidden(results, index)]]">
 					<iron-icon src="[[importPath]]img/flag-checkered.svg"></iron-icon>
-					&nbsp;Finish
+					&nbsp;完走
 				</paper-button>
 
 				<paper-button raised class="yellow" on-click="resume" hidden="[[calcResumeHidden(results, index, state)]]">
 					<iron-icon icon="undo"></iron-icon>
-					&nbsp;Resume
+					&nbsp;再開
 				</paper-button>
 
 				<paper-button raised class="gray" on-click="forfeit" hidden="[[calcForfeitHidden(results, index, state)]]">
 					<iron-icon icon="cancel"></iron-icon>
-					&nbsp;Forfeit
+					&nbsp;リタイア
 				</paper-button>
 
 				<paper-button raised class="purple" on-click="editTime" disabled="[[calcEditDisabled(results, index)]]">
 					<iron-icon icon="editor:mode-edit"></iron-icon>
-					&nbsp;Edit
+					&nbsp;編集
 				</paper-button>
 			</div>
 		</template>
