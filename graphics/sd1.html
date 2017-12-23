@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>4:3 1プレイヤー</title>
+	<link rel="import" href="elements/rtaij-overlay/rtaij-overlay.html">
+	<link rel="stylesheet" href="styles/layout.css">
+	<style>
+		#container {
+			clip-path: polygon(0 0, 0 1080px, 15px 1080px, 15px 687px, 687px 687px, 687px 1065px, 15px 1065px, 15px 1080px, 1920px 1080px, 1920px 0, 1905px 0, 1905px 915px, 705px 915px, 705px 15px, 1905px 15px, 1905px 0);
+		}
+
+		#info_container {
+			position: absolute;
+			top: 150px;
+			left: 0;
+			height: 537px;
+			width: 705px;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+			align-items: stretch;
+		}
+
+		#runner,
+		#commentator,
+		#game_time {
+			position: absolute;
+			z-index: 1;
+		}
+
+		#game,
+		#time {
+			margin: 10px 0 10px 0;
+			/* TODO */
+			height: 150px;
+			width: auto;
+			background-color: blue;
+			z-index: 1;
+		}
+
+		#runner {
+			bottom: 75px;
+			left: 687px;
+			height: 60px;
+			width: 993px;
+			background-color: blue;
+		}
+
+		#commentator {
+			bottom: 15px;
+			left: 687px;
+			height: 60px;
+			width: 993px;
+			background-color: blue;
+		}
+
+		#game_time {
+			bottom: 15px;
+			right: 642px;
+			width: 2px;
+			height: 195px;
+		}
+
+		rtaij-overlay {
+			--rtaij-bottom-height: 150px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+		<div id="info_container">
+			<div id="game"></div>
+			<div id="time"></div>
+		</div>
+		<div id="runner"></div>
+		<div id="commentator"></div>
+		<rtaij-overlay></rtaij-overlay>
+	</div>
+</body>
+
+</html>

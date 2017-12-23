@@ -1,87 +1,141 @@
 {
-  "name": "rtainjapan-layouts",
-  "version": "0.0.0",
-  "author": {
-    "name": "Hoishin",
-    "email": "hoishinxii@gmail.com",
-    "url": "https://twitter.com/hoishinxii"
-  },
-  "description": "The on-stream layout for RTA in Japan speedrunning marathon event",
-  "nodecg": {
-    "compatibleRange": "^0.9.8",
-    "dashboardPanels": [
-      {
-        "name": "stream",
-        "title": "配信担当ダッシュボード",
-        "file": "stream-tech-dashboard.html",
-        "headerColor": "#9f9bbd",
-        "fullbleed": true
-      }
-    ],
-    "graphics": [
-      {
-        "file": "index.html",
-        "width": 1280,
-        "height": 720
-      }
-    ]
-  },
-  "xo": {
-    "space": false,
-    "rules": {
-      "new-cap": ["error", {
-        "capIsNewExceptions": [
-          "nodecg.Replicant",
-          "Polymer",
-          "Polymer.MutableData"
-        ]}
-      ],
-      "strict": ["error", "global"],
-      "no-multiple-empty-lines": ["error", {
-        "max": 1,
-        "maxBOF": 0,
-        "maxEOF": 1
-      }]
-    },
-    "semicolon": true,
-    "esnext": true,
-    "overrides": [
-      {
-        "files": "{dashboard,graphics}/**",
-        "envs": ["browser"],
-        "globals": [
-          "nodecg",
-          "Polymer"
-        ]
-      },
-      {
-        "files": "extension/**",
-        "envs": ["node"]
-      }
-    ]
-  },
-  "scripts": {
-    "start": "pm2 start ../../index.js -i max --name rtainjapan-layouts",
-    "restart": "pm2 restart all",
-    "test": "node_modules/.bin/xo"
-  },
-  "dependencies": {
-    "clone": "^2.1.1",
-    "superagent": "^3.8.0",
-    "twemoji": "^2.5.0",
-    "twitter-stream-api": "^0.5.2",
-    "vue": "^2.5.9"
-  },
-  "devDependencies": {
-    "eslint": "^4.13.0",
-    "eslint-plugin-html": "^4.0.1",
-    "eslint-plugin-polymer": "^0.1.0",
-    "xo": "^0.18.2"
-  },
-  "license": "MIT",
-  "repository": "Hoishin/rtainjapan-layouts",
-  "homepage": "https://rtainjapan.net/",
-  "engines": {
-    "node": "^8.9.3"
-  }
+	"name": "rtainjapan-layouts",
+	"version": "0.0.0",
+	"author": {
+		"name": "Hoishin",
+		"email": "hoishinxii@gmail.com",
+		"url": "https://twitter.com/hoishinxii"
+	},
+	"description":
+		"The on-stream layout for RTA in Japan speedrunning marathon event",
+	"nodecg": {
+		"compatibleRange": "^0.9.8",
+		"dashboardPanels": [
+			{
+				"name": "stream",
+				"title": "配信担当ダッシュボード",
+				"file": "stream-tech-dashboard.html",
+				"headerColor": "#9f9bbd",
+				"fullbleed": true
+			}
+		],
+		"graphics": [
+			{
+				"file": "3ds.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "break.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "ds.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "ds_h.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "gb1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "gb2.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "hd1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "hd2.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "sd1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "sd1_m64.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "sd2.html",
+				"width": 1920,
+				"height": 1080
+			}
+		]
+	},
+	"xo": {
+		"space": false,
+		"rules": {
+			"new-cap": [
+				"error",
+				{
+					"capIsNewExceptions": [
+						"nodecg.Replicant",
+						"Polymer",
+						"Polymer.MutableData"
+					]
+				}
+			],
+			"strict": ["error", "global"],
+			"no-multiple-empty-lines": [
+				"error",
+				{
+					"max": 1,
+					"maxBOF": 0,
+					"maxEOF": 1
+				}
+			]
+		},
+		"semicolon": true,
+		"esnext": true,
+		"overrides": [
+			{
+				"files": "{dashboard,graphics}/**",
+				"envs": ["browser"],
+				"globals": ["nodecg", "Polymer"]
+			},
+			{
+				"files": "extension/**",
+				"envs": ["node"]
+			}
+		]
+	},
+	"scripts": {
+		"start": "pm2 start ../../index.js -i max --name rtainjapan-layouts",
+		"restart": "pm2 restart all",
+		"test": "node_modules/.bin/xo"
+	},
+	"dependencies": {
+		"clone": "^2.1.1",
+		"superagent": "^3.8.0",
+		"twemoji": "^2.5.0",
+		"twitter-stream-api": "^0.5.2",
+		"vue": "^2.5.9"
+	},
+	"devDependencies": {
+		"eslint": "^4.13.0",
+		"eslint-plugin-html": "^4.0.1",
+		"eslint-plugin-polymer": "^0.1.0",
+		"xo": "^0.18.2"
+	},
+	"license": "MIT",
+	"repository": "Hoishin/rtainjapan-layouts",
+	"homepage": "https://rtainjapan.net/",
+	"engines": {
+		"node": "^8.9.3"
+	}
 }
