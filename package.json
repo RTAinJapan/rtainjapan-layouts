@@ -10,6 +10,16 @@
 		"The on-stream layout for RTA in Japan speedrunning marathon event",
 	"nodecg": {
 		"compatibleRange": "^0.9.8",
+		"assetCategories": [
+			{
+				"name": "sponsorLogos",
+				"title": "スポンサーロゴ",
+				"allowedTypes": [
+					"png",
+					"gif"
+				]
+			}
+		],
 		"dashboardPanels": [
 			{
 				"name": "stream",

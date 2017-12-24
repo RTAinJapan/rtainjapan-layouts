@@ -33,11 +33,20 @@
 
 			#sponsor {
 				position: absolute;
+				display: flex;
+				justify-content: center;
 				right: 0px;
 				height: 100%;
 				width: 210px;
 				border-top-left-radius: 30px;
 				background-color: white;
+			}
+
+			#sponsor_logo {
+				display: block;
+				margin: auto;
+				opacity: 0;
+				transition: opacity 0.33s linear;
 			}
 
 			#bg {
@@ -54,11 +63,13 @@
 			<img id="logo_tainjapan" src="img/logo-tainjapan.png">
 		</div>
 		<div id="bottom">
-			<div id="sponsor"></div>
+			<div id="sponsor">
+				<img id="sponsor_logo" src="[[logoUrl]]">
+			</div>
 		</div>
 		<img id="bg" src="img/background.png">
 		<img id="break_bg" src="img/background_break.png">
-
 	</template>
+
 	<script src="rtaij-overlay.js"></script>
 </dom-module>
