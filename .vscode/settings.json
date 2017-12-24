@@ -4,5 +4,7 @@
 	"prettier.semi": true,
 	"prettier.singleQuote": true,
 	"prettier.useTabs": true,
-	"prettier.bracketSpacing": false
+	"prettier.bracketSpacing": false,
+	"editor.wordWrap": "on",
+	"files.autoSave": "afterDelay"
 }
