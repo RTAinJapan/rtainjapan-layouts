@@ -1,0 +1,100 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="rtaij-runner">
+	<template>
+		<style>
+			:host {
+				position: absolute;
+				background: var(--rtaij-runner-background,
+				linear-gradient(to right,
+				rgba(2, 14, 21, 0.6) 10%,
+				rgba(2, 14, 21, 0.05) 100%));
+				color: white;
+				z-index: 1;
+			}
+
+			#container {
+				position: absolute;
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: flex-start;
+				align-items: flex-end;
+				height: 36px;
+				top: 15px;
+				left: 15px;
+			}
+
+			#ruler {
+				position: absolute;
+				width: 100%;
+				height: 3px;
+				bottom: 0px;
+				background-color: #ffff52
+			}
+
+			img#label_icon {
+				margin-right: 15px;
+			}
+			div#label {
+				margin: 0 30px 0 0; 
+				font-size: 24px;
+			}
+			div#name {
+				margin: 0 30px 0 0;
+				font-size: 36px;
+			}
+
+			#social_container {
+				height: 100%;
+				font-size: 24px;
+			}
+
+			#social_container > div {
+				position: absolute;
+				height: 100%;
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: flex-start;
+				align-items: flex-end;
+				opacity: 0;
+				transition: opacity 0.33s linear;
+			}
+
+			.social_info {
+				margin-left: 7.5px;
+			}
+
+			#finish_time {
+				position: absolute;
+				right: 15px;
+				bottom: 8px;
+				font-size: 30px;
+				color: #ffff52;
+				opacity: 0;
+				transition: opacity 0.33s linear;
+			}
+		</style>
+		<div id="container">
+			<img id="label_icon" src="img/icon/runner.png">
+			<div id="label">Runner</div>
+			<div id="name">[[runner.name]]</div>
+			<div id="social_container">
+				<div id="twitch">
+					<img class="social_icon" src="img/icon/twitch.png">
+					<div class="social_info">[[runner.twitch]]</div>
+				</div>
+				<div id="nico">
+					<img class="social_icon" src="img/icon/nico.png">
+					<div class="social_info">[[runner.nico]]</div>
+				</div>
+				<div id="twitter">
+					<img class="social_icon" src="img/icon/twitter.png">
+					<div class="social_info">[[runner.twitter]]</div>
+				</div>
+			</div>
+		</div>
+		<div id="finish_time">[[finishTime]]</div>
+		<div id="ruler"></div>
+	</template>
+	<script src="rtaij-runner.js"></script>
+</dom-module>

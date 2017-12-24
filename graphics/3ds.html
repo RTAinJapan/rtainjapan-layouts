@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja-JP">
 
 <head>
 	<meta charset="UTF-8">
 	<title>3DS</title>
 	<link rel="import" href="elements/rtaij-overlay/rtaij-overlay.html">
+	<link rel="import" href="elements/rtaij-runner/rtaij-runner.html">
+	<link rel="import" href="elements/rtaij-commentator/rtaij-commentator.html">
 	<link rel="stylesheet" href="style/layout.css">
 	<style>
 		#container {
@@ -25,7 +27,6 @@
 			left: 495px;
 			height: 60px;
 			width: 1372.5px;
-			background-color: blue;
 		}
 
 		#commentator {
@@ -33,7 +34,6 @@
 			left: 495px;
 			height: 60px;
 			width: 1372.5px;
-			background-color: blue;
 		}
 
 		#game {
@@ -67,8 +67,8 @@
 
 <body>
 	<div id="container">
-		<div id="runner"></div>
-		<div id="commentator"></div>
+		<rtaij-runner id="runner"></rtaij-runner>
+		<rtaij-commentator id="commentator"></rtaij-commentator>
 		<div id="game"></div>
 		<div class="separator" id="game_time"></div>
 		<div id="time"></div>

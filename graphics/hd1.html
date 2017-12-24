@@ -5,6 +5,8 @@
 	<meta charset="UTF-8">
 	<title>16:9 1プレイヤー</title>
 	<link rel="import" href="elements/rtaij-overlay/rtaij-overlay.html">
+	<link rel="import" href="elements/rtaij-runner/rtaij-runner-wide.html">
+	<link rel="import" href="elements/rtaij-commentator/rtaij-commentator-wide.html">
 	<link rel="stylesheet" href="style/layout.css">
 	<style>
 		#container {
@@ -25,7 +27,6 @@
 			left: 15px;
 			height: 90px;
 			width: 432px;
-			background-color: blue;
 		}
 
 		#commentator {
@@ -33,7 +34,6 @@
 			left: 15px;
 			height: 90px;
 			width: 432px;
-			background-color: blue;
 		}
 
 		#game {
@@ -67,8 +67,8 @@
 
 <body>
 	<div id="container">
-		<div id="runner"></div>
-		<div id="commentator"></div>
+		<rtaij-runner-wide id="runner"></rtaij-runner-wide>
+		<rtaij-commentator-wide id="commentator"></rtaij-commentator-wide>
 		<div id="game"></div>
 		<div class="separator" id="game_time"></div>
 		<div id="time"></div>

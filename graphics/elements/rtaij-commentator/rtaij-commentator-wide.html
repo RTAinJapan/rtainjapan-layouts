@@ -1,0 +1,100 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="rtaij-commentator-wide">
+	<template>
+		<style>
+			:host {
+				position: absolute;
+				background: var(--rtaij-commentator-background,
+				linear-gradient(to right,
+				rgba(2, 14, 21, 0.6) 10%,
+				rgba(2, 14, 21, 0.05) 100%));
+				color: white;
+				z-index: 1;
+			}
+
+			#ruler {
+				position: absolute;
+				width: 100%;
+				height: 3px;
+				bottom: 0px;
+				background-color: #ffff52
+			}
+
+			#label_container {
+				position: absolute;
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: flex-start;
+				align-items: flex-end;
+				top: 15px;
+				left: 15px;
+				height: 36px;
+				font-size: 24px;
+			}
+
+			img#label_icon {
+				margin-right: 7.5px;
+			}
+
+			div#name {
+				position: absolute;
+				top: 15px;
+				right: 15px;
+				font-size: 36px;
+			}
+
+			#social_container {
+				font-size: 24px;
+			}
+
+			#social_container > div {
+				position: absolute;
+				height: 24px;
+				right: 15px;
+				top: 57px;
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: flex-start;
+				align-items: flex-end;
+				opacity: 0;
+				transition: opacity 0.33s linear;
+			}
+
+			.social_info {
+				margin-left: 7.5px;
+			}
+
+			#finish_time {
+				position: absolute;
+				right: 15px;
+				bottom: 8px;
+				font-size: 30px;
+				color: #ffff52;
+				opacity: 0;
+				transition: opacity 0.33s linear;
+			}
+		</style>
+		<div id="label_container">
+			<img id="label_icon" src="img/icon/commentator.png">
+			<div id="label">Commentator</div>
+		</div>
+		<div id="name">[[commentator.name]]</div>
+		<div id="social_container">
+			<div id="twitch">
+				<img class="social_icon" src="img/icon/twitch.png">
+				<div class="social_info">[[commentator.twitch]]</div>
+			</div>
+			<div id="nico">
+				<img class="social_icon" src="img/icon/nico.png">
+				<div class="social_info">[[commentator.nico]]</div>
+			</div>
+			<div id="twitter">
+				<img class="social_icon" src="img/icon/twitter.png">
+				<div class="social_info">[[commentator.twitter]]</div>
+			</div>
+		</div>
+		<div id="ruler"></div>
+	</template>
+	<script src="rtaij-commentator-wide.js"></script>
+</dom-module>

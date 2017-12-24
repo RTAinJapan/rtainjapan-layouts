@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/earlyaccess/roundedmplus1c.css');
+
 body {
+	font-family: 'Rounded Mplus 1c';
 	margin: 0;
 	padding: 0;
 }
