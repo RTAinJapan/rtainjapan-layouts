@@ -1,0 +1,44 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<script src="../../../bower_components/textfit/textFit.min.js"></script>
+
+<dom-module id="rtaij-game">
+	<template>
+		<style>
+			:host {
+				display: flex;
+				flex-flow: column nowrap;
+				justify-content: flex-end;
+				align-items: center;
+				color: white;
+				white-space: nowrap;
+			}
+
+			#title {
+				width: 100%;
+				height: var(--rtaij-title-height);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			
+			#ruler {
+				height: 4px;
+				width: 100%;
+				background-color: #ffff52;
+			}
+			
+			#misc {
+				width: 100%;
+				height: var(--rtaij-misc-height);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		</style>
+
+		<div id="title">[[title]]</div>
+		<div id="ruler"></div>
+		<div id="misc">[[category]] - [[hardware]]</div>
+	</template>
+	<script src="rtaij-game.js"></script>
+</dom-module>

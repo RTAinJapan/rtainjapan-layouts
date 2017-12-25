@@ -8,6 +8,7 @@
 	<link rel="import" href="elements/rtaij-overlay/rtaij-overlay.html">
 	<link rel="import" href="elements/rtaij-runner/rtaij-runner.html">
 	<link rel="import" href="elements/rtaij-commentator/rtaij-commentator.html">
+	<link rel="import" href="elements/rtaij-game/rtaij-game.html">
 	<link rel="stylesheet" href="style/layout.css">
 	<style>
 		#container {
@@ -42,7 +43,6 @@
 			left: 525px;
 			height: 210px;
 			width: 720px;
-			background-color: blue;
 		}
 
 		#time {
@@ -63,6 +63,11 @@
 		rtaij-overlay {
 			--rtaij-bottom-height: 225px;
 		}
+
+		rtaij-game {
+			--rtaij-title-height: 132px;
+			--rtaij-misc-height: 72px;
+		}
 	</style>
 </head>
 
@@ -70,7 +75,7 @@
 	<div id="container">
 		<rtaij-runner id="runner"></rtaij-runner>
 		<rtaij-commentator id="commentator"></rtaij-commentator>
-		<div id="game"></div>
+		<rtaij-game id="game"></rtaij-game>
 		<div class="separator" id="game_time"></div>
 		<div id="time"></div>
 		<rtaij-overlay></rtaij-overlay>
