@@ -35,6 +35,11 @@
 
 				const medias = ['twitch', 'nico', 'twitter']
 					.filter(media => this.commentator[media]);
+
+				if (medias.length === 0) {
+					return;
+				}
+
 				this.$[medias[0]].style.opacity = 1;
 
 				if (medias.length <= 1) {

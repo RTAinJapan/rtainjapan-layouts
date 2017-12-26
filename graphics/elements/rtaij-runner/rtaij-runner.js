@@ -23,6 +23,8 @@
 			super.ready();
 
 			currentRun.on('change', newVal => {
+				clearInterval(this.socialInterval);
+				
 				this.runners = newVal.runners;
 				this.runner = newVal.runners[this.index];
 
@@ -31,12 +33,14 @@
 				['twitch', 'nico', 'twitter'].forEach(media => {
 					this.$[media].style.opacity = 0;
 				});
-				if (this.socialInterval) {
-					clearInterval(this.socialInterval);
-				}
 
 				const medias = ['twitch', 'nico', 'twitter']
 					.filter(media => this.runner[media]);
+
+				if (medias.length === 0) {
+					return;
+				}
+
 				this.$[medias[0]].style.opacity = 1;
 
 				if (medias.length <= 1) {

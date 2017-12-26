@@ -1,7 +1,6 @@
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
-<script src="../../../bower_components/textfit/textFit.min.js"></script>
 
-<dom-module id="rtaij-game">
+<dom-module id="rtaij-timer">
 	<template>
 		<style>
 			:host {
@@ -13,33 +12,35 @@
 				white-space: nowrap;
 			}
 
-			#title {
+			#timer {
 				width: 100%;
-				height: var(--rtaij-title-height);
+				height: var(--rtaij-timer-height);
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				font-weight: 900;
+				font-size: 56px;
 			}
 			
 			#ruler {
-				height: var(--rtaij-game-ruler-height, 4px);
+				height: var(--rtaij-timer-ruler-height, 4px);
 				width: 100%;
 				background-color: #ffff52;
 			}
 			
-			#misc {
+			#est {
 				width: 100%;
-				height: var(--rtaij-misc-height);
+				height: var(--rtaij-est-height);
 				display: flex;
 				justify-content: center;
 				align-items: center;
+				font-size: 32px;
 			}
 		</style>
 
-		<div id="title"></div>
+		<div id="timer">[[time]]</div>
 		<div id="ruler"></div>
-		<div id="misc"></div>
+		<div id="est">予定タイム&nbsp;[[est]]</div>
 	</template>
-	<script src="rtaij-game.js"></script>
+	<script src="rtaij-timer.js"></script>
 </dom-module>

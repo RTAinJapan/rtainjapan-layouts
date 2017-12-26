@@ -7,18 +7,38 @@
 			return 'rtaij-game';
 		}
 
+		static get properties() {
+			return {
+				title: String,
+				category: String,
+				hardware: String
+			};
+		}
+
 		ready() {
 			super.ready();
 
 			currentRun.on('change', newVal => {
-				this.title = newVal.title;
+				this.title = newVal.title.replace(/\\n/ig, '<br/>');
 				this.category = newVal.category;
 				this.hardware = newVal.hardware;
-				textFit(this.$.title, {maxFontSize: 63});
-				textFit(this.$.misc, {maxFontSize: 32});
+
+				this.$.title.innerHTML = this.title;
+				this.$.misc.innerHTML = `${this.category} - ${this.hardware}`;
+
+				this.fitText();
+			});
+		}
+
+		fitText() {
+			textFit(this.$.title, {maxFontSize: 69.3});
+			const titleFontSize = Number(
+				this.$.title.firstChild.style['font-size'].replace('px', '')
+			);
+			textFit(this.$.misc, {
+				maxFontSize: titleFontSize < 48 ? titleFontSize : 48
 			});
 		}
 	}
-
 	customElements.define(RtaijGame.is, RtaijGame);
 })();

@@ -19,7 +19,7 @@
 		"hardware": "PS2",
 		"pk": 5,
 		"runnerPkAry": [3],
-		"commentatorPkAry": [4]
+		"commentatorPkAry": [1]
 	},
 	{
 		"title": "スーパーマリオ64",
@@ -30,7 +30,7 @@
 		"hardware": "PS2",
 		"pk": 1,
 		"runnerPkAry": [4, 5],
-		"commentatorPkAry": [4, 1]
+		"commentatorPkAry": [2, 1]
 	},
 	{
 		"title": "スーパードンキーコングシリーズ１，２，３ トリロジーリレー",
@@ -41,7 +41,7 @@
 		"hardware": "PS2",
 		"pk": 16,
 		"runnerPkAry": [6, 7, 8],
-		"commentatorPkAry": [4]
+		"commentatorPkAry": [3]
 	},
 	{
 		"title": "Tetris: The Grand Master series(TGM1・2・3)",
