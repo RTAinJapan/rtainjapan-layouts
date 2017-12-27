@@ -33,7 +33,7 @@
 					clearInterval(this.socialInterval);
 				}
 
-				if (!this.commentator) {
+				if (!this.runner) {
 					return;
 				}
 

@@ -34,7 +34,7 @@
 					this.$[media].style.opacity = 0;
 				});
 
-				if (!this.commentator) {
+				if (!this.runner) {
 					return;
 				}
 
