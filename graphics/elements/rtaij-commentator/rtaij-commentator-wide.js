@@ -33,7 +33,10 @@
 					clearInterval(this.socialInterval);
 				}
 
-				if (!this.commentator) {
+				if (this.commentator) {
+					this.style.visibility = 'visible';
+				} else {
+					this.style.visibility = 'hidden';
 					return;
 				}
 

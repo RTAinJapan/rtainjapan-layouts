@@ -24,7 +24,7 @@
 
 			currentRun.on('change', newVal => {
 				clearInterval(this.socialInterval);
-				
+
 				this.runners = newVal.runners;
 				this.runner = newVal.runners[this.index];
 
