@@ -33,7 +33,7 @@ module.exports = nodecg => {
 	// Listen to replicants changes and merge them into schedule replicant
 	horaroRep.on('change', mergeSchedule);
 	scheduleRep.on('change', () => {
-		_updateCurrentRun();
+		
 	});
 
 	// Listen to schedule-related events
@@ -191,7 +191,9 @@ module.exports = nodecg => {
 		});
 
 		// Put first game to current game if no current game exists
-		if (!currentRunRep.value.pk) {
+		if (currentRunRep.value.pk) {
+			_updateCurrentRun();
+		} else {
 			_updateCurrentRun(0);
 		}
 	}
@@ -208,6 +210,7 @@ module.exports = nodecg => {
 			return;
 		}
 		currentRunRep.value = clone(scheduleRep.value[index]);
+		console.log(currentRunRep.value)
 		nextRunRep.value = clone(scheduleRep.value[index + 1]);
 	}
 
