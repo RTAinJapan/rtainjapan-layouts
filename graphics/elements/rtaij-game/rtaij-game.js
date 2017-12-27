@@ -24,7 +24,8 @@
 				this.hardware = newVal.hardware;
 
 				this.$.title.innerHTML = this.title;
-				this.$.misc.innerHTML = `${this.category} - ${this.hardware}`;
+				const hardware = this.hardware ? ` - ${this.hardware}` : '';
+				this.$.misc.innerHTML = this.category + hardware;
 
 				this.fitText();
 			});

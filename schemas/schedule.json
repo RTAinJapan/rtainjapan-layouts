@@ -27,6 +27,9 @@
 			"hardware": {
 				"type": "string"
 			},
+			"estimated": {
+				"type": "string"
+			},
 			"runners": {
 				"type": "array",
 				"items": {

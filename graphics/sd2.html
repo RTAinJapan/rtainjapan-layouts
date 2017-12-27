@@ -5,6 +5,10 @@
 	<meta charset="UTF-8">
 	<title>4:3 2プレイヤー</title>
 	<link rel="import" href="elements/rtaij-overlay/rtaij-overlay.html">
+	<link rel="import" href="elements/rtaij-runner/rtaij-runner.html">
+	<link rel="import" href="elements/rtaij-commentator/rtaij-commentator.html">
+	<link rel="import" href="elements/rtaij-game/rtaij-game.html">
+	<link rel="import" href="elements/rtaij-timer/rtaij-timer.html">
 	<link rel="stylesheet" href="style/layout.css">
 	<style>
 		#container {
@@ -26,7 +30,6 @@
 			left: 30px;
 			height: 165px;
 			width: 690px;
-			background-color: blue;
 		}
 
 		#time {
@@ -34,7 +37,6 @@
 			right: 240px;
 			height: 165px;
 			width: 480px;
-			background-color: blue;
 		}
 
 		#runner1,
@@ -42,7 +44,6 @@
 			bottom: 270px;
 			height: 60px;
 			width: 735px;
-			background-color: blue;
 		}
 
 		#runner1 {
@@ -57,22 +58,33 @@
 			right: 15px;
 			height: 60px;
 			width: 735px;
-			background-color: blue;
 		}
 
 		rtaij-overlay {
 			--rtaij-bottom-height: 180px;
+		}
+
+		rtaij-game {
+			--rtaij-title-height: 102px;
+			--rtaij-misc-height: 57px;
+		}
+
+		rtaij-timer {
+			--rtaij-timer-height: 102px;
+			--rtaij-est-height: 57px;
+			--rtaij-timer-bg: none;
 		}
 	</style>
 </head>
 
 <body>
 	<div id="container">
-		<div id="runner1"></div>
-		<div id="runner2"></div>
+		<rtaij-runner id="runner1"></rtaij-runner>
+		<rtaij-runner id="runner2"></rtaij-runner>
 		<div id="commentator"></div>
+		<rtaij-game id="game"></rtaij-game>
 		<div id="game"></div>
-		<div id="time"></div>
+		<rtaij-timer id="time"></rtaij-timer>
 		<rtaij-overlay></rtaij-overlay>
 	</div>
 </body>

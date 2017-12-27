@@ -34,6 +34,10 @@
 					this.$[media].style.opacity = 0;
 				});
 
+				if (!this.commentator) {
+					return;
+				}
+
 				const medias = ['twitch', 'nico', 'twitter']
 					.filter(media => this.runner[media]);
 

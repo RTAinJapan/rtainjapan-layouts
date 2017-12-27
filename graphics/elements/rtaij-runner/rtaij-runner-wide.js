@@ -33,6 +33,10 @@
 					clearInterval(this.socialInterval);
 				}
 
+				if (!this.commentator) {
+					return;
+				}
+
 				const medias = ['twitch', 'nico', 'twitter']
 					.filter(media => this.runner[media]);
 

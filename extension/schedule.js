@@ -1,21 +1,20 @@
 const request = require('superagent');
 const clone = require('clone');
 
-const defaultGameList = require('./default/game.json');
-const defaultRunnerList = require('./default/runner.json');
+const defaultGameList = require('./default/games.json');
+const defaultRunnerList = require('./default/person.json');
 
 module.exports = nodecg => {
 	const horaroId = nodecg.bundleConfig.horaro.scheduleId;
 	const scheduleRep = nodecg.Replicant('schedule');
 	const horaroRep = nodecg.Replicant('horaro');
-	const gameListRep = nodecg.Replicant('gameList', {
-		defaultValue: defaultGameList
-	});
-	const runnerListRep = nodecg.Replicant('runnerList', {
-		defaultValue: defaultRunnerList
-	});
+	const gameListRep = nodecg.Replicant('gameList');
+	const runnerListRep = nodecg.Replicant('runnerList');
 	const currentRunRep = nodecg.Replicant('currentRun');
 	const nextRunRep = nodecg.Replicant('nextRun');
+
+	gameListRep.value = defaultGameList;
+	runnerListRep.value = defaultRunnerList;
 
 	let updateInterval;
 
@@ -33,8 +32,9 @@ module.exports = nodecg => {
 
 	// Listen to replicants changes and merge them into schedule replicant
 	horaroRep.on('change', mergeSchedule);
-	gameListRep.on('change', mergeSchedule);
-	runnerListRep.on('change', mergeSchedule);
+	scheduleRep.on('change', () => {
+		_updateCurrentRun();
+	});
 
 	// Listen to schedule-related events
 	nodecg.listenFor('nextRun', (data, cb) => {
@@ -80,7 +80,7 @@ module.exports = nodecg => {
 			} else {
 				// Update horaro schedule
 				const indexOfPk = horaroSchedule.columns.indexOf('pk');
-				horaroRep.value = horaroSchedule.items.map(
+				const horaroData = horaroSchedule.items.map(
 					({data, scheduled_t: scheduled}) => {
 						return {
 							pk: parseInt(data[indexOfPk], 10),
@@ -88,9 +88,18 @@ module.exports = nodecg => {
 						};
 					}
 				);
-				nodecg.log.info(
-					`Schedule updated from Horaro at ${new Date().toLocaleString()}`
-				);
+				const horaroUpdated = horaroData.some((game, index) => {
+					return game.pk !== horaroRep.value[index].pk ||
+						game.scheduled !== horaroRep.value[index].scheduled;
+				});
+				if (horaroUpdated) {
+					horaroRep.value = horaroData;
+					nodecg.log.info(
+						`Schedule updated from Horaro at ${new Date().toLocaleString()}`
+					);
+				} else {
+					nodecg.log.info('Schedule is already up to date');
+				}
 			}
 		});
 	}
@@ -133,12 +142,13 @@ module.exports = nodecg => {
 				category,
 				hardware,
 				runnerPkAry = [],
-				commentatorPkAry = []
+				commentatorPkAry = [],
+				estimated
 			} = game;
 
 			// Find runner info for each
 			const runners = runnerPkAry.map(runnerPk => {
-				const runner = runnerList.find(runner => runner.runnerPk === runnerPk);
+				const runner = runnerList.find(runner => runner.pk === runnerPk);
 				if (!game) {
 					nodecg.log.error(`Couldn't find the runner ${runnerPk}`);
 				}
@@ -153,7 +163,7 @@ module.exports = nodecg => {
 			// Find commentator info for each
 			const commentators = commentatorPkAry.map(commentatorPk => {
 				const runner = runnerList.find(
-					runner => runner.runnerPk === commentatorPk
+					runner => runner.pk === commentatorPk
 				);
 				if (!game) {
 					nodecg.log.error(`Couldn't find the runner ${commentatorPk}`);
@@ -175,7 +185,8 @@ module.exports = nodecg => {
 				category,
 				hardware,
 				runners,
-				commentators
+				commentators,
+				estimated
 			};
 		});
 
@@ -190,7 +201,10 @@ module.exports = nodecg => {
 	 * @param {Number} index - Index of the current game in the schedule (Not the pk)
 	 */
 	function _updateCurrentRun(index) {
-		if (index < 0 && index > scheduleRep.value.length) {
+		if (index === undefined && currentRunRep.value.pk) {
+			index = currentRunRep.value.index;
+		}
+		if (index < 0 || index > scheduleRep.value.length) {
 			return;
 		}
 		currentRunRep.value = clone(scheduleRep.value[index]);
