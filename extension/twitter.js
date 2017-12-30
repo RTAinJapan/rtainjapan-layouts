@@ -97,6 +97,7 @@ module.exports = nodecg => {
 
 		tweet.text = twemoji.parse(tweet.text).replace(/\n/gi, ' ');
 		tweets.value.push(tweet);
+		maxTweetNumber();
 	}
 
 	/**
@@ -113,9 +114,17 @@ module.exports = nodecg => {
 		return tweets.value.some((tweet, index) => {
 			if (tweet.id_str === idToRemove) {
 				tweets.value.splice(index, 1);
+				maxTweetNumber();
 				return true;
 			}
 			return false;
 		});
+	}
+
+	function maxTweetNumber() {
+		const tweetLength = tweets.value.length;
+		if (tweetLength > 100) {
+			tweets.value = tweets.value.slice(0, 100);
+		}
 	}
 };
