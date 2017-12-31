@@ -28,7 +28,7 @@
 		try {
 			Typekit.load(config);
 		} catch (err) {
-			console.error(err);
+			throw new Error('Failed to load font.');
 		}
 	};
 	tk.onload = readyFunc;

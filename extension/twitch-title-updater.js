@@ -1,18 +1,5 @@
 const request = require('superagent');
-
-let loginLib;
-try {
-	// eslint-disable-next-line import/no-unresolved
-	loginLib = require('../../../lib/login');
-} catch (_) {
-	console.log('This is not production. OK, let\'s try another thing');
-	try {
-		// eslint-disable-next-line import/no-unresolved
-		loginLib = require('../../ncg-rtaij/lib/login');
-	} catch (_) {
-		console.log('What?');
-	}
-}
+const loginLib = require('../../../lib/login');
 
 module.exports = nodecg => {
 	const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);

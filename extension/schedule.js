@@ -62,8 +62,6 @@ module.exports = nodecg => {
 			nodecg.log.warn('[modifyRun] run not found:', data);
 		}
 
-		console.log(currentRunRep.value);
-
 		if (typeof cb === 'function') {
 			cb();
 		}
@@ -210,7 +208,6 @@ module.exports = nodecg => {
 			return;
 		}
 		currentRunRep.value = clone(scheduleRep.value[index]);
-		console.log(currentRunRep.value)
 		nextRunRep.value = clone(scheduleRep.value[index + 1]);
 	}
 
