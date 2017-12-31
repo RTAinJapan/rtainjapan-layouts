@@ -42,6 +42,7 @@ module.exports = nodecg => {
 		}
 	});
 
+	let lastTitle;
 	let lastEngTitle;
 	currentRun.on('change', updateTwitchTitle);
 
@@ -58,11 +59,12 @@ module.exports = nodecg => {
 			);
 			return;
 		}
-		if (!newRun.engTitle || newRun.engTitle === lastEngTitle) {
+		if (!newRun.engTitle || (newRun.engTitle === lastEngTitle && newRun.title === lastTitle)) {
 			return;
 		}
 
 		log.info(`Updateing Twitch title and game to ${newRun.engTitle}`);
+		lastTitle = newRun.title;
 		lastEngTitle = newRun.engTitle;
 		const uri = `https://api.twitch.tv/kraken/channels/${
 			twitchChannelId.value
@@ -71,7 +73,7 @@ module.exports = nodecg => {
 			channel: {
 				status: nodecg.bundleConfig.twitch.titleTemplate.replace(
 					/\${gameName}/gi,
-					lastEngTitle
+					lastTitle
 				),
 				game: lastEngTitle
 			}
