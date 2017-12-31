@@ -39,7 +39,7 @@
 					"type": "number"
 				}
 			},
-			"estimated": {
+			"duration": {
 				"type": "string"
 			}
 		}

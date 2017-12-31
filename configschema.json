@@ -1,13 +1,74 @@
 {
 	"$schema": "http://json-schema.org/draft-04/schema#",
+
 	"type": "object",
+	"additionalProperties": false,
 	"properties": {
-		"horaro": {
+		"horaroId": {
+			"type": "string"
+		},
+		"animation": {
 			"type": "object",
+			"additionalProperties": false,
 			"properties": {
-				"scheduleId": {
-					"type": "string",
-					"description": "The ID for the Horaro schedule used for the event"
+				"runnersInfoInterval": {
+					"type": "number",
+					"default": 10
+				},
+				"sponsorInterval": {
+					"type": "number",
+					"default": 30
+				}
+			}
+		},
+		"twitter": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": [
+				"targetWords",
+				"consumerKey",
+				"consumerSecret",
+				"accessTokenKey",
+				"accessTokenSecret"
+			],
+			"properties": {
+				"targetWords": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"maxTweets": {
+					"type": "number",
+					"default": 100
+				},
+				"consumerKey": {
+					"type": "string"
+				},
+				"consumerSecret": {
+					"type": "string"
+				},
+				"accessTokenKey": {
+					"type": "string"
+				},
+				"accessTokenSecret": {
+					"type": "string"
+				}
+			}
+		},
+		"twitch": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": [
+				"targetChannel",
+				"titleTemplate"
+			],
+			"properties": {
+				"targetChannel": {
+					"type": "string"
+				},
+				"titleTemplate": {
+					"type": "string"
 				}
 			}
 		}

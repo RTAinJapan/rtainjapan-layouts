@@ -1,6 +1,6 @@
 (function () {
 	const SOCIAL_FADE_INTERVAL =
-		nodecg.bundleConfig.graphicAnime.socialFadeInterval * 1000;
+		nodecg.bundleConfig.animation.runnersInfoInterval * 1000;
 	const SOCIAL_FADE_DELAY = 0.33 * 1000;
 
 	const currentRun = nodecg.Replicant('currentRun');

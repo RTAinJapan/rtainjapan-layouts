@@ -25,7 +25,7 @@
 		"hardware": {
 			"type": "string"
 		},
-		"estimated": {
+		"duration": {
 			"type": "string"
 		},
 		"runners": {

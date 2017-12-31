@@ -11,7 +11,7 @@
 			super.ready();
 
 			currentRun.on('change', newVal => {
-				this.est = newVal.estimated || newVal.title[0];
+				this.est = newVal.duration || newVal.title[0];
 			});
 
 			stopwatch.on('change', newVal => {

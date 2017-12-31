@@ -4,7 +4,7 @@
    "category": "Any% Popkaless",
    "runnerPkAry": [0,1],
    "commentatorPkAry": [69],
-   "estimated": "01:50:00",
+   "duration": "01:50:00",
    "pk": 20
  },
  {
@@ -12,7 +12,7 @@
    "category": "Any%",
    "runnerPkAry": [2],
    "commentatorPkAry": [],
-   "estimated": "01:50:00",
+   "duration": "01:50:00",
    "pk": 5
  },
  {
@@ -20,7 +20,7 @@
    "category": "Lカプセル 0-20LV（MED）",
    "runnerPkAry": [3],
    "commentatorPkAry": [],
-   "estimated": "00:15:00",
+   "duration": "00:15:00",
    "pk": 40
  },
  {
@@ -28,7 +28,7 @@
    "category": "Any% Cards",
    "runnerPkAry": [4],
    "commentatorPkAry": [80],
-   "estimated": "02:10:00",
+   "duration": "02:10:00",
    "pk": 27
  },
  {
@@ -36,7 +36,7 @@
    "category": "Any% Glitchless レッド撃破",
    "runnerPkAry": [5],
    "commentatorPkAry": [80],
-   "estimated": "03:27:00",
+   "duration": "03:27:00",
    "pk": 39
  },
  {
@@ -44,7 +44,7 @@
    "category": "Heroic Karazhan",
    "runnerPkAry": [6,7],
    "commentatorPkAry": [88],
-   "estimated": "01:30:00",
+   "duration": "01:30:00",
    "pk": 32
  },
  {
@@ -52,7 +52,7 @@
    "category": "New Game＋Any%",
    "runnerPkAry": [8],
    "commentatorPkAry": [],
-   "estimated": "01:30:00",
+   "duration": "01:30:00",
    "pk": 22
  },
  {
@@ -60,7 +60,7 @@
    "category": "",
    "runnerPkAry": [],
    "commentatorPkAry": [],
-   "estimated": "01:00:00",
+   "duration": "01:00:00",
    "pk": -1
  },
  {
@@ -68,7 +68,7 @@
    "category": "Any% (Yunica)",
    "runnerPkAry": [9],
    "commentatorPkAry": [78],
-   "estimated": "01:45:00",
+   "duration": "01:45:00",
    "pk": 37
  },
  {
@@ -76,7 +76,7 @@
    "category": "100%",
    "runnerPkAry": [10],
    "commentatorPkAry": [91],
-   "estimated": "01:20:00",
+   "duration": "01:20:00",
    "pk": 53
  },
  {
@@ -84,7 +84,7 @@
    "category": "Any%",
    "runnerPkAry": [11],
    "commentatorPkAry": [86],
-   "estimated": "03:05:00",
+   "duration": "03:05:00",
    "pk": 9
  },
  {
@@ -92,7 +92,7 @@
    "category": "Warpless",
    "runnerPkAry": [12],
    "commentatorPkAry": [44],
-   "estimated": "00:23:00",
+   "duration": "00:23:00",
    "pk": 38
  },
  {
@@ -100,7 +100,7 @@
    "category": "100%",
    "runnerPkAry": [13],
    "commentatorPkAry": [],
-   "estimated": "01:20:00",
+   "duration": "01:20:00",
    "pk": 51
  },
  {
@@ -108,7 +108,7 @@
    "category": "Any% – 2 players 1 controller",
    "runnerPkAry": [14],
    "commentatorPkAry": [87],
-   "estimated": "00:30:00",
+   "duration": "00:30:00",
    "pk": 1
  },
  {
@@ -116,7 +116,7 @@
    "category": "Reverse Dungeon Order",
    "runnerPkAry": [15,16],
    "commentatorPkAry": [73],
-   "estimated": "02:05:00",
+   "duration": "02:05:00",
    "pk": 50
  },
  {
@@ -124,7 +124,7 @@
    "category": "Any% No WW/OOB",
    "runnerPkAry": [17,18],
    "commentatorPkAry": [],
-   "estimated": "01:00:00",
+   "duration": "01:00:00",
    "pk": 49
  },
  {
@@ -132,7 +132,7 @@
    "category": "",
    "runnerPkAry": [19,20,21],
    "commentatorPkAry": [],
-   "estimated": "02:30:00",
+   "duration": "02:30:00",
    "pk": 16
  },
  {
@@ -140,7 +140,7 @@
    "category": "Any%",
    "runnerPkAry": [22],
    "commentatorPkAry": [],
-   "estimated": "00:20:00",
+   "duration": "00:20:00",
    "pk": 33
  },
  {
@@ -148,7 +148,7 @@
    "category": "Any%(JP)",
    "runnerPkAry": [23],
    "commentatorPkAry": [82],
-   "estimated": "00:30:00",
+   "duration": "00:30:00",
    "pk": 12
  },
  {
@@ -156,7 +156,7 @@
    "category": "Any%",
    "runnerPkAry": [24],
    "commentatorPkAry": [76],
-   "estimated": "02:20:00",
+   "duration": "02:20:00",
    "pk": 52
  },
  {
@@ -164,7 +164,7 @@
    "category": "Any%",
    "runnerPkAry": [25],
    "commentatorPkAry": [70],
-   "estimated": "02:30:00",
+   "duration": "02:30:00",
    "pk": 24
  },
  {
@@ -172,7 +172,7 @@
    "category": "",
    "runnerPkAry": [],
    "commentatorPkAry": [],
-   "estimated": "01:00:00",
+   "duration": "01:00:00",
    "pk": -1
  },
  {
@@ -180,7 +180,7 @@
    "category": "Normal Any%",
    "runnerPkAry": [26],
    "commentatorPkAry": [],
-   "estimated": "02:20:00",
+   "duration": "02:20:00",
    "pk": 19
  },
  {
@@ -188,7 +188,7 @@
    "category": "Any%",
    "runnerPkAry": [27],
    "commentatorPkAry": [],
-   "estimated": "00:45:00",
+   "duration": "00:45:00",
    "pk": 29
  },
  {
@@ -196,7 +196,7 @@
    "category": "Any% CO-OP",
    "runnerPkAry": [28],
    "commentatorPkAry": [27],
-   "estimated": "01:55:00",
+   "duration": "01:55:00",
    "pk": 46
  },
  {
@@ -204,7 +204,7 @@
    "category": "Any% (No OoB)",
    "runnerPkAry": [29],
    "commentatorPkAry": [],
-   "estimated": "01:05:00",
+   "duration": "01:05:00",
    "pk": 43
  },
  {
@@ -212,7 +212,7 @@
    "category": "ローラ編",
    "runnerPkAry": [30,31],
    "commentatorPkAry": [72],
-   "estimated": "02:10:00",
+   "duration": "02:10:00",
    "pk": 35
  },
  {
@@ -220,7 +220,7 @@
    "category": "HARD NewGame",
    "runnerPkAry": [32],
    "commentatorPkAry": [],
-   "estimated": "02:00:00",
+   "duration": "02:00:00",
    "pk": 42
  },
  {
@@ -228,7 +228,7 @@
    "category": "Any%",
    "runnerPkAry": [33],
    "commentatorPkAry": [34],
-   "estimated": "00:32:00",
+   "duration": "00:32:00",
    "pk": 15
  },
  {
@@ -236,7 +236,7 @@
    "category": "Any%",
    "runnerPkAry": [34],
    "commentatorPkAry": [71],
-   "estimated": "00:40:00",
+   "duration": "00:40:00",
    "pk": 34
  },
  {
@@ -244,7 +244,7 @@
    "category": "Warpless",
    "runnerPkAry": [35,36],
    "commentatorPkAry": [74],
-   "estimated": "00:30:00",
+   "duration": "00:30:00",
    "pk": 18
  },
  {
@@ -252,7 +252,7 @@
    "category": "Any%",
    "runnerPkAry": [37],
    "commentatorPkAry": [81],
-   "estimated": "01:35:00",
+   "duration": "01:35:00",
    "pk": 21
  },
  {
@@ -260,7 +260,7 @@
    "category": "No IM/WW",
    "runnerPkAry": [38,39],
    "commentatorPkAry": [16],
-   "estimated": "01:28:00",
+   "duration": "01:28:00",
    "pk": 41
  },
  {
@@ -268,7 +268,7 @@
    "category": "Any％ 壁抜けあり",
    "runnerPkAry": [40],
    "commentatorPkAry": [83],
-   "estimated": "00:35:00",
+   "duration": "00:35:00",
    "pk": 31
  },
  {
@@ -276,7 +276,7 @@
    "category": "",
    "runnerPkAry": [41],
    "commentatorPkAry": [],
-   "estimated": "00:30:00",
+   "duration": "00:30:00",
    "pk": 47
  },
  {
@@ -284,7 +284,7 @@
    "category": "any% ALLクリア(シナリオ123を連続でクリア) 卵回復なし",
    "runnerPkAry": [42],
    "commentatorPkAry": [],
-   "estimated": "01:30:00",
+   "duration": "01:30:00",
    "pk": 28
  },
  {
@@ -292,7 +292,7 @@
    "category": "4 Character Speedrun",
    "runnerPkAry": [43],
    "commentatorPkAry": [],
-   "estimated": "01:40:00",
+   "duration": "01:40:00",
    "pk": 25
  },
  {
@@ -300,7 +300,7 @@
    "category": "Any%",
    "runnerPkAry": [44],
    "commentatorPkAry": [],
-   "estimated": "00:15:00",
+   "duration": "00:15:00",
    "pk": 11
  },
  {
@@ -308,7 +308,7 @@
    "category": "",
    "runnerPkAry": [],
    "commentatorPkAry": [],
-   "estimated": "01:00:00",
+   "duration": "01:00:00",
    "pk": -1
  },
  {
@@ -316,7 +316,7 @@
    "category": "Any%",
    "runnerPkAry": [45],
    "commentatorPkAry": [],
-   "estimated": "04:00:00",
+   "duration": "04:00:00",
    "pk": 8
  },
  {
@@ -324,7 +324,7 @@
    "category": "Any%",
    "runnerPkAry": [46],
    "commentatorPkAry": [],
-   "estimated": "01:45:00",
+   "duration": "01:45:00",
    "pk": 45
  },
  {
@@ -332,7 +332,7 @@
    "category": "ドラフ島編(セントラルタワールート)",
    "runnerPkAry": [47,48],
    "commentatorPkAry": [89],
-   "estimated": "00:45:00",
+   "duration": "00:45:00",
    "pk": 30
  },
  {
@@ -340,7 +340,7 @@
    "category": "",
    "runnerPkAry": [49],
    "commentatorPkAry": [],
-   "estimated": "00:45:00",
+   "duration": "00:45:00",
    "pk": 48
  },
  {
@@ -348,7 +348,7 @@
    "category": "Any% Glitchless",
    "runnerPkAry": [50],
    "commentatorPkAry": [],
-   "estimated": "01:00:00",
+   "duration": "01:00:00",
    "pk": 17
  },
  {
@@ -356,7 +356,7 @@
    "category": "Any% Glitchless (カジノ技使用)",
    "runnerPkAry": [51],
    "commentatorPkAry": [85],
-   "estimated": "06:10:00",
+   "duration": "06:10:00",
    "pk": 14
  },
  {
@@ -364,7 +364,7 @@
    "category": "",
    "runnerPkAry": [],
    "commentatorPkAry": [90],
-   "estimated": "01:25:00",
+   "duration": "01:25:00",
    "pk": 10
  },
  {
@@ -372,7 +372,7 @@
    "category": "Story Mode (Normal)",
    "runnerPkAry": [55,57],
    "commentatorPkAry": [84],
-   "estimated": "00:25:00",
+   "duration": "00:25:00",
    "pk": 7
  },
  {
@@ -380,7 +380,7 @@
    "category": "40LINES",
    "runnerPkAry": [55],
    "commentatorPkAry": [],
-   "estimated": "00:05:00",
+   "duration": "00:05:00",
    "pk": 6
  },
  {
@@ -388,7 +388,7 @@
    "category": "Any%(毒バグ有)",
    "runnerPkAry": [58],
    "commentatorPkAry": [],
-   "estimated": "00:10:00",
+   "duration": "00:10:00",
    "pk": 36
  },
  {
@@ -396,7 +396,7 @@
    "category": "Any%",
    "runnerPkAry": [59],
    "commentatorPkAry": [75],
-   "estimated": "01:20:00",
+   "duration": "01:20:00",
    "pk": 0
  },
  {
@@ -404,7 +404,7 @@
    "category": "全員生存ファルシオン取得チャート",
    "runnerPkAry": [60],
    "commentatorPkAry": [],
-   "estimated": "02:50:00",
+   "duration": "02:50:00",
    "pk": 54
  },
  {
@@ -412,7 +412,7 @@
    "category": "パワフルナイン",
    "runnerPkAry": [61],
    "commentatorPkAry": [],
-   "estimated": "02:00:00",
+   "duration": "02:00:00",
    "pk": 23
  },
  {
@@ -420,7 +420,7 @@
    "category": "",
    "runnerPkAry": [],
    "commentatorPkAry": [],
-   "estimated": "01:00:00",
+   "duration": "01:00:00",
    "pk": -1
  },
  {
@@ -428,7 +428,7 @@
    "category": "Any%",
    "runnerPkAry": [62],
    "commentatorPkAry": [77],
-   "estimated": "05:00:00",
+   "duration": "05:00:00",
    "pk": 4
  },
  {
@@ -436,7 +436,7 @@
    "category": "Any% Save+Quit",
    "runnerPkAry": [63],
    "commentatorPkAry": [],
-   "estimated": "02:05:00",
+   "duration": "02:05:00",
    "pk": 26
  },
  {
@@ -444,7 +444,7 @@
    "category": "All Mode – Normal",
    "runnerPkAry": [64],
    "commentatorPkAry": [],
-   "estimated": "00:25:00",
+   "duration": "00:25:00",
    "pk": 44
  },
  {
@@ -452,7 +452,7 @@
    "category": "100%",
    "runnerPkAry": [65],
    "commentatorPkAry": [],
-   "estimated": "01:50:00",
+   "duration": "01:50:00",
    "pk": 3
  },
  {
@@ -460,7 +460,7 @@
    "category": "Any%",
    "runnerPkAry": [66,67],
    "commentatorPkAry": [],
-   "estimated": "00:20:00",
+   "duration": "00:20:00",
    "pk": 13
  },
  {
@@ -468,7 +468,7 @@
    "category": "96 Exits(100%)",
    "runnerPkAry": [68],
    "commentatorPkAry": [],
-   "estimated": "01:30:00",
+   "duration": "01:30:00",
    "pk": 2
  }
 ]

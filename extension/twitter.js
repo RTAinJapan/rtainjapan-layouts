@@ -1,8 +1,9 @@
 const twemoji = require('twemoji');
 const TwitterStream = require('twitter-stream-api');
 
+const TWITTER_RESTART_INTERVAL = 30 * 60 * 1000;
+
 module.exports = nodecg => {
-	const targetWords = nodecg.bundleConfig.twitter.targetWords;
 	const twitterApi = {
 		/* eslint-disable camelcase */
 		consumer_key: nodecg.bundleConfig.twitter.consumerKey,
@@ -11,7 +12,24 @@ module.exports = nodecg => {
 		token_secret: nodecg.bundleConfig.twitter.accessTokenSecret
 		/* eslint-enable camelcase */
 	};
+	if (
+		!twitterApi.consumer_key ||
+		!twitterApi.consumer_secret ||
+		!twitterApi.token ||
+		!twitterApi.token_secret
+	) {
+		return;
+	}
+
+	const targetWords = nodecg.bundleConfig.twitter.targetWords;
+	if (targetWords.length === 0) {
+		return;
+	}
+
 	const tweets = nodecg.Replicant('tweets', { defaultValue: [] });
+	const maxTweets = nodecg.bundleConfig.twitter.maxTweets;
+
+	tweets.on('change', limitTweets);
 
 	let userStream;
 	buildUserStream();
@@ -20,12 +38,10 @@ module.exports = nodecg => {
 		nodecg.log.info('[twitter] Restarting Twitter connection');
 		userStream.close();
 		buildUserStream();
-	}, 30 * 60 * 1000);
+	}, TWITTER_RESTART_INTERVAL);
 
 	nodecg.listenFor('acceptTweet', tweet => {
-		if (!nodecg.bundleConfig.twitter.debug) {
-			removeTweetById(tweet.id_str);
-		}
+		removeTweetById(tweet.id_str);
 		nodecg.sendMessage('showTweet', tweet);
 	});
 
@@ -33,9 +49,6 @@ module.exports = nodecg => {
 		removeTweetById(tweet.id_str);
 	});
 
-	/**
-	 * Builds the stream
-	 */
 	function buildUserStream() {
 		userStream = new TwitterStream(twitterApi);
 
@@ -97,7 +110,6 @@ module.exports = nodecg => {
 
 		tweet.text = twemoji.parse(tweet.text).replace(/\n/gi, ' ');
 		tweets.value.push(tweet);
-		maxTweetNumber();
 	}
 
 	/**
@@ -114,17 +126,16 @@ module.exports = nodecg => {
 		return tweets.value.some((tweet, index) => {
 			if (tweet.id_str === idToRemove) {
 				tweets.value.splice(index, 1);
-				maxTweetNumber();
 				return true;
 			}
 			return false;
 		});
 	}
 
-	function maxTweetNumber() {
+	function limitTweets() {
 		const tweetLength = tweets.value.length;
-		if (tweetLength > 100) {
-			tweets.value = tweets.value.slice(0, 100);
+		if (tweetLength > maxTweets) {
+			tweets.value = tweets.value.slice(tweetLength - maxTweets);
 		}
 	}
 };

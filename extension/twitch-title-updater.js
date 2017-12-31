@@ -1,5 +1,4 @@
 const request = require('superagent');
-const loginLib = require('../../../lib/login');
 
 module.exports = nodecg => {
 	const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);
@@ -11,11 +10,31 @@ module.exports = nodecg => {
 		defaultValue: ''
 	});
 
+	if (
+		!nodecg.config.login ||
+		!nodecg.config.login.twitch ||
+		!nodecg.config.login.twitch.enabled
+	) {
+		log.info("Enable NodeCG's login feature to enable Twitch title updater");
+		return;
+	}
+
+	const hasEditorScope = nodecg.config.login.twitch.scope
+		.split(' ')
+		.includes('channel_editor');
+	if (!hasEditorScope) {
+		log.info(
+			'Include channel_editor scope for the Twitch authentication to enable Twitch title updater'
+		);
+		return;
+	}
+
+	const loginLib = require('../../../lib/login');
 	loginLib.on('login', session => {
 		const user = session.passport.user;
 		if (
 			user.provider === 'twitch' &&
-			user.username === nodecg.bundleConfig.twitch.target
+			user.username === nodecg.bundleConfig.twitch.targetChannel
 		) {
 			twitchAccessToken.value = user.accessToken;
 			twitchChannelId.value = user.id.toString();
@@ -24,7 +43,6 @@ module.exports = nodecg => {
 	});
 
 	let lastEngTitle;
-
 	currentRun.on('change', updateTwitchTitle);
 
 	/**
@@ -35,7 +53,7 @@ module.exports = nodecg => {
 		if (!twitchAccessToken.value || !twitchChannelId.value) {
 			log.info(
 				`You must login as ${
-					nodecg.bundleConfig.twitch.target
+					nodecg.bundleConfig.twitch.targetChannel
 				} to update Twitch status automatically.`
 			);
 			return;

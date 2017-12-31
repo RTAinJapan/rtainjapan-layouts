@@ -14,8 +14,7 @@
 				"name": "sponsorLogos",
 				"title": "スポンサーロゴ",
 				"allowedTypes": [
-					"png",
-					"gif"
+					"png"
 				]
 			}
 		],
@@ -94,7 +93,7 @@
 	"scripts": {
 		"start": "pm2 start ../../index.js --name rtaij --watch . --watch ../../cfg",
 		"restart": "pm2 restart rtaij",
-		"lint": "eslint --fix ./**/*.js ./**/*.html"
+		"lint": "eslint --fix --cache ./**/*.js ./**/*.html"
 	},
 	"dependencies": {
 		"clone": "^2.1.1",
