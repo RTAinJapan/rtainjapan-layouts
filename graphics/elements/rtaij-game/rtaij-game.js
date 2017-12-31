@@ -19,7 +19,7 @@
 			super.ready();
 
 			currentRun.on('change', newVal => {
-				this.title = newVal.title.replace(/\\n/ig, '<br/>');
+				this.title = newVal.title.replace(/\\n/gi, '<br/>');
 				this.category = newVal.category;
 				this.hardware = newVal.hardware;
 

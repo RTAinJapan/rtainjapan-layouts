@@ -1,7 +1,8 @@
 (function () {
 	const sponsorLogos = nodecg.Replicant('assets:sponsorLogos');
 
-	const SPONSOR_FADE_INTERVAL = nodecg.bundleConfig.graphicAnime.sponsorFadeInterval * 1000;
+	const SPONSOR_FADE_INTERVAL =
+		nodecg.bundleConfig.graphicAnime.sponsorFadeInterval * 1000;
 	const SPONSOR_FADE_DELAY = 0.33 * 1000;
 
 	class RtaijOverlay extends Polymer.Element {

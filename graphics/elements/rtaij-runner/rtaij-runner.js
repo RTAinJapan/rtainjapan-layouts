@@ -1,5 +1,6 @@
 (function () {
-	const SOCIAL_FADE_INTERVAL = nodecg.bundleConfig.graphicAnime.socialFadeInterval * 1000;
+	const SOCIAL_FADE_INTERVAL =
+		nodecg.bundleConfig.graphicAnime.socialFadeInterval * 1000;
 	const SOCIAL_FADE_DELAY = 0.33 * 1000;
 
 	const currentRun = nodecg.Replicant('currentRun');
@@ -38,8 +39,7 @@
 					return;
 				}
 
-				const medias = ['twitch', 'nico', 'twitter']
-					.filter(media => this.runner[media]);
+				const medias = ['twitch', 'nico', 'twitter'].filter(media => this.runner[media]);
 
 				if (medias.length === 0) {
 					return;

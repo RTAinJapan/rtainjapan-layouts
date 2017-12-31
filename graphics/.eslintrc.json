@@ -1,0 +1,6 @@
+{
+	"extends": "xo/browser",
+	"globals": {
+		"nodecg": true
+	}
+}

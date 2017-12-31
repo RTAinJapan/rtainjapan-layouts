@@ -91,75 +91,29 @@
 			}
 		]
 	},
-	"xo": {
-		"space": false,
-		"rules": {
-			"new-cap": [
-				"error",
-				{
-					"capIsNewExceptions": [
-						"nodecg.Replicant",
-						"Polymer",
-						"Polymer.MutableData"
-					]
-				}
-			],
-			"strict": [
-				"error",
-				"global"
-			],
-			"no-multiple-empty-lines": [
-				"error",
-				{
-					"max": 1,
-					"maxBOF": 0,
-					"maxEOF": 1
-				}
-			]
-		},
-		"semicolon": true,
-		"esnext": true,
-		"overrides": [
-			{
-				"files": "{dashboard,graphics}/**",
-				"envs": [
-					"browser"
-				],
-				"globals": [
-					"nodecg",
-					"Polymer"
-				]
-			},
-			{
-				"files": "extension/**",
-				"envs": [
-					"node"
-				]
-			}
-		]
-	},
 	"scripts": {
-		"start": "pm2 start ../../index.js -i max --name rtainjapan-layouts",
-		"restart": "pm2 restart all",
-		"test": "node_modules/.bin/xo"
+		"start": "pm2 start ../../index.js --name rtaij --watch . --watch ../../cfg",
+		"restart": "pm2 restart rtaij",
+		"lint": "eslint --fix ./**/*.js ./**/*.html"
 	},
 	"dependencies": {
 		"clone": "^2.1.1",
-		"superagent": "^3.8.0",
+		"pm2": "^2.9.1",
+		"superagent": "^3.8.2",
 		"twemoji": "^2.5.0",
-		"twitter-stream-api": "^0.5.2",
-		"vue": "^2.5.9"
+		"twitter-stream-api": "^0.5.2"
 	},
 	"devDependencies": {
-		"eslint": "^4.13.0",
+		"eslint": "^4.14.0",
+		"eslint-config-prettier": "^2.9.0",
+		"eslint-config-xo": "^0.19.0",
+		"eslint-plugin-ava": "^4.4.0",
 		"eslint-plugin-html": "^4.0.1",
-		"eslint-plugin-polymer": "^0.1.0",
-		"xo": "^0.18.2"
+		"eslint-plugin-prettier": "^2.4.0",
+		"eslint-plugin-unicorn": "^3.0.1",
+		"prettier": "1.9.2"
 	},
 	"license": "MIT",
-	"repository": "Hoishin/rtainjapan-layouts",
-	"homepage": "https://rtainjapan.net/",
-	"engines": {
-		"node": "^8.9.3"
-	}
+	"repository": "RTAinJapan/rtainjapan-layouts",
+	"homepage": "https://rtainjapan.net/"
 }
