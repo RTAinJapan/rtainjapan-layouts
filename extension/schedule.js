@@ -32,9 +32,6 @@ module.exports = nodecg => {
 
 	// Listen to replicants changes and merge them into schedule replicant
 	horaroRep.on('change', mergeSchedule);
-	scheduleRep.on('change', () => {
-		
-	});
 
 	// Listen to schedule-related events
 	nodecg.listenFor('nextRun', (data, cb) => {
