@@ -6,8 +6,7 @@
 		"email": "hoishinxii@gmail.com",
 		"url": "https://twitter.com/hoishinxii"
 	},
-	"description":
-		"The on-stream layout for RTA in Japan speedrunning marathon event",
+	"description": "The on-stream layout for RTA in Japan speedrunning marathon event",
 	"nodecg": {
 		"compatibleRange": "^0.9.8",
 		"assetCategories": [
@@ -105,7 +104,10 @@
 					]
 				}
 			],
-			"strict": ["error", "global"],
+			"strict": [
+				"error",
+				"global"
+			],
 			"no-multiple-empty-lines": [
 				"error",
 				{
@@ -120,12 +122,19 @@
 		"overrides": [
 			{
 				"files": "{dashboard,graphics}/**",
-				"envs": ["browser"],
-				"globals": ["nodecg", "Polymer"]
+				"envs": [
+					"browser"
+				],
+				"globals": [
+					"nodecg",
+					"Polymer"
+				]
 			},
 			{
 				"files": "extension/**",
-				"envs": ["node"]
+				"envs": [
+					"node"
+				]
 			}
 		]
 	},
