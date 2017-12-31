@@ -11,7 +11,7 @@ module.exports = nodecg => {
 		token_secret: nodecg.bundleConfig.twitter.accessTokenSecret
 		/* eslint-enable camelcase */
 	};
-	const tweets = nodecg.Replicant('tweets', {defaultValue: []});
+	const tweets = nodecg.Replicant('tweets', { defaultValue: [] });
 
 	let userStream;
 	buildUserStream();
@@ -64,11 +64,11 @@ module.exports = nodecg => {
 			nodecg.log.error('[twitter] Connection error unknown:', error.stack);
 			userStream.close();
 			userStream = new TwitterStream(twitterApi);
-			userStream.stream('statuses/filter', {track: targetWords});
+			userStream.stream('statuses/filter', { track: targetWords });
 		});
 
 		userStream.on('data', addTweet);
-		userStream.stream('statuses/filter', {track: targetWords});
+		userStream.stream('statuses/filter', { track: targetWords });
 	}
 
 	/**

@@ -35,7 +35,7 @@
 
 		editTime() {
 			this.dispatchEvent(
-				new CustomEvent(`edit-time`, {bubbles: true, composed: true})
+				new CustomEvent(`edit-time`, { bubbles: true, composed: true })
 			);
 		}
 

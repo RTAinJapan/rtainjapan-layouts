@@ -69,14 +69,14 @@ module.exports = nodecg => {
 	 */
 	function updateHoraroSchedule() {
 		const url = `https://horaro.org/-/api/v1/schedules/${horaroId}`;
-		request.get(url).end((err, {body: {data: horaroSchedule}}) => {
+		request.get(url).end((err, { body: { data: horaroSchedule } }) => {
 			if (err) {
-				nodecg.log.error('Couldn\'t update Horaro schedule');
+				nodecg.log.error("Couldn't update Horaro schedule");
 			} else {
 				// Update horaro schedule
 				const indexOfPk = horaroSchedule.columns.indexOf('pk');
 				const horaroData = horaroSchedule.items.map(
-					({data, scheduled_t: scheduled}) => {
+					({ data, scheduled_t: scheduled }) => {
 						return {
 							pk: parseInt(data[indexOfPk], 10),
 							scheduled: scheduled * 1000 // Convert to UNIX time
@@ -84,8 +84,10 @@ module.exports = nodecg => {
 					}
 				);
 				const horaroUpdated = horaroData.some((game, index) => {
-					return game.pk !== horaroRep.value[index].pk ||
-						game.scheduled !== horaroRep.value[index].scheduled;
+					return (
+						game.pk !== horaroRep.value[index].pk ||
+						game.scheduled !== horaroRep.value[index].scheduled
+					);
 				});
 				if (horaroUpdated) {
 					horaroRep.value = horaroData;
@@ -123,7 +125,7 @@ module.exports = nodecg => {
 		// Map each game on the Horaro schedule
 		scheduleRep.value = horaroRep.value.map((horaro, index) => {
 			// Use pk and start time from Horaro
-			const {pk, scheduled} = horaro;
+			const { pk, scheduled } = horaro;
 
 			// Find the game on game list
 			const game = gameList.find(game => game.pk === horaro.pk) || {};
@@ -157,9 +159,7 @@ module.exports = nodecg => {
 
 			// Find commentator info for each
 			const commentators = commentatorPkAry.map(commentatorPk => {
-				const runner = runnerList.find(
-					runner => runner.pk === commentatorPk
-				);
+				const runner = runnerList.find(runner => runner.pk === commentatorPk);
 				if (!game) {
 					nodecg.log.error(`Couldn't find the runner ${commentatorPk}`);
 				}
