@@ -1,10 +1,5 @@
 {
-	"xo.enable": true,
 	"polymer-ide.analyzeWholePackage": true,
-	"prettier.semi": true,
-	"prettier.singleQuote": true,
-	"prettier.useTabs": true,
-	"prettier.bracketSpacing": false,
 	"editor.wordWrap": "on",
-	"files.autoSave": "afterDelay"
+	"files.autoSave": "onFocusChange"
 }

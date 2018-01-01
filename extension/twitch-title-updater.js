@@ -12,6 +12,7 @@ module.exports = nodecg => {
 
 	if (
 		!nodecg.config.login ||
+		!nodecg.config.login.enabled ||
 		!nodecg.config.login.twitch ||
 		!nodecg.config.login.twitch.enabled
 	) {

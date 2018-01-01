@@ -112,8 +112,8 @@ module.exports = nodecg => {
 		const gameList = gameListRep.value;
 		const runnerList = runnerListRep.value;
 
-		// Return if Horaro schdule is empty
-		if (!horaroRep.value) {
+		// Return if Horaro schedule is empty
+		if (horaroRep.value.length === 0) {
 			return;
 		}
 
@@ -170,6 +170,8 @@ module.exports = nodecg => {
 		// Put first game to current game if no current game exists
 		if (!currentRunRep.value.pk) {
 			updateCurrentRun(0);
+		} else {
+			updateCurrentRun();
 		}
 	}
 

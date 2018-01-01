@@ -4,6 +4,10 @@ const TwitterStream = require('twitter-stream-api');
 const TWITTER_RESTART_INTERVAL = 30 * 60 * 1000;
 
 module.exports = nodecg => {
+	if (!nodecg.bundleConfig.twitter) {
+		return;
+	}
+	
 	const twitterApi = {
 		/* eslint-disable camelcase */
 		consumer_key: nodecg.bundleConfig.twitter.consumerKey,

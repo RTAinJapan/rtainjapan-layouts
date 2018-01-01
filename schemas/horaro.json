@@ -7,10 +7,10 @@
 		"additionalProperties": false,
 		"properties": {
 			"pk": {
-				"type": "number"
+				"type": "integer"
 			},
 			"scheduled": {
-				"type": "number"
+				"type": "integer"
 			}
 		}
 	}
