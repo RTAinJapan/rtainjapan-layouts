@@ -107,14 +107,6 @@
 						"nodecg.Replicant"
 					]
 				}
-			],
-			"padding-line-between-statements": [
-				"error",
-				{
-					"blackLine": "never",
-					"prev": "*",
-					"next": "*"
-				}
 			]
 		},
 		"overrides": [
