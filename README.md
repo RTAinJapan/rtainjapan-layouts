@@ -1,7 +1,5 @@
 # RTA in Japan Layouts
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/Hoishin/rtainjapan-layouts.svg)](https://greenkeeper.io/)
-
 This is a [NodeCG](http://github.com/nodecg/nodecg) application.
 
 This project is based on [GamesDoneQuick Layouts](https://github.com/GamesDoneQuick/sgdq17-layouts). Thank you so much for the hard work put into the series of layouts. Thier work inspired me to get into software engineering.

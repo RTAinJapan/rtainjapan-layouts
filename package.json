@@ -91,12 +91,6 @@
 		]
 	},
 	"xo": {
-		"plugins": [
-			"html"
-		],
-		"extends": [
-			"plugin:prettier/recommended"
-		],
 		"globals": [
 			"nodecg"
 		],
@@ -104,21 +98,40 @@
 			"js",
 			"html"
 		],
+		"prettier": true,
+		"rules": {
+			"new-cap": [
+				"error",
+				{
+					"capIsNewExceptions": [
+						"nodecg.Replicant"
+					]
+				}
+			],
+			"padding-line-between-statements": [
+				"error",
+				{
+					"blackLine": "never",
+					"prev": "*",
+					"next": "*"
+				}
+			]
+		},
 		"overrides": [
 			{
-				"files": "dashboard/",
+				"files": "dashboard/**/*",
 				"envs": [
 					"browser"
 				]
 			},
 			{
-				"files": "graphics/",
+				"files": "graphics/**/*",
 				"envs": [
 					"browser"
 				]
 			},
 			{
-				"files": "shared/",
+				"files": "shared/**/*",
 				"envs": [
 					"browser"
 				]
@@ -126,25 +139,19 @@
 		]
 	},
 	"scripts": {
-		"start": "pm2 start ../../index.js --name rtaij --watch . --watch ../../cfg",
-		"restart": "pm2 restart rtaij",
-		"lint": "xo --fix"
-	},
-	"dependencies": {
-		"clone": "^2.1.1",
-		"pm2": "^2.9.1",
-		"superagent": "^3.8.2",
-		"twemoji": "^2.5.0",
-		"twitter-stream-api": "^0.5.2"
+		"format": "xo --fix"
 	},
 	"license": "MIT",
 	"repository": "RTAinJapan/rtainjapan-layouts",
 	"homepage": "https://rtainjapan.net/",
+	"dependencies": {
+		"clone": "^2.1.1",
+		"superagent": "^3.8.2"
+	},
 	"devDependencies": {
-		"eslint-config-prettier": "^2.9.0",
-		"eslint-plugin-html": "^3.2.2",
-		"eslint-plugin-prettier": "^2.4.0",
-		"prettier": "1.9.2",
+		"eslint": "^4.15.0",
+		"eslint-plugin-vue": "^4.2.0",
+		"prettier": "^1.10.2",
 		"xo": "^0.18.2"
 	}
 }
