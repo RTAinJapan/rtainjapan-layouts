@@ -1,4 +1,4 @@
-const TimeObject = require('../shared/classes/time-object');
+const TimeObject = require('./classes/time-object');
 
 const TRY_TICK_INTERVAL = 10;
 const TIMER_STATE_STOPPED = 'stopped';
