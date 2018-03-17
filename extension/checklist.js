@@ -19,7 +19,7 @@ module.exports = nodecg => {
 	 * @param {Number} category - Index of the category you want to modify
 	 * @param {Number} item - Index of item you want to modify
 	 */
-	function toggleCheckbox({ name, checked }) {
+	function toggleCheckbox({name, checked}) {
 		checklist.value.find(task => {
 			if (task.name === name) {
 				task.complete = checked;

@@ -91,14 +91,10 @@
 		]
 	},
 	"xo": {
+		"prettier": true,
 		"globals": [
 			"nodecg"
 		],
-		"extensions": [
-			"js",
-			"html"
-		],
-		"prettier": true,
 		"rules": {
 			"new-cap": [
 				"error",
@@ -141,9 +137,6 @@
 		"superagent": "^3.8.2"
 	},
 	"devDependencies": {
-		"eslint": "^4.15.0",
-		"eslint-plugin-vue": "^4.2.0",
-		"prettier": "^1.10.2",
 		"xo": "^0.18.2"
 	}
 }

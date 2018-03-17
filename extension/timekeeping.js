@@ -156,7 +156,7 @@ module.exports = nodecg => {
 	 * @param {Number} index - The runner to modify time of.
 	 * @param {String} newTime - A hh:mm:ss/mm:ss formatted new time.
 	 */
-	function editTime({ index, newTime }) {
+	function editTime({index, newTime}) {
 		if (!newTime) {
 			return;
 		}

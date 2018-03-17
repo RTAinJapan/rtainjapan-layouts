@@ -7,7 +7,7 @@ module.exports = nodecg => {
 	if (!nodecg.bundleConfig.twitter) {
 		return;
 	}
-	
+
 	const twitterApi = {
 		/* eslint-disable camelcase */
 		consumer_key: nodecg.bundleConfig.twitter.consumerKey,
@@ -30,7 +30,7 @@ module.exports = nodecg => {
 		return;
 	}
 
-	const tweets = nodecg.Replicant('tweets', { defaultValue: [] });
+	const tweets = nodecg.Replicant('tweets', {defaultValue: []});
 	const maxTweets = nodecg.bundleConfig.twitter.maxTweets;
 
 	tweets.on('change', limitTweets);
@@ -81,11 +81,11 @@ module.exports = nodecg => {
 			nodecg.log.error('[twitter] Connection error unknown:', error.stack);
 			userStream.close();
 			userStream = new TwitterStream(twitterApi);
-			userStream.stream('statuses/filter', { track: targetWords });
+			userStream.stream('statuses/filter', {track: targetWords});
 		});
 
 		userStream.on('data', addTweet);
-		userStream.stream('statuses/filter', { track: targetWords });
+		userStream.stream('statuses/filter', {track: targetWords});
 	}
 
 	/**

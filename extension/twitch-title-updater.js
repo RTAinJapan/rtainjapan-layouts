@@ -16,7 +16,7 @@ module.exports = nodecg => {
 		!nodecg.config.login.twitch ||
 		!nodecg.config.login.twitch.enabled
 	) {
-		log.info("Enable NodeCG's login feature to enable Twitch title updater");
+		log.info('Enable NodeCG\'s login feature to enable Twitch title updater');
 		return;
 	}
 

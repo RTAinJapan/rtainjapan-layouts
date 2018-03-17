@@ -75,14 +75,14 @@ module.exports = nodecg => {
 
 	function updateHoraroSchedule() {
 		const url = `https://horaro.org/-/api/v1/schedules/${horaroId}`;
-		request.get(url).end((err, { body: { data: horaroSchedule } }) => {
+		request.get(url).end((err, {body: {data: horaroSchedule}}) => {
 			if (err) {
-				nodecg.log.error("Couldn't update Horaro schedule");
+				nodecg.log.error('Couldn\'t update Horaro schedule');
 			} else {
 				// Update horaro schedule
 				const indexOfPk = horaroSchedule.columns.indexOf('pk');
 				const horaroData = horaroSchedule.items.map(
-					({ data, scheduled_t: scheduled }) => ({
+					({data, scheduled_t: scheduled}) => ({
 						pk: parseInt(data[indexOfPk], 10),
 						scheduled: scheduled * 1000 // Convert to UNIX time
 					})
@@ -117,7 +117,7 @@ module.exports = nodecg => {
 			return;
 		}
 
-		scheduleRep.value = horaroRep.value.map(({ pk, scheduled }, index) => {
+		scheduleRep.value = horaroRep.value.map(({pk, scheduled}, index) => {
 			// Find the game on game list
 			const game = gameList.find(game => game.pk === pk) || {};
 			const {
