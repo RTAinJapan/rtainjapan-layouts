@@ -11,7 +11,8 @@
 				"type": "number"
 			},
 			"index": {
-				"type": "number"
+				"type": "number",
+				"default": 0
 			},
 			"scheduled": {
 				"type": "number"

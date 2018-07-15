@@ -3,13 +3,14 @@
 
 	"type": "object",
 	"additionalProperties": false,
-	"required": ["index"],
+		"required": ["index"],
 	"properties": {
 		"pk": {
 			"type": "number"
 		},
 		"index": {
-			"type": "number"
+			"type": "number",
+			"default": 0
 		},
 		"scheduled": {
 			"type": "number"
