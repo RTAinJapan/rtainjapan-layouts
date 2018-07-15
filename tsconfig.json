@@ -3,7 +3,6 @@
 		"target": "es2017",
 		"module": "commonjs",
 		"lib": ["esnext", "dom"],
-		"outDir": ".",
 		"strict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
@@ -13,9 +12,5 @@
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
-		"sourceMap": true,
-		"jsx": "react"
-	},
-	"include": ["src"],
-	"exclude": []
+	}
 }
