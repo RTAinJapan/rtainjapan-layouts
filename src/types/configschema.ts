@@ -18,7 +18,7 @@ export interface Configschema {
     accessTokenKey: string;
     accessTokenSecret: string;
   };
-  twitch?: {
+  twitch: {
     targetChannel: string;
     titleTemplate: string;
   };
