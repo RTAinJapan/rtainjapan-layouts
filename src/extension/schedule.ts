@@ -85,7 +85,9 @@ export const schedule = (nodecg: NodeCG) => {
 	function updateHoraroSchedule() {
 		const url = `https://horaro.org/-/api/v1/schedules/${horaroId}`;
 		(async () => {
-			const {data: horaroSchedule} = await axios.get<HoraroApi>(url);
+			const {
+				data: {data: horaroSchedule}
+			} = await axios.get<HoraroApi>(url);
 			// Update horaro schedule
 			const indexOfPk = horaroSchedule.columns.indexOf('pk');
 			const horaroData = horaroSchedule.items.map(
@@ -106,8 +108,9 @@ export const schedule = (nodecg: NodeCG) => {
 			nodecg.log.info(
 				`Schedule updated from Horaro at ${new Date().toLocaleString()}`
 			);
-		})().catch(() => {
+		})().catch(err => {
 			nodecg.log.error("Couldn't update Horaro schedule");
+			nodecg.log.error(err);
 		});
 	}
 
