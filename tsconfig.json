@@ -15,7 +15,7 @@
 		"skipLibCheck": true
 	},
 	"include": [
-		"src"
+		"src/extension"
 	],
 	"exclude": []
 }

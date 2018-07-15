@@ -2,7 +2,7 @@
 	"name": "rtainjapan-layouts",
 	"private": true,
 	"scripts": {
-		"build": "bash scripts/schema-to-type.sh && tsc",
+		"build": "trash extension && tsc",
 		"format": "prettier \"src/extension/**/*.ts\" --write",
 		"tslint": "tslint --project . --format stylish"
 	},
@@ -16,6 +16,7 @@
 		"@types/superagent": "^3.8.2",
 		"json-schema-to-typescript": "^5.5.0",
 		"prettier": "^1.13.7",
+		"trash-cli": "^1.4.0",
 		"tslint": "^5.10.0",
 		"tslint-config-prettier": "^1.13.0",
 		"tslint-xo": "^0.8.0",
