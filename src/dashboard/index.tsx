@@ -5,5 +5,5 @@ import {Hello} from './components/Hello';
 
 ReactDom.render(
 	<Hello compiler="TypeScript" framework="React" />,
-	document.getElementById('example')
+	document.getElementById('app')
 );
