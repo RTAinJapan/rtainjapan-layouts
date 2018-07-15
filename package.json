@@ -2,7 +2,7 @@
 	"name": "rtainjapan-layouts",
 	"private": true,
 	"scripts": {
-		"build:ex": "trash extension && tsc",
+		"build:ex": "trash extension && tsc --project tsconfig.extension.json",
 		"build:db": "trash dashboard && webpack --config src/dashboard/webpack.config.js",
 		"format": "prettier '**/*.{ts,tsx,js,jsx,json}' --write",
 		"tslint": "tslint --project . --format stylish"
@@ -33,7 +33,7 @@
 		"webpack-cli": "^3.0.8"
 	},
 	"nodecg": {
-		"compatibleRange": "^0.9.8",
+		"compatibleRange": "^1.0.0",
 		"assetCategories": [
 			{
 				"name": "sponsorLogos",
@@ -47,7 +47,7 @@
 			{
 				"name": "stream",
 				"title": "配信担当ダッシュボード",
-				"file": "stream-tech-dashboard.html",
+				"file": "tech.html",
 				"headerColor": "#9f9bbd",
 				"fullbleed": true
 			}
