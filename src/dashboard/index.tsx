@@ -1,4 +1,7 @@
-import * as React from 'react';
-import * as ReactDom from 'react-dom';
+import React from 'react';
+import ReactDom from 'react-dom';
+import {Checklist} from './components/checklist';
 
-ReactDom.render(<h1>hoge</h1>, document.getElementById('app'));
+const App = () => <Checklist />;
+
+ReactDom.render(<App />, document.getElementById('app'));
