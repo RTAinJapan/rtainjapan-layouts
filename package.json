@@ -1,6 +1,10 @@
 {
 	"name": "rtainjapan-layouts",
 	"private": true,
+	"scripts": {
+		"schema2type": "bash scripts/schema-to-type.sh",
+		"format": "prettier \"src/extension/**/*.ts\" --write"
+	},
 	"dependencies": {
 		"axios": "^0.18.0",
 		"clone": "^2.1.1",

@@ -5,6 +5,7 @@
 	"items": {
 		"type": "object",
 		"additionalProperties": false,
+		"required": ["index"],
 		"properties": {
 			"pk": {
 				"type": "number"
