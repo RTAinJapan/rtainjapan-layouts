@@ -3,5 +3,8 @@
 	"extends": ["tslint-xo", "tslint-config-prettier"],
 	"linterOptions": {
 		"exclude": ["**/*.json"]
+	},
+	"rules": {
+		"variable-name": [true, "check-format", "allow-pascal-case"]
 	}
 }
