@@ -3,7 +3,7 @@
 		"target": "es5",
 		"module": "commonjs",
 		"lib": ["esnext"],
-		"outDir": "./",
+		"outDir": "./extension",
 		"strict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
