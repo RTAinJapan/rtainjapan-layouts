@@ -1,12 +1,6 @@
 {
+	"private": true,
 	"name": "rtainjapan-layouts",
-	"version": "0.0.0",
-	"author": {
-		"name": "Hoishin",
-		"email": "hoishinxii@gmail.com",
-		"url": "https://twitter.com/hoishinxii"
-	},
-	"description": "The on-stream layout for RTA in Japan speedrunning marathon event",
 	"nodecg": {
 		"compatibleRange": "^0.9.8",
 		"assetCategories": [
@@ -129,9 +123,6 @@
 	"scripts": {
 		"format": "xo --fix"
 	},
-	"license": "MIT",
-	"repository": "RTAinJapan/rtainjapan-layouts",
-	"homepage": "https://rtainjapan.net/",
 	"dependencies": {
 		"clone": "^2.1.1",
 		"superagent": "^3.8.2"
