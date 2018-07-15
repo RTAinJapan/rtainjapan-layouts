@@ -1,7 +1,11 @@
+/.vscode
+
 /node_modules
 /bower_components
+
+/bower.json
 /src/types
 /src/extension/default
-/bower.json
-/.vscode
+
 /extension
+/dashboard
