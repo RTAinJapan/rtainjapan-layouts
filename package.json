@@ -1,6 +1,17 @@
 {
-	"private": true,
 	"name": "rtainjapan-layouts",
+	"private": true,
+	"scripts": {
+		"format": "xo --fix"
+	},
+	"dependencies": {
+		"clone": "^2.1.1",
+		"superagent": "^3.8.2"
+	},
+	"devDependencies": {
+		"typescript": "^2.9.2",
+		"xo": "^0.18.2"
+	},
 	"nodecg": {
 		"compatibleRange": "^0.9.8",
 		"assetCategories": [
@@ -119,15 +130,5 @@
 				]
 			}
 		]
-	},
-	"scripts": {
-		"format": "xo --fix"
-	},
-	"dependencies": {
-		"clone": "^2.1.1",
-		"superagent": "^3.8.2"
-	},
-	"devDependencies": {
-		"xo": "^0.18.2"
 	}
 }
