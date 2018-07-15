@@ -3,7 +3,5 @@
 	"compilerOptions": {
 		"outDir": "extension"
 	},
-	"include": [
-		"src/extension"
-	]
+	"include": ["src/extension"]
 }

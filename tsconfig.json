@@ -12,5 +12,7 @@
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
+		"jsx": "react",
+		"sourceMap": true
 	}
 }
