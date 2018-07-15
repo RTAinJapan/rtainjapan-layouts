@@ -1,26 +1,35 @@
-const request = require('superagent');
-const clone = require('clone');
+import clone from 'clone';
+import axios from 'axios';
 
-const defaultGameList = require('./default/games.json');
-const defaultRunnerList = require('./default/runners.json');
+import defaultGameList from './default/games.json';
+import defaultRunnerList from './default/runners.json';
+import {NodeCG} from '../types/nodecg';
+import {Horaro} from '../types/schemas/horaro';
+import {GameList} from '../types/schemas/gameList';
+import {RunnerList} from '../types/schemas/runnerList';
+import {Schedule} from '../types/schemas/schedule';
+import {CurrentRun} from '../types/schemas/currentRun';
+import {NextRun} from '../types/schemas/nextRun';
+import {ModifyRun} from '../types/messages';
+import {HoraroApi} from '../types/bundle';
 
 const UPDATE_INTERVAL = 60 * 1000;
 
-module.exports = nodecg => {
-	const horaroRep = nodecg.Replicant('horaro');
-	const gameListRep = nodecg.Replicant('gameList', {
+export const schedule = (nodecg: NodeCG) => {
+	const horaroRep = nodecg.Replicant<Horaro>('horaro');
+	const gameListRep = nodecg.Replicant<GameList>('gameList', {
 		defaultValue: defaultGameList
 	});
-	const runnerListRep = nodecg.Replicant('runnerList', {
+	const runnerListRep = nodecg.Replicant<RunnerList>('runnerList', {
 		defaultValue: defaultRunnerList
 	});
-	const scheduleRep = nodecg.Replicant('schedule');
-	const currentRunRep = nodecg.Replicant('currentRun');
-	const nextRunRep = nodecg.Replicant('nextRun');
+	const scheduleRep = nodecg.Replicant<Schedule>('schedule');
+	const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
+	const nextRunRep = nodecg.Replicant<NextRun>('nextRun');
 
 	const horaroId = nodecg.bundleConfig.horaroId;
 
-	let updateInterval;
+	let updateInterval: NodeJS.Timer;
 
 	if (horaroId) {
 		updateHoraroSchedule();
@@ -35,31 +44,31 @@ module.exports = nodecg => {
 	gameListRep.on('change', mergeSchedule);
 	runnerListRep.on('change', mergeSchedule);
 
-	nodecg.listenFor('nextRun', (data, cb) => {
+	nodecg.listenFor('nextRun', (_, cb) => {
 		seekToNextRun();
-		if (typeof cb === 'function') {
+		if (cb) {
 			cb();
 		}
 	});
-	nodecg.listenFor('previousRun', (data, cb) => {
+	nodecg.listenFor('previousRun', (_, cb) => {
 		seekToPreviousRun();
-		if (typeof cb === 'function') {
+		if (cb) {
 			cb();
 		}
 	});
 	nodecg.listenFor('setCurrentRunByIndex', (index, cb) => {
 		updateCurrentRun(index);
-		if (typeof cb === 'function') {
+		if (cb) {
 			cb();
 		}
 	});
-	nodecg.listenFor('manualUpdate', (data, cb) => {
+	nodecg.listenFor('manualUpdate', (_, cb) => {
 		fetchHoraroSchedule();
-		if (typeof cb === 'function') {
+		if (cb) {
 			cb();
 		}
 	});
-	nodecg.listenFor('modifyRun', (data, cb) => {
+	nodecg.listenFor<ModifyRun>('modifyRun', (data, cb) => {
 		if (currentRunRep.value.pk === data.pk) {
 			Object.assign(currentRunRep.value, data);
 		} else if (nextRunRep.value.pk === data.pk) {
@@ -68,37 +77,37 @@ module.exports = nodecg => {
 			nodecg.log.warn('[modifyRun] run not found:', data);
 		}
 
-		if (typeof cb === 'function') {
+		if (cb) {
 			cb();
 		}
 	});
 
 	function updateHoraroSchedule() {
 		const url = `https://horaro.org/-/api/v1/schedules/${horaroId}`;
-		request.get(url).end((err, {body: {data: horaroSchedule}}) => {
-			if (err) {
-				nodecg.log.error('Couldn\'t update Horaro schedule');
-			} else {
-				// Update horaro schedule
-				const indexOfPk = horaroSchedule.columns.indexOf('pk');
-				const horaroData = horaroSchedule.items.map(
-					({data, scheduled_t: scheduled}) => ({
-						pk: parseInt(data[indexOfPk], 10),
-						scheduled: scheduled * 1000 // Convert to UNIX time
-					})
-				);
-				const horaroUpdated = horaroData.some(
-					(game, index) =>
-						game.pk !== horaroRep.value[index].pk ||
-						game.scheduled !== horaroRep.value[index].scheduled
-				);
-				if (horaroUpdated) {
-					horaroRep.value = horaroData;
-					nodecg.log.info(
-						`Schedule updated from Horaro at ${new Date().toLocaleString()}`
-					);
-				}
+		(async () => {
+			const {data: horaroSchedule} = await axios.get<HoraroApi>(url);
+			// Update horaro schedule
+			const indexOfPk = horaroSchedule.columns.indexOf('pk');
+			const horaroData = horaroSchedule.items.map(
+				({data, scheduled_t: scheduled}) => ({
+					pk: parseInt(data[indexOfPk], 10),
+					scheduled: scheduled * 1000 // Convert to UNIX time
+				})
+			);
+			const horaroUpdated = horaroData.some(
+				(game, index) =>
+					game.pk !== horaroRep.value[index].pk ||
+					game.scheduled !== horaroRep.value[index].scheduled
+			);
+			if (!horaroUpdated) {
+				return;
 			}
+			horaroRep.value = horaroData;
+			nodecg.log.info(
+				`Schedule updated from Horaro at ${new Date().toLocaleString()}`
+			);
+		})().catch(() => {
+			nodecg.log.error("Couldn't update Horaro schedule");
 		});
 	}
 
@@ -119,7 +128,7 @@ module.exports = nodecg => {
 
 		scheduleRep.value = horaroRep.value.map(({pk, scheduled}, index) => {
 			// Find the game on game list
-			const game = gameList.find(game => game.pk === pk) || {};
+			const game = gameList.find(g => g.pk === pk) || {};
 			const {
 				title,
 				engTitle,
@@ -132,7 +141,7 @@ module.exports = nodecg => {
 
 			// Find runner info
 			const runners = runnerPkAry.map(runnerPk => {
-				const runner = runnerList.find(runner => runner.pk === runnerPk) || {};
+				const runner = runnerList.find(r => r.pk === runnerPk) || {};
 				return {
 					name: runner.name,
 					twitch: runner.twitch,
@@ -144,7 +153,8 @@ module.exports = nodecg => {
 			// Find commentator info
 			const commentators = commentatorPkAry.map(commentatorPk => {
 				const commentator =
-					runnerList.find(runner => runner.pk === commentatorPk) || {};
+					runnerList.find(runner => runner.pk === commentatorPk) ||
+					{};
 				return {
 					name: commentator.name,
 					twitch: commentator.twitch,
@@ -175,15 +185,12 @@ module.exports = nodecg => {
 		}
 	}
 
-	/**
-	 * Updates currentRun and nextRun Replicants, default is first run in the schedule
-	 * @param {Number} index - Index of the current game in the schedule (Not the pk)
-	 */
-	function updateCurrentRun(index) {
-		if (index === undefined && currentRunRep.value.pk) {
-			index = currentRunRep.value.index;
-		}
-		if (index < 0 || index > scheduleRep.value.length) {
+	function updateCurrentRun(index = currentRunRep.value.index) {
+		if (
+			index === undefined ||
+			index < 0 ||
+			index > scheduleRep.value.length
+		) {
 			return;
 		}
 		currentRunRep.value = clone(scheduleRep.value[index]);

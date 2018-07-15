@@ -1,8 +1,10 @@
-const request = require('superagent');
+import axios from 'axios';
+import {NodeCG} from '../types/nodecg';
+import {CurrentRun} from '../types/schemas/currentRun';
 
-module.exports = nodecg => {
+export const twitchTitleUpdater = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);
-	const currentRun = nodecg.Replicant('currentRun');
+	const currentRun = nodecg.Replicant<CurrentRun>('currentRun');
 	const twitchAccessToken = nodecg.Replicant('twitchAccessToken', {
 		defaultValue: ''
 	});
@@ -16,7 +18,9 @@ module.exports = nodecg => {
 		!nodecg.config.login.twitch ||
 		!nodecg.config.login.twitch.enabled
 	) {
-		log.info('Enable NodeCG\'s login feature to enable Twitch title updater');
+		log.info(
+			"Enable NodeCG's login feature to enable Twitch title updater"
+		);
 		return;
 	}
 
@@ -30,28 +34,30 @@ module.exports = nodecg => {
 		return;
 	}
 
+	// tslint:disable:no-require-imports
 	const loginLib = require('../../../lib/login');
-	loginLib.on('login', session => {
+	loginLib.on('login', (session: any) => {
 		const user = session.passport.user;
 		if (
-			user.provider === 'twitch' &&
-			user.username === nodecg.bundleConfig.twitch.targetChannel
+			user.provider !== 'twitch' ||
+			user.username !== nodecg.bundleConfig.twitch.targetChannel
 		) {
-			twitchAccessToken.value = user.accessToken;
-			twitchChannelId.value = user.id.toString();
-			log.info(`Twitch title updater is enabled for ${user.username}`);
+			return;
 		}
+		twitchAccessToken.value = user.accessToken;
+		twitchChannelId.value = user.id.toString();
+		log.info(`Twitch title updater is enabled for ${user.username}`);
 	});
 
-	let lastTitle;
-	let lastEngTitle;
+	let lastTitle: string;
+	let lastEngTitle: string;
 	currentRun.on('change', updateTwitchTitle);
 
 	/**
 	 * Updates Twitch title
-	 * @param {Object} newRun Updated new current run
+	 * @param newRun Updated new current run
 	 */
-	function updateTwitchTitle(newRun) {
+	function updateTwitchTitle(newRun: CurrentRun) {
 		if (!twitchAccessToken.value || !twitchChannelId.value) {
 			log.info(
 				`You must login as ${
@@ -60,12 +66,15 @@ module.exports = nodecg => {
 			);
 			return;
 		}
-		if (!newRun.engTitle || (newRun.engTitle === lastEngTitle && newRun.title === lastTitle)) {
+		if (
+			!newRun.engTitle ||
+			(newRun.engTitle === lastEngTitle && newRun.title === lastTitle)
+		) {
 			return;
 		}
 
 		log.info(`Updateing Twitch title and game to ${newRun.engTitle}`);
-		lastTitle = newRun.title;
+		lastTitle = newRun.title || '';
 		lastEngTitle = newRun.engTitle;
 		const uri = `https://api.twitch.tv/kraken/channels/${
 			twitchChannelId.value
@@ -79,22 +88,23 @@ module.exports = nodecg => {
 				game: lastEngTitle
 			}
 		};
-		request
-			.put(uri)
-			.send(body)
-			.set('Accept', 'application/vnd.twitchtv.v5+json')
-			.set('Authorization', `OAuth ${twitchAccessToken.value}`)
-			.set('Client-ID', nodecg.config.login.twitch.clientID)
-			.set('Content-Type', 'application/json')
-			.end(err => {
-				if (err) {
-					log.error('Failed to update Twitch title and game:');
-					log.error(err);
-				} else {
-					log.info(
-						`Succesfully updated Twitch title and game to ${lastEngTitle}`
-					);
+		axios
+			.put(uri, body, {
+				headers: {
+					Accept: 'application/vnd.twitchtv.v5+json',
+					Authorization: `OAuth ${twitchAccessToken.value}`,
+					'Client-ID': nodecg.config.login.twitch.clientID,
+					'Content-Type': 'application/json'
 				}
+			})
+			.then(() => {
+				log.info(
+					`Succesfully updated Twitch title and game to ${lastEngTitle}`
+				);
+			})
+			.catch(err => {
+				log.error('Failed to update Twitch title and game:');
+				log.error(err);
 			});
 	}
 };
