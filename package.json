@@ -2,7 +2,8 @@
 	"name": "rtainjapan-layouts",
 	"private": true,
 	"scripts": {
-		"build": "trash extension && tsc",
+		"build:ex": "trash extension && tsc",
+		"build:db": "trash dashboard && webpack",
 		"format": "prettier '**/*.{ts,tsx,js,jsx,json}' --write",
 		"tslint": "tslint --project . --format stylish"
 	},
