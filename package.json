@@ -8,6 +8,8 @@
 		"tslint": "tslint --project . --format stylish"
 	},
 	"dependencies": {
+		"@material-ui/core": "^1.4.0",
+		"@material-ui/icons": "^1.1.0",
 		"axios": "^0.18.0",
 		"clone": "^2.1.1",
 		"react": "^16.4.1",
