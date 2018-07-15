@@ -6,7 +6,11 @@
 		"superagent": "^3.8.2"
 	},
 	"devDependencies": {
-		"typescript": "^2.9.2"
+		"eslint-config-xo-typescript": "^0.1.0",
+		"eslint-plugin-typescript": "^0.12.0",
+		"typescript": "^2.9.2",
+		"typescript-eslint-parser": "^16.0.1",
+		"xo": "^0.21.1"
 	},
 	"nodecg": {
 		"compatibleRange": "^0.9.8",
@@ -90,5 +94,9 @@
 				"height": 1080
 			}
 		]
+	},
+	"xo": {
+		"prettier": "true",
+		"extends": "xo-typescript"
 	}
 }
