@@ -2,6 +2,7 @@ import { Configschema } from "./configschema";
 
 export interface NodeCG {
 	Replicant<T = never>(name: string, options?: {defaultValue: T}): Replicant<T>;
+	sendMessage<T = never, U = never>(message: string, data: T): Promise<U>;
 	listenFor<T = never>(message: string, handler: (data: T, cb?: () => void) => void): void;
 	log: Logger;
 	Logger: new (label: string) => Logger;
