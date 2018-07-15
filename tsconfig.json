@@ -2,8 +2,8 @@
 	"compilerOptions": {
 		"target": "es2017",
 		"module": "commonjs",
-		"lib": ["esnext"],
-		"outDir": "./extension",
+		"lib": ["esnext", "dom"],
+		"outDir": ".",
 		"strict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
@@ -12,10 +12,10 @@
 		"moduleResolution": "node",
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"jsx": "react"
 	},
-	"include": [
-		"src/extension"
-	],
+	"include": ["src"],
 	"exclude": []
 }
