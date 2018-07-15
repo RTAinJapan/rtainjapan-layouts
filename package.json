@@ -1,16 +1,12 @@
 {
 	"name": "rtainjapan-layouts",
 	"private": true,
-	"scripts": {
-		"format": "xo --fix"
-	},
 	"dependencies": {
 		"clone": "^2.1.1",
 		"superagent": "^3.8.2"
 	},
 	"devDependencies": {
-		"typescript": "^2.9.2",
-		"xo": "^0.18.2"
+		"typescript": "^2.9.2"
 	},
 	"nodecg": {
 		"compatibleRange": "^0.9.8",
@@ -92,42 +88,6 @@
 				"file": "necro.html",
 				"width": 1920,
 				"height": 1080
-			}
-		]
-	},
-	"xo": {
-		"prettier": true,
-		"globals": [
-			"nodecg"
-		],
-		"rules": {
-			"new-cap": [
-				"error",
-				{
-					"capIsNewExceptions": [
-						"nodecg.Replicant"
-					]
-				}
-			]
-		},
-		"overrides": [
-			{
-				"files": "dashboard/**/*",
-				"envs": [
-					"browser"
-				]
-			},
-			{
-				"files": "graphics/**/*",
-				"envs": [
-					"browser"
-				]
-			},
-			{
-				"files": "shared/**/*",
-				"envs": [
-					"browser"
-				]
 			}
 		]
 	}
