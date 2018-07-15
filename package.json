@@ -2,8 +2,9 @@
 	"name": "rtainjapan-layouts",
 	"private": true,
 	"scripts": {
-		"schema2type": "bash scripts/schema-to-type.sh",
-		"format": "prettier \"src/extension/**/*.ts\" --write"
+		"build": "bash scripts/schema-to-type.sh && tsc",
+		"format": "prettier \"src/extension/**/*.ts\" --write",
+		"tslint": "tslint --project . --format stylish"
 	},
 	"dependencies": {
 		"axios": "^0.18.0",
