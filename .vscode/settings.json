@@ -1,5 +1,0 @@
-{
-	"polymer-ide.analyzeWholePackage": true,
-	"editor.wordWrap": "on",
-	"files.autoSave": "onFocusChange"
-}
