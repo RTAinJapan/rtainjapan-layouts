@@ -1,4 +1,4 @@
-(function () {
+(function() {
 	const sponsorLogos = nodecg.Replicant('assets:sponsorLogos');
 
 	const SPONSOR_FADE_INTERVAL =
@@ -43,7 +43,8 @@
 				let currentSponsorIndex = 0;
 				this.sponsorInterval = setInterval(() => {
 					hideElement();
-					currentSponsorIndex = (currentSponsorIndex + 1) % sponsorUrls.length;
+					currentSponsorIndex =
+						(currentSponsorIndex + 1) % sponsorUrls.length;
 					setTimeout(() => {
 						showElement(currentSponsorIndex);
 					}, SPONSOR_FADE_DELAY);

@@ -3,7 +3,7 @@
 	"private": true,
 	"scripts": {
 		"build": "trash extension && tsc",
-		"format": "prettier \"src/extension/**/*.ts\" --write",
+		"format": "prettier '**/*.{ts,tsx,js,jsx,json}' --write",
 		"tslint": "tslint --project . --format stylish"
 	},
 	"dependencies": {

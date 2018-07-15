@@ -186,10 +186,7 @@ export const schedule = (nodecg: NodeCG) => {
 	}
 
 	function updateCurrentRun(index = currentRunRep.value.index) {
-		if (
-			index < 0 ||
-			index > scheduleRep.value.length
-		) {
+		if (index < 0 || index > scheduleRep.value.length) {
 			return;
 		}
 		currentRunRep.value = clone(scheduleRep.value[index]);

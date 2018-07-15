@@ -1,4 +1,4 @@
-(function () {
+(function() {
 	const SOCIAL_FADE_INTERVAL =
 		nodecg.bundleConfig.animation.runnersInfoInterval * 1000;
 	const SOCIAL_FADE_DELAY = 0.33 * 1000;
@@ -41,7 +41,9 @@
 					return;
 				}
 
-				const medias = ['twitch', 'nico', 'twitter'].filter(media => this.commentator[media]);
+				const medias = ['twitch', 'nico', 'twitter'].filter(
+					media => this.commentator[media]
+				);
 
 				if (medias.length === 0) {
 					return;

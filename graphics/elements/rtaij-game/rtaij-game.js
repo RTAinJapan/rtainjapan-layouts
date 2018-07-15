@@ -1,5 +1,5 @@
 /* global textFit */
-(function () {
+(function() {
 	const currentRun = nodecg.Replicant('currentRun');
 
 	class RtaijGame extends Polymer.Element {

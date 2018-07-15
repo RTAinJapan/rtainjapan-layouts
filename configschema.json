@@ -60,10 +60,7 @@
 		"twitch": {
 			"type": "object",
 			"additionalProperties": false,
-			"required": [
-				"targetChannel",
-				"titleTemplate"
-			],
+			"required": ["targetChannel", "titleTemplate"],
 			"properties": {
 				"targetChannel": {
 					"type": "string"

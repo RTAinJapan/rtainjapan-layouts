@@ -1,4 +1,4 @@
-(function () {
+(function() {
 	const currentRun = nodecg.Replicant('currentRun');
 	const stopwatch = nodecg.Replicant('stopwatch');
 

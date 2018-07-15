@@ -1,5 +1,5 @@
 /* global moment Polymer */
-(function () {
+(function() {
 	moment.updateLocale('en', {
 		relativeTime: {
 			future: 'in %s',
