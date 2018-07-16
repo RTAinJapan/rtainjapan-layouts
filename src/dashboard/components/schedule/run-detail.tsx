@@ -9,6 +9,6 @@ export class RunDetail extends React.Component {
 				<div>hoge</div>
 				<div>hoge</div>
 			</div>
-		)
+		);
 	}
 }

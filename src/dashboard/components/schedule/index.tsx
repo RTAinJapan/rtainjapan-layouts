@@ -1,7 +1,10 @@
 // Packages
 import React from 'react';
 import styled from 'styled-components';
-import Downshift, {GetItemPropsOptions, ControllerStateAndHelpers} from 'downshift';
+import Downshift, {
+	GetItemPropsOptions,
+	ControllerStateAndHelpers,
+} from 'downshift';
 
 // MUI Core
 import Button from '@material-ui/core/Button';
@@ -17,7 +20,7 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import {scheduleRep, currentRunRep, nextRunRep} from '../../replicants';
 import {CurrentRun} from '../../../types/schemas/currentRun';
 import {NextRun} from '../../../types/schemas/nextRun';
-import { RunDetail } from './run-detail';
+import {RunDetail} from './run-detail';
 
 const Container = styled.div`
 	margin: 16px;
@@ -42,13 +45,13 @@ const TypeaheadContainer = styled.div`
 
 const NoWrapButton = styled(Button)`
 	white-space: nowrap;
-`
+`;
 
 const RunInfoContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 16px;
-`
+`;
 
 export class Schedule extends React.Component<
 	{},
@@ -101,8 +104,8 @@ export class Schedule extends React.Component<
 					</Button>
 				</SelectionContainer>
 				<RunInfoContainer>
-					<RunDetail/>
-					<RunDetail/>
+					<RunDetail />
+					<RunDetail />
 				</RunInfoContainer>
 			</Container>
 		);
@@ -137,7 +140,7 @@ export class Schedule extends React.Component<
 					</div>
 				)}
 			</Downshift>
-			<NoWrapButton variant="contained" size='small'>
+			<NoWrapButton variant="contained" size="small">
 				スキップ<ChevronRight />
 			</NoWrapButton>
 		</TypeaheadContainer>

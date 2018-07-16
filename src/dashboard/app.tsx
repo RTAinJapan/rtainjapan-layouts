@@ -23,7 +23,7 @@ const Column = styled.div`
 `;
 const LeftColumn = Column.extend`
 	grid-template-rows: 1fr auto;
-`
+`;
 
 const Bordered = styled.div`
 	box-sizing: border-box;
@@ -32,16 +32,16 @@ const Bordered = styled.div`
 `;
 
 export const App = () => (
-		<Container>
-			<LeftColumn>
-				<Bordered>
-					<Schedule />
-				</Bordered>
-				<Bordered>
-					<Checklist />
-				</Bordered>
-			</LeftColumn>
-			<Column>Hoge</Column>
-			<Column>Fuga</Column>
-		</Container>
+	<Container>
+		<LeftColumn>
+			<Bordered>
+				<Schedule />
+			</Bordered>
+			<Bordered>
+				<Checklist />
+			</Bordered>
+		</LeftColumn>
+		<Column>Hoge</Column>
+		<Column>Fuga</Column>
+	</Container>
 );
