@@ -63,7 +63,7 @@
 				"fullbleed": true
 			}
 		],
-		"graphics": [
+		"_graphics": [
 			{
 				"file": "3ds.html",
 				"width": 1920,
