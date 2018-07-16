@@ -1,17 +1,39 @@
 import React, {ChangeEvent} from 'react';
+import nodecg from '../../lib/nodecg';
 import Checkbox from '@material-ui/core/Checkbox';
 import {Checklist as ChecklistSchema} from '../../types/schemas/checklist';
-import {NodeCG} from '../../types/nodecg';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import {checklistRep} from '../replicants';
+import styled from '../../../node_modules/styled-components';
 
-declare const nodecg: NodeCG;
-interface State {
-	checklist: ChecklistSchema;
-}
+const Container = styled.div`
+	margin: 16px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 7px;
+`;
 
-const checklistRep = nodecg.Replicant<ChecklistSchema>('checklist');
+export class Checklist extends React.Component<
+	{},
+	{checklist: ChecklistSchema}
+> {
+	constructor(props: {}) {
+		super(props);
+		this.state = {checklist: []};
+		checklistRep.on('change', newVal => {
+			this.setState({checklist: newVal});
+		});
+	}
 
-export class Checklist extends React.Component<{}, State> {
+	render() {
+		return (
+			<Container>
+				<div>{this.LeftChecklist}</div>
+				<div>{this.RightChecklist}</div>
+			</Container>
+		);
+	}
+
 	private readonly toggleCheckbox = (
 		event: ChangeEvent<any>,
 		checked: boolean
@@ -22,31 +44,16 @@ export class Checklist extends React.Component<{}, State> {
 		});
 	};
 
-	constructor(props: {}) {
-		super(props);
-
-		this.state = {checklist: []};
-
-		checklistRep.on('change', newVal => {
-			this.setState({checklist: newVal});
-		});
+	private get LeftChecklist() {
+		return this.state.checklist
+			.slice(0, this.leftRowsCount)
+			.map(checklist => this.makeChecklistElement(checklist));
 	}
 
-	render() {
-		const leftRows = Math.ceil(this.state.checklist.length / 2);
-		const LeftChecklist = this.state.checklist
-			.slice(0, leftRows)
+	private get RightChecklist() {
+		return this.state.checklist
+			.slice(this.leftRowsCount)
 			.map(checklist => this.makeChecklistElement(checklist));
-		const RightChecklist = this.state.checklist
-			.slice(leftRows)
-			.map(checklist => this.makeChecklistElement(checklist));
-
-		return (
-			<div id="columns">
-				<div>{LeftChecklist}</div>
-				<div>{RightChecklist}</div>
-			</div>
-		);
 	}
 
 	private makeChecklistElement(checklist: ChecklistSchema[0]) {
@@ -63,5 +70,9 @@ export class Checklist extends React.Component<{}, State> {
 				onChange={this.toggleCheckbox}
 			/>
 		);
+	}
+
+	private get leftRowsCount() {
+		return Math.ceil(this.state.checklist.length / 2);
 	}
 }
