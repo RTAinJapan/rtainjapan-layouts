@@ -1,14 +1,18 @@
+// Packages
 import React from 'react';
 import styled from 'styled-components';
+import Downshift, {GetItemPropsOptions} from 'downshift';
+
+// MUI Core
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
+
+// MUI Icons
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowForward from '@material-ui/icons/ArrowForward';
-import Downshift from 'downshift';
-import {
-	TextField,
-	Paper,
-	MenuItem,
-} from '../../../../node_modules/@material-ui/core';
+
 import {scheduleRep, currentRunRep, nextRunRep} from '../../replicants';
 import {CurrentRun} from '../../../types/schemas/currentRun';
 import {NextRun} from '../../../types/schemas/nextRun';
@@ -70,45 +74,7 @@ export class Schedule extends React.Component<
 					<Button variant="contained">
 						<ArrowBack />前
 					</Button>
-					<Downshift>
-						{({
-							getInputProps,
-							isOpen,
-							inputValue,
-							highlightedIndex,
-							getItemProps
-						}) => (
-							<div>
-								<TextField
-									fullWidth={true}
-									InputProps={getInputProps({
-										placeholder: 'ゲーム名',
-									})}
-								/>
-								{!isOpen ? null : (
-									<Paper square>
-										{this.getSuggestions(inputValue).map(
-											(suggestion, index) => (
-												<MenuItem
-													{...getItemProps({
-														item: suggestion,
-													})}
-													key={suggestion}
-													selected={
-														index ===
-														highlightedIndex
-													}
-													component="div"
-												>
-													{suggestion}
-												</MenuItem>
-											)
-										)}
-									</Paper>
-								)}
-							</div>
-						)}
-					</Downshift>
+					{this.renderDownshift()}
 					<Button variant="contained">
 						次<ArrowForward />
 					</Button>
@@ -118,6 +84,54 @@ export class Schedule extends React.Component<
 			</Container>
 		);
 	}
+
+	private readonly renderDownshift = () => (
+		<Downshift>
+			{({
+				getInputProps,
+				isOpen,
+				inputValue,
+				highlightedIndex,
+				getItemProps,
+			}) => (
+				<div>
+					<TextField
+						fullWidth={true}
+						InputProps={getInputProps({
+							placeholder: 'ゲーム名',
+						})}
+					/>
+					{!isOpen ? null : (
+						<Paper square>
+							{this.renderSuggestion(
+								inputValue,
+								getItemProps,
+								highlightedIndex
+							)}
+						</Paper>
+					)}
+				</div>
+			)}
+		</Downshift>
+	);
+
+	private readonly renderSuggestion = (
+		inputValue: string | null,
+		getItemProps: (options: GetItemPropsOptions<any>) => any,
+		highlightedIndex: number | null
+	) =>
+		this.getSuggestions(inputValue).map((suggestion, index) => (
+			<MenuItem
+				{...getItemProps({
+					item: suggestion,
+				})}
+				key={suggestion}
+				selected={index === highlightedIndex}
+				component="div"
+			>
+				{suggestion}
+			</MenuItem>
+		));
 
 	private readonly getSuggestions = (inputValue: string | null) => {
 		const suggestions: string[] = [];
