@@ -5,6 +5,7 @@ import styled from 'styled-components';
 // Components
 import {Checklist} from './components/checklist';
 import {Schedule} from './components/schedule';
+import {Timekeeper} from './components/timekeeper';
 
 const Container = styled.div`
 	height: 100vh;
@@ -35,13 +36,17 @@ export const App = () => (
 	<Container>
 		<LeftColumn>
 			<Bordered>
-				<Schedule />
+				<Timekeeper />
 			</Bordered>
 			<Bordered>
 				<Checklist />
 			</Bordered>
 		</LeftColumn>
-		<Column>Hoge</Column>
+		<Column>
+			<Bordered>
+				<Schedule />
+			</Bordered>
+		</Column>
 		<Column>Fuga</Column>
 	</Container>
 );
