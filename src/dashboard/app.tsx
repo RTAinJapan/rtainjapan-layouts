@@ -5,16 +5,17 @@ import {Checklist} from './components/checklist';
 const Wrapper = styled.div`
 	width: 100vw;
 `;
+
 const Container = styled.div`
-	padding: 15px 20px;
+	margin: 20px 20px;
 	box-sizing: border-box;
-	flex-shrink: 0;
-	flex-grow: 1;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 20px;
 `;
-const Column = styled.div`
-	width: 560px;
-	margin: 0 20px;
-`;
+
+const Column = styled.div``;
+
 const Bordered = styled.div`
 	box-sizing: border-box;
 	background: white;
@@ -29,8 +30,8 @@ export const App = () => (
 					<Checklist />
 				</Bordered>
 			</Column>
-			<Column />
-			<Column />
+			<Column>Hoge</Column>
+			<Column>Fuga</Column>
 		</Container>
 	</Wrapper>
 );
