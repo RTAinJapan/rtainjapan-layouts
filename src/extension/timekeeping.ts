@@ -1,7 +1,7 @@
-import {TimeObject, TimerState} from './classes/time-object';
 import {NodeCG} from '../types/nodecg';
 import {CurrentRun} from '../types/schemas/currentRun';
 import {ChecklistCompleted} from '../types/schemas/checklistCompleted';
+import { TimeObject, TimerState } from '../lib/time-object';
 
 const TRY_TICK_INTERVAL = 10;
 
