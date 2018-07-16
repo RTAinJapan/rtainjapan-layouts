@@ -1,30 +1,27 @@
 # RTA in Japan Layouts
 
-This is a [NodeCG](http://github.com/nodecg/nodecg) application.
+This is a [NodeCG](http://github.com/nodecg/nodecg) bundle.
 
-This project is based on [GamesDoneQuick Layouts](https://github.com/GamesDoneQuick/sgdq17-layouts). Thank you so much for the hard work put into the series of layouts. Thier work inspired me to get into software engineering.
+This bundle is based on [sgdq17-layouts](https://github.com/gamesdonequick/sgdq17-layouts).
 
-## Usage without Docker
+## Status
 
-You will need to install NodeCG on your machine/server.
+Master branch is currently in progress of huge refactoring from JavaScript to TypeScript, both client-side and server-side.
 
-PM2 is recommended for production.
+It will be using [React](https://reactjs.org), [Material UI](https://material-ui.com/) and TypeScript with no [`any`](https://www.typescriptlang.org/docs/handbook/basic-types.html#any).
 
-```sh
-# Clone and install NodeCG
-sudo npm install -g bower
-git clone https://github.com/nodecg/nodecg.git
-cd nodecg
-sudo npm install --production
-sudo bower install --allow-root
+- extension
+	- [x] Refactor to TypeScript
+	- [x] Eliminate `any`
 
-# Clone and install the bundle
-cd bundles
-git clone https://github.com/Hoishin/rtainjapan-layouts.git
-cd rtainjapan-layouts
-sudo npm install --production
-sudo bower install --allow-root
+- dashboard
+	- [x] Setup webpack
+	- [ ] Port all Polymer components to React with TypeScript
+	- [ ] Use Material UI API
+	- [ ] Eliminate `any`
 
-# Start the app
-npm start
-```
+- graphics
+	- [ ] Setup webpack
+	- [ ] Port all Polymer components to React with TypeScript
+	- [ ] Use Material UI API
+	- [ ] Eliminate `any`
