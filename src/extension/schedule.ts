@@ -1,4 +1,4 @@
-import clone from 'clone';
+import cloneDeep from 'lodash/cloneDeep';
 import axios from 'axios';
 
 import defaultGameList from './default/games.json';
@@ -18,10 +18,10 @@ const UPDATE_INTERVAL = 60 * 1000;
 export const schedule = (nodecg: NodeCG) => {
 	const horaroRep = nodecg.Replicant<Horaro>('horaro');
 	const gameListRep = nodecg.Replicant<GameList>('gameList', {
-		defaultValue: defaultGameList
+		defaultValue: defaultGameList,
 	});
 	const runnerListRep = nodecg.Replicant<RunnerList>('runnerList', {
-		defaultValue: defaultRunnerList
+		defaultValue: defaultRunnerList,
 	});
 	const scheduleRep = nodecg.Replicant<Schedule>('schedule');
 	const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
@@ -86,14 +86,14 @@ export const schedule = (nodecg: NodeCG) => {
 		const url = `https://horaro.org/-/api/v1/schedules/${horaroId}`;
 		(async () => {
 			const {
-				data: {data: horaroSchedule}
+				data: {data: horaroSchedule},
 			} = await axios.get<HoraroApi>(url);
 			// Update horaro schedule
 			const indexOfPk = horaroSchedule.columns.indexOf('pk');
 			const horaroData = horaroSchedule.items.map(
 				({data, scheduled_t: scheduled}) => ({
 					pk: parseInt(data[indexOfPk], 10),
-					scheduled: scheduled * 1000 // Convert to UNIX time
+					scheduled: scheduled * 1000, // Convert to UNIX time
 				})
 			);
 			const horaroUpdated = horaroData.some(
@@ -139,7 +139,7 @@ export const schedule = (nodecg: NodeCG) => {
 				hardware,
 				duration,
 				runnerPkAry = [],
-				commentatorPkAry = []
+				commentatorPkAry = [],
 			} = game;
 
 			// Find runner info
@@ -149,7 +149,7 @@ export const schedule = (nodecg: NodeCG) => {
 					name: runner.name,
 					twitch: runner.twitch,
 					nico: runner.nico,
-					twitter: runner.twitter
+					twitter: runner.twitter,
 				};
 			});
 
@@ -162,7 +162,7 @@ export const schedule = (nodecg: NodeCG) => {
 					name: commentator.name,
 					twitch: commentator.twitch,
 					nico: commentator.nico,
-					twitter: commentator.twitter
+					twitter: commentator.twitter,
 				};
 			});
 
@@ -176,7 +176,7 @@ export const schedule = (nodecg: NodeCG) => {
 				hardware,
 				duration,
 				runners,
-				commentators
+				commentators,
 			};
 		});
 
@@ -192,8 +192,8 @@ export const schedule = (nodecg: NodeCG) => {
 		if (index < 0 || index > scheduleRep.value.length) {
 			return;
 		}
-		currentRunRep.value = clone(scheduleRep.value[index]);
-		nextRunRep.value = clone(scheduleRep.value[index + 1]);
+		currentRunRep.value = cloneDeep(scheduleRep.value[index]);
+		nextRunRep.value = cloneDeep(scheduleRep.value[index + 1]);
 	}
 
 	function seekToNextRun() {

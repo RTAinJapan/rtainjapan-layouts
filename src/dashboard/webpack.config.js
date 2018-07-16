@@ -10,7 +10,7 @@ module.exports = {
 
 	output: {
 		path: path.resolve(__dirname, '../../dashboard'),
-		filename: 'bundle.js'
+		filename: 'bundle.js',
 	},
 
 	module: {
@@ -19,23 +19,31 @@ module.exports = {
 				test: /\.tsx?$/,
 				loader: 'awesome-typescript-loader',
 				options: {
-					configFileName: './tsconfig.dashboard.json'
-				}
+					configFileName: './tsconfig.dashboard.json',
+				},
 			},
-			{enforce: 'pre', test: /\.js$/, loader: 'source-map-loader'}
-		]
+			{
+				test: /\.scss$/,
+				use: [
+					{loader: 'style-loader'},
+					{loader: 'css-loader'},
+					{loader: 'sass-loader'},
+				],
+			},
+			{enforce: 'pre', test: /\.js$/, loader: 'source-map-loader'},
+		],
 	},
 
 	devtool: 'source-map',
 
 	resolve: {
-		extensions: ['.ts', '.tsx', '.js', '.json']
+		extensions: ['.ts', '.tsx', '.js', '.json'],
 	},
 
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: './tech.html',
-			filename: 'tech.html'
-		})
-	]
+			filename: 'tech.html',
+		}),
+	],
 };

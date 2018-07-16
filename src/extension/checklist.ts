@@ -3,10 +3,10 @@ import {NodeCG} from '../types/nodecg';
 
 export const checklist = (nodecg: NodeCG) => {
 	const checklistRep = nodecg.Replicant('checklist', {
-		defaultValue: defaultChecklist
+		defaultValue: defaultChecklist,
 	});
 	const checklistComplete = nodecg.Replicant('checklistComplete', {
-		defaultValue: false
+		defaultValue: false,
 	});
 
 	nodecg.listenFor('toggleCheckbox', toggleCheckbox);

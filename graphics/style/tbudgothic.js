@@ -2,7 +2,7 @@
 	const config = {
 		kitId: nodecg.bundleConfig.adobe.kitId,
 		scriptTimeout: 3000,
-		async: true
+		async: true,
 	};
 	const h = d.documentElement;
 	const t = setTimeout(() => {

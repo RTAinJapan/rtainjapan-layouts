@@ -15,8 +15,8 @@
 			return {
 				index: {
 					type: Number,
-					value: 0
-				}
+					value: 0,
+				},
 			};
 		}
 

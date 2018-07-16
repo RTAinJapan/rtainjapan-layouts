@@ -1,7 +1,7 @@
 export const enum TimerState {
 	Stopped,
 	Running,
-	Finished
+	Finished,
 }
 
 /**
@@ -120,7 +120,7 @@ export class TimeObject {
 		return {
 			h: Math.floor(seconds / 3600),
 			m: Math.floor((seconds % 3600) / 60),
-			s: Math.floor((seconds % 3600) % 60)
+			s: Math.floor((seconds % 3600) % 60),
 		};
 	}
 

@@ -11,7 +11,7 @@
 			return {
 				title: String,
 				category: String,
-				hardware: String
+				hardware: String,
 			};
 		}
 
@@ -37,7 +37,7 @@
 				this.$.title.firstChild.style['font-size'].replace('px', '')
 			);
 			textFit(this.$.misc, {
-				maxFontSize: titleFontSize < 48 ? titleFontSize : 48
+				maxFontSize: titleFontSize < 48 ? titleFontSize : 48,
 			});
 		}
 	}

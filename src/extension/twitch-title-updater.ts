@@ -6,10 +6,10 @@ export const twitchTitleUpdater = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);
 	const currentRun = nodecg.Replicant<CurrentRun>('currentRun');
 	const twitchAccessToken = nodecg.Replicant('twitchAccessToken', {
-		defaultValue: ''
+		defaultValue: '',
 	});
 	const twitchChannelId = nodecg.Replicant('twitchChennelId', {
-		defaultValue: ''
+		defaultValue: '',
 	});
 
 	if (
@@ -85,8 +85,8 @@ export const twitchTitleUpdater = (nodecg: NodeCG) => {
 					/\${gameName}/gi,
 					lastTitle
 				),
-				game: lastEngTitle
-			}
+				game: lastEngTitle,
+			},
 		};
 		axios
 			.put(uri, body, {
@@ -94,8 +94,8 @@ export const twitchTitleUpdater = (nodecg: NodeCG) => {
 					Accept: 'application/vnd.twitchtv.v5+json',
 					Authorization: `OAuth ${twitchAccessToken.value}`,
 					'Client-ID': nodecg.config.login.twitch.clientID,
-					'Content-Type': 'application/json'
-				}
+					'Content-Type': 'application/json',
+				},
 			})
 			.then(() => {
 				log.info(

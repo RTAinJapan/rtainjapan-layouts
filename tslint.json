@@ -5,6 +5,7 @@
 		"exclude": ["**/*.json"]
 	},
 	"rules": {
-		"variable-name": [true, "check-format", "allow-pascal-case"]
+		"variable-name": [true, "check-format", "allow-pascal-case"],
+		"no-import-side-effect": [true, {"ignore-module": "\\.scss$"}]
 	}
 }

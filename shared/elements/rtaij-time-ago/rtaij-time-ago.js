@@ -14,8 +14,8 @@
 			M: '1mo',
 			MM: '%dmo',
 			y: '1y',
-			yy: '%dy'
-		}
+			yy: '%dy',
+		},
 	});
 
 	// eslint-disable-next-line new-cap
@@ -26,13 +26,13 @@
 			timeago: {
 				type: String,
 				value: '',
-				notify: true
+				notify: true,
 			},
 			datetime: {
 				type: String,
 				value: '0000-00-00T00:00:00.000Z',
-				observer: '_datetimeChanged'
-			}
+				observer: '_datetimeChanged',
+			},
 		},
 
 		ready() {
@@ -51,6 +51,6 @@
 
 		_datetimeChanged() {
 			this.restartInterval();
-		}
+		},
 	});
 })();

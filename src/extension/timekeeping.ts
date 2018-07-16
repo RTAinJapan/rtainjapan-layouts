@@ -13,7 +13,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 	);
 	const currentRun = nodecg.Replicant<CurrentRun>('currentRun');
 	const stopwatch = nodecg.Replicant<TimeObject>('stopwatch', {
-		defaultValue: defaultStopwatch()
+		defaultValue: defaultStopwatch(),
 	});
 
 	// The UNIX time when the timer incremented last time
@@ -147,7 +147,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 */
 	function editTime({
 		index,
-		newTime
+		newTime,
 	}: {
 		index: number | 'master';
 		newTime: string;
