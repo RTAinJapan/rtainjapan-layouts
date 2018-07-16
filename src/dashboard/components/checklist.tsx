@@ -38,10 +38,14 @@ export class Checklist extends React.Component<
 		event: ChangeEvent<any>,
 		checked: boolean
 	) => {
-		nodecg.sendMessage('toggleCheckbox', {
-			name: event.target.name,
-			checked,
-		});
+		nodecg
+			.sendMessage('toggleCheckbox', {
+				name: event.target.name,
+				checked,
+			})
+			.catch(err => {
+				console.error(err);
+			});
 	};
 
 	private get LeftChecklist() {
