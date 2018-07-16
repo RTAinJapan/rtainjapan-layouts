@@ -17,15 +17,16 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import {scheduleRep, currentRunRep, nextRunRep} from '../../replicants';
 import {CurrentRun} from '../../../types/schemas/currentRun';
 import {NextRun} from '../../../types/schemas/nextRun';
+import { RunDetail } from './run-detail';
 
 const Container = styled.div`
 	margin: 16px;
 	display: grid;
-	grid-template-rows: 40px;
+	grid-template-rows: 40px 1fr;
 	gap: 12px;
 `;
 
-const SelectionControls = styled.div`
+const SelectionContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 50% 1fr;
 	gap: 8px;
@@ -41,6 +42,12 @@ const TypeaheadContainer = styled.div`
 
 const NoWrapButton = styled(Button)`
 	white-space: nowrap;
+`
+
+const RunInfoContainer = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
 `
 
 export class Schedule extends React.Component<
@@ -84,7 +91,7 @@ export class Schedule extends React.Component<
 	render() {
 		return (
 			<Container id="schedule-container">
-				<SelectionControls id="selection-controls">
+				<SelectionContainer id="selection-controls">
 					<Button variant="contained">
 						<ArrowBack />前
 					</Button>
@@ -92,9 +99,11 @@ export class Schedule extends React.Component<
 					<Button variant="contained">
 						次<ArrowForward />
 					</Button>
-				</SelectionControls>
-				<div>hoge</div>
-				<div>hoge</div>
+				</SelectionContainer>
+				<RunInfoContainer>
+					<RunDetail/>
+					<RunDetail/>
+				</RunInfoContainer>
 			</Container>
 		);
 	}
