@@ -2,10 +2,13 @@
 	"name": "rtainjapan-layouts",
 	"private": true,
 	"scripts": {
+		"serve:ex": "tsc --project tsconfig.extension.json --watch",
 		"build:ex": "trash extension && tsc --project tsconfig.extension.json",
-		"build:db": "trash dashboard && webpack --config src/dashboard/webpack.config.js",
-		"format": "prettier '**/*.{ts,tsx,js,jsx,json,scss}' --write",
-		"tslint": "tslint --project . --format stylish"
+		"serve:db": "webpack --config src/dashboard/webpack.config.js --watch",
+		"build:db": "trash dashboard && webpack build --config src/dashboard/webpack.config.js",
+		"format": "yarn tslint --fix; prettier '**/*.{ts,tsx,js,jsx,json,scss}' --write",
+		"tslint": "tslint --project . --format stylish",
+		"test": "yarn tslint"
 	},
 	"dependencies": {
 		"@material-ui/core": "^1.4.0",
