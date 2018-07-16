@@ -2,8 +2,8 @@
 import '../lib/react-devtools';
 import React from 'react';
 import ReactDom from 'react-dom';
-import {Checklist} from './components/checklist';
+import {App} from './app';
 
-const App = () => <Checklist />;
+import './index.scss';
 
 ReactDom.render(<App />, document.getElementById('app'));

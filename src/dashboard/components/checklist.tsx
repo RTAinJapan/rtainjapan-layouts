@@ -12,7 +12,10 @@ interface State {
 const checklistRep = nodecg.Replicant<ChecklistSchema>('checklist');
 
 export class Checklist extends React.Component<{}, State> {
-	toggleCheckbox = (event: ChangeEvent<any>, checked: boolean) => {
+	private readonly toggleCheckbox = (
+		event: ChangeEvent<any>,
+		checked: boolean
+	) => {
 		nodecg.sendMessage('toggleCheckbox', {
 			name: event.target.name,
 			checked,
@@ -51,7 +54,12 @@ export class Checklist extends React.Component<{}, State> {
 			<FormControlLabel
 				label={checklist.name}
 				key={checklist.name}
-				control={<Checkbox checked={checklist.complete} name={checklist.name} />}
+				control={
+					<Checkbox
+						checked={checklist.complete}
+						name={checklist.name}
+					/>
+				}
 				onChange={this.toggleCheckbox}
 			/>
 		);
