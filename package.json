@@ -4,8 +4,7 @@
 	"scripts": {
 		"serve:ex": "tsc --project tsconfig.extension.json --watch",
 		"build:ex": "trash extension && tsc --project tsconfig.extension.json",
-		"serve:db": "webpack --config src/dashboard/webpack.config.js --watch",
-		"build:db": "trash dashboard && webpack build --config src/dashboard/webpack.config.js",
+		"serve:db": "webpack --config src/dashboard/webpack.config.ts --watch",
 		"format": "yarn tslint --fix; prettier '**/*.{ts,tsx,js,jsx,json,scss}' --write",
 		"tslint": "tslint --project . --format stylish",
 		"test": "yarn tslint"
@@ -13,6 +12,7 @@
 	"dependencies": {
 		"@material-ui/core": "^1.4.0",
 		"@material-ui/icons": "^1.1.0",
+		"@types/html-webpack-plugin": "^2.30.4",
 		"axios": "^0.18.0",
 		"downshift": "^2.0.14",
 		"lodash": "^4.17.10",
@@ -22,8 +22,10 @@
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.14.112",
+		"@types/node": "^10.5.2",
 		"@types/react": "^16.4.6",
 		"@types/react-dom": "^16.0.6",
+		"@types/webpack": "^4.4.7",
 		"awesome-typescript-loader": "^5.2.0",
 		"babel-core": "^6.26.3",
 		"babel-plugin-styled-components": "^1.5.1",
@@ -36,6 +38,7 @@
 		"source-map-loader": "^0.2.3",
 		"style-loader": "^0.21.0",
 		"trash-cli": "^1.4.0",
+		"ts-node": "^7.0.0",
 		"tslint": "^5.10.0",
 		"tslint-config-prettier": "^1.13.0",
 		"tslint-xo": "^0.8.0",
