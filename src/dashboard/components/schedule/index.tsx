@@ -1,7 +1,7 @@
 // Packages
 import React from 'react';
 import styled from 'styled-components';
-import Downshift, {GetItemPropsOptions} from 'downshift';
+import Downshift, {GetItemPropsOptions, ControllerStateAndHelpers} from 'downshift';
 
 // MUI Core
 import Button from '@material-ui/core/Button';
@@ -12,22 +12,36 @@ import MenuItem from '@material-ui/core/MenuItem';
 // MUI Icons
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowForward from '@material-ui/icons/ArrowForward';
+import ChevronRight from '@material-ui/icons/ChevronRight';
 
 import {scheduleRep, currentRunRep, nextRunRep} from '../../replicants';
 import {CurrentRun} from '../../../types/schemas/currentRun';
 import {NextRun} from '../../../types/schemas/nextRun';
 
 const Container = styled.div`
-	margin: 24px;
+	margin: 16px;
 	display: grid;
-	gap: 16px;
+	grid-template-rows: 40px;
+	gap: 12px;
 `;
 
 const SelectionControls = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 50% 1fr;
 	gap: 8px;
+	align-items: center;
 `;
+
+const TypeaheadContainer = styled.div`
+	display: grid;
+	grid-template-columns: auto auto;
+	gap: 8px;
+	align-items: center;
+`;
+
+const NoWrapButton = styled(Button)`
+	white-space: nowrap;
+`
 
 export class Schedule extends React.Component<
 	{},
@@ -74,7 +88,7 @@ export class Schedule extends React.Component<
 					<Button variant="contained">
 						<ArrowBack />前
 					</Button>
-					{this.renderDownshift()}
+					{this.renderTypeahead()}
 					<Button variant="contained">
 						次<ArrowForward />
 					</Button>
@@ -85,34 +99,39 @@ export class Schedule extends React.Component<
 		);
 	}
 
-	private readonly renderDownshift = () => (
-		<Downshift>
-			{({
-				getInputProps,
-				isOpen,
-				inputValue,
-				highlightedIndex,
-				getItemProps,
-			}) => (
-				<div>
-					<TextField
-						fullWidth={true}
-						InputProps={getInputProps({
-							placeholder: 'ゲーム名',
-						})}
-					/>
-					{!isOpen ? null : (
-						<Paper square>
-							{this.renderSuggestion(
-								inputValue,
-								getItemProps,
-								highlightedIndex
-							)}
-						</Paper>
-					)}
-				</div>
-			)}
-		</Downshift>
+	private readonly renderTypeahead = () => (
+		<TypeaheadContainer>
+			<Downshift>
+				{({
+					getInputProps,
+					isOpen,
+					inputValue,
+					highlightedIndex,
+					getItemProps,
+				}: ControllerStateAndHelpers<any>) => (
+					<div>
+						<TextField
+							fullWidth={true}
+							InputProps={getInputProps({
+								placeholder: 'ゲーム名',
+							})}
+						/>
+						{!isOpen ? null : (
+							<Paper square>
+								{this.renderSuggestion(
+									inputValue,
+									getItemProps,
+									highlightedIndex
+								)}
+							</Paper>
+						)}
+					</div>
+				)}
+			</Downshift>
+			<NoWrapButton variant="contained" size='small'>
+				スキップ<ChevronRight />
+			</NoWrapButton>
+		</TypeaheadContainer>
 	);
 
 	private readonly renderSuggestion = (
