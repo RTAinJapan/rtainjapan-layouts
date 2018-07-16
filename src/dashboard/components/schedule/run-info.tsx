@@ -1,6 +1,6 @@
 import React from 'react';
 
-export class RunDetail extends React.Component {
+export class RunInfo extends React.Component {
 	render() {
 		return (
 			<div>

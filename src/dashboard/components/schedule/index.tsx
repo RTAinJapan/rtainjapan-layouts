@@ -20,7 +20,7 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import {scheduleRep, currentRunRep, nextRunRep} from '../../replicants';
 import {CurrentRun} from '../../../types/schemas/currentRun';
 import {NextRun} from '../../../types/schemas/nextRun';
-import {RunDetail} from './run-detail';
+import {RunInfo} from './run-info';
 
 const Container = styled.div`
 	margin: 16px;
@@ -104,8 +104,8 @@ export class Schedule extends React.Component<
 					</Button>
 				</SelectionContainer>
 				<RunInfoContainer>
-					<RunDetail />
-					<RunDetail />
+					<RunInfo />
+					<RunInfo />
 				</RunInfoContainer>
 			</Container>
 		);
