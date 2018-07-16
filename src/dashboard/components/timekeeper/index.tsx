@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import cloneDeep from 'lodash/cloneDeep'
-import {stopwatchRep, currentRunRep, checklistCompleteRep} from '../../replicants';
-import { TimeObject, TimerState } from '../../../lib/time-object';
+import cloneDeep from 'lodash/cloneDeep';
+import {
+	stopwatchRep,
+	currentRunRep,
+	checklistCompleteRep,
+} from '../../replicants';
+import {TimeObject, TimerState} from '../../../lib/time-object';
 
 const Container = styled.div`
 	margin: 16px;
@@ -25,36 +29,40 @@ export class Timekeeper extends React.Component<
 > {
 	constructor(props: {}) {
 		super(props);
-		this.state = {timer: new TimeObject(0), runners: [], checklistComplete: false}
+		this.state = {
+			timer: new TimeObject(0),
+			runners: [],
+			checklistComplete: false,
+		};
 		stopwatchRep.on('change', newVal => {
 			this.setState({
 				...this.state,
-				timer: cloneDeep(newVal)
-			})
+				timer: cloneDeep(newVal),
+			});
 		});
 		currentRunRep.on('change', newVal => {
-			const runners: (string | null)[] = [null, null, null, null]
+			const runners: (string | null)[] = [null, null, null, null];
 			if (newVal.runners) {
 				newVal.runners.slice(0, 4).forEach((runner, index) => {
 					if (runner) {
-						runners[index] = runner.name || ''
+						runners[index] = runner.name || '';
 					}
-				})
+				});
 			}
 			this.setState({
 				...this.state,
-				runners
-			})
-		})
+				runners,
+			});
+		});
 		checklistCompleteRep.on('change', newVal => {
 			if (newVal === this.state.checklistComplete) {
 				return;
 			}
 			this.setState({
 				...this.state,
-				checklistComplete: newVal
-			})
-		})
+				checklistComplete: newVal,
+			});
+		});
 	}
 
 	render() {
@@ -70,5 +78,7 @@ export class Timekeeper extends React.Component<
 		);
 	}
 
-	private paused = () => this.state.timer.timerState === TimerState.Stopped && this.state.timer.raw > 0
+	private readonly paused = () =>
+		this.state.timer.timerState === TimerState.Stopped &&
+		this.state.timer.raw > 0;
 }

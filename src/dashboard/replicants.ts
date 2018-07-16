@@ -3,7 +3,7 @@ import {Checklist} from '../types/schemas/checklist';
 import {Schedule} from '../types/schemas/schedule';
 import {CurrentRun} from '../types/schemas/currentRun';
 import {NextRun} from '../types/schemas/nextRun';
-import { TimeObject } from '../lib/time-object';
+import {TimeObject} from '../lib/time-object';
 
 export const stopwatchRep = nodecg.Replicant<TimeObject>('stopwatch');
 export const checklistCompleteRep = nodecg.Replicant('checklistComplete');
