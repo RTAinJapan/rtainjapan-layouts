@@ -1,13 +1,17 @@
+// Packages
 import React from 'react';
 import styled from 'styled-components';
+
+// Components
 import {Checklist} from './components/checklist';
+import {Schedule} from './components/schedule';
 
 const Wrapper = styled.div`
 	width: 100vw;
 `;
 
 const Container = styled.div`
-	margin: 20px 20px;
+	margin: 16px;
 	box-sizing: border-box;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
@@ -26,6 +30,9 @@ export const App = () => (
 	<Wrapper>
 		<Container>
 			<Column>
+				<Bordered>
+					<Schedule />
+				</Bordered>
 				<Bordered>
 					<Checklist />
 				</Bordered>
