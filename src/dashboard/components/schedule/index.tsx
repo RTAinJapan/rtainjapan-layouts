@@ -104,8 +104,8 @@ export class Schedule extends React.Component<
 					</Button>
 				</SelectionContainer>
 				<RunInfoContainer>
-					<RunInfo />
-					<RunInfo />
+					<RunInfo run={this.state.currentRun} label="現在のゲーム" />
+					<RunInfo run={this.state.nextRun} label="次のゲーム" />
 				</RunInfoContainer>
 			</Container>
 		);
