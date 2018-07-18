@@ -1,6 +1,7 @@
 /node_modules
 /bower_components
 /.vscode
+/.cache
 
 /extension
 /dashboard

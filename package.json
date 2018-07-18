@@ -2,8 +2,8 @@
 	"name": "rtainjapan-layouts",
 	"private": true,
 	"scripts": {
-		"serve:ex": "tsc --project tsconfig.extension.json --watch",
-		"build:ex": "trash extension && tsc --project tsconfig.extension.json",
+		"serve:ex": "parcel watch src/extension/index.ts --target node --out-dir extension",
+		"build:ex": "parcel build src/extension/index.ts --target node --out-dir extension --no-minify",
 		"serve:db": "webpack --config src/dashboard/webpack.config.ts --watch",
 		"format": "yarn tslint --fix; prettier '**/*.{ts,tsx,js,jsx,json,scss}' --write",
 		"tslint": "tslint --project . --format stylish",
@@ -31,6 +31,7 @@
 		"html-webpack-plugin": "^3.2.0",
 		"json-schema-to-typescript": "^5.5.0",
 		"node-sass": "^4.9.2",
+		"parcel-bundler": "^1.9.7",
 		"prettier": "^1.13.7",
 		"sass-loader": "^7.0.3",
 		"source-map-loader": "^0.2.3",
