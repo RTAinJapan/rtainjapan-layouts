@@ -1,12 +1,12 @@
-/.vscode
-
 /node_modules
 /bower_components
-
-/bower.json
-/src/types
-/src/extension/default
+/.vscode
+/.cache
+**/*.log
 
 /extension
 /dashboard
 /graphics
+
+/src/types
+/src/extension/default
