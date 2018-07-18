@@ -2,6 +2,7 @@
 	"name": "rtainjapan-layouts",
 	"private": true,
 	"scripts": {
+		"start": "(cd ../.. && node index.js)",
 		"serve:ex": "parcel watch src/extension/index.ts --target node --out-dir extension --public-url '.'",
 		"build:ex": "parcel build src/extension/index.ts --target node --out-dir extension --no-minify --public-url '.'",
 		"serve:db": "webpack --config src/dashboard/webpack.config.ts --watch",
