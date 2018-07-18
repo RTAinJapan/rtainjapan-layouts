@@ -1,3 +1,4 @@
+// Packages
 import React from 'react';
 import styled from 'styled-components';
 import cloneDeep from 'lodash/cloneDeep';
@@ -16,15 +17,17 @@ import Pause from '@material-ui/icons/Pause';
 import Refresh from '@material-ui/icons/Refresh';
 import ModeEdit from '@material-ui/icons/ModeEdit';
 
+// Ours
 import {TimeObject, TimerState} from '../../../lib/time-object';
 import {
 	stopwatchRep,
 	currentRunRep,
 	checklistCompleteRep,
 } from '../../replicants';
+import {Runner} from './runner';
+import {BorderedBox} from '../lib/bordered-box';
 
-const Container = styled.div`
-	margin: 0 16px;
+const Container = BorderedBox.extend`
 	font-weight: 700;
 	display: grid;
 	grid-template-columns: 1fr auto;
@@ -41,6 +44,7 @@ const Timer = styled.div`
 `;
 
 const CtrlsContainer = styled.div`
+	padding-right: 16px;
 	grid-area: ctrls;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -48,6 +52,14 @@ const CtrlsContainer = styled.div`
 	gap: 8px;
 	justify-items: center;
 	align-items: center;
+`;
+
+const RunnersContainer = styled.div`
+	justify-self: stretch;
+	align-self: stretch;
+	grid-area: runners;
+	display: grid;
+	grid-template-rows: 1fr 1fr 1fr 1fr;
 `;
 
 const customPrimaryColorTheme = (color: Color) =>
@@ -133,10 +145,17 @@ export class Timekeeper extends React.Component<
 						</Button>
 					</MuiThemeProvider>
 				</CtrlsContainer>
-				<div>hoge</div>
-				<div>hoge</div>
-				<div>hoge</div>
-				<div>hoge</div>
+				<RunnersContainer>
+					{this.state.runners.map((runner, index) => (
+						<Runner
+							runner={this.state.runners[index]}
+							index={index}
+							key={index}
+						>
+							{runner}
+						</Runner>
+					))}
+				</RunnersContainer>
 			</Container>
 		);
 	}

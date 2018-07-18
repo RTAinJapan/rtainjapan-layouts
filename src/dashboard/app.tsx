@@ -26,26 +26,14 @@ const LeftColumn = Column.extend`
 	grid-template-rows: 1fr auto;
 `;
 
-const Bordered = styled.div`
-	box-sizing: border-box;
-	background: white;
-	border: 1px solid black;
-`;
-
 export const App = () => (
 	<Container>
 		<LeftColumn>
-			<Bordered>
-				<Timekeeper />
-			</Bordered>
-			<Bordered>
-				<Checklist />
-			</Bordered>
+			<Timekeeper />
+			<Checklist />
 		</LeftColumn>
 		<Column>
-			<Bordered>
-				<Schedule />
-			</Bordered>
+			<Schedule />
 		</Column>
 		<Column>Fuga</Column>
 	</Container>

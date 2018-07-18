@@ -17,13 +17,15 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 
+// Ours
 import {scheduleRep, currentRunRep, nextRunRep} from '../../replicants';
 import {CurrentRun} from '../../../types/schemas/currentRun';
 import {NextRun} from '../../../types/schemas/nextRun';
 import {RunInfo} from './run-info';
+import { BorderedBox } from '../lib/bordered-box';
 
-const Container = styled.div`
-	margin: 16px;
+const Container = BorderedBox.extend`
+	padding: 16px;
 	display: grid;
 	grid-template-rows: 40px 1fr;
 	gap: 12px;

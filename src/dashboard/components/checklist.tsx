@@ -1,13 +1,18 @@
+// Packages
 import React, {ChangeEvent} from 'react';
-import nodecg from '../../lib/nodecg';
-import Checkbox from '@material-ui/core/Checkbox';
-import {Checklist as ChecklistSchema} from '../../types/schemas/checklist';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import {checklistRep} from '../replicants';
-import styled from '../../../node_modules/styled-components';
 
-const Container = styled.div`
-	margin: 16px;
+// MUI Core
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+// Ours
+import nodecg from '../../lib/nodecg';
+import {Checklist as ChecklistSchema} from '../../types/schemas/checklist';
+import {checklistRep} from '../replicants';
+import { BorderedBox } from './lib/bordered-box';
+
+const Container = BorderedBox.extend`
+	padding: 16px;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 7px;
