@@ -19,6 +19,9 @@ const config: Configuration = {
 			{
 				test: /\.tsx?$/,
 				loader: 'awesome-typescript-loader',
+				options: {
+					configFileName: './tsconfig.dashboard.json',
+				},
 			},
 			{
 				test: /\.scss$/,
