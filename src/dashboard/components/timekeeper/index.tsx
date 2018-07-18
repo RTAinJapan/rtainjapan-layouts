@@ -12,6 +12,8 @@ import green from '@material-ui/core/colors/green';
 import orange from '@material-ui/core/colors/orange';
 import purple from '@material-ui/core/colors/purple';
 import grey from '@material-ui/core/colors/grey';
+
+// MUI Icons
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
 import Refresh from '@material-ui/icons/Refresh';
