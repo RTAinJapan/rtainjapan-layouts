@@ -35,7 +35,7 @@ export const twitchTitleUpdater = (nodecg: NodeCG) => {
 	}
 
 	// tslint:disable:no-require-imports
-	const loginLib = require('../../../lib/login');
+	const loginLib = require('../../../../lib/login');
 	loginLib.on('login', (session: any) => {
 		const user = session.passport.user;
 		if (
