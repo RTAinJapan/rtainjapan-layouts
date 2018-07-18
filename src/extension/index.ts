@@ -1,3 +1,5 @@
+// tslint:disable:no-import-side-effect
+import 'source-map-support/register';
 import {checklist} from './checklist';
 import {schedule} from './schedule';
 import {timekeeping} from './timekeeping';

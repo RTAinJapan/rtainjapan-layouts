@@ -186,6 +186,12 @@
   version "0.2.28"
   resolved "https://registry.yarnpkg.com/@types/relateurl/-/relateurl-0.2.28.tgz#6bda7db8653fa62643f5ee69e9f69c11a392e3a6"
 
+"@types/source-map-support@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@types/source-map-support/-/source-map-support-0.4.1.tgz#ad77158e8c6695a16629ef82b9fb9dfe7c610ac0"
+  dependencies:
+    "@types/node" "*"
+
 "@types/tapable@*":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.4.tgz#b4ffc7dc97b498c969b360a41eee247f82616370"

@@ -2,8 +2,8 @@
 	"name": "rtainjapan-layouts",
 	"private": true,
 	"scripts": {
-		"serve:ex": "parcel watch src/extension/index.ts --target node --out-dir extension",
-		"build:ex": "parcel build src/extension/index.ts --target node --out-dir extension --no-minify",
+		"serve:ex": "parcel watch src/extension/index.ts --target node --out-dir extension --public-url '.'",
+		"build:ex": "parcel build src/extension/index.ts --target node --out-dir extension --no-minify --public-url '.'",
 		"serve:db": "webpack --config src/dashboard/webpack.config.ts --watch",
 		"format": "yarn tslint --fix; prettier '**/*.{ts,tsx,js,jsx,json,scss}' --write",
 		"tslint": "tslint --project . --format stylish",
@@ -17,6 +17,7 @@
 		"lodash": "^4.17.10",
 		"react": "^16.4.1",
 		"react-dom": "^16.4.1",
+		"source-map-support": "^0.5.6",
 		"styled-components": "^3.3.3"
 	},
 	"devDependencies": {
@@ -25,6 +26,7 @@
 		"@types/node": "^10.5.2",
 		"@types/react": "^16.4.6",
 		"@types/react-dom": "^16.0.6",
+		"@types/source-map-support": "^0.4.1",
 		"@types/webpack": "^4.4.7",
 		"awesome-typescript-loader": "^5.2.0",
 		"css-loader": "^1.0.0",
