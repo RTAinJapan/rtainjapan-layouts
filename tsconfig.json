@@ -2,17 +2,14 @@
 	"compilerOptions": {
 		"target": "es2017",
 		"module": "commonjs",
-		"lib": ["esnext", "dom"],
+		"lib": ["esnext"],
 		"strict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
-		"moduleResolution": "node",
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
-		"skipLibCheck": true,
-		"jsx": "react",
-		"sourceMap": true
+		"moduleResolution": "node"
 	}
 }
