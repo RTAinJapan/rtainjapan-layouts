@@ -7,7 +7,7 @@
 		"build:ex": "parcel build src/extension/index.ts --target node --out-dir extension --public-url '.'",
 		"serve:db": "parcel watch src/dashboard/tech.html --out-dir dashboard --public-url '.'",
 		"build:db": "parcel build src/dashboard/tech.html --out-dir dashboard --public-url '.'",
-		"format": "prettier '**/*.{ts,tsx,js,jsx,json,scss}' --write"
+		"format": "prettier 'src/**/*.{ts,tsx,js,jsx,json,scss}' --write"
 	},
 	"dependencies": {
 		"@material-ui/core": "^1.4.0",
