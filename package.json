@@ -4,11 +4,10 @@
 	"scripts": {
 		"start": "(cd ../.. && node index.js)",
 		"serve:ex": "parcel watch src/extension/index.ts --target node --out-dir extension --public-url '.'",
-		"build:ex": "parcel build src/extension/index.ts --target node --out-dir extension --no-minify --public-url '.'",
-		"serve:db": "webpack --config src/dashboard/webpack.config.ts --watch",
-		"format": "yarn tslint --fix; prettier '**/*.{ts,tsx,js,jsx,json,scss}' --write",
-		"tslint": "tslint --project . --format stylish",
-		"test": "yarn tslint"
+		"build:ex": "parcel build src/extension/index.ts --target node --out-dir extension --public-url '.'",
+		"serve:db": "parcel watch src/dashboard/tech.html --out-dir dashboard --public-url '.'",
+		"build:db": "parcel build src/dashboard/tech.html --out-dir dashboard --public-url '.'",
+		"format": "prettier '**/*.{ts,tsx,js,jsx,json,scss}' --write"
 	},
 	"dependencies": {
 		"@material-ui/core": "^1.4.0",
@@ -22,32 +21,18 @@
 		"styled-components": "^3.3.3"
 	},
 	"devDependencies": {
-		"@types/html-webpack-plugin": "^2.30.4",
 		"@types/lodash": "^4.14.112",
 		"@types/node": "^10.5.2",
 		"@types/react": "^16.4.6",
 		"@types/react-dom": "^16.0.6",
 		"@types/source-map-support": "^0.4.1",
-		"@types/webpack": "^4.4.7",
-		"awesome-typescript-loader": "^5.2.0",
-		"css-loader": "^1.0.0",
-		"html-webpack-plugin": "^3.2.0",
 		"json-schema-to-typescript": "^5.5.0",
 		"node-sass": "^4.9.2",
 		"parcel-bundler": "^1.9.7",
+		"parcel-plugin-clean-dist": "^0.0.6",
 		"parcel-plugin-typescript": "^1.0.0",
 		"prettier": "^1.13.7",
-		"sass-loader": "^7.0.3",
-		"source-map-loader": "^0.2.3",
-		"style-loader": "^0.21.0",
-		"trash-cli": "^1.4.0",
-		"ts-node": "^7.0.0",
-		"tslint": "^5.10.0",
-		"tslint-config-prettier": "^1.13.0",
-		"tslint-xo": "^0.8.0",
-		"typescript": "^2.9.2",
-		"webpack": "^4.16.0",
-		"webpack-cli": "^3.0.8"
+		"typescript": "^2.9.2"
 	},
 	"nodecg": {
 		"compatibleRange": "^1.0.0",
