@@ -25,6 +25,9 @@ export class Checklist extends React.Component<
 	constructor(props: {}) {
 		super(props);
 		this.state = {checklist: []};
+	}
+
+	componentDidMount() {
 		checklistRep.on('change', newVal => {
 			this.setState({checklist: newVal});
 		});
@@ -33,8 +36,8 @@ export class Checklist extends React.Component<
 	render() {
 		return (
 			<Container>
-				<div>{this.LeftChecklist}</div>
-				<div>{this.RightChecklist}</div>
+				<div>{this.LeftChecklist()}</div>
+				<div>{this.RightChecklist()}</div>
 			</Container>
 		);
 	}
@@ -53,35 +56,27 @@ export class Checklist extends React.Component<
 			});
 	};
 
-	private get LeftChecklist() {
-		return this.state.checklist
-			.slice(0, this.leftRowsCount)
+	private readonly LeftChecklist = () =>
+		this.state.checklist
+			.slice(0, this.leftRowsCount())
 			.map(checklist => this.makeChecklistElement(checklist));
-	}
 
-	private get RightChecklist() {
-		return this.state.checklist
-			.slice(this.leftRowsCount)
+	private readonly RightChecklist = () =>
+		this.state.checklist
+			.slice(this.leftRowsCount())
 			.map(checklist => this.makeChecklistElement(checklist));
-	}
 
-	private makeChecklistElement(checklist: ChecklistSchema[0]) {
-		return (
-			<FormControlLabel
-				label={checklist.name}
-				key={checklist.name}
-				control={
-					<Checkbox
-						checked={checklist.complete}
-						name={checklist.name}
-					/>
-				}
-				onChange={this.toggleCheckbox}
-			/>
-		);
-	}
+	private readonly makeChecklistElement = (checklist: ChecklistSchema[0]) => (
+		<FormControlLabel
+			label={checklist.name}
+			key={checklist.name}
+			control={
+				<Checkbox checked={checklist.complete} name={checklist.name} />
+			}
+			onChange={this.toggleCheckbox}
+		/>
+	);
 
-	private get leftRowsCount() {
-		return Math.ceil(this.state.checklist.length / 2);
-	}
+	private readonly leftRowsCount = () =>
+		Math.ceil(this.state.checklist.length / 2);
 }

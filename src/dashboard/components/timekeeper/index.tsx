@@ -90,6 +90,9 @@ export class Timekeeper extends React.Component<
 			runners: [],
 			checklistComplete: false,
 		};
+	}
+
+	componentDidMount() {
 		stopwatchRep.on('change', newVal => {
 			this.setState({
 				...this.state,

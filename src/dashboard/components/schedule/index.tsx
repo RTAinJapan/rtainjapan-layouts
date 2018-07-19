@@ -66,6 +66,9 @@ export class Schedule extends React.Component<
 			currentRun: {index: 0},
 			nextRun: {},
 		};
+	}
+
+	componentDidMount() {
 		scheduleRep.on('change', newVal => {
 			if (!newVal) {
 				return;
