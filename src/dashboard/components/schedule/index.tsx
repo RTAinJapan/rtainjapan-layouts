@@ -22,7 +22,7 @@ import {scheduleRep, currentRunRep, nextRunRep} from '../../replicants';
 import {CurrentRun} from '../../../types/schemas/currentRun';
 import {NextRun} from '../../../types/schemas/nextRun';
 import {RunInfo} from './run-info';
-import { BorderedBox } from '../lib/bordered-box';
+import {BorderedBox} from '../lib/bordered-box';
 
 const Container = BorderedBox.extend`
 	padding: 16px;
