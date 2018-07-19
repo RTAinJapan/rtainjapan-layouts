@@ -34,11 +34,10 @@ export class RunInfo extends React.Component<{
 		);
 	}
 
-	private readonly renderRunners = () => (
+	private readonly renderRunners = () =>
 		this.runners().map(runner => (
-			<div>{runner.name}</div>
-		))
-	)
+			<div key={runner.name}>{runner.name}</div>
+		));
 	private readonly runners = () => {
 		const runners: RunnerList = [];
 		if (this.props.run.runners) {
