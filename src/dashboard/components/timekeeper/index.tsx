@@ -135,7 +135,7 @@ export class Timekeeper extends React.Component<
 						</Button>
 					</MuiThemeProvider>
 					<MuiThemeProvider theme={customPrimaryColorTheme(orange)}>
-						<Button>
+						<Button disabled={this.paused()}>
 							<Pause />停止
 						</Button>
 					</MuiThemeProvider>

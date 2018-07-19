@@ -29,12 +29,16 @@ export class RunInfo extends React.Component<{
 				<Label>
 					{this.props.label}&nbsp;(#{this.props.run.index})
 				</Label>
-				<div>hoge</div>
-				<div>hoge</div>
+				{this.renderRunners()}
 			</Container>
 		);
 	}
 
+	private readonly renderRunners = () => (
+		this.runners().map(runner => (
+			<div>{runner.name}</div>
+		))
+	)
 	private readonly runners = () => {
 		const runners: RunnerList = [];
 		if (this.props.run.runners) {
