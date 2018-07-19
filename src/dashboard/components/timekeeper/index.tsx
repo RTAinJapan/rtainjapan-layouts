@@ -154,6 +154,8 @@ export class Timekeeper extends React.Component<
 					{this.state.runners.map((runner, index) => (
 						<Runner
 							runner={this.state.runners[index]}
+							checklistCompleted={this.state.checklistComplete}
+							timer={this.state.timer}
 							index={index}
 							key={index}
 						>
