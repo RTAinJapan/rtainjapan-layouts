@@ -9,6 +9,7 @@
 		"build:db": "parcel build src/dashboard/tech.html --out-dir dashboard --public-url '.'",
 		"serve:tw": "parcel watch src/twitter-callback/index.html --out-dir twitter-callback --public-url '.'",
 		"build:tw": "parcel build src/twitter-callback/index.html --out-dir twitter-callback --public-url '.'",
+		"build:schema": "ts-node schema-types.ts",
 		"format": "prettier 'src/**/*.{ts,tsx,js,jsx,json,scss}' --write"
 	},
 	"dependencies": {
@@ -36,6 +37,7 @@
 		"parcel-plugin-clean-dist": "^0.0.6",
 		"parcel-plugin-typescript": "^1.0.0",
 		"prettier": "^1.13.7",
+		"ts-node": "^7.0.0",
 		"typescript": "^2.9.2"
 	},
 	"nodecg": {
