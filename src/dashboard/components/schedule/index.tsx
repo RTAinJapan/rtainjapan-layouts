@@ -83,16 +83,16 @@ export class Schedule extends React.Component<
 					}
 					titles.push(title);
 				});
-			this.setState({...this.state, titles});
+			this.setState({titles});
 		});
 		currentRunRep.on('change', newVal => {
 			if (!newVal) {
 				return;
 			}
-			this.setState({...this.state, currentRun: newVal});
+			this.setState({currentRun: newVal});
 		});
 		nextRunRep.on('change', newVal => {
-			this.setState({...this.state, nextRun: newVal || {}});
+			this.setState({nextRun: newVal || {}});
 		});
 	}
 

@@ -95,7 +95,6 @@ export class Timekeeper extends React.Component<
 	componentDidMount() {
 		stopwatchRep.on('change', newVal => {
 			this.setState({
-				...this.state,
 				timer: cloneDeep(newVal),
 			});
 		});
@@ -109,7 +108,6 @@ export class Timekeeper extends React.Component<
 				});
 			}
 			this.setState({
-				...this.state,
 				runners,
 			});
 		});
@@ -118,7 +116,6 @@ export class Timekeeper extends React.Component<
 				return;
 			}
 			this.setState({
-				...this.state,
 				checklistComplete: newVal,
 			});
 		});
