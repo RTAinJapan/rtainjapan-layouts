@@ -1,22 +1,28 @@
 // Packages
 import React, {ChangeEvent} from 'react';
+import styled from 'styled-components';
 
 // MUI Core
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 // Ours
-import nodecg from '../../lib/nodecg';
-import {Checklist as ChecklistSchema} from '../../types/schemas/checklist';
-import {checklistRep} from '../replicants';
-import {BorderedBox} from './lib/bordered-box';
+import nodecg from '../../../lib/nodecg';
+import {Checklist as ChecklistSchema} from '../../../types/schemas/checklist';
+import {checklistRep} from '../../replicants';
+import {BorderedBox} from '../lib/bordered-box';
 
 const Container = BorderedBox.extend`
 	padding: 16px;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 7px;
+	grid-template-rows: 1fr;
+	gap: 8px;
 `;
+const CheckboxLabel = styled(FormControlLabel)`
+	border-radius: 3px;
+	border: 1px solid black;
+`
 
 export class Checklist extends React.Component<
 	{},
@@ -36,19 +42,18 @@ export class Checklist extends React.Component<
 	render() {
 		return (
 			<Container>
-				<div>{this.LeftChecklist()}</div>
-				<div>{this.RightChecklist()}</div>
+				{this.state.checklist.map(checklist => this.makeChecklistElement(checklist))}
 			</Container>
 		);
 	}
 
 	private readonly toggleCheckbox = (
-		event: ChangeEvent<any>,
+		e: ChangeEvent<any>,
 		checked: boolean
 	) => {
 		nodecg
 			.sendMessage('toggleCheckbox', {
-				name: event.target.name,
+				name: e.target.name,
 				checked,
 			})
 			.catch(err => {
@@ -56,27 +61,15 @@ export class Checklist extends React.Component<
 			});
 	};
 
-	private readonly LeftChecklist = () =>
-		this.state.checklist
-			.slice(0, this.leftRowsCount())
-			.map(checklist => this.makeChecklistElement(checklist));
-
-	private readonly RightChecklist = () =>
-		this.state.checklist
-			.slice(this.leftRowsCount())
-			.map(checklist => this.makeChecklistElement(checklist));
-
 	private readonly makeChecklistElement = (checklist: ChecklistSchema[0]) => (
-		<FormControlLabel
+		<CheckboxLabel
 			label={checklist.name}
 			key={checklist.name}
 			control={
-				<Checkbox checked={checklist.complete} name={checklist.name} />
+				<Checkbox disableRipple color='primary' checked={checklist.complete} name={checklist.name} />
 			}
 			onChange={this.toggleCheckbox}
+			style={{margin: '0'}}
 		/>
 	);
-
-	private readonly leftRowsCount = () =>
-		Math.ceil(this.state.checklist.length / 2);
 }
