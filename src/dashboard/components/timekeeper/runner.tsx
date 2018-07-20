@@ -8,6 +8,9 @@ import green from '@material-ui/core/colors/green';
 import yellow from '@material-ui/core/colors/yellow';
 import grey from '@material-ui/core/colors/grey';
 import purple from '@material-ui/core/colors/purple';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+import {Color} from '@material-ui/core'
 
 // MUI Icons
 import Flag from '@material-ui/icons/Flag';
@@ -17,11 +20,6 @@ import Edit from '@material-ui/icons/Edit';
 
 // Ours
 import {TimeObject} from '../../../lib/time-object';
-import {
-	MuiThemeProvider,
-	createMuiTheme,
-	Color,
-} from '@material-ui/core';
 
 const Container = styled.div`
 	padding: 0 16px;
