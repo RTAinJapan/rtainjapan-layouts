@@ -3,7 +3,7 @@
 
 	"type": "object",
 	"additionalProperties": false,
-	"required": ["twitch"],
+	"required": ["twitch", "twitter"],
 	"properties": {
 		"horaroId": {
 			"type": "string"
@@ -28,9 +28,7 @@
 			"required": [
 				"targetWords",
 				"consumerKey",
-				"consumerSecret",
-				"accessTokenKey",
-				"accessTokenSecret"
+				"consumerSecret"
 			],
 			"properties": {
 				"targetWords": {
@@ -47,12 +45,6 @@
 					"type": "string"
 				},
 				"consumerSecret": {
-					"type": "string"
-				},
-				"accessTokenKey": {
-					"type": "string"
-				},
-				"accessTokenSecret": {
 					"type": "string"
 				}
 			}

@@ -1,0 +1,20 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "object",
+	"required": ["userObject", "accessToken", "accessTokenSecret"],
+	"properties": {
+		"userObject": {
+			"type": ["object", "null"],
+			"default": null
+		},
+		"accessToken": {
+			"type": ["string", "null"],
+			"default": null
+		},
+		"accessTokenSecret": {
+			"type": ["string", "null"],
+			"default": null
+		}
+	}
+}

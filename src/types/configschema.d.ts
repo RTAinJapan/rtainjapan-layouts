@@ -10,13 +10,11 @@ export interface Configschema {
     runnersInfoInterval?: number;
     sponsorInterval?: number;
   };
-  twitter?: {
+  twitter: {
     targetWords: string[];
     maxTweets?: number;
     consumerKey: string;
     consumerSecret: string;
-    accessTokenKey: string;
-    accessTokenSecret: string;
   };
   twitch: {
     targetChannel: string;

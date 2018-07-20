@@ -7,14 +7,18 @@
 		"build:ex": "parcel build src/extension/index.ts --target node --out-dir extension --public-url '.'",
 		"serve:db": "parcel watch src/dashboard/tech.html --out-dir dashboard --public-url '.'",
 		"build:db": "parcel build src/dashboard/tech.html --out-dir dashboard --public-url '.'",
+		"serve:tw": "parcel watch src/twitter-callback/index.html --out-dir twitter-callback --public-url '.'",
+		"build:tw": "parcel build src/twitter-callback/index.html --out-dir twitter-callback --public-url '.'",
 		"format": "prettier 'src/**/*.{ts,tsx,js,jsx,json,scss}' --write"
 	},
 	"dependencies": {
 		"@material-ui/core": "^1.4.0",
 		"@material-ui/icons": "^1.1.0",
 		"axios": "^0.18.0",
+		"crypto": "^1.0.1",
 		"downshift": "^2.0.14",
 		"lodash": "^4.17.10",
+		"oauth-1.0a": "^2.2.4",
 		"react": "^16.4.1",
 		"react-dom": "^16.4.1",
 		"source-map-support": "^0.5.6",
@@ -36,6 +40,12 @@
 	},
 	"nodecg": {
 		"compatibleRange": "^1.0.0",
+		"mount": [
+			{
+				"directory": "twitter-callback",
+				"endpoint": "twitter-callback"
+			}
+		],
 		"assetCategories": [
 			{
 				"name": "sponsorLogos",
