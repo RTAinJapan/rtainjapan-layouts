@@ -1,4 +1,4 @@
-import defaultChecklist from './default/checklist.json';
+import defaultChecklist from './default/checklist';
 import {NodeCG} from '../../types/nodecg';
 
 export const checklist = (nodecg: NodeCG) => {

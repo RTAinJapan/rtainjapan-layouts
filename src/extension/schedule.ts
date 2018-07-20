@@ -1,8 +1,8 @@
 import cloneDeep from 'lodash/cloneDeep';
 import axios from 'axios';
 
-import defaultGameList from './default/games.json';
-import defaultRunnerList from './default/runners.json';
+import defaultGameList from './default/games';
+import defaultRunnerList from './default/runners';
 import {NodeCG} from '../../types/nodecg';
 import {Horaro} from '../../types/schemas/horaro';
 import {GameList} from '../../types/schemas/gameList';
