@@ -1,9 +1,10 @@
+// Packages
 import React from 'react';
 import styled from 'styled-components';
 
+// Ours
 import {CurrentRun} from '../../../types/schemas/currentRun';
 import {NextRun} from '../../../types/schemas/nextRun';
-import {RunnerList} from '../../../types/schemas/runnerList';
 
 const Container = styled.div`
 	display: grid;

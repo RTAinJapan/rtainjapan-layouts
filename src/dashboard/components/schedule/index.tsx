@@ -67,7 +67,7 @@ const EditControls = styled.div`
 
 export class Schedule extends React.Component<
 	{},
-	{titles: string[]; currentRun: CurrentRun; nextRun: NextRun}
+	{titles: (string | undefined)[]; currentRun: CurrentRun; nextRun: NextRun}
 > {
 	constructor(props: {}) {
 		super(props);
@@ -83,16 +83,9 @@ export class Schedule extends React.Component<
 			if (!newVal) {
 				return;
 			}
-			const titles: string[] = [];
-			newVal
+			const titles = newVal
 				.filter(run => run.pk !== -1)
 				.map(run => run.title)
-				.forEach(title => {
-					if (title === undefined) {
-						return;
-					}
-					titles.push(title);
-				});
 			this.setState({titles});
 		});
 		currentRunRep.on('change', newVal => {
@@ -108,13 +101,13 @@ export class Schedule extends React.Component<
 
 	render() {
 		return (
-			<Container id="schedule-container">
-				<SelectionContainer id="selection-controls">
-					<Button variant="contained">
+			<Container>
+				<SelectionContainer>
+					<Button variant="raised">
 						<ArrowBack />前
 					</Button>
 					{this.renderTypeahead()}
-					<Button variant="contained">
+					<Button variant="raised">
 						次<ArrowForward />
 					</Button>
 				</SelectionContainer>
@@ -161,7 +154,7 @@ export class Schedule extends React.Component<
 					</div>
 				)}
 			</Downshift>
-			<NoWrapButton variant="contained" size="small">
+			<NoWrapButton variant="raised">
 				スキップ<ChevronRight />
 			</NoWrapButton>
 		</TypeaheadContainer>
@@ -189,6 +182,9 @@ export class Schedule extends React.Component<
 		const suggestions: string[] = [];
 		if (inputValue) {
 			for (const title of this.state.titles) {
+				if (!title) {
+					continue;
+				}
 				const titleMatches = title
 					.toLowerCase()
 					.includes(inputValue.toLowerCase());

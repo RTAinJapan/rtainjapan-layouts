@@ -1,7 +1,6 @@
 // Packages
 import React from 'react';
 import styled from 'styled-components';
-import cloneDeep from 'lodash/cloneDeep';
 
 // MUI Core
 import Button from '@material-ui/core/Button';
@@ -72,7 +71,7 @@ export class Timekeeper extends React.Component<
 	componentDidMount() {
 		stopwatchRep.on('change', newVal => {
 			this.setState({
-				timer: cloneDeep(newVal),
+				timer: newVal,
 			});
 		});
 		currentRunRep.on('change', newVal => {

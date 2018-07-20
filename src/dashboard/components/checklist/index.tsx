@@ -69,8 +69,6 @@ export class Checklist extends React.Component<
 			key={checklist.name}
 			control={
 				<Checkbox
-					disableRipple
-					color="primary"
 					checked={checklist.complete}
 					name={checklist.name}
 				/>
