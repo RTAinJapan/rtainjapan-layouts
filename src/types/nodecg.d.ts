@@ -1,4 +1,4 @@
-import {Configschema} from './configschema';
+import {Configschema} from './schemas/configschema';
 
 export interface NodeCG {
 	Replicant<T = never>(

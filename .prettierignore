@@ -1,14 +1,2 @@
-/.prettierrc.json
-
-/node_modules
-/bower_components
-/.vscode
-/.cache
-**/*.log
-
-/extension
-/dashboard
-/graphics
-
-/src/types
+/src/types/schemas
 /src/extension/default

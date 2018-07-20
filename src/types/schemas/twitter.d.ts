@@ -5,7 +5,7 @@
  */
 
 export interface Twitter {
-  userObject?: {
+  userObject: {
     [k: string]: any;
   } | null;
   accessToken: string | null;
