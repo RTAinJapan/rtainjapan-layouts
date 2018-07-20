@@ -5,6 +5,6 @@
  */
 
 export type Horaro = {
-  pk?: number;
-  scheduled?: number;
+	pk?: number;
+	scheduled?: number;
 }[];

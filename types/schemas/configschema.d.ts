@@ -5,19 +5,19 @@
  */
 
 export interface Configschema {
-  horaroId?: string;
-  animation?: {
-    runnersInfoInterval?: number;
-    sponsorInterval?: number;
-  };
-  twitter: {
-    targetWords: string[];
-    maxTweets?: number;
-    consumerKey: string;
-    consumerSecret: string;
-  };
-  twitch: {
-    targetChannel: string;
-    titleTemplate: string;
-  };
+	horaroId?: string;
+	animation?: {
+		runnersInfoInterval?: number;
+		sponsorInterval?: number;
+	};
+	twitter: {
+		targetWords: string[];
+		maxTweets?: number;
+		consumerKey: string;
+		consumerSecret: string;
+	};
+	twitch: {
+		targetChannel: string;
+		titleTemplate: string;
+	};
 }
