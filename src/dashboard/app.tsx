@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import {Checklist} from './components/checklist';
 import {Schedule} from './components/schedule';
 import {Timekeeper} from './components/timekeeper';
+import {Twitter} from './components/twitter';
 
 const Container = styled.div`
 	height: 100vh;
@@ -34,6 +35,8 @@ export const App = () => (
 		<Column>
 			<Schedule />
 		</Column>
-		<Column>Fuga</Column>
+		<Column>
+			<Twitter />
+		</Column>
 	</Container>
 );
