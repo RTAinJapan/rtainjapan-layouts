@@ -4,14 +4,7 @@ import styled from 'styled-components';
 import cloneDeep from 'lodash/cloneDeep';
 
 // MUI Core
-import {Color} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
-import green from '@material-ui/core/colors/green';
-import orange from '@material-ui/core/colors/orange';
-import purple from '@material-ui/core/colors/purple';
-import grey from '@material-ui/core/colors/grey';
 
 // MUI Icons
 import PlayArrow from '@material-ui/icons/PlayArrow';
@@ -64,21 +57,6 @@ const RunnersContainer = styled.div`
 	grid-template-rows: repeat(4, 1fr);
 `;
 
-const customPrimaryColorTheme = (color: Color) =>
-	createMuiTheme({
-		props: {
-			MuiButton: {
-				size: 'large',
-				fullWidth: true,
-				variant: 'raised',
-				color: 'primary',
-			},
-		},
-		palette: {
-			primary: color,
-		},
-	});
-
 export class Timekeeper extends React.Component<
 	{},
 	{timer: TimeObject; runners: (string | null)[]; checklistComplete: boolean}
@@ -126,26 +104,18 @@ export class Timekeeper extends React.Component<
 			<Container>
 				<Timer>{this.state.timer.formatted}</Timer>
 				<CtrlsContainer>
-					<MuiThemeProvider theme={customPrimaryColorTheme(green)}>
-						<Button>
+						<Button variant='raised' fullWidth>
 							<PlayArrow />開始
 						</Button>
-					</MuiThemeProvider>
-					<MuiThemeProvider theme={customPrimaryColorTheme(orange)}>
-						<Button disabled={this.paused()}>
+						<Button variant='raised' fullWidth disabled={this.paused()}>
 							<Pause />停止
 						</Button>
-					</MuiThemeProvider>
-					<MuiThemeProvider theme={customPrimaryColorTheme(purple)}>
-						<Button>
+						<Button variant='raised' fullWidth>
 							<Refresh />リセット
 						</Button>
-					</MuiThemeProvider>
-					<MuiThemeProvider theme={customPrimaryColorTheme(grey)}>
-						<Button>
+						<Button variant='raised' fullWidth>
 							<ModeEdit />編集
 						</Button>
-					</MuiThemeProvider>
 				</CtrlsContainer>
 				<RunnersContainer>
 					{this.state.runners.map((runner, index) => (

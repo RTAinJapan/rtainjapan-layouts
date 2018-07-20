@@ -4,13 +4,6 @@ import styled, {css} from 'styled-components';
 
 // MUI Core
 import Button from '@material-ui/core/Button';
-import green from '@material-ui/core/colors/green';
-import yellow from '@material-ui/core/colors/yellow';
-import grey from '@material-ui/core/colors/grey';
-import purple from '@material-ui/core/colors/purple';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
-import {Color} from '@material-ui/core'
 
 // MUI Icons
 import Flag from '@material-ui/icons/Flag';
@@ -66,29 +59,8 @@ const ButtonContainer = styled.div`
 const EmptySlot = styled.div`
 	font-size: 24px;
 	color: #adadad;
-	width: 100%;
 	text-align: center;
 `;
-
-const buttonTheme = (color: Color) =>
-	createMuiTheme({
-		props: {
-			MuiButton: {
-				variant: 'raised',
-			},
-		},
-		overrides: {
-			MuiButton: {
-				root: {
-					height: '80%',
-					padding: '8px 4px',
-				},
-			},
-		},
-		palette: {
-			primary: color,
-		},
-	});
 
 export class Runner extends React.Component<{
 	runner: string | null;
@@ -123,31 +95,23 @@ export class Runner extends React.Component<{
 				</div>
 				<ButtonContainer>
 					{this.finished() || (
-						<MuiThemeProvider theme={buttonTheme(green)}>
-							<Button color="primary">
+							<Button variant='raised'>
 								<Flag />完走
 							</Button>
-						</MuiThemeProvider>
 					)}
 					{this.noResult() || (
-						<MuiThemeProvider theme={buttonTheme(yellow)}>
-							<Button color="primary">
+							<Button variant='raised'>
 								<Undo />再開
 							</Button>
-						</MuiThemeProvider>
 					)}
 					{this.forfeited() || (
-						<MuiThemeProvider theme={buttonTheme(grey)}>
-							<Button color="primary">
+							<Button variant='raised'>
 								<Cancel />リタイア
 							</Button>
-						</MuiThemeProvider>
 					)}
-					<MuiThemeProvider theme={buttonTheme(purple)}>
-						<Button disabled={this.noResult()} color="primary">
+						<Button disabled={this.noResult()} variant='raised'>
 							<Edit />編集
 						</Button>
-					</MuiThemeProvider>
 				</ButtonContainer>
 			</RunnerContainer>
 		);

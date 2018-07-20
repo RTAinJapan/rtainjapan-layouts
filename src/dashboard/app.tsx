@@ -18,7 +18,6 @@ const Container = styled.div`
 `;
 
 const Column = styled.div`
-	height: 100%;
 	display: grid;
 	gap: 16px;
 `;

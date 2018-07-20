@@ -6,7 +6,6 @@ import {NextRun} from '../../../types/schemas/nextRun';
 import {RunnerList} from '../../../types/schemas/runnerList';
 
 const Container = styled.div`
-	height: 100%;
 	display: grid;
 	grid-template-areas: 'label' 'name' 'runners' 'category' 'misc' 'notes';
 `;
