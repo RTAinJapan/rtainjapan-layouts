@@ -8,8 +8,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 // Ours
 import nodecg from '../../../lib/nodecg';
-import {Checklist as ChecklistSchema} from '../../../types/schemas/checklist';
-import {checklistRep} from '../../replicants';
+import {Checklist as ChecklistSchema} from '../../../../types/schemas/checklist';
+import {checklistRep} from '../../lib/replicants';
 import {BorderedBox} from '../lib/bordered-box';
 
 const Container = BorderedBox.extend`

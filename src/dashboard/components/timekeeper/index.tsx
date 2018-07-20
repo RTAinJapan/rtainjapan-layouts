@@ -17,7 +17,7 @@ import {
 	stopwatchRep,
 	currentRunRep,
 	checklistCompleteRep,
-} from '../../replicants';
+} from '../../lib/replicants';
 import {Runner} from './runner';
 import {BorderedBox} from '../lib/bordered-box';
 
