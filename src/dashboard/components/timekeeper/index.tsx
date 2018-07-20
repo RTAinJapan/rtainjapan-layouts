@@ -49,8 +49,8 @@ const CtrlsContainer = styled.div`
 	padding-right: 16px;
 	grid-area: ctrls;
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 1fr 1fr;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(2, 1fr);
 	gap: 8px;
 	justify-items: center;
 	align-items: center;
@@ -61,7 +61,7 @@ const RunnersContainer = styled.div`
 	align-self: stretch;
 	grid-area: runners;
 	display: grid;
-	grid-template-rows: 1fr 1fr 1fr 1fr;
+	grid-template-rows: repeat(4, 1fr);
 `;
 
 const customPrimaryColorTheme = (color: Color) =>

@@ -15,7 +15,7 @@ import {BorderedBox} from '../lib/bordered-box';
 const Container = BorderedBox.extend`
 	padding: 16px;
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: repeat(2, 1fr);
 	grid-template-rows: 1fr;
 	gap: 8px;
 `;

@@ -21,7 +21,7 @@ import {
 	MuiThemeProvider,
 	createMuiTheme,
 	Color,
-} from '../../../../node_modules/@material-ui/core';
+} from '@material-ui/core';
 
 const Container = styled.div`
 	padding: 0 16px;
