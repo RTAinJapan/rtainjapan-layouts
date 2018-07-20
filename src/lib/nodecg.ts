@@ -1,4 +1,4 @@
-import {NodeCG} from '../types/nodecg';
+import {NodeCG} from '../../types/nodecg';
 
 declare const nodecg: NodeCG;
 
