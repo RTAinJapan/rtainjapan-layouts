@@ -51,7 +51,17 @@ const NoWrapButton = styled(Button)`
 
 const RunInfoContainer = styled.div`
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: 1fr 0px 1fr;
+	gap: 16px;
+`;
+
+const Divider = styled.div`
+	border-left: 1px dashed black;
+`;
+
+const EditControls = styled.div`
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
 	gap: 16px;
 `;
 
@@ -110,8 +120,14 @@ export class Schedule extends React.Component<
 				</SelectionContainer>
 				<RunInfoContainer>
 					<RunInfo run={this.state.currentRun} label="現在のゲーム" />
+					<Divider />
 					<RunInfo run={this.state.nextRun} label="次のゲーム" />
 				</RunInfoContainer>
+				<EditControls>
+					<Button variant="raised">編集：現在のゲーム</Button>
+					<Button variant="raised">手動更新</Button>
+					<Button variant="raised">編集：次のゲーム</Button>
+				</EditControls>
 			</Container>
 		);
 	}
