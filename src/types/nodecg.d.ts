@@ -5,10 +5,10 @@ export interface NodeCG {
 		name: string,
 		options?: {defaultValue: T}
 	): Replicant<T>;
-	sendMessage<T = never, U = never>(message: string, data: T): Promise<U>;
-	listenFor<T = never, U extends boolean = boolean>(
+	sendMessage<T = never, U = never>(message: string, data?: T): Promise<U>;
+	listenFor<T = never>(
 		message: string,
-		handler: (data: T, cb: ListenForCbObj<U>) => void
+		handler: (data: T, cb: ListenForCbObj) => void
 	): void;
 	log: Logger;
 	Logger: new (label: string) => Logger;
@@ -29,6 +29,7 @@ export interface Logger {
 }
 
 export interface NodeCGConfig {
+	baseURL: string;
 	login: {
 		enabled: boolean;
 		twitch: {
@@ -39,15 +40,13 @@ export interface NodeCGConfig {
 	};
 }
 
-export type ListenForCbObj<T extends boolean> = T extends true
-	? HandledListenForCb<T>
-	: UnhandledListenForCb<T>;
+export type ListenForCbObj = HandledListenForCb | UnhandledListenForCb;
 
-interface HandledListenForCb<T extends boolean> {
-	handled: T
+interface HandledListenForCb {
+	handled: true;
 }
 
-interface UnhandledListenForCb<T extends boolean> {
-	(...args: any[]): void
-	handled: T
+interface UnhandledListenForCb {
+	(...args: any[]): void;
+	handled: false;
 }
