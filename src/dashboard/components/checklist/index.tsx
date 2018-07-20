@@ -22,7 +22,7 @@ const Container = BorderedBox.extend`
 const CheckboxLabel = styled(FormControlLabel)`
 	border-radius: 3px;
 	border: 1px solid black;
-`
+`;
 
 export class Checklist extends React.Component<
 	{},
@@ -42,7 +42,9 @@ export class Checklist extends React.Component<
 	render() {
 		return (
 			<Container>
-				{this.state.checklist.map(checklist => this.makeChecklistElement(checklist))}
+				{this.state.checklist.map(checklist =>
+					this.makeChecklistElement(checklist)
+				)}
 			</Container>
 		);
 	}
@@ -66,7 +68,12 @@ export class Checklist extends React.Component<
 			label={checklist.name}
 			key={checklist.name}
 			control={
-				<Checkbox disableRipple color='primary' checked={checklist.complete} name={checklist.name} />
+				<Checkbox
+					disableRipple
+					color="primary"
+					checked={checklist.complete}
+					name={checklist.name}
+				/>
 			}
 			onChange={this.toggleCheckbox}
 			style={{margin: '0'}}

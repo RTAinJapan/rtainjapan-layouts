@@ -103,18 +103,18 @@ export class Timekeeper extends React.Component<
 			<Container>
 				<Timer>{this.state.timer.formatted}</Timer>
 				<CtrlsContainer>
-						<Button variant='raised' fullWidth>
-							<PlayArrow />開始
-						</Button>
-						<Button variant='raised' fullWidth disabled={this.paused()}>
-							<Pause />停止
-						</Button>
-						<Button variant='raised' fullWidth>
-							<Refresh />リセット
-						</Button>
-						<Button variant='raised' fullWidth>
-							<ModeEdit />編集
-						</Button>
+					<Button variant="raised" fullWidth>
+						<PlayArrow />開始
+					</Button>
+					<Button variant="raised" fullWidth disabled={this.paused()}>
+						<Pause />停止
+					</Button>
+					<Button variant="raised" fullWidth>
+						<Refresh />リセット
+					</Button>
+					<Button variant="raised" fullWidth>
+						<ModeEdit />編集
+					</Button>
 				</CtrlsContainer>
 				<RunnersContainer>
 					{this.state.runners.map((runner, index) => (

@@ -92,23 +92,23 @@ export class Runner extends React.Component<{
 				</div>
 				<ButtonContainer>
 					{this.finished() || (
-							<Button variant='raised'>
-								<Flag />完走
-							</Button>
+						<Button variant="raised">
+							<Flag />完走
+						</Button>
 					)}
 					{this.noResult() || (
-							<Button variant='raised'>
-								<Undo />再開
-							</Button>
+						<Button variant="raised">
+							<Undo />再開
+						</Button>
 					)}
 					{this.forfeited() || (
-							<Button variant='raised'>
-								<Cancel />リタイア
-							</Button>
-					)}
-						<Button disabled={this.noResult()} variant='raised'>
-							<Edit />編集
+						<Button variant="raised">
+							<Cancel />リタイア
 						</Button>
+					)}
+					<Button disabled={this.noResult()} variant="raised">
+						<Edit />編集
+					</Button>
 				</ButtonContainer>
 			</RunnerContainer>
 		);
