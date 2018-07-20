@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {NodeCG} from '../types/nodecg';
-import {CurrentRun} from '../types/schemas/currentRun';
+import {NodeCG} from '../../types/nodecg';
+import {CurrentRun} from '../../types/schemas/currentRun';
 
 export const twitchTitleUpdater = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);

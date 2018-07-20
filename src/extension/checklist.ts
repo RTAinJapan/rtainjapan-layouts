@@ -1,5 +1,5 @@
 import defaultChecklist from './default/checklist.json';
-import {NodeCG} from '../types/nodecg';
+import {NodeCG} from '../../types/nodecg';
 
 export const checklist = (nodecg: NodeCG) => {
 	const checklistRep = nodecg.Replicant('checklist', {

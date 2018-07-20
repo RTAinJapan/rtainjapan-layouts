@@ -3,7 +3,7 @@ import {checklist} from './checklist';
 import {schedule} from './schedule';
 import {timekeeping} from './timekeeping';
 import {twitchTitleUpdater} from './twitch-title-updater';
-import {NodeCG} from '../types/nodecg';
+import {NodeCG} from '../../types/nodecg';
 import {twitter} from './twitter';
 
 module.exports = (nodecg: NodeCG) => {

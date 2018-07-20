@@ -1,9 +1,9 @@
 import axios from 'axios';
 import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
-import {NodeCG} from '../types/nodecg';
+import {NodeCG} from '../../types/nodecg';
 import {URLSearchParams} from 'url';
-import {Twitter} from '../types/schemas/twitter';
+import {Twitter} from '../../types/schemas/twitter';
 
 const REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token';
 const ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token';

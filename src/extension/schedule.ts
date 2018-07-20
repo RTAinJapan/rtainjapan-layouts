@@ -3,15 +3,15 @@ import axios from 'axios';
 
 import defaultGameList from './default/games.json';
 import defaultRunnerList from './default/runners.json';
-import {NodeCG} from '../types/nodecg';
-import {Horaro} from '../types/schemas/horaro';
-import {GameList} from '../types/schemas/gameList';
-import {RunnerList} from '../types/schemas/runnerList';
-import {Schedule} from '../types/schemas/schedule';
-import {CurrentRun} from '../types/schemas/currentRun';
-import {NextRun} from '../types/schemas/nextRun';
-import {ModifyRun} from '../types/messages';
-import {HoraroApi} from '../types/bundle';
+import {NodeCG} from '../../types/nodecg';
+import {Horaro} from '../../types/schemas/horaro';
+import {GameList} from '../../types/schemas/gameList';
+import {RunnerList} from '../../types/schemas/runnerList';
+import {Schedule} from '../../types/schemas/schedule';
+import {CurrentRun} from '../../types/schemas/currentRun';
+import {NextRun} from '../../types/schemas/nextRun';
+import {ModifyRun} from '../../types/messages';
+import {HoraroApi} from '../../types/bundle';
 
 const UPDATE_INTERVAL = 60 * 1000;
 
