@@ -5,6 +5,6 @@
  */
 
 export type Checklist = {
-	name?: string;
-	complete?: boolean;
+  name?: string;
+  complete?: boolean;
 }[];

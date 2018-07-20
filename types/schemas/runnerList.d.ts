@@ -5,9 +5,9 @@
  */
 
 export type RunnerList = {
-	name?: string;
-	twitch?: string;
-	nico?: string;
-	twitter?: string;
-	pk?: number;
+  name?: string;
+  twitch?: string;
+  nico?: string;
+  twitter?: string;
+  pk?: number;
 }[];

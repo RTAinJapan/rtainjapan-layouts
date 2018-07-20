@@ -5,24 +5,24 @@
  */
 
 export type Schedule = {
-	pk?: number;
-	index: number;
-	scheduled?: number;
-	title?: string;
-	engTitle?: string;
-	category?: string;
-	hardware?: string;
-	duration?: string;
-	runners?: {
-		name?: string;
-		twitch?: string;
-		nico?: string;
-		twitter?: string;
-	}[];
-	commentators?: {
-		name?: string;
-		twitch?: string;
-		nico?: string;
-		twitter?: string;
-	}[];
+  pk?: number;
+  index: number;
+  scheduled?: number;
+  title?: string;
+  engTitle?: string;
+  category?: string;
+  hardware?: string;
+  duration?: string;
+  runners?: {
+    name?: string;
+    twitch?: string;
+    nico?: string;
+    twitter?: string;
+  }[];
+  commentators?: {
+    name?: string;
+    twitch?: string;
+    nico?: string;
+    twitter?: string;
+  }[];
 }[];

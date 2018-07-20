@@ -5,5 +5,5 @@
  */
 
 export type Tweets = {
-	[k: string]: any;
+  [k: string]: any;
 }[];

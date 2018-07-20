@@ -5,14 +5,14 @@
  */
 
 export type GameList = {
-	title?: string;
-	engTitle?: string;
-	runner?: string;
-	commentator?: string;
-	category?: string;
-	hardware?: string;
-	pk?: number;
-	runnerPkAry?: number[];
-	commentatorPkAry?: number[];
-	duration?: string;
+  title?: string;
+  engTitle?: string;
+  runner?: string;
+  commentator?: string;
+  category?: string;
+  hardware?: string;
+  pk?: number;
+  runnerPkAry?: number[];
+  commentatorPkAry?: number[];
+  duration?: string;
 }[];
