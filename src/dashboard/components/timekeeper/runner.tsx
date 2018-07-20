@@ -33,14 +33,11 @@ const RunnerContainer = styled.div`
 
 const RunnerName = styled.div`
 	font-size: 24px;
-	font-weight: 500;
 `;
 
 const RunnerStatus = styled.div`
 	font-size: 24px;
-	font-weight: 500;
 	color: #adadad;
-	font-weight: 700;
 	${({theme}) =>
 		theme.finished &&
 		css`

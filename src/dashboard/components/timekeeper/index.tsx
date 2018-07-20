@@ -23,7 +23,6 @@ import {Runner} from './runner';
 import {BorderedBox} from '../lib/bordered-box';
 
 const Container = BorderedBox.extend`
-	font-weight: 700;
 	display: grid;
 	grid-template-columns: 1fr auto;
 	grid-template-rows: 105px 1fr;

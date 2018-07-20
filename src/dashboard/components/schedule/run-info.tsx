@@ -7,14 +7,9 @@ import {RunnerList} from '../../../types/schemas/runnerList';
 
 const Container = styled.div`
 	display: grid;
-	grid-template-areas: 'label' 'name' 'runners' 'category' 'misc' 'notes';
 `;
 
 const Label = styled.div`
-	grid-area: 'label';
-	font-weight: 500;
-	font-size: 18px;
-	width: 100;
 	text-align: center;
 `;
 
