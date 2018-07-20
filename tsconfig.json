@@ -9,6 +9,7 @@
 		"target": "es2017",
 		"lib": ["esnext", "dom"],
 		"jsx": "react",
-		"esModuleInterop": true
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true
 	}
 }
