@@ -1,3 +1,3 @@
 export interface ModifyRun {
-	pk: number
+	pk: number;
 }

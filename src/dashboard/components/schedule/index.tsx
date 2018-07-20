@@ -85,7 +85,7 @@ export class Schedule extends React.Component<
 			}
 			const titles = newVal
 				.filter(run => run.pk !== -1)
-				.map(run => run.title)
+				.map(run => run.title);
 			this.setState({titles});
 		});
 		currentRunRep.on('change', newVal => {

@@ -46,25 +46,25 @@ export const schedule = (nodecg: NodeCG) => {
 
 	nodecg.listenFor('nextRun', (_, cb) => {
 		seekToNextRun();
-		if (cb) {
+		if (cb && !cb.handled) {
 			cb();
 		}
 	});
 	nodecg.listenFor('previousRun', (_, cb) => {
 		seekToPreviousRun();
-		if (cb) {
+		if (cb && !cb.handled) {
 			cb();
 		}
 	});
 	nodecg.listenFor('setCurrentRunByIndex', (index, cb) => {
 		updateCurrentRun(index);
-		if (cb) {
+		if (cb && !cb.handled) {
 			cb();
 		}
 	});
 	nodecg.listenFor('manualUpdate', (_, cb) => {
 		fetchHoraroSchedule();
-		if (cb) {
+		if (cb && !cb.handled) {
 			cb();
 		}
 	});
@@ -77,7 +77,7 @@ export const schedule = (nodecg: NodeCG) => {
 			nodecg.log.warn('[modifyRun] run not found:', data);
 		}
 
-		if (cb) {
+		if (cb && !cb.handled) {
 			cb();
 		}
 	});
