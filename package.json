@@ -2,15 +2,10 @@
 	"name": "rtainjapan-layouts",
 	"private": true,
 	"scripts": {
+		"bundle": "node scripts/bundle.js",
 		"start": "(cd ../.. && node index.js)",
-		"watch:ex": "parcel watch src/extension/index.ts --target node --out-dir extension --public-url './' --log-level 3",
-		"build:ex": "parcel build src/extension/index.ts --target node --out-dir extension --public-url './' --log-level 3 --detailed-report",
-		"watch:db": "parcel watch src/dashboard/*.html --out-dir dashboard --public-url './' --log-level 3",
-		"build:db": "parcel build src/dashboard/*.html --out-dir dashboard --public-url './' --log-level 3 --detailed-report",
-		"watch:tw": "parcel watch src/twitter-callback/*.html --out-dir twitter-callback --public-url './' --log-level 3",
-		"build:tw": "parcel build src/twitter-callback/*.html --out-dir twitter-callback --public-url './' --log-level 3 --detailed-report",
-		"build:schema": "ts-node schema-types.ts",
-		"format": "prettier '{src,types,schemas}/**/*.{ts,tsx,js,jsx,json,scss}' --write"
+		"schema-types": "ts-node schema-types.ts",
+		"format": "prettier '{src,types,schemas}/**/*.{ts,tsx}' --write"
 	},
 	"dependencies": {
 		"@material-ui/core": "^1.4.0",
@@ -31,10 +26,10 @@
 		"@types/react": "^16.4.6",
 		"@types/react-dom": "^16.0.6",
 		"@types/source-map-support": "^0.4.1",
+		"app-root-path": "^2.1.0",
+		"del": "^3.0.0",
 		"json-schema-to-typescript": "^5.5.0",
 		"parcel-bundler": "^1.9.7",
-		"parcel-plugin-clean-dist": "^0.0.6",
-		"parcel-plugin-typescript": "^1.0.0",
 		"prettier": "^1.13.7",
 		"ts-node": "^7.0.0",
 		"typescript": "^2.9.2"
