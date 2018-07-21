@@ -25,11 +25,7 @@
 		"twitter": {
 			"type": "object",
 			"additionalProperties": false,
-			"required": [
-				"targetWords",
-				"consumerKey",
-				"consumerSecret"
-			],
+			"required": ["targetWords", "consumerKey", "consumerSecret"],
 			"properties": {
 				"targetWords": {
 					"type": "array",

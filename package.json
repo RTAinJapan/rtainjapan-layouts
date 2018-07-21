@@ -5,7 +5,7 @@
 		"bundle": "node scripts/bundle.js",
 		"start": "(cd ../.. && node index.js)",
 		"schema-types": "ts-node schema-types.ts",
-		"format": "prettier '{src,types,schemas}/**/*.{ts,tsx}' --write"
+		"format": "prettier '{{src,types,schemas}/**,.}/*.{ts,tsx,js,jsx,json}' --write"
 	},
 	"dependencies": {
 		"@material-ui/core": "^1.4.0",
