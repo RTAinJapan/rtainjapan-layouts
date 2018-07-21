@@ -132,8 +132,7 @@ export const twitter = (nodecg: NodeCG) => {
 
 		try {
 			const accessToken = await getAccessToken(data.oauthVerifier);
-			twitterRep.value.accessToken = accessToken.token;
-			twitterRep.value.accessTokenSecret = accessToken.secret;
+			// TODO: Save accessToken
 			twitterRep.value.userObject = await verifyCredentials(
 				accessToken.token,
 				accessToken.secret
@@ -147,7 +146,5 @@ export const twitter = (nodecg: NodeCG) => {
 
 	nodecg.listenFor('twitter:logout', () => {
 		twitterRep.value.userObject = null;
-		twitterRep.value.accessToken = null;
-		twitterRep.value.accessTokenSecret = null;
 	});
 };

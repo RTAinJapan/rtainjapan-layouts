@@ -41,17 +41,15 @@ class App extends React.Component<{}, State> {
 
 	render() {
 		const {userObject} = this.state;
-		return (
-			userObject ? (
-				<LoggedIn onClick={this.logout}>
-					<div>ログイン中：@{userObject.screen_name}</div>
-					<Button variant="raised">ログアウト</Button>
-				</LoggedIn>
-			) : (
-				<ButtonBase>
-					<img onClick={this.login} src={twitterSignIn} />
-				</ButtonBase>
-			)
+		return userObject ? (
+			<LoggedIn onClick={this.logout}>
+				<div>ログイン中：@{userObject.screen_name}</div>
+				<Button variant="raised">ログアウト</Button>
+			</LoggedIn>
+		) : (
+			<ButtonBase>
+				<img onClick={this.login} src={twitterSignIn} />
+			</ButtonBase>
 		);
 	}
 

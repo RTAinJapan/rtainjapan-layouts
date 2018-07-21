@@ -8,7 +8,4 @@ export interface Twitter {
   userObject: {
     [k: string]: any;
   } | null;
-  accessToken: string | null;
-  accessTokenSecret: string | null;
-  [k: string]: any;
 }
