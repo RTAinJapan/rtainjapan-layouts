@@ -1,12 +1,16 @@
+import '../lib/react-devtools';
+
 // Packages
 import React from 'react';
+import ReactDom from 'react-dom';
 import styled from 'styled-components';
 
-// Components
+// Ours
 import {Checklist} from './components/checklist';
 import {Schedule} from './components/schedule';
 import {Timekeeper} from './components/timekeeper';
 import {Twitter} from './components/twitter';
+import {twitterCallback} from './lib/twitter-callback';
 
 const Container = styled.div`
 	height: 100vh;
@@ -22,6 +26,7 @@ const Column = styled.div`
 	display: grid;
 	gap: 16px;
 `;
+
 const LeftColumn = Column.extend`
 	grid-template-rows: 1fr auto;
 `;
@@ -40,3 +45,10 @@ export const App = () => (
 		</Column>
 	</Container>
 );
+
+twitterCallback();
+
+document.body.style.margin = '0';
+document.body.style.padding = '0';
+
+ReactDom.render(<App />, document.getElementById('tech'));

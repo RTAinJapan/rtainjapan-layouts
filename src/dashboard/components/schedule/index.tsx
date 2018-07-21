@@ -18,7 +18,7 @@ import ArrowForward from '@material-ui/icons/ArrowForward';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 
 // Ours
-import {scheduleRep, currentRunRep, nextRunRep} from '../../lib/replicants';
+import {scheduleRep, currentRunRep, nextRunRep} from '../../../lib/replicants';
 import {CurrentRun} from '../../../../types/schemas/currentRun';
 import {NextRun} from '../../../../types/schemas/nextRun';
 import {RunInfo} from './run-info';

@@ -76,6 +76,7 @@ export const twitter = (nodecg: NodeCG) => {
 		} catch (err) {
 			nodecg.log.error('Failed to get Twitter oauth token');
 			nodecg.log.error(err);
+			cb(err);
 			oauthInProgress = false;
 		}
 	});
@@ -121,7 +122,11 @@ export const twitter = (nodecg: NodeCG) => {
 	};
 
 	nodecg.listenFor('twitterOauth', async (data: any) => {
-		if (data.oauthToken !== requestToken) {
+		if (!oauthInProgress) {
+			return;
+		}
+		if (data.oauthToken !== requestToken.token) {
+			oauthInProgress = false;
 			return;
 		}
 
@@ -138,5 +143,11 @@ export const twitter = (nodecg: NodeCG) => {
 			nodecg.log.error(err);
 		}
 		oauthInProgress = false;
+	});
+
+	nodecg.listenFor('twitter:logout', () => {
+		twitterRep.value.userObject = null;
+		twitterRep.value.accessToken = null;
+		twitterRep.value.accessTokenSecret = null;
 	});
 };

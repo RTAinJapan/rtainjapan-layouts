@@ -1,8 +1,8 @@
 import nodecg from '../../lib/nodecg';
 
 export const twitterCallback = () => {
-	const storage = sessionStorage.getItem('twitter-callback');
-	sessionStorage.removeItem('twitter-callback');
+	const storage = localStorage.getItem('twitter-callback');
+	localStorage.removeItem('twitter-callback');
 	if (!storage) {
 		return;
 	}

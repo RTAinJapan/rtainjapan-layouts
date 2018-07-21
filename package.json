@@ -5,10 +5,10 @@
 		"start": "(cd ../.. && node index.js)",
 		"watch:ex": "parcel watch src/extension/index.ts --target node --out-dir extension --public-url './' --log-level 3",
 		"build:ex": "parcel build src/extension/index.ts --target node --out-dir extension --public-url './' --log-level 3 --detailed-report",
-		"watch:db": "parcel watch src/dashboard/tech.html --out-dir dashboard --public-url './' --log-level 3",
-		"build:db": "parcel build src/dashboard/tech.html --out-dir dashboard --public-url './' --log-level 3 --detailed-report",
-		"watch:tw": "parcel watch src/twitter-callback/index.html --out-dir twitter-callback --public-url './' --log-level 3",
-		"build:tw": "parcel build src/twitter-callback/index.html --out-dir twitter-callback --public-url './' --log-level 3 --detailed-report",
+		"watch:db": "parcel watch src/dashboard/*.html --out-dir dashboard --public-url './' --log-level 3",
+		"build:db": "parcel build src/dashboard/*.html --out-dir dashboard --public-url './' --log-level 3 --detailed-report",
+		"watch:tw": "parcel watch src/twitter-callback/*.html --out-dir twitter-callback --public-url './' --log-level 3",
+		"build:tw": "parcel build src/twitter-callback/*.html --out-dir twitter-callback --public-url './' --log-level 3 --detailed-report",
 		"build:schema": "ts-node schema-types.ts",
 		"format": "prettier '{src,types,schemas}/**/*.{ts,tsx,js,jsx,json,scss}' --write"
 	},
@@ -63,6 +63,14 @@
 				"file": "tech.html",
 				"headerColor": "#9f9bbd",
 				"fullbleed": true
+			},
+			{
+				"name": "twitter-account",
+				"title": "Twitterアカウント",
+				"file": "twitter-account.html",
+				"width": 3,
+				"headerColor": "#6edbae",
+				"workspace": "Misc"
 			}
 		],
 		"_graphics": [
