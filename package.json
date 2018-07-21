@@ -4,7 +4,7 @@
 	"scripts": {
 		"bundle": "node scripts/bundle.js",
 		"start": "(cd ../.. && node index.js)",
-		"schema-types": "ts-node schema-types.ts",
+		"schema-types": "node scripts/schema-types.js",
 		"format": "prettier '{{src,types,schemas}/**,.}/*.{ts,tsx,js,jsx,json}' --write"
 	},
 	"dependencies": {

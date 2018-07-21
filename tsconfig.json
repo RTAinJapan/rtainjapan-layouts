@@ -11,6 +11,9 @@
 		"jsx": "react",
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
-		"moduleResolution": "node"
-	}
+		"skipLibCheck": true,
+		"moduleResolution": "node",
+		"noEmit": true
+	},
+	"include": ["src/**/*.ts", "src/**/*.tsx", "types/**/*.d.ts"]
 }
