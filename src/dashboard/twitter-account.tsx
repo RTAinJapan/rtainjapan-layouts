@@ -1,13 +1,18 @@
+// Packages
 import React from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
-import ButtonBase from '@material-ui/core/ButtonBase'
-import Button from '@material-ui/core/Button'
-import {twitterRep} from '../lib/replicants';
+import Transition from 'react-transition-group/Transition';
 
+// MUI Core
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Button from '@material-ui/core/Button';
+
+// Ours
 import nodecg from '../lib/nodecg';
 import {Twitter} from '../../types/schemas/twitter';
 import twitterSignIn from './images/twitter-sign-in.png';
+import {twitterRep} from '../lib/replicants';
 
 const LoggedIn = styled.div`
 	display: grid;
@@ -17,35 +22,37 @@ const LoggedIn = styled.div`
 	align-items: center;
 `;
 
-class App extends React.Component<{}, Twitter> {
-	constructor(props: {}) {
-		super(props);
+interface State {
+	userObject: Twitter['userObject'];
+}
+
+class App extends React.Component<{}, State> {
+	constructor() {
+		super({});
 		this.state = {
 			userObject: null,
-			accessToken: null,
-			accessTokenSecret: null,
 		};
 	}
 
 	componentDidMount() {
 		twitterRep.on('change', newVal => {
-			this.setState(newVal);
+			this.setState({userObject: newVal.userObject});
 		});
 	}
 
 	render() {
-		if (!this.state.userObject) {
-			return (
+		const {userObject} = this.state;
+		return (
+			userObject ? (
+				<LoggedIn onClick={this.logout}>
+					<div>ログイン中：@{userObject.screen_name}</div>
+					<Button variant="raised">ログアウト</Button>
+				</LoggedIn>
+			) : (
 				<ButtonBase>
 					<img onClick={this.login} src={twitterSignIn} />
 				</ButtonBase>
-			);
-		}
-		return (
-			<LoggedIn onClick={this.logout}>
-				<div>ログイン中：@{this.state.userObject.screen_name}</div>
-				<Button variant="raised">ログアウト</Button>
-			</LoggedIn>
+			)
 		);
 	}
 
