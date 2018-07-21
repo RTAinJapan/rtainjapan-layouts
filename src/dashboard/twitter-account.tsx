@@ -2,7 +2,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
-import Transition from 'react-transition-group/Transition';
 
 // MUI Core
 import ButtonBase from '@material-ui/core/ButtonBase';
