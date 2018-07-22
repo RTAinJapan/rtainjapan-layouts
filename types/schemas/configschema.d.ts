@@ -12,7 +12,7 @@ export interface Configschema {
   };
   twitter: {
     targetWords: string[];
-    maxTweets?: number;
+    maxTweets: number;
     consumerKey: string;
     consumerSecret: string;
   };
