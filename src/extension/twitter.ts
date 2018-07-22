@@ -223,17 +223,32 @@ export const twitter = async (nodecg: NodeCG) => {
 			}
 			try {
 				store += data;
-				const newTweet = JSON.parse(store);
-				tweetsRep.value = [newTweet, ...tweetsRep.value].slice(
+				const tweetObject = JSON.parse(store);
+				store = '';
+				if (
+					tweetObject.in_reply_to_user_id_str ||
+					tweetObject.quoted_status_id_str ||
+					tweetObject.retweeted_status
+				) {
+					return;
+				}
+
+				const tweet = {
+					text: tweetObject.text,
+					user: {
+						name: tweetObject.user.name,
+						screenName: tweetObject.user.screen_name,
+					},
+				};
+				tweetsRep.value = [tweet, ...tweetsRep.value].slice(
 					0,
 					maxTweets
 				);
 			} catch (err) {
-				if (store.length < 100000) {
-					return;
+				if (store.length > 100000) {
+					store = '';
 				}
 			}
-			store = '';
 		});
 
 		['close', 'aborted', 'end', 'error', 'readable'].forEach(ev => {

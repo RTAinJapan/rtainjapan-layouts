@@ -5,6 +5,7 @@ import {CurrentRun} from '../../types/schemas/currentRun';
 import {NextRun} from '../../types/schemas/nextRun';
 import {TimeObject} from './time-object';
 import {Twitter} from '../../types/schemas/twitter';
+import {Tweets} from '../../types/schemas/tweets';
 
 export const stopwatchRep = nodecg.Replicant<TimeObject>('stopwatch');
 export const checklistCompleteRep = nodecg.Replicant<boolean>(
@@ -15,3 +16,4 @@ export const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
 export const nextRunRep = nodecg.Replicant<NextRun>('nextRun');
 export const checklistRep = nodecg.Replicant<Checklist>('checklist');
 export const twitterRep = nodecg.Replicant<Twitter>('twitter');
+export const tweetsRep = nodecg.Replicant<Tweets>('tweets');
