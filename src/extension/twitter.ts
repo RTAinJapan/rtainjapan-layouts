@@ -1,16 +1,40 @@
+import {URLSearchParams} from 'url';
+import path from 'path';
 import axios from 'axios';
 import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
+import loadJsonFile from 'load-json-file';
+import writeJsonFile from 'write-json-file';
 import {NodeCG} from '../../types/nodecg';
-import {URLSearchParams} from 'url';
 import {Twitter} from '../../types/schemas/twitter';
+
+interface Token {
+	token: string;
+	secret: string;
+}
 
 const REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token';
 const ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token';
 const VERIFY_CREDENTIALS_URL =
 	'https://api.twitter.com/1.1/account/verify_credentials.json';
 
-export const twitter = (nodecg: NodeCG) => {
+const accessTokenPath = path.resolve(__dirname, './db/twitter-access-token.json');
+const loadAccessToken = async () => {
+	const accessToken: Token = await loadJsonFile(accessTokenPath);
+	if (
+		!accessToken ||
+		typeof accessToken.token !== 'string' ||
+		typeof accessToken.secret !== 'string'
+	) {
+		throw new Error('Invalid Twitter access token loaded from DB');
+	}
+	return accessToken;
+};
+const saveAccessToken = async ({token, secret}: Token) => {
+	return writeJsonFile(accessTokenPath, {token, secret});
+};
+
+export const twitter = async (nodecg: NodeCG) => {
 	const callbackUrl = `http://${nodecg.config.baseURL}/bundles/${
 		nodecg.bundleName
 	}/twitter-callback/index.html`;
@@ -21,7 +45,6 @@ export const twitter = (nodecg: NodeCG) => {
 		token: '',
 		secret: '',
 	};
-	let oauthInProgress = false;
 
 	const oauth = new OAuth({
 		consumer: {
@@ -60,10 +83,6 @@ export const twitter = (nodecg: NodeCG) => {
 		if (cb.handled) {
 			return;
 		}
-		if (oauthInProgress) {
-			return;
-		}
-		oauthInProgress = true;
 
 		try {
 			requestToken = await getRequestToken();
@@ -77,7 +96,6 @@ export const twitter = (nodecg: NodeCG) => {
 			nodecg.log.error('Failed to get Twitter oauth token');
 			nodecg.log.error(err);
 			cb(err);
-			oauthInProgress = false;
 		}
 	});
 
@@ -104,16 +122,14 @@ export const twitter = (nodecg: NodeCG) => {
 		};
 	};
 
-	const verifyCredentials = async (
-		accessToken: string,
-		accessTokenSecret: string
-	) => {
+	const verifyCredentials = async () => {
+		const accessToken = await loadAccessToken();
 		const oauthData = oauth.authorize(
 			{
 				url: VERIFY_CREDENTIALS_URL,
 				method: 'GET',
 			},
-			{key: accessToken, secret: accessTokenSecret}
+			{key: accessToken.token, secret: accessToken.secret}
 		);
 		const res = await axios.get(VERIFY_CREDENTIALS_URL, {
 			headers: oauth.toHeader(oauthData),
@@ -122,29 +138,22 @@ export const twitter = (nodecg: NodeCG) => {
 	};
 
 	nodecg.listenFor('twitterOauth', async (data: any) => {
-		if (!oauthInProgress) {
-			return;
-		}
 		if (data.oauthToken !== requestToken.token) {
-			oauthInProgress = false;
 			return;
 		}
 
 		try {
 			const accessToken = await getAccessToken(data.oauthVerifier);
-			// TODO: Save accessToken
-			twitterRep.value.userObject = await verifyCredentials(
-				accessToken.token,
-				accessToken.secret
-			);
+			await saveAccessToken(accessToken);
+			twitterRep.value.userObject = await verifyCredentials();
 		} catch (err) {
 			nodecg.log.error('Failed to authenticate user');
 			nodecg.log.error(err);
 		}
-		oauthInProgress = false;
 	});
 
-	nodecg.listenFor('twitter:logout', () => {
+	nodecg.listenFor('twitter:logout', async () => {
 		twitterRep.value.userObject = null;
+		await saveAccessToken({token: '', secret: ''})
 	});
 };
