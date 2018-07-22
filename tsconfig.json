@@ -14,7 +14,7 @@
 		"skipLibCheck": true,
 		"moduleResolution": "node",
 		"module": "commonjs",
-		"noEmit": true,
+		"noEmit": true
 	},
 	"include": ["src/**/*.ts", "src/**/*.tsx", "types/**/*.d.ts"]
 }

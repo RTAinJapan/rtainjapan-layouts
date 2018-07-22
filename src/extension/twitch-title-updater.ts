@@ -34,7 +34,7 @@ export const twitchTitleUpdater = (nodecg: NodeCG) => {
 		return;
 	}
 
-	console.log('TODO: Integrate Twitch login for bundle itself')
+	console.log('TODO: Integrate Twitch login for bundle itself');
 	return;
 
 	const loginLib = require('../../lib/login');

@@ -25,7 +25,12 @@
 		"twitter": {
 			"type": "object",
 			"additionalProperties": false,
-			"required": ["targetWords", "maxTweets", "consumerKey", "consumerSecret"],
+			"required": [
+				"targetWords",
+				"maxTweets",
+				"consumerKey",
+				"consumerSecret"
+			],
 			"properties": {
 				"targetWords": {
 					"type": "array",
