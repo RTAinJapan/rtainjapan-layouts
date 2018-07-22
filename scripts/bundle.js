@@ -1,50 +1,37 @@
-const appRoot = require('app-root-path');
-const Bundler = require('parcel-bundler');
-const del = require('del');
+const {fork} = require('child_process');
 
-const bundleFor = async ({input, output, target = 'browser'}) => {
-	const entryFiles = appRoot.resolve(input);
-	const outDir = appRoot.resolve(output);
-	const options = {
-		target,
-		outDir,
-		publicUrl: './',
-	};
+const isProduction = process.env.NODE_ENV === 'production';
+const command = isProduction ? 'build' : 'watch';
+const detailedReport = isProduction ? ['--detailed-report'] : [];
 
-	await del(outDir);
-	const bundler = new Bundler(entryFiles, options);
-	await bundler.bundle();
-};
+fork('./node_modules/.bin/parcel', [
+	command,
+	'src/extension/index.ts',
+	'--target',
+	'node',
+	'--out-dir',
+	'extension',
+	'--public-url',
+	'./',
+	...detailedReport,
+])
 
-const bundlers = [
-	() =>
-		bundleFor({
-			input: 'src/extension/index.ts',
-			output: 'extension',
-			target: 'node',
-		}),
+fork('./node_modules/.bin/parcel', [
+	command,
+	'src/dashboard/*.html',
+	'--out-dir',
+	'dashboard',
+	'--public-url',
+	'./',
+	...detailedReport,
+])
 
-	() =>
-		bundleFor({
-			input: 'src/dashboard/*.html',
-			output: 'dashboard',
-		}),
-
-	() =>
-		bundleFor({
-			input: 'src/twitter-callback/*.html',
-			output: 'twitter-callback',
-		}),
-];
-
-if (process.env.NODE_ENV === 'production') {
-	(async () => {
-		for (const bundler of bundlers) {
-			await bundler();
-		}
-	})();
-} else {
-	for (const bundler of bundlers) {
-		bundler();
-	}
-}
+fork('./node_modules/.bin/parcel', [
+	command,
+	'src/twitter-callback/*.html',
+	'--out-dir',
+	'twitter-callback',
+	'--public-url',
+	'./',
+	...detailedReport,
+])
