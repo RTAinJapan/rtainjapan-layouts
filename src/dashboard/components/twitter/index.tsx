@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import {BorderedBox} from '../lib/bordered-box';
+import {tweetsRep} from '../../../lib/replicants';
+import {Tweets} from '../../../../types/schemas/tweets';
+import {TweetItem} from './tweet-item';
 
 const Container = BorderedBox.extend`
+	height: calc(100vh - 32px);
 	display: grid;
 	grid-template-rows: auto 1fr;
 	justify-items: stretch;
@@ -23,13 +27,46 @@ const Empty = styled.div`
 	justify-items: center;
 `;
 
-export class Twitter extends React.Component {
+const TweetContainer = styled.div`
+	margin: 10px;
+	overflow-y: scroll;
+	display: grid;
+	grid-auto-flow: row;
+`;
+
+export class Twitter extends React.Component<{}, {tweets: Tweets}> {
+	constructor(props: {}) {
+		super(props);
+		this.state = {tweets: []};
+	}
+
+	componentDidMount() {
+		tweetsRep.on('change', this.tweetRepChange);
+	}
+
 	render() {
 		return (
 			<Container>
 				<Label>ツイート表示管理</Label>
-				<Empty>表示するツイートがありません</Empty>
+				{this.state.tweets.length === 0 ? (
+					<Empty>表示するツイートがありません</Empty>
+				) : (
+					<TweetContainer>
+						{this.state.tweets.map(tweet => (
+							<TweetItem tweet={tweet} key={tweet.id} />
+						))}
+					</TweetContainer>
+				)}
 			</Container>
 		);
 	}
+
+	componentWillUnmount() {
+		tweetsRep.removeListener('change', this.tweetRepChange);
+	}
+
+	private readonly tweetRepChange = (newVal: Tweets) => {
+		console.log(newVal);
+		this.setState({tweets: newVal});
+	};
 }

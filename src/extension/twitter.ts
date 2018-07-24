@@ -53,7 +53,7 @@ export const twitter = async (nodecg: NodeCG) => {
 	const callbackUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/twitter-callback/index.html`;
 
 	const twitterRep = nodecg.Replicant<Twitter>('twitter');
-	const tweetsRep = nodecg.Replicant<Tweets>('tweets');
+	const tweetsRep = nodecg.Replicant<Tweets>('tweets', {defaultValue: []});
 	const twitterConfig = nodecg.bundleConfig.twitter;
 	const maxTweets = nodecg.bundleConfig.twitter.maxTweets;
 
@@ -222,9 +222,15 @@ export const twitter = async (nodecg: NodeCG) => {
 				return;
 			}
 			try {
+				// Try to parse the string
 				store += data;
 				const tweetObject = JSON.parse(store);
+
+				// At this point the string could be parsed as JSON
+				// So it's safe to clear temporary string and move on
 				store = '';
+
+				// Exclude replies, quotes, retweets
 				if (
 					tweetObject.in_reply_to_user_id_str ||
 					tweetObject.quoted_status_id_str ||
@@ -233,18 +239,25 @@ export const twitter = async (nodecg: NodeCG) => {
 					return;
 				}
 
+				// Store only necessary data
 				const tweet = {
+					id: tweetObject.id_str,
+					createdAt: new Date(tweetObject.created_at).toISOString(),
 					text: tweetObject.text,
 					user: {
 						name: tweetObject.user.name,
 						screenName: tweetObject.user.screen_name,
+						profileImageUrl: new URL(
+							tweetObject.user.profile_image_url_https
+						).toString(),
 					},
 				};
-				tweetsRep.value = [tweet, ...tweetsRep.value].slice(
-					0,
-					maxTweets
-				);
+				tweetsRep.value = [tweet, ...tweetsRep.value];
 			} catch (err) {
+				if (err.message !== 'Unexpected end of JSON input') {
+					nodecg.log.error(err)
+					return;
+				}
 				if (store.length > 100000) {
 					store = '';
 				}
