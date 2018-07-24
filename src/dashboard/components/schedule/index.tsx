@@ -25,6 +25,7 @@ import {RunInfo} from './run-info';
 import {BorderedBox} from '../lib/bordered-box';
 
 const Container = BorderedBox.extend`
+	height: calc(100vh - 32px);
 	padding: 16px;
 	display: grid;
 	grid-template-rows: 40px 1fr;
