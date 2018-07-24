@@ -3,7 +3,31 @@
 
 	"type": "array",
 	"items": {
-		"type": "object"
+		"type": "object",
+		"additionalProperties": false,
+		"required": ["id", "createdAt", "text", "user"],
+		"properties": {
+			"id": {
+				"type": "string"
+			},
+			"createdAt": {
+				"type": "string",
+				"format": "date-time"
+			},
+			"text": {
+				"type": "string"
+			},
+			"user": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["name", "screenName", "profileImageUrl"],
+				"properties": {
+					"name": {"type": "string"},
+					"screenName": {"type": "string"},
+					"profileImageUrl": {"type": "string", "format": "uri"}
+				}
+			}
+		}
 	},
 	"default": []
 }

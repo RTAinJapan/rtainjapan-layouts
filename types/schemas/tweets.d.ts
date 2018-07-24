@@ -5,5 +5,12 @@
  */
 
 export type Tweets = {
-  [k: string]: any;
+  id: string;
+  createdAt: string;
+  text: string;
+  user: {
+    name: string;
+    screenName: string;
+    profileImageUrl: string;
+  };
 }[];
