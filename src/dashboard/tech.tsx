@@ -28,6 +28,7 @@ const Column = styled.div`
 `;
 
 const LeftColumn = Column.extend`
+	height: calc(100vh - 32px);
 	grid-template-rows: 1fr auto;
 `;
 
