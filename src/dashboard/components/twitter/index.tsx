@@ -28,10 +28,11 @@ const Empty = styled.div`
 `;
 
 const TweetContainer = styled.div`
-	margin: 10px;
+	padding: 10px;
 	overflow-y: scroll;
 	display: grid;
 	grid-auto-flow: row;
+	gap: 16px;
 `;
 
 export class Twitter extends React.Component<{}, {tweets: Tweets}> {
@@ -66,7 +67,6 @@ export class Twitter extends React.Component<{}, {tweets: Tweets}> {
 	}
 
 	private readonly tweetRepChange = (newVal: Tweets) => {
-		console.log(newVal);
 		this.setState({tweets: newVal});
 	};
 }
