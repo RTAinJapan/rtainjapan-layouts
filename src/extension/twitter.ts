@@ -217,7 +217,9 @@ export const twitter = async (nodecg: NodeCG) => {
 			twitterStream.setEncoding('utf8');
 		} catch (err) {
 			if (err && err.response && err.response.status === 420) {
-				nodecg.log.warn('Failed to start stream API due to rate limit. Retrying in 1 addMinutes.')
+				nodecg.log.warn(
+					'Failed to start stream API due to rate limit. Retrying in 1 addMinutes.'
+				);
 				await delay(60 * 1000);
 				await startFilterStream();
 			} else {

@@ -1,5 +1,6 @@
 {
 	"name": "rtainjapan-layouts",
+	"version": "0.0.1",
 	"private": true,
 	"scripts": {
 		"bundle": "node scripts/bundle.js",
@@ -47,7 +48,7 @@
 				"name": "stream",
 				"title": "配信担当ダッシュボード",
 				"file": "tech.html",
-				"headerColor": "#00bebe",
+				"headerColor": "#00BEBE",
 				"fullbleed": true
 			},
 			{
@@ -55,7 +56,7 @@
 				"title": "Twitterアカウント",
 				"file": "twitter-account.html",
 				"width": 3,
-				"headerColor": "#6edbae",
+				"headerColor": "#00BEBE",
 				"workspace": "Misc"
 			}
 		],
