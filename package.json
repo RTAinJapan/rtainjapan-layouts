@@ -22,6 +22,7 @@
 		"react-dom": "^16.4.1",
 		"source-map-support": "^0.5.6",
 		"styled-components": "^3.3.3",
+		"textfit": "^2.3.1",
 		"write-json-file": "^2.3.0"
 	},
 	"devDependencies": {
