@@ -32,13 +32,9 @@ const Container = styled.div`
 	grid-template-columns: auto 1fr auto;
 	gap: 16px;
 
-	&:not(:first-of-type) {
-		margin-top: 4px;
-	}
-
 	&:not(:last-of-type) {
 		border-bottom: 1px solid #3c3c3c;
-		padding-bottom: 10px;
+		padding-bottom: 16px;
 	}
 `;
 
@@ -83,7 +79,7 @@ const Avatar = styled.img`
 	left: 0;
 	width: 48px;
 	height: 48px;
-	border-radius: 5px;
+	border-radius: 48px;
 `;
 
 const TweetHeader = styled.header``;

@@ -28,7 +28,7 @@ const Empty = styled.div`
 `;
 
 const TweetContainer = styled.div`
-	padding: 10px;
+	padding: 16px;
 	overflow-y: scroll;
 	display: grid;
 	grid-auto-flow: row;
