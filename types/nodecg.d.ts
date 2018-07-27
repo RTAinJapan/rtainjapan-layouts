@@ -20,7 +20,10 @@ export interface NodeCG {
 export interface Replicant<T> {
 	value: T;
 	on(event: 'change', handler: (newVal: T, oldVal: T) => void): void;
-	removeListener(event: 'change', handler: (newVal: T, oldVal: T) => void): void;
+	removeListener(
+		event: 'change',
+		handler: (newVal: T, oldVal: T) => void
+	): void;
 }
 
 export interface Logger {

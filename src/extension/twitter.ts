@@ -255,7 +255,7 @@ export const twitter = async (nodecg: NodeCG) => {
 				tweetsRep.value = [tweet, ...tweetsRep.value];
 			} catch (err) {
 				if (err.message !== 'Unexpected end of JSON input') {
-					nodecg.log.error(err)
+					nodecg.log.error(err);
 					return;
 				}
 				if (store.length > 100000) {
