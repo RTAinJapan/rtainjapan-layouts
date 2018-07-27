@@ -28,6 +28,16 @@ fork('./node_modules/.bin/parcel', [
 
 fork('./node_modules/.bin/parcel', [
 	command,
+	'src/graphics/*.html',
+	'--out-dir',
+	'graphics',
+	'--public-url',
+	'./',
+	...detailedReport,
+])
+
+fork('./node_modules/.bin/parcel', [
+	command,
 	'src/twitter-callback/*.html',
 	'--out-dir',
 	'twitter-callback',

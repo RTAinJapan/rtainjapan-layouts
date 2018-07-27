@@ -41,27 +41,12 @@
 	},
 	"nodecg": {
 		"compatibleRange": "^1.0.0",
-		"mount": [
-			{
-				"directory": "twitter-callback",
-				"endpoint": "twitter-callback"
-			}
-		],
-		"assetCategories": [
-			{
-				"name": "sponsorLogos",
-				"title": "スポンサーロゴ",
-				"allowedTypes": [
-					"png"
-				]
-			}
-		],
 		"dashboardPanels": [
 			{
 				"name": "stream",
 				"title": "配信担当ダッシュボード",
 				"file": "tech.html",
-				"headerColor": "#9f9bbd",
+				"headerColor": "#00bebe",
 				"fullbleed": true
 			},
 			{
@@ -73,66 +58,26 @@
 				"workspace": "Misc"
 			}
 		],
-		"_graphics": [
-			{
-				"file": "3ds.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "break.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "ds.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "ds_h.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "gb1.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "gb2.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "hd1.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "hd2.html",
-				"width": 1920,
-				"height": 1080
-			},
+		"graphics": [
 			{
 				"file": "sd1.html",
 				"width": 1920,
 				"height": 1080
-			},
+			}
+		],
+		"assetCategories": [
 			{
-				"file": "sd1_m64.html",
-				"width": 1920,
-				"height": 1080
-			},
+				"name": "sponsorLogos",
+				"title": "スポンサーロゴ",
+				"allowedTypes": [
+					"png"
+				]
+			}
+		],
+		"mount": [
 			{
-				"file": "sd2.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "necro.html",
-				"width": 1920,
-				"height": 1080
+				"directory": "twitter-callback",
+				"endpoint": "twitter-callback"
 			}
 		]
 	}
