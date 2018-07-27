@@ -9,6 +9,7 @@ import {NodeCG} from '../../types/nodecg';
 import {Twitter} from '../../types/schemas/twitter';
 import {Tweets} from '../../types/schemas/tweets';
 import {IncomingMessage} from 'http';
+import delay from 'delay';
 
 interface Token {
 	token: string;
@@ -186,33 +187,45 @@ export const twitter = async (nodecg: NodeCG) => {
 	}
 
 	async function startFilterStream() {
-		const accessToken = await loadAccessToken();
-		if (!accessToken.token || !accessToken.secret) {
+		try {
+			const accessToken = await loadAccessToken();
+			if (!accessToken.token || !accessToken.secret) {
+				return;
+			}
+			const data = {
+				track: nodecg.bundleConfig.twitter.targetWords.join(','),
+			};
+			const oauthData = oauth.authorize(
+				{
+					url: STATUSES_FILTER_URL,
+					method: 'POST',
+					data,
+				},
+				{key: accessToken.token, secret: accessToken.secret}
+			);
+
+			const res = await axios.post<IncomingMessage>(
+				STATUSES_FILTER_URL,
+				undefined,
+				{
+					responseType: 'stream',
+					headers: oauth.toHeader(oauthData),
+					params: data,
+				}
+			);
+			twitterStream = res.data;
+			twitterStream.setEncoding('utf8');
+		} catch (err) {
+			if (err && err.response && err.response.status === 420) {
+				nodecg.log.warn('Failed to start stream API due to rate limit. Retrying in 1 addMinutes.')
+				await delay(60 * 1000);
+				await startFilterStream();
+			} else {
+				nodecg.log.error('Failed to start stream API');
+				nodecg.log.error(err.message);
+			}
 			return;
 		}
-		const data = {
-			track: nodecg.bundleConfig.twitter.targetWords.join(','),
-		};
-		const oauthData = oauth.authorize(
-			{
-				url: STATUSES_FILTER_URL,
-				method: 'POST',
-				data,
-			},
-			{key: accessToken.token, secret: accessToken.secret}
-		);
-
-		const res = await axios.post<IncomingMessage>(
-			STATUSES_FILTER_URL,
-			undefined,
-			{
-				responseType: 'stream',
-				headers: oauth.toHeader(oauthData),
-				params: data,
-			}
-		);
-		twitterStream = res.data;
-		twitterStream.setEncoding('utf8');
 
 		// Tweets are split when coming in through stream API
 		// Store the strings until it can be parsed or gets too long
