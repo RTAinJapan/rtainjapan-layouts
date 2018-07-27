@@ -1,0 +1,75 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="rtaij-overlay">
+	<template>
+		<style>
+			:host {
+				position: absolute;
+				width: 1920px;
+				height: 1080px;
+			}
+
+			#top {
+				position: absolute;
+				height: 150px;
+				width: 100%;
+				top: 0;
+				background-color: var(--rtaij-top-rgba, rgba(2, 14, 21, 0.6));
+			}
+
+			#bottom {
+				position: absolute;
+				height: calc(var(--rtaij-bottom-height));
+				width: 100%;
+				bottom: 0;
+				background-color: rgba(2, 14, 21, 0.6);
+			}
+
+			#logo_tainjapan {
+				position: absolute;
+				top: 15px;
+				left: 90px;
+			}
+
+			#sponsor {
+				position: absolute;
+				display: flex;
+				justify-content: center;
+				right: 0px;
+				height: 100%;
+				width: 210px;
+				border-top-left-radius: 30px;
+				background-color: white;
+			}
+
+			#sponsor_logo {
+				display: block;
+				margin: auto;
+				opacity: 0;
+				transition: opacity 0.33s linear;
+			}
+
+			#bg {
+				display: var(--rtaij-bg, inline);
+			}
+
+			#break_bg {
+				display: var(--rtaij-break-bg, none)
+			}
+		</style>
+
+		<div id="top">
+			<img id="logo_r" src="img/logo-r.png">
+			<img id="logo_tainjapan" src="img/logo-tainjapan.png">
+		</div>
+		<div id="bottom">
+			<div id="sponsor">
+				<img id="sponsor_logo" src="[[logoUrl]]">
+			</div>
+		</div>
+		<img id="bg" src="img/background.png">
+		<img id="break_bg" src="img/background_break.png">
+	</template>
+
+	<script src="rtaij-overlay.js"></script>
+</dom-module>

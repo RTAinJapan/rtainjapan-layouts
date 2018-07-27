@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>16:9 1プレイヤー</title>
+	<link rel="import" href="elements/rtaij-overlay/rtaij-overlay.html">
+	<link rel="import" href="elements/rtaij-runner/rtaij-runner-wide.html">
+	<link rel="import" href="elements/rtaij-commentator/rtaij-commentator-wide.html">
+	<link rel="import" href="elements/rtaij-game/rtaij-game.html">
+	<link rel="import" href="elements/rtaij-timer/rtaij-timer.html">
+	<link rel="stylesheet" href="style/layout.css">
+	<style>
+		#container {
+			clip-path: polygon(0 0, 0 741px, 465px 741px, 465px 15px, 1905px 15px, 1905px 825px, 465px 825px, 465px 741px, 447px 741px, 447px 1065px, 15px 1065px, 15px 741px, 0 741px, 0 1080px, 1920px 1080px, 1920px 0);
+		}
+
+		#runner,
+		#commentator,
+		#game,
+		#time,
+		#game_time {
+			position: absolute;
+			z-index: 1;
+		}
+
+		#runner {
+			bottom: 459px;
+			left: 15px;
+			height: 90px;
+			width: 432px;
+		}
+
+		#commentator {
+			bottom: 354px;
+			left: 15px;
+			height: 90px;
+			width: 432px;
+		}
+
+		#game {
+			bottom: 15px;
+			left: 480px;
+			height: 225px;
+			width: 765px;
+		}
+
+		#time {
+			bottom: 15px;
+			right: 240px;
+			height: 225px;
+			width: 372px;
+		}
+
+		#game_time {
+			bottom: 15px;
+			right: 642px;
+			width: 2px;
+			height: 210px;
+		}
+
+		rtaij-overlay {
+			--rtaij-bottom-height: 240px;
+		}
+
+		rtaij-game {
+			--rtaij-title-height: 147px;
+			--rtaij-misc-height: 72px;
+		}
+
+		rtaij-timer {
+			--rtaij-timer-height: 147px;
+			--rtaij-est-height: 72px;
+			--rtaij-timer-bg: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+		<rtaij-runner-wide id="runner"></rtaij-runner-wide>
+		<rtaij-commentator-wide id="commentator"></rtaij-commentator-wide>
+		<rtaij-game id="game"></rtaij-game>
+		<div class="separator" id="game_time"></div>
+		<rtaij-timer id="time"></rtaij-timer>
+		<rtaij-overlay></rtaij-overlay>
+	</div>
+</body>
+
+</html>

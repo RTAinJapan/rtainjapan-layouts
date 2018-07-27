@@ -1,0 +1,39 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="rtaij-commentator">
+	<template>
+		<style>
+			@import url('../style/nameplate.css');
+			:host {
+				position: absolute;
+				background: var(--rtaij-commentator-background,
+				linear-gradient(to right,
+				rgba(2, 14, 21, 0.6) 10%,
+				rgba(2, 14, 21, 0.05) 100%));
+				color: white;
+				z-index: 1;
+			}
+		</style>
+		<div id="container">
+			<img id="label_icon" src="img/icon/commentator.png">
+			<div id="label">Commentator</div>
+			<div id="name">傘ネズミ</div>
+			<!-- <div id="social_container">
+				<div id="twitch">
+					<img class="social_icon" src="img/icon/twitch.png">
+					<div class="social_info">[[commentator.twitch]]</div>
+				</div>
+				<div id="nico">
+					<img class="social_icon" src="img/icon/nico.png">
+					<div class="social_info">[[commentator.nico]]</div>
+				</div>
+				<div id="twitter">
+					<img class="social_icon" src="img/icon/twitter.png">
+					<div class="social_info">[[commentator.twitter]]</div>
+				</div>
+			</div> -->
+		</div>
+		<div id="ruler"></div>
+	</template>
+	<script src="rtaij-commentator.js"></script>
+</dom-module>

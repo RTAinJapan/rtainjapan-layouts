@@ -6,5 +6,5 @@
 
 /extension
 /dashboard
-/graphics
+!/graphics
 /twitter-callback

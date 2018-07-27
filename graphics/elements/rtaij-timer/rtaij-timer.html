@@ -1,0 +1,52 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="rtaij-timer">
+	<template>
+		<style>
+			:host {
+				display: flex;
+				flex-flow: column nowrap;
+				justify-content: flex-end;
+				align-items: center;
+				color: white;
+				white-space: nowrap;
+				background: var(--rtaij-timer-bg,
+				linear-gradient(to right,
+				rgba(2,14,21,0.05) 0%,
+				rgba(2,14,21,0.6) 45%,
+				rgba(2,14,21,0.6) 55%,
+				rgba(2,14,21,0.05) 100%));
+			}
+
+			#timer {
+				width: 100%;
+				height: var(--rtaij-timer-height);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-weight: 900;
+				font-size: 56px;
+			}
+			
+			#ruler {
+				height: var(--rtaij-timer-ruler-height, 4px);
+				width: 100%;
+				background-color: #ffff52;
+			}
+			
+			#est {
+				width: 100%;
+				height: var(--rtaij-est-height);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 32px;
+			}
+		</style>
+
+		<div id="timer">[[time]]</div>
+		<div id="ruler"></div>
+		<div id="est">予定タイム&nbsp;[[est]]</div>
+	</template>
+	<script src="rtaij-timer.js"></script>
+</dom-module>

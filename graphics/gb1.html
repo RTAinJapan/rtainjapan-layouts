@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>GB 1プレイヤー</title>
+	<link rel="import" href="elements/rtaij-overlay/rtaij-overlay.html">
+	<link rel="import" href="elements/rtaij-runner/rtaij-runner.html">
+	<link rel="import" href="elements/rtaij-commentator/rtaij-commentator.html">
+	<link rel="import" href="elements/rtaij-game/rtaij-game.html">
+	<link rel="import" href="elements/rtaij-timer/rtaij-timer.html">
+	<link rel="stylesheet" href="style/layout.css">
+	<style>
+		#container {
+			clip-path: polygon(0 0, 0 687px, 840px 687px, 840px 24px, 1830px 24px, 1830px 915px, 840px 915px, 840px 687px, 762px 687px, 762px 1065px, 90px 1065px, 90px 687px, 0 687px, 0 1080px, 1920px 1080px, 1920px 0);
+		}
+
+		#info_container {
+			position: absolute;
+			top: 150px;
+			left: 0;
+			height: 537px;
+			width: 840px;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+			align-items: stretch;
+		}
+
+		#runner,
+		#commentator,
+		#game_time {
+			position: absolute;
+			z-index: 1;
+		}
+
+		#game,
+		#time {
+			margin: 10px 0 10px 0;
+			/* TODO */
+			height: 150px;
+			width: auto;
+			z-index: 1;
+		}
+
+		#runner {
+			bottom: 75px;
+			left: 762px;
+			height: 60px;
+			width: 918px;
+		}
+
+		#commentator {
+			bottom: 15px;
+			left: 762px;
+			height: 60px;
+			width: 918px;
+		}
+
+		#game_time {
+			bottom: 15px;
+			right: 642px;
+			width: 2px;
+			height: 195px;
+		}
+
+		rtaij-overlay {
+			--rtaij-bottom-height: 150px;
+		}
+
+		rtaij-game {
+			--rtaij-title-height: 102px;
+			--rtaij-misc-height: 57px;
+			background: var(--rtaij-timer-bg,
+				linear-gradient(to right,
+				rgba(2,14,21,0.05) 0%,
+				rgba(2,14,21,0.6) 45%,
+				rgba(2,14,21,0.6) 55%,
+				rgba(2,14,21,0.05) 100%));
+		}
+
+		rtaij-timer {
+			--rtaij-timer-height: 102px;
+			--rtaij-est-height: 57px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+		<div id="info_container">
+			<rtaij-game id="game"></rtaij-game>
+			<rtaij-timer id="time"></rtaij-timer>
+		</div>
+		<rtaij-runner id="runner"></rtaij-runner>
+		<rtaij-commentator id="commentator"></rtaij-commentator>
+		<rtaij-overlay></rtaij-overlay>
+	</div>
+</body>
+
+</html>
