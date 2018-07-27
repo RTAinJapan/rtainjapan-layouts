@@ -93,12 +93,13 @@ const TweetText = styled.div`
 `;
 
 export class TweetItem extends React.Component<Props, State> {
+	private readonly interval = setInterval(() => {
+		this.setState(this.calcTimeago());
+	}, 60 * 1000);
+
 	constructor(props: Props) {
 		super(props);
 		this.state = this.calcTimeago();
-		setInterval(() => {
-			this.setState(this.calcTimeago());
-		}, 60 * 1000);
 	}
 
 	render() {
@@ -131,6 +132,10 @@ export class TweetItem extends React.Component<Props, State> {
 				</Controls>
 			</Container>
 		);
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.interval);
 	}
 
 	private readonly tweetUrl = () => {
