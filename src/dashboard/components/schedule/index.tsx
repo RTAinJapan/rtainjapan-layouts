@@ -74,7 +74,7 @@ export class Schedule extends React.Component<
 		super(props);
 		this.state = {
 			titles: [],
-			currentRun: {index: 0},
+			currentRun: {},
 			nextRun: {},
 		};
 	}

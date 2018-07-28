@@ -10,9 +10,16 @@ const outDir = appRoot.resolve('types/schemas');
 const schemasDir = appRoot.resolve('schemas');
 const schemas = fs.readdirSync(schemasDir).filter(f => f.endsWith('.json'));
 
-const compile = (input, output) =>
-	compileFromFile(input)
+const compile = (input, output, cwd = appRoot.path) =>
+	compileFromFile(input, {
+		cwd,
+		declareExternallyReferenced: true,
+		enableConstEnums: true,
+	})
 		.then(ts => writeFilePromise(output, ts))
+		.then(() => {
+			console.log(output)
+		})
 		.catch(err => {
 			console.error(err);
 		});
@@ -25,6 +32,7 @@ compile(
 for (const schema of schemas) {
 	compile(
 		path.resolve(schemasDir, schema),
-		path.resolve(outDir, schema.replace(/\.json/i, '.d.ts'))
+		path.resolve(outDir, schema.replace(/\.json$/i, '.d.ts')),
+		schemasDir
 	);
 }

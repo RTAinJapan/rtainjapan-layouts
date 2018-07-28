@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "object",
+	"properties": {
+		"pk": {
+			"type": "number"
+		},
+		"index": {
+			"type": "number"
+		},
+		"scheduled": {
+			"type": "number"
+		},
+		"title": {
+			"type": "string"
+		},
+		"engTitle": {
+			"type": "string"
+		},
+		"category": {
+			"type": "string"
+		},
+		"hardware": {
+			"type": "string"
+		},
+		"duration": {
+			"type": "string"
+		},
+		"runners": {
+			"$ref": "runner.json"
+		},
+		"commentators": {
+			"$ref": "runner.json"
+		}
+	}
+}

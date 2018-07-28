@@ -6,7 +6,7 @@
 
 export interface CurrentRun {
   pk?: number;
-  index: number;
+  index?: number;
   scheduled?: number;
   title?: string;
   engTitle?: string;
@@ -18,11 +18,14 @@ export interface CurrentRun {
     twitch?: string;
     nico?: string;
     twitter?: string;
+    [k: string]: any;
   }[];
   commentators?: {
     name?: string;
     twitch?: string;
     nico?: string;
     twitter?: string;
+    [k: string]: any;
   }[];
+  [k: string]: any;
 }

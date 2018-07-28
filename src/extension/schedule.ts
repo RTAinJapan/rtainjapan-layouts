@@ -188,7 +188,7 @@ export const schedule = (nodecg: NodeCG) => {
 		}
 	}
 
-	function updateCurrentRun(index = currentRunRep.value.index) {
+	function updateCurrentRun(index = currentRunRep.value.index || 0) {
 		if (index < 0 || index > scheduleRep.value.length) {
 			return;
 		}
@@ -197,11 +197,17 @@ export const schedule = (nodecg: NodeCG) => {
 	}
 
 	function seekToNextRun() {
-		updateCurrentRun(currentRunRep.value.index + 1);
+		const newIndex = currentRunRep.value.index
+			? currentRunRep.value.index + 1
+			: 0;
+		updateCurrentRun(newIndex);
 	}
 
 	function seekToPreviousRun() {
-		updateCurrentRun(currentRunRep.value.index - 1);
+		const newIndex = currentRunRep.value.index
+			? currentRunRep.value.index - 1
+			: 0;
+		updateCurrentRun(newIndex);
 	}
 
 	function setUpdateInterval() {

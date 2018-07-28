@@ -44,31 +44,32 @@ export class RunInfo extends React.Component<{
 	label: string;
 }> {
 	render() {
+		const {run, label} = this.props;
 		return (
 			<Container>
 				<Label>
-					{this.props.label}&nbsp;(#{this.props.run.index})
+					{label}&nbsp;(#{run.index})
 				</Label>
 				<LabeledDiv>
 					<label>ゲーム</label>
-					<div>{this.props.run.title}</div>
+					<div>{run.title}</div>
 				</LabeledDiv>
 				<Divider />
 				<RunnersContainer>{this.renderRunners()}</RunnersContainer>
 				<Divider />
 				<LabeledDiv>
 					<label>カテゴリ</label>
-					<div>{this.props.run.category}</div>
+					<div>{run.category}</div>
 				</LabeledDiv>
 				<Divider />
 				<MiscContainer>
 					<LabeledDiv>
 						<label>予定時間</label>
-						<div>{this.props.run.duration}</div>
+						<div>{run.duration}</div>
 					</LabeledDiv>
 					<LabeledDiv>
 						<label>機種</label>
-						<div>{this.props.run.hardware}</div>
+						<div>{run.hardware}</div>
 					</LabeledDiv>
 				</MiscContainer>
 				<Divider />
@@ -89,7 +90,7 @@ export class RunInfo extends React.Component<{
 		));
 
 	private readonly runners = () => {
-		const runners = this.props.run.runners;
+		const {runners} = this.props.run;
 		if (!runners) {
 			return [];
 		}
