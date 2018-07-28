@@ -5,7 +5,7 @@ import {CurrentRun} from '../../../types/schemas/currentRun';
 import {BaseNameplate} from './lib/base-nameplate';
 
 export class RtaijRunner extends BaseNameplate {
-	currentRunChangeHandler = (newVal: CurrentRun) => {
+	applyCurrentRunChangeToState = (newVal: CurrentRun) => {
 		this.setState({
 			runners: newVal.runners,
 		});
