@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import {RtaijTimer} from './components/rtaij-timer';
 import {RtaijGame} from './components/rtaij-game';
 import {RtaijRunner} from './components/rtaij-runner';
 import {RtaijCommentator} from './components/rtaij-commentator';
 import {RtaijOverlay} from './components/rtaij-overlay';
 import {Container} from './lib/styled';
+import background from './images/background.png';
 
 const StyledContainer = Container.extend`
+	background-image: url(${background});
 	clip-path: polygon(
 		0 0,
 		0 1080px,
@@ -30,64 +32,54 @@ const StyledContainer = Container.extend`
 
 	#runner,
 	#commentator {
-		height: 60px;
-		width: 993px;
-		left: 687px;
 		background: none;
-	}
-
-	#runner {
-		bottom: 75px;
-	}
-
-	#commentator {
-		bottom: 15px;
 	}
 `;
 
 const InfoContainer = styled.div`
 	position: absolute;
 	top: 150px;
-	left: 0;
+	left: 0px;
 	height: 537px;
-	width: 705px;
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: stretch;
+	width: ${() => 470 * 1.5}px;
+
+	display: grid;
+	grid-template-rows: auto auto;
+	align-content: center;
+	justify-content: stretch;
+	gap: 30px;
 `;
 
-const gameTimeStyle = css`
-	margin: 10px 0 10px 0;
-	/* TODO */
-	height: 150px;
-	width: auto;
-	z-index: 1;
-`;
-const StyledRtaijGame = styled(RtaijGame)`
-	${gameTimeStyle};
-	background: linear-gradient(
-		to right,
-		rgba(2, 14, 21, 0.05) 0%,
-		rgba(2, 14, 21, 0.6) 45%,
-		rgba(2, 14, 21, 0.6) 55%,
-		rgba(2, 14, 21, 0.05) 100%
-	);
-`;
-const StyledRtaijTimer = styled(RtaijTimer)`
-	${gameTimeStyle};
+const RunnerContainer = styled.div`
+	position: absolute;
+	bottom: 15px;
+	left: 687px;
+	height: 120px;
+	width: ${662 * 1.5}px;
+
+	display: grid;
+	grid-template-rows: auto auto;
+	grid-template-rows: 1fr 1fr;
+	align-content: stretch;
+	justify-content: stretch;
 `;
 
 const App = () => (
 	<StyledContainer>
 		<InfoContainer>
-			<StyledRtaijGame titleHeight="102px" miscHeight="57px" />
-			<StyledRtaijTimer timerHeight="102px" estHeight="57px" />
+			<RtaijGame titleHeight="102px" miscHeight="57px" />
+			<RtaijTimer timerHeight="102px" estHeight="57px" />
 		</InfoContainer>
-		<RtaijRunner />
-		<RtaijCommentator />
+		<RunnerContainer>
+			<RtaijRunner />
+			<RtaijCommentator />
+		</RunnerContainer>
 		<RtaijOverlay bottomHeightPx={150} />
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('sd1'));
+ReactDom.render(<App />, document.getElementById('sd1'), () => {
+	setTimeout(() => {
+		document.body.style.opacity = '1';
+	}, 500);
+});

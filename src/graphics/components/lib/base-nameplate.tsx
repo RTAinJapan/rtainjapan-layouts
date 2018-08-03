@@ -2,15 +2,6 @@ import React, {ReactNode} from 'react';
 import delay from 'delay';
 import {CurrentRun} from '../../../../types/schemas/currentRun';
 import {currentRunRep} from '../../../lib/replicants';
-import {
-	SubContainer,
-	LabelIcon,
-	Label,
-	Name,
-	Ruler,
-	Container,
-	SocialInfo,
-} from './nameplate';
 import styled from '../../../../node_modules/styled-components';
 import twitchIcon from '../../images/icon/twitch.png';
 import nicoIcon from '../../images/icon/nico.png';
@@ -19,11 +10,59 @@ import twitterIcon from '../../images/icon/twitter.png';
 const SOCIAL_ROTATE_INTERVAL_SECONDS = 20;
 const FADE_DURATION_SECONDS = 0.5;
 
-const enum SocialType {
-	Twitch = 'twitch',
-	Nico = 'nico',
-	Twitter = 'twitter',
-}
+const Container = styled.div`
+	height: 60px;
+	box-sizing: border-box;
+	line-height: 1;
+	color: white;
+	display: grid;
+	grid-template-columns: auto auto;
+	grid-template-rows: 1fr 3px;
+	justify-content: space-between;
+	row-gap: 6px;
+`;
+
+const SubContainer = styled.div`
+	grid-column: 1 / 2;
+	grid-row: 1 / 2;
+	padding-left: 15px;
+	display: grid;
+	grid-template-columns: 36px 15px auto 30px auto 30px auto;
+	justify-content: start;
+	align-items: end;
+`;
+
+const SocialContainer = styled.div`
+	transition: opacity ${FADE_DURATION_SECONDS}s linear;
+	display: grid;
+	grid-template-columns: 24px auto;
+	gap: 8px;
+`;
+
+const Label = styled.div`
+	font-size: 24px;
+`;
+
+const Name = styled.div`
+	font-size: 36px;
+`;
+
+const SocialInfo = styled.div`
+	font-size: 24px;
+	font-weight: 400;
+`;
+
+const Ruler = styled.div`
+	grid-column: 1 / 5;
+	grid-row: 2 / 3;
+	background-color: #ffff52;
+`;
+
+const ChildrenContainer = styled.div`
+	grid-column: 2 / 3;
+	grid-row: 1 / 2;
+	padding-left: 15px;
+`;
 
 interface Props {
 	index?: number;
@@ -35,33 +74,25 @@ interface State {
 	socialOpacity: number;
 }
 
-const StyledContainer = Container.extend`
-	position: absolute;
-	background: linear-gradient(
-		to right,
-		rgba(2, 14, 21, 0.6) 10%,
-		rgba(2, 14, 21, 0.05) 100%
-	);
-	color: white;
-	z-index: 1;
-`;
-
-const SocialContainer = styled.div`
-	height: 100%;
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: flex-end;
-	opacity: 1;
-	transition: opacity ${FADE_DURATION_SECONDS}s linear;
-`;
-
 export abstract class BaseNameplate extends React.Component<Props, State> {
-	protected abstract readonly applyCurrentRunChangeToState: (
-		newVal: CurrentRun
-	) => void;
-	protected abstract readonly iconPath: any;
-	protected abstract readonly rootId: string;
-	protected abstract readonly label: string;
+	protected readonly Container = (props: {children?: ReactNode}) => (
+		<Container id={this.rootId}>
+			<SubContainer>
+				<img src={this.iconPath} />
+				<div />
+				<Label>{this.label}</Label>
+				<div />
+				<Name>{this.name()}</Name>
+				<div />
+				<SocialContainer style={{opacity: this.state.socialOpacity}}>
+					<img src={this.iconSrc()} />
+					<SocialInfo>{this.targetRunner().name}</SocialInfo>
+				</SocialContainer>
+			</SubContainer>
+			<ChildrenContainer>{props.children}</ChildrenContainer>
+			<Ruler />
+		</Container>
+	);
 
 	state: State = {
 		runners: [],
@@ -69,6 +100,24 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 	};
 
 	interval?: NodeJS.Timer;
+
+	protected abstract readonly applyCurrentRunChangeToState: (
+		newVal: CurrentRun
+	) => void;
+	protected abstract readonly iconPath: any;
+	protected abstract readonly rootId: string;
+	protected abstract readonly label: string;
+
+	componentDidMount() {
+		currentRunRep.on('change', this._currentRunChanged);
+	}
+
+	componentWillUnmount() {
+		currentRunRep.removeListener('change', this._currentRunChanged);
+		if (this.interval !== undefined) {
+			clearInterval(this.interval);
+		}
+	}
 
 	private readonly _currentRunChanged = async (newVal: CurrentRun) => {
 		// Reset opacity
@@ -80,13 +129,13 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		this.applyCurrentRunChangeToState(newVal);
 
 		// Don't do anything if no social info
-		if (this.socialInfo.length === 0) {
+		if (this.socialInfo().length === 0) {
 			return;
 		}
 
 		// Move to next social type
 		this.setState({
-			socialType: this.nextSocialType || this.state.socialType,
+			socialType: this.nextSocialType() || this.state.socialType,
 		});
 
 		// Show
@@ -94,7 +143,7 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		await delay(FADE_DURATION_SECONDS * 1000);
 
 		// If only one social info don't rotate
-		if (this.socialInfo.length === 1) {
+		if (this.socialInfo().length === 1) {
 			return;
 		}
 
@@ -109,7 +158,7 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 
 			// Move to next social type
 			this.setState({
-				socialType: this.nextSocialType || this.state.socialType,
+				socialType: this.nextSocialType() || this.state.socialType,
 			});
 
 			// Show
@@ -118,34 +167,7 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		await delay(FADE_DURATION_SECONDS * 1000);
 	};
 
-	componentDidMount() {
-		currentRunRep.on('change', this._currentRunChanged);
-	}
-
-	componentWillUnmount() {
-		currentRunRep.removeListener('change', this._currentRunChanged);
-		if (this.interval !== undefined) {
-			clearInterval(this.interval);
-		}
-	}
-
-	protected readonly Container = (props: {children?: ReactNode}) => (
-		<StyledContainer id={this.rootId}>
-			<SubContainer>
-				<LabelIcon src={this.iconPath} />
-				<Label>{this.label}</Label>
-				<Name>{this.name}</Name>
-				<SocialContainer style={{opacity: this.state.socialOpacity}}>
-					<img src={this.iconSrc} />
-					<SocialInfo>{this.targetRunner.name}</SocialInfo>
-				</SocialContainer>
-			</SubContainer>
-			{props.children}
-			<Ruler />
-		</StyledContainer>
-	);
-
-	private get iconSrc() {
+	private iconSrc() {
 		switch (this.state.socialType) {
 			case SocialType.Nico:
 				return nicoIcon;
@@ -156,8 +178,8 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		}
 	}
 
-	private get nextSocialType() {
-		const runner = this.targetRunner;
+	private nextSocialType() {
+		const runner = this.targetRunner();
 		switch (this.state.socialType) {
 			case SocialType.Twitch:
 				if (runner.nico !== undefined) {
@@ -188,8 +210,8 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		}
 	}
 
-	protected get socialInfo() {
-		const runner = this.targetRunner;
+	protected socialInfo() {
+		const runner = this.targetRunner();
 		if (!runner) {
 			return [];
 		}
@@ -221,15 +243,15 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		return socialInfo;
 	}
 
-	protected get name() {
-		const runner = this.targetRunner;
+	protected name() {
+		const runner = this.targetRunner();
 		if (!runner) {
 			return '';
 		}
 		return runner.name;
 	}
 
-	private get targetRunner() {
+	private targetRunner() {
 		const {runners} = this.state;
 		if (!runners) {
 			return {};
@@ -239,4 +261,10 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		}
 		return runners[this.props.index || 0];
 	}
+}
+
+const enum SocialType {
+	Twitch = 'twitch',
+	Nico = 'nico',
+	Twitter = 'twitter',
 }

@@ -1,37 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 import textFit from 'textfit';
 import {currentRunRep} from '../../lib/replicants';
-
-const Container = styled.div`
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: flex-end;
-	align-items: center;
-	color: white;
-	white-space: nowrap;
-`;
-
-const Title = styled.div`
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-weight: 900;
-`;
-
-const Ruler = styled.div`
-	display: flex;
-	width: 100%;
-	background-color: #ffff52;
-`;
-
-const Misc = styled.div`
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
+import {BaseInfo} from './lib/base-info';
 
 interface Props {
 	titleHeight: string;
@@ -46,6 +16,19 @@ interface State {
 }
 
 export class RtaijGame extends React.Component<Props, State> {
+	render() {
+		return (
+			<BaseInfo
+				primaryInfo={this.state.title}
+				secondaryInfo={this.miscText}
+				spacy
+				thickRuler
+				initialPrimarySize={63}
+				secondarySize={30}
+			/>
+		);
+	}
+
 	state = {title: '', category: '', hardware: ''};
 
 	private readonly myRefs = {
@@ -61,26 +44,6 @@ export class RtaijGame extends React.Component<Props, State> {
 				hardware: newVal.hardware || '',
 			});
 		});
-	}
-
-	render() {
-		return (
-			<Container>
-				<Title
-					innerRef={this.myRefs.title}
-					style={{height: this.props.titleHeight}}
-				>
-					{this.state.title}
-				</Title>
-				<Ruler style={{height: this.props.rulerHeight || '4px'}} />
-				<Misc
-					innerRef={this.myRefs.misc}
-					style={{height: this.props.miscHeight}}
-				>
-					{this.miscText}
-				</Misc>
-			</Container>
-		);
 	}
 
 	componentDidUpdate() {

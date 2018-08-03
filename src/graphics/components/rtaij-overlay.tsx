@@ -3,13 +3,12 @@ import styled, {css} from 'styled-components';
 
 import logoR from '../images/logo-r/index.png';
 import logoTainjapan from '../images/logo-tainjapan.png';
-import background from '../images/background.png';
-import backgroundBreak from '../images/background_break.png';
 
 const Container = styled.div`
 	position: absolute;
 	width: 1920px;
 	height: 1080px;
+	z-index: -1;
 `;
 
 const Top = styled.div`
@@ -74,14 +73,6 @@ export class RtaijOverlay extends React.Component<Props> {
 						<SponsorLogo />
 					</Sponsor>
 				</Bottom>
-				<img
-					src={background}
-					style={{display: this.props.isBreak ? 'none' : 'inline'}}
-				/>
-				<img
-					src={backgroundBreak}
-					style={{display: this.props.isBreak ? 'inline' : 'none'}}
-				/>
 			</Container>
 		);
 	}

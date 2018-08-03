@@ -3,5 +3,6 @@ body {
 	font-weight: 400;
 	margin: 0;
 	padding: 0;
-	line-height: 1;
+	opacity: 0;
+	transition: opacity 1s;
 }
