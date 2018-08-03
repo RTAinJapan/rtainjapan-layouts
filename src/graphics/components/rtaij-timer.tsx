@@ -2,9 +2,6 @@ import React from 'react';
 import {BaseInfo} from './lib/base-info';
 
 interface Props {
-	timerHeight: string;
-	rulerHeight?: string;
-	estHeight: string;
 }
 
 export class RtaijTimer extends React.Component<Props> {

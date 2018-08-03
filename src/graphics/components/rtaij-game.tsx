@@ -3,9 +3,6 @@ import {currentRunRep} from '../../lib/replicants';
 import {BaseInfo} from './lib/base-info';
 
 interface Props {
-	titleHeight: string;
-	rulerHeight?: string;
-	miscHeight: string;
 }
 
 interface State {
