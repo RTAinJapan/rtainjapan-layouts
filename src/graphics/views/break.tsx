@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import dot1 from './images/break/dot1.png';
-import dot2 from './images/break/dot2.png';
-import dot3 from './images/break/dot3.png';
-import dot4 from './images/break/dot4.png';
-import rtachan from './images/break/rtachan.png';
+import dot1 from '../images/break/dot1.png';
+import dot2 from '../images/break/dot2.png';
+import dot3 from '../images/break/dot3.png';
+import dot4 from '../images/break/dot4.png';
+import rtachan from '../images/break/rtachan.png';
 
 const App = () => (
 	<div className="bg">
