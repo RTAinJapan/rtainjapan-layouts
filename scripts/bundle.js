@@ -28,7 +28,7 @@ fork('./node_modules/.bin/parcel', [
 
 fork('./node_modules/.bin/parcel', [
 	command,
-	'src/graphics/*.html',
+	'src/graphics/*.pug',
 	'--out-dir',
 	'graphics',
 	'--public-url',

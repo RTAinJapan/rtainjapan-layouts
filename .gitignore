@@ -3,6 +3,7 @@
 /.vscode
 /.cache
 **/*.log
+.env
 
 /extension
 /dashboard

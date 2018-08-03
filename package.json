@@ -39,6 +39,7 @@
 		"json-schema-to-typescript": "^5.5.0",
 		"parcel-bundler": "^1.9.7",
 		"prettier": "^1.13.7",
+		"pug": "^2.0.3",
 		"typescript": "^2.9.2"
 	},
 	"engines": {
