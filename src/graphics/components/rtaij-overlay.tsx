@@ -1,5 +1,7 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
+import sample from 'lodash/sample'
+import delay from 'delay'
 
 import logoR from '../images/logo-r/index.png';
 import logoTainjapan from '../images/logo-tainjapan.png';
@@ -55,17 +57,19 @@ const SponsorLogo = styled.img`
 	transition: opacity 0.33s linear;
 `;
 
+interface State {
+	logoR: string;
+}
 interface Props {
 	isBreak?: boolean;
 	bottomHeightPx: number;
 }
-
-export class RtaijOverlay extends React.Component<Props> {
+export class RtaijOverlay extends React.Component<Props, State> {
 	render() {
 		return (
 			<Container>
 				<Top theme={{isBreak: this.props.isBreak}}>
-					<img src={logoR} />
+					<img src={this.state.logoR} />
 					<LogoTainjapan src={logoTainjapan} />
 				</Top>
 				<Bottom style={{height: this.props.bottomHeightPx + 'px'}}>
@@ -75,5 +79,19 @@ export class RtaijOverlay extends React.Component<Props> {
 				</Bottom>
 			</Container>
 		);
+	}
+
+	state = {logoR};
+
+	private interval = setInterval(async () => {
+		const gifs = await import('../images/logo-r/*.gif')
+		const randomGif = sample(Object.values(gifs))
+		this.setState({logoR: randomGif});
+		await delay(2000)
+		this.setState({logoR});
+	}, 77 * 1000);
+
+	componentWillUnmount() {
+		clearInterval(this.interval);
 	}
 }
