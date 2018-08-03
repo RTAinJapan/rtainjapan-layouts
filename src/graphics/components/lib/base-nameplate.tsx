@@ -11,10 +11,10 @@ const SOCIAL_ROTATE_INTERVAL_SECONDS = 20;
 const FADE_DURATION_SECONDS = 0.5;
 
 const Container = styled.div`
-	height: 60px;
 	box-sizing: border-box;
 	line-height: 1;
 	color: white;
+
 	display: grid;
 	grid-template-columns: auto auto;
 	grid-template-rows: 1fr 3px;
@@ -26,6 +26,7 @@ const SubContainer = styled.div`
 	grid-column: 1 / 2;
 	grid-row: 1 / 2;
 	padding-left: 15px;
+
 	display: grid;
 	grid-template-columns: 36px 15px auto 30px auto 30px auto;
 	justify-content: start;
@@ -34,6 +35,7 @@ const SubContainer = styled.div`
 
 const SocialContainer = styled.div`
 	transition: opacity ${FADE_DURATION_SECONDS}s linear;
+
 	display: grid;
 	grid-template-columns: 24px auto;
 	gap: 8px;
@@ -41,10 +43,12 @@ const SocialContainer = styled.div`
 
 const Label = styled.div`
 	font-size: 24px;
+	font-weight: 900;
 `;
 
 const Name = styled.div`
 	font-size: 36px;
+	font-weight: 900;
 `;
 
 const SocialInfo = styled.div`
