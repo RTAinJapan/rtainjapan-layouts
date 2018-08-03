@@ -118,9 +118,13 @@ export class Schedule extends React.Component<
 					<RunInfo run={this.state.nextRun} label="次のゲーム" />
 				</RunInfoContainer>
 				<EditControls>
-					<Button variant="raised">編集：現在のゲーム</Button>
-					<Button variant="raised">手動更新</Button>
-					<Button variant="raised">編集：次のゲーム</Button>
+					<NoWrapButton variant="raised">
+						編集：現在のゲーム
+					</NoWrapButton>
+					<NoWrapButton variant="raised">手動更新</NoWrapButton>
+					<NoWrapButton variant="raised">
+						編集：次のゲーム
+					</NoWrapButton>
 				</EditControls>
 			</Container>
 		);
