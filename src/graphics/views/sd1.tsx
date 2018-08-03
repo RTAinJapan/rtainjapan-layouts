@@ -7,7 +7,7 @@ import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijCommentator} from '../components/rtaij-commentator';
 import {RtaijOverlay} from '../components/rtaij-overlay';
 import {Container} from '../components/lib/styled';
-import background from './images/background.png';
+import background from '../images/background.png';
 
 const StyledContainer = Container.extend`
 	background-image: url(${background});
