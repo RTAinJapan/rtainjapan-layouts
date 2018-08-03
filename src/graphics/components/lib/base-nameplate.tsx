@@ -1,8 +1,8 @@
 import React, {ReactNode} from 'react';
+import styled from 'styled-components';
 import delay from 'delay';
 import {CurrentRun} from '../../../../types/schemas/currentRun';
 import {currentRunRep} from '../../../lib/replicants';
-import styled from '../../../../node_modules/styled-components';
 import twitchIcon from '../../images/icon/twitch.png';
 import nicoIcon from '../../images/icon/nico.png';
 import twitterIcon from '../../images/icon/twitter.png';

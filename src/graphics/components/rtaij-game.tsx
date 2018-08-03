@@ -1,5 +1,4 @@
 import React from 'react';
-import textFit from 'textfit';
 import {currentRunRep} from '../../lib/replicants';
 import {BaseInfo} from './lib/base-info';
 
@@ -31,11 +30,6 @@ export class RtaijGame extends React.Component<Props, State> {
 
 	state = {title: '', category: '', hardware: ''};
 
-	private readonly myRefs = {
-		title: React.createRef<HTMLDivElement>(),
-		misc: React.createRef<HTMLDivElement>(),
-	};
-
 	componentDidMount() {
 		currentRunRep.on('change', newVal => {
 			this.setState({
@@ -43,25 +37,6 @@ export class RtaijGame extends React.Component<Props, State> {
 				category: newVal.category || '',
 				hardware: newVal.hardware || '',
 			});
-		});
-	}
-
-	componentDidUpdate() {
-		const {title, misc} = this.myRefs;
-		if (!title.current || !misc.current) {
-			return;
-		}
-		textFit(title.current, {maxFontSize: 69.3});
-		const titleContent = title.current.firstChild;
-		if (!(titleContent instanceof HTMLElement)) {
-			return;
-		}
-		const titleFontSize = titleContent.style.fontSize;
-		textFit(misc.current, {
-			maxFontSize:
-				titleFontSize && parseInt(titleFontSize) < 48
-					? parseInt(titleFontSize)
-					: 48,
 		});
 	}
 

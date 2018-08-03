@@ -1,8 +1,8 @@
 import React from 'react';
+import styled from 'styled-components';
 import runnerIcon from '../images/icon/runner.png';
 import {CurrentRun} from '../../../types/schemas/currentRun';
 import {BaseNameplate} from './lib/base-nameplate';
-import styled from '../../../node_modules/styled-components';
 
 const FinishTime = styled.div`
 	position: absolute;

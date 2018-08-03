@@ -4814,10 +4814,6 @@ terser@^3.7.3:
     source-map "~0.6.1"
     source-map-support "~0.5.6"
 
-textfit@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/textfit/-/textfit-2.3.1.tgz#5896db48ea70a767b97a73f28556406875ca208f"
-
 theming@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/theming/-/theming-1.3.0.tgz#286d5bae80be890d0adc645e5ca0498723725bdc"
