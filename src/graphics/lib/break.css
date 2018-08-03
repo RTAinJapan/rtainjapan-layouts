@@ -1,0 +1,154 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+div.bg {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: -1;
+	width: 1920px;
+	height: 1080px;
+	background: #c6e3f3;
+	overflow: hidden;
+}
+
+img.deep1 {
+	opacity: 0.6;
+	position: absolute;
+	top: -40px;
+	left: 0px;
+	animation: dot 1.3s linear infinite;
+}
+img.deep2 {
+	opacity: 0.6;
+	position: absolute;
+	top: 110px;
+	left: 0px;
+	animation: dot 2.3s linear infinite;
+}
+img.deep3 {
+	opacity: 0.6;
+	position: absolute;
+	top: 230px;
+	left: 0px;
+	animation: dot 3.3s linear infinite;
+}
+img.deep4 {
+	opacity: 0.6;
+	position: absolute;
+	top: 310px;
+	left: 0px;
+	animation: dot 4.3s linear infinite;
+}
+img.deep5 {
+	opacity: 0.6;
+	position: absolute;
+	top: 730px;
+	left: 0px;
+	animation: dot 4.3s linear infinite;
+}
+img.deep6 {
+	opacity: 0.6;
+	position: absolute;
+	top: 790px;
+	left: 0px;
+	animation: dot 3.3s linear infinite;
+}
+img.deep7 {
+	opacity: 0.6;
+	position: absolute;
+	top: 890px;
+	left: 0px;
+	animation: dot 2.3s linear infinite;
+}
+img.deep8 {
+	opacity: 0.6;
+	position: absolute;
+	top: 1000px;
+	left: 0px;
+	animation: dot 1.3s linear infinite;
+}
+
+img.pale1 {
+	opacity: 0.2;
+	position: absolute;
+	top: 10px;
+	left: -50px;
+	animation: dot 5.7s linear infinite;
+}
+img.pale2 {
+	opacity: 0.2;
+	position: absolute;
+	top: 160px;
+	left: -50px;
+	animation: dot 6.7s linear infinite;
+}
+img.pale3 {
+	opacity: 0.2;
+	position: absolute;
+	top: 280px;
+	left: -50px;
+	animation: dot 7.7s linear infinite;
+}
+img.pale4 {
+	opacity: 0.2;
+	position: absolute;
+	top: 360px;
+	left: -50px;
+	animation: dot 8.7s linear infinite;
+}
+img.pale5 {
+	opacity: 0.2;
+	position: absolute;
+	top: 680px;
+	left: -50px;
+	animation: dot 8.7s linear infinite;
+}
+img.pale6 {
+	opacity: 0.2;
+	position: absolute;
+	top: 740px;
+	left: -50px;
+	animation: dot 7.7s linear infinite;
+}
+img.pale7 {
+	opacity: 0.2;
+	position: absolute;
+	top: 840px;
+	left: -50px;
+	animation: dot 6.7s linear infinite;
+}
+img.pale8 {
+	opacity: 0.2;
+	position: absolute;
+	top: 950px;
+	left: -50px;
+	animation: dot 5.7s linear infinite;
+}
+
+@keyframes dot {
+	0% {
+		transform: translateX(0px);
+	}
+	100% {
+		transform: translateX(-100px);
+	}
+}
+
+img.rtachan {
+	position: absolute;
+	top: 550px;
+	left: 1150px;
+	animation: rtachan 1.5s ease-out infinite alternate;
+}
+
+@keyframes rtachan {
+	0% {
+		transform: translateY(0px);
+	}
+	100% {
+		transform: translateY(30px);
+	}
+}
