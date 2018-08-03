@@ -21,7 +21,6 @@ export class RtaijRunner extends BaseNameplate {
 		});
 	};
 	iconPath = runnerIcon;
-	rootId = 'runner';
 	label = 'Runner';
 
 	render() {

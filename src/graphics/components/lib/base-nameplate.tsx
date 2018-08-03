@@ -80,7 +80,7 @@ interface State {
 
 export abstract class BaseNameplate extends React.Component<Props, State> {
 	protected readonly Container = (props: {children?: ReactNode}) => (
-		<Container id={this.rootId}>
+		<Container>
 			<SubContainer>
 				<img src={this.iconPath} />
 				<div />
@@ -109,7 +109,6 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		newVal: CurrentRun
 	) => void;
 	protected abstract readonly iconPath: any;
-	protected abstract readonly rootId: string;
 	protected abstract readonly label: string;
 
 	componentDidMount() {

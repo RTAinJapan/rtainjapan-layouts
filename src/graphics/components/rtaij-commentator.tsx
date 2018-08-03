@@ -10,7 +10,6 @@ export class RtaijCommentator extends BaseNameplate {
 		});
 	};
 	iconPath = commentatorIcon;
-	rootId = 'commentator';
 	label = 'Commentator';
 
 	render() {

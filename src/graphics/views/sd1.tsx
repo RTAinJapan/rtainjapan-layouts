@@ -29,11 +29,6 @@ const StyledContainer = Container.extend`
 		1905px 15px,
 		1905px 0
 	);
-
-	#runner,
-	#commentator {
-		background: none;
-	}
 `;
 
 const InfoContainer = styled.div`
