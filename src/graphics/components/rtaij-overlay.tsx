@@ -3,8 +3,8 @@ import styled, {css} from 'styled-components';
 import sample from 'lodash/sample'
 import delay from 'delay'
 
-import logoR from '../images/logo-r/index.png';
-import logoTainjapan from '../images/logo-tainjapan.png';
+import logoR from '../images/logo/index.png';
+import logoTainjapan from '../images/logo/tainjapan.png';
 
 const Container = styled.div`
 	position: absolute;
@@ -84,7 +84,7 @@ export class RtaijOverlay extends React.Component<Props, State> {
 	state = {logoR};
 
 	private interval = setInterval(async () => {
-		const gifs = await import('../images/logo-r/*.gif')
+		const gifs = await import('../images/logo/*.gif')
 		const randomGif = sample(Object.values(gifs))
 		this.setState({logoR: randomGif});
 		await delay(2000)
