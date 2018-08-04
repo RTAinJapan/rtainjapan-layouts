@@ -76,5 +76,5 @@ const App = () => (
 ReactDom.render(<App />, document.getElementById('sd1'), () => {
 	setTimeout(() => {
 		document.body.style.opacity = '1';
-	}, 500);
+	}, 1000);
 });

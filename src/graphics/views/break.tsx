@@ -31,5 +31,5 @@ const App = () => (
 ReactDom.render(<App />, document.getElementById('break'), () => {
 	setTimeout(() => {
 		document.body.style.opacity = '1';
-	}, 500);
+	}, 1000);
 });

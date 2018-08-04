@@ -68,7 +68,6 @@ const Name = styled.div`
 const SocialInfo = styled.div`
 	font-size: ${(props: {fontSizeMultiplier: number}) =>
 		props.fontSizeMultiplier * 24}px;
-	font-weight: 400;
 	display: grid;
 	align-content: center;
 `;
@@ -80,11 +79,14 @@ const Ruler = styled.div`
 `;
 
 const ChildrenContainer = styled.div`
+	font-size: ${(props: {fontSizeMultiplier: number}) =>
+		props.fontSizeMultiplier * 30}px;
 	grid-column: 2 / 3;
 	grid-row: 1 / 2;
 	justify-self: end;
 	align-self: end;
 	padding: 0 15px;
+	font-weight: 900;
 `;
 
 interface Props {
@@ -254,7 +256,7 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 				<img src={this.iconPath} />
 				{this.state.hideLabel || <Label>{this.label}</Label>}
 				<Name fontSizeMultiplier={this.state.fontSizeMultiplier}>
-					{(this.name || '').repeat(3)}
+					{this.name}
 				</Name>
 				<SocialContainer style={{opacity: this.state.socialOpacity}}>
 					<img src={this.iconSrc} />
@@ -265,19 +267,41 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 					</SocialInfo>
 				</SocialContainer>
 			</SubContainer>
-			<ChildrenContainer>{props.children}</ChildrenContainer>
+			<ChildrenContainer
+				fontSizeMultiplier={this.state.fontSizeMultiplier}
+			>
+				{props.children}
+			</ChildrenContainer>
 			<Ruler />
 		</Container>
 	);
 
 	private readonly _currentRunChanged = async (newVal: CurrentRun) => {
-		this.setState({
-			fontSizeMultiplier: 1,
-		});
-		// Reset opacity
-		if (this.state.socialOpacity !== 0) {
+		const show = async () => {
+			this.setState({socialOpacity: 1});
+			await delay(FADE_DURATION_SECONDS * 1000);
+		};
+		const hide = async () => {
 			this.setState({socialOpacity: 0});
 			await delay(FADE_DURATION_SECONDS * 1000);
+		};
+		const setNextType = () => {
+			this.setState(state => ({
+				socialType: this.nextSocialType || state.socialType,
+			}));
+		};
+
+		// Unknown race condition sometimes disables auto scaling
+		await delay(0);
+
+		// Reset font size
+		this.setState({
+			fontSizeMultiplier: 1,
+			hideLabel: false,
+		});
+
+		if (this.state.socialOpacity !== 0) {
+			await hide();
 		}
 
 		this.applyCurrentRunChangeToState(newVal);
@@ -287,38 +311,25 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 			return;
 		}
 
-		// Move to next social type
-		this.setState(state => ({
-			socialType: this.nextSocialType || state.socialType,
-		}));
-
-		// Show
-		this.setState({socialOpacity: 1});
-		await delay(FADE_DURATION_SECONDS * 1000);
+		setNextType();
+		await show();
 
 		// If only one social info don't rotate
 		if (this.socialInfo.length === 1) {
 			return;
 		}
 
-		// Rotate
+		// Reset interval if already exists
 		if (this.interval !== undefined) {
 			clearInterval(this.interval);
 		}
+
+		// Start rotate interval
 		this.interval = setInterval(async () => {
-			// Hide
-			this.setState({socialOpacity: 0});
-			await delay(FADE_DURATION_SECONDS * 1000);
-
-			// Move to next social type
-			this.setState(state => ({
-				socialType: this.nextSocialType || state.socialType,
-			}));
-
-			// Show
-			this.setState({socialOpacity: 1});
+			await hide();
+			setNextType();
+			await show();
 		}, SOCIAL_ROTATE_INTERVAL_SECONDS * 1000);
-		await delay(FADE_DURATION_SECONDS * 1000);
 	};
 }
 
