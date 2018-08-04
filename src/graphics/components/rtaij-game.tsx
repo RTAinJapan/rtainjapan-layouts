@@ -1,44 +1,25 @@
-import React from 'react';
 import {currentRunRep} from '../../lib/replicants';
 import {BaseInfo} from './lib/base-info';
+import {CurrentRun} from '../../../types/schemas/currentRun';
 
-interface Props {
-}
-
-interface State {
-	title: string;
-	category: string;
-	hardware: string;
-}
-
-export class RtaijGame extends React.Component<Props, State> {
-	render() {
-		return (
-			<BaseInfo
-				primaryInfo={this.state.title}
-				secondaryInfo={this.miscText}
-				spacy
-				thickRuler
-				initialPrimarySize={63}
-				secondarySize={30}
-			/>
-		);
-	}
-
-	state = {title: '', category: '', hardware: ''};
-
+export class RtaijGame extends BaseInfo {
 	componentDidMount() {
-		currentRunRep.on('change', newVal => {
-			this.setState({
-				title: newVal.title || '',
-				category: newVal.category || '',
-				hardware: newVal.hardware || '',
-			});
-		});
+		currentRunRep.on('change', this.currentRunChangeHandler);
 	}
 
-	private get miscText() {
-		const {hardware} = this.state;
-		return this.state.category + (hardware ? ` - ${hardware}` : '');
+	componentWillUnmount() {
+		currentRunRep.removeListener('change', this.currentRunChangeHandler);
 	}
+
+	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
+		this.setState({
+			primaryInfo: newVal.title || '',
+			secondaryInfo: miscText(newVal),
+		});
+	};
+}
+
+function miscText(newVal: CurrentRun) {
+	const {hardware} = newVal;
+	return newVal.category + (hardware ? ` - ${hardware}` : '');
 }

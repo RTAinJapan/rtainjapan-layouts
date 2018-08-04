@@ -1,31 +1,35 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {Ruler} from './ruler';
+import {GradientCentre} from './styled';
 
+interface ContainerProps {
+	thickRuler?: boolean;
+	gradientBackground?: boolean;
+}
 const Container = styled.div`
 	color: white;
 	white-space: nowrap;
 	overflow: hidden;
 	display: grid;
-	grid-template-rows: auto ${(props: {thickRuler?: boolean}) =>
+	grid-template-rows: auto ${(props: ContainerProps) =>
 			props.thickRuler ? 6 : 3}px auto;
 	justify-items: center;
 	align-items: center;
-	background: linear-gradient(
-		to right,
-		rgba(2, 14, 21, 0.05) 0%,
-		rgba(2, 14, 21, 0.6) 45%,
-		rgba(2, 14, 21, 0.6) 55%,
-		rgba(2, 14, 21, 0.05) 100%
-	);
+	${(props: ContainerProps) => props.gradientBackground && GradientCentre};
 `;
 
 interface PrimaryInfoProps {
 	spacy?: boolean;
+	height?: number;
 	fontSize: number;
 }
 const PrimaryInfo = styled.div`
-	font-weight: 900;
+	${(props: PrimaryInfoProps) =>
+		props.height &&
+		css`
+			height: ${props.height}px;
+		`} font-weight: 900;
 	overflow: hidden;
 	font-size: ${(props: PrimaryInfoProps) => props.fontSize}px;
 	${(props: PrimaryInfoProps) =>
@@ -35,9 +39,18 @@ const PrimaryInfo = styled.div`
 		`};
 `;
 
+interface SecondaryInfoProps {
+	fontSize: number;
+	height?: number;
+}
 const SecondaryInfo = styled.div`
 	overflow: hidden;
-	font-size: ${(props: {fontSize: number}) => props.fontSize}px;
+	font-size: ${(props: SecondaryInfoProps) => props.fontSize}px;
+	${(props: SecondaryInfoProps) =>
+		props.height &&
+		css`
+			height: ${props.height}px;
+		`};
 `;
 
 const StyledRuler = Ruler.extend`
@@ -47,18 +60,25 @@ const StyledRuler = Ruler.extend`
 interface Props {
 	spacy?: boolean;
 	thickRuler?: boolean;
+	gradientBackground?: boolean;
+	primaryHeight?: number;
+	secondaryHeight?: number;
 	initialPrimarySize: number;
 	secondarySize: number;
-	primaryInfo: string;
-	secondaryInfo: string;
 }
 
 interface State {
+	primaryInfo: string;
+	secondaryInfo: string;
 	primarySize: number;
 }
 
-export class BaseInfo extends React.Component<Props, State> {
-	state: State = {primarySize: this.props.initialPrimarySize};
+export abstract class BaseInfo extends React.Component<Props, State> {
+	state: State = {
+		primaryInfo: '',
+		secondaryInfo: '',
+		primarySize: this.props.initialPrimarySize,
+	};
 	containerRef = React.createRef<HTMLDivElement>();
 	primaryRef = React.createRef<HTMLDivElement>();
 
@@ -67,17 +87,22 @@ export class BaseInfo extends React.Component<Props, State> {
 			<Container
 				innerRef={this.containerRef}
 				thickRuler={this.props.thickRuler}
+				gradientBackground={this.props.gradientBackground}
 			>
 				<PrimaryInfo
 					fontSize={this.state.primarySize}
 					spacy={this.props.spacy}
+					height={this.props.primaryHeight}
 					innerRef={this.primaryRef}
 				>
-					{this.props.primaryInfo}
+					{this.state.primaryInfo}
 				</PrimaryInfo>
 				<StyledRuler />
-				<SecondaryInfo fontSize={this.props.secondarySize}>
-					{this.props.secondaryInfo}
+				<SecondaryInfo
+					fontSize={this.props.secondarySize}
+					height={this.props.secondaryHeight}
+				>
+					{this.state.secondaryInfo}
 				</SecondaryInfo>
 			</Container>
 		);

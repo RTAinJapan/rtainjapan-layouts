@@ -62,8 +62,16 @@ const RunnerContainer = styled.div`
 const App = () => (
 	<StyledContainer>
 		<InfoContainer>
-			<RtaijGame />
-			<RtaijTimer />
+			<RtaijGame
+				initialPrimarySize={45}
+				secondarySize={30}
+				gradientBackground
+			/>
+			<RtaijTimer
+				initialPrimarySize={60}
+				secondarySize={30}
+				gradientBackground
+			/>
 		</InfoContainer>
 		<RunnerContainer>
 			<RtaijRunner />
