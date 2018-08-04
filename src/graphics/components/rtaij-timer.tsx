@@ -7,7 +7,7 @@ export class RtaijTimer extends BaseInfo {
 		}
 		this.setState({
 			primaryInfo: '1:23:45',
-			secondaryInfo: '予定タイム 6:17:28'
-		})
+			secondaryInfo: '予定タイム 6:17:28',
+		});
 	}
 }

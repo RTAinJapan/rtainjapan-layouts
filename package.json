@@ -140,9 +140,20 @@
 			"no-undef": 0,
 			"import/no-unresolved": 0,
 			"react/jsx-tag-spacing": 0,
-			"new-cap": [0, { "capIsNewExceptions": ["Replicant"] }],
+			"new-cap": [
+				0,
+				{
+					"capIsNewExceptions": [
+						"Replicant"
+					]
+				}
+			],
 			"no-unused-vars": 0
 		},
-		"ignores": ["./types/schemas", "./scripts", "**/*.d.ts"]
+		"ignores": [
+			"./types/schemas",
+			"./scripts",
+			"**/*.d.ts"
+		]
 	}
 }

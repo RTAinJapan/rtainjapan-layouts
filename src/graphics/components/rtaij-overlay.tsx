@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
-import sample from 'lodash/sample'
-import delay from 'delay'
+import sample from 'lodash/sample';
+import delay from 'delay';
 
 import logoR from '../images/logo/index.png';
 import logoTainjapan from '../images/logo/tainjapan.png';
@@ -84,10 +84,10 @@ export class RtaijOverlay extends React.Component<Props, State> {
 	state = {logoR};
 
 	private interval = setInterval(async () => {
-		const gifs = await import('../images/logo/*.gif')
-		const randomGif = sample(Object.values(gifs))
+		const gifs = await import('../images/logo/*.gif');
+		const randomGif = sample(Object.values(gifs));
 		this.setState({logoR: randomGif});
-		await delay(2000)
+		await delay(2000);
 		this.setState({logoR});
 	}, 77 * 1000);
 

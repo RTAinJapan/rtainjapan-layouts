@@ -18,7 +18,7 @@ const calcContainerGridTemplateRows = (props: ContainerProps) => {
 		: 'auto';
 	const rulerHeight = (props.thickRuler ? 6 : 3) + 'px';
 	return css`
-		grid-template-rows: ${primaryHeight} ${rulerHeight} ${secondaryHeight}
+		grid-template-rows: ${primaryHeight} ${rulerHeight} ${secondaryHeight};
 	`;
 };
 const Container = styled.div`
