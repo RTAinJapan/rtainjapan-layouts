@@ -12,14 +12,14 @@ const SOCIAL_ROTATE_INTERVAL_SECONDS = 20;
 const FADE_DURATION_SECONDS = 0.5;
 
 const Container = styled.div`
-	box-sizing: border-box;
 	line-height: 1;
 	color: white;
 
 	display: grid;
 	grid-template-columns: auto auto;
 	grid-template-rows: 1fr 3px;
-	justify-content: space-between;
+	/* justify-content: space-between; */
+	justify-content: stretch;
 	row-gap: 6px;
 
 	${(props: {gradientBackground?: boolean}) =>
@@ -61,7 +61,7 @@ const SocialInfo = styled.div`
 `;
 
 const Ruler = styled.div`
-	grid-column: 1 / 5;
+	grid-column: 1 / 3;
 	grid-row: 2 / 3;
 	background-color: #ffff52;
 `;
@@ -69,8 +69,9 @@ const Ruler = styled.div`
 const ChildrenContainer = styled.div`
 	grid-column: 2 / 3;
 	grid-row: 1 / 2;
+	justify-self: end;
 	align-self: end;
-	padding-left: 15px;
+	padding-right: 15px;
 `;
 
 interface Props {
