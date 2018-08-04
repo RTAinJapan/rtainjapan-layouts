@@ -1,0 +1,22 @@
+{
+	"defaultSeverity": "error",
+	"extends": ["tslint:all", "tslint-config-prettier"],
+	"rules": {
+		"file-name-casing": [true, "kebab-case"],
+		"typedef": false,
+		"no-magic-numbers": false,
+		"member-ordering": false,
+		"completed-docs": false,
+		"interface-name": false,
+		"no-unsafe-any": false,
+		"strict-boolean-expressions": false,
+		"variable-name": [
+			true,
+			"check-format",
+			"allow-pascal-case",
+			"allow-leading-underscore",
+			"ban-keywords"
+		],
+		"object-literal-sort-keys": false
+	}
+}

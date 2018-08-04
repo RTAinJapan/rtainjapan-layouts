@@ -35,7 +35,10 @@
 		"@types/source-map-support": "^0.4.1",
 		"@types/write-json-file": "^2.2.1",
 		"app-root-path": "^2.1.0",
+		"eslint-config-prettier": "^2.9.0",
+		"eslint-config-xo-react": "^0.17.0",
 		"eslint-config-xo-typescript": "^0.1.0",
+		"eslint-plugin-react": "^7.10.0",
 		"eslint-plugin-typescript": "^0.12.0",
 		"json-schema-to-typescript": "^5.5.0",
 		"parcel-bundler": "^1.9.7",
@@ -99,6 +102,22 @@
 		]
 	},
 	"xo": {
-		"extends": "xo-typescript"
+		"extends": [
+			"xo-react",
+			"xo-typescript",
+			"prettier"
+		],
+		"extensions": [
+			"ts",
+			"tsx"
+		],
+		"rules": {
+			"no-undef": 0,
+			"import/no-unresolved": 0,
+			"react/jsx-tag-spacing": 0,
+			"new-cap": [0, { "capIsNewExceptions": ["Replicant"] }],
+			"no-unused-vars": 0
+		},
+		"ignores": ["./types/schemas", "./scripts", "**/*.d.ts"]
 	}
 }
