@@ -153,7 +153,10 @@
 			],
 			"typescript/explicit-function-return-type": 0,
 			"import/order": 0,
-			"typescript/no-use-before-define": [2, "nofunc"],
+			"typescript/no-use-before-define": [
+				2,
+				"nofunc"
+			],
 			"react/no-this-in-sfc": 0,
 			"typescript/member-ordering": 0,
 			"react/no-did-update-set-state": 0,

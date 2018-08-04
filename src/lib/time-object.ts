@@ -8,7 +8,6 @@ export const enum TimerState {
  * TimeObject class.
  */
 export class TimeObject {
-
 	/**
 	 * Increments a TimeObject by one second.
 	 * @param t - The TimeObject to increment.

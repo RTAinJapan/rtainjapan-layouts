@@ -65,7 +65,6 @@ interface Props {
 	bottomHeightPx: number;
 }
 export class RtaijOverlay extends React.Component<Props, State> {
-
 	public state = {logoR};
 
 	private interval = setInterval(async () => {

@@ -94,8 +94,6 @@ export class RunInfo extends React.Component<{
 		if (!runners) {
 			return [];
 		}
-		return new Array(4)
-			.fill(null)
-			.map((_, index) => runners[index] || _);
+		return new Array(4).fill(null).map((_, index) => runners[index] || _);
 	};
 }

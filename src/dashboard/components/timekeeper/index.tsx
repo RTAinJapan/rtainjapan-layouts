@@ -57,7 +57,11 @@ const RunnersContainer = styled.div`
 
 export class Timekeeper extends React.Component<
 	{},
-	{timer: TimeObject; runners: Array<string | null>; checklistComplete: boolean}
+	{
+		timer: TimeObject;
+		runners: Array<string | null>;
+		checklistComplete: boolean;
+	}
 > {
 	constructor(props: {}) {
 		super(props);
