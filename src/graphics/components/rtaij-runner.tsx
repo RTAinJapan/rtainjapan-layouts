@@ -4,15 +4,15 @@ import {CurrentRun} from '../../../types/schemas/currentRun';
 import {BaseNameplate} from './lib/base-nameplate';
 
 export class RtaijRunner extends BaseNameplate {
-	applyCurrentRunChangeToState = (newVal: CurrentRun) => {
+	public iconPath = runnerIcon;
+	public label = 'Runner';
+	public applyCurrentRunChangeToState = (newVal: CurrentRun) => {
 		this.setState({
 			runners: newVal.runners,
 		});
 	};
-	iconPath = runnerIcon;
-	label = 'Runner';
 
-	render() {
+	public render() {
 		const Container = this.Container;
 		return (
 			<Container>

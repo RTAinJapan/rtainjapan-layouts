@@ -57,7 +57,7 @@ const RunnersContainer = styled.div`
 
 export class Timekeeper extends React.Component<
 	{},
-	{timer: TimeObject; runners: (string | null)[]; checklistComplete: boolean}
+	{timer: TimeObject; runners: Array<string | null>; checklistComplete: boolean}
 > {
 	constructor(props: {}) {
 		super(props);
@@ -68,14 +68,14 @@ export class Timekeeper extends React.Component<
 		};
 	}
 
-	componentDidMount() {
+	public componentDidMount() {
 		stopwatchRep.on('change', newVal => {
 			this.setState({
 				timer: newVal,
 			});
 		});
 		currentRunRep.on('change', newVal => {
-			const runners: (string | null)[] = [null, null, null, null];
+			const runners: Array<string | null> = [null, null, null, null];
 			if (newVal.runners) {
 				newVal.runners.slice(0, 4).forEach((runner, index) => {
 					if (runner) {
@@ -97,7 +97,7 @@ export class Timekeeper extends React.Component<
 		});
 	}
 
-	render() {
+	public render() {
 		return (
 			<Container>
 				<Timer>{this.state.timer.formatted}</Timer>

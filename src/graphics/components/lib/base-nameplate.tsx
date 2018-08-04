@@ -86,96 +86,6 @@ interface State {
 }
 
 export abstract class BaseNameplate extends React.Component<Props, State> {
-	protected readonly Container = (props: {children?: ReactNode}) => (
-		<Container gradientBackground={this.props.gradientBackground}>
-			<SubContainer>
-				<img src={this.iconPath} />
-				<div />
-				<Label>{this.label}</Label>
-				<div />
-				<Name>{this.name}</Name>
-				<div />
-				<SocialContainer style={{opacity: this.state.socialOpacity}}>
-					<img src={this.iconSrc} />
-					<SocialInfo>{this.targetRunner.name}</SocialInfo>
-				</SocialContainer>
-			</SubContainer>
-			<ChildrenContainer>{props.children}</ChildrenContainer>
-			<Ruler />
-		</Container>
-	);
-
-	state: State = {
-		runners: [],
-		socialOpacity: 0,
-	};
-
-	interval?: NodeJS.Timer;
-
-	protected abstract readonly applyCurrentRunChangeToState: (
-		newVal: CurrentRun
-	) => void;
-	protected abstract readonly iconPath: any;
-	protected abstract readonly label: string;
-
-	componentDidMount() {
-		currentRunRep.on('change', this._currentRunChanged);
-	}
-
-	componentWillUnmount() {
-		currentRunRep.removeListener('change', this._currentRunChanged);
-		if (this.interval !== undefined) {
-			clearInterval(this.interval);
-		}
-	}
-
-	private readonly _currentRunChanged = async (newVal: CurrentRun) => {
-		// Reset opacity
-		if (this.state.socialOpacity !== 0) {
-			this.setState({socialOpacity: 0});
-			await delay(FADE_DURATION_SECONDS * 1000);
-		}
-
-		this.applyCurrentRunChangeToState(newVal);
-
-		// Don't do anything if no social info
-		if (this.socialInfo.length === 0) {
-			return;
-		}
-
-		// Move to next social type
-		this.setState({
-			socialType: this.nextSocialType || this.state.socialType,
-		});
-
-		// Show
-		this.setState({socialOpacity: 1});
-		await delay(FADE_DURATION_SECONDS * 1000);
-
-		// If only one social info don't rotate
-		if (this.socialInfo.length === 1) {
-			return;
-		}
-
-		// Rotate
-		if (this.interval !== undefined) {
-			clearInterval(this.interval);
-		}
-		this.interval = setInterval(async () => {
-			// Hide
-			this.setState({socialOpacity: 0});
-			await delay(FADE_DURATION_SECONDS * 1000);
-
-			// Move to next social type
-			this.setState({
-				socialType: this.nextSocialType || this.state.socialType,
-			});
-
-			// Show
-			this.setState({socialOpacity: 1});
-		}, SOCIAL_ROTATE_INTERVAL_SECONDS * 1000);
-		await delay(FADE_DURATION_SECONDS * 1000);
-	};
 
 	private get iconSrc() {
 		switch (this.state.socialType) {
@@ -226,10 +136,10 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 			return [];
 		}
 
-		const socialInfo: {
+		const socialInfo: Array<{
 			socialType: SocialType;
 			info: string;
-		}[] = [];
+		}> = [];
 
 		if (runner.twitch) {
 			socialInfo.push({
@@ -271,6 +181,96 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		}
 		return runners[this.props.index || 0];
 	}
+
+	public state: State = {
+		runners: [],
+		socialOpacity: 0,
+	};
+
+	public interval?: NodeJS.Timer;
+
+	protected abstract readonly applyCurrentRunChangeToState: (
+		newVal: CurrentRun
+	) => void;
+	protected abstract readonly iconPath: any;
+	protected abstract readonly label: string;
+
+	public componentDidMount() {
+		currentRunRep.on('change', this._currentRunChanged);
+	}
+
+	public componentWillUnmount() {
+		currentRunRep.removeListener('change', this._currentRunChanged);
+		if (this.interval !== undefined) {
+			clearInterval(this.interval);
+		}
+	}
+	protected readonly Container = (props: {children?: ReactNode}) => (
+		<Container gradientBackground={this.props.gradientBackground}>
+			<SubContainer>
+				<img src={this.iconPath} />
+				<div />
+				<Label>{this.label}</Label>
+				<div />
+				<Name>{this.name}</Name>
+				<div />
+				<SocialContainer style={{opacity: this.state.socialOpacity}}>
+					<img src={this.iconSrc} />
+					<SocialInfo>{this.targetRunner.name}</SocialInfo>
+				</SocialContainer>
+			</SubContainer>
+			<ChildrenContainer>{props.children}</ChildrenContainer>
+			<Ruler />
+		</Container>
+	);
+
+	private readonly _currentRunChanged = async (newVal: CurrentRun) => {
+		// Reset opacity
+		if (this.state.socialOpacity !== 0) {
+			this.setState({socialOpacity: 0});
+			await delay(FADE_DURATION_SECONDS * 1000);
+		}
+
+		this.applyCurrentRunChangeToState(newVal);
+
+		// Don't do anything if no social info
+		if (this.socialInfo.length === 0) {
+			return;
+		}
+
+		// Move to next social type
+		this.setState({
+			socialType: this.nextSocialType || this.state.socialType,
+		});
+
+		// Show
+		this.setState({socialOpacity: 1});
+		await delay(FADE_DURATION_SECONDS * 1000);
+
+		// If only one social info don't rotate
+		if (this.socialInfo.length === 1) {
+			return;
+		}
+
+		// Rotate
+		if (this.interval !== undefined) {
+			clearInterval(this.interval);
+		}
+		this.interval = setInterval(async () => {
+			// Hide
+			this.setState({socialOpacity: 0});
+			await delay(FADE_DURATION_SECONDS * 1000);
+
+			// Move to next social type
+			this.setState({
+				socialType: this.nextSocialType || this.state.socialType,
+			});
+
+			// Show
+			this.setState({socialOpacity: 1});
+		}, SOCIAL_ROTATE_INTERVAL_SECONDS * 1000);
+		await delay(FADE_DURATION_SECONDS * 1000);
+	};
 }
 
 const enum SocialType {

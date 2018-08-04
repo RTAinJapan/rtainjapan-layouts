@@ -1,7 +1,7 @@
 import {BaseInfo} from './lib/base-info';
 
 export class RtaijTimer extends BaseInfo {
-	componentDidMount() {
+	public componentDidMount() {
 		if (super.componentDidMount) {
 			super.componentDidMount();
 		}

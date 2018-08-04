@@ -1,15 +1,9 @@
 {
 	"defaultSeverity": "error",
-	"extends": ["tslint:all", "tslint-config-prettier"],
+	"extends": ["tslint:latest", "tslint-config-prettier"],
 	"rules": {
-		"file-name-casing": [true, "kebab-case"],
-		"typedef": false,
-		"no-magic-numbers": false,
-		"member-ordering": false,
-		"completed-docs": false,
 		"interface-name": false,
-		"no-unsafe-any": false,
-		"strict-boolean-expressions": false,
+		"object-literal-sort-keys": false,
 		"variable-name": [
 			true,
 			"check-format",
@@ -17,6 +11,8 @@
 			"allow-leading-underscore",
 			"ban-keywords"
 		],
-		"object-literal-sort-keys": false
+		"no-submodule-imports": false,
+		"no-console": {"severity": "warn"},
+		"ordered-imports": false
 	}
 }

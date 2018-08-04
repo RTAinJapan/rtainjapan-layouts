@@ -43,7 +43,7 @@ export class RunInfo extends React.Component<{
 	run: CurrentRun | NextRun;
 	label: string;
 }> {
-	render() {
+	public render() {
 		const {run, label} = this.props;
 		return (
 			<Container>

@@ -65,7 +65,17 @@ interface Props {
 	bottomHeightPx: number;
 }
 export class RtaijOverlay extends React.Component<Props, State> {
-	render() {
+
+	public state = {logoR};
+
+	private interval = setInterval(async () => {
+		const gifs = await import('../images/logo/*.gif');
+		const randomGif = sample(Object.values(gifs));
+		this.setState({logoR: randomGif});
+		await delay(2000);
+		this.setState({logoR});
+	}, 77 * 1000);
+	public render() {
 		return (
 			<Container>
 				<Top theme={{isBreak: this.props.isBreak}}>
@@ -81,17 +91,7 @@ export class RtaijOverlay extends React.Component<Props, State> {
 		);
 	}
 
-	state = {logoR};
-
-	private interval = setInterval(async () => {
-		const gifs = await import('../images/logo/*.gif');
-		const randomGif = sample(Object.values(gifs));
-		this.setState({logoR: randomGif});
-		await delay(2000);
-		this.setState({logoR});
-	}, 77 * 1000);
-
-	componentWillUnmount() {
+	public componentWillUnmount() {
 		clearInterval(this.interval);
 	}
 }

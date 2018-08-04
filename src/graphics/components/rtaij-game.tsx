@@ -3,11 +3,11 @@ import {BaseInfo} from './lib/base-info';
 import {CurrentRun} from '../../../types/schemas/currentRun';
 
 export class RtaijGame extends BaseInfo {
-	componentDidMount() {
+	public componentDidMount() {
 		currentRunRep.on('change', this.currentRunChangeHandler);
 	}
 
-	componentWillUnmount() {
+	public componentWillUnmount() {
 		currentRunRep.removeListener('change', this.currentRunChangeHandler);
 	}
 

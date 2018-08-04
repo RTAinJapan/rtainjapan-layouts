@@ -154,7 +154,7 @@ export const twitter = async (nodecg: NodeCG) => {
 			{
 				url: ACCESS_TOKEN_URL,
 				method: 'POST',
-				data: data,
+				data,
 			},
 			{
 				key: requestToken.token,

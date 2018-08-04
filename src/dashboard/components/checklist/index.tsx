@@ -33,13 +33,13 @@ export class Checklist extends React.Component<
 		this.state = {checklist: []};
 	}
 
-	componentDidMount() {
+	public componentDidMount() {
 		checklistRep.on('change', newVal => {
 			this.setState({checklist: newVal});
 		});
 	}
 
-	render() {
+	public render() {
 		return (
 			<Container>
 				{this.state.checklist.map(checklist =>

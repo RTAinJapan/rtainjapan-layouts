@@ -98,7 +98,7 @@ export class TweetItem extends React.Component<Props, State> {
 		this.state = this.calcTimeago();
 	}
 
-	render() {
+	public render() {
 		return (
 			<Container>
 				<Avatar src={this.props.tweet.user.profileImageUrl} />
@@ -130,7 +130,7 @@ export class TweetItem extends React.Component<Props, State> {
 		);
 	}
 
-	componentWillUnmount() {
+	public componentWillUnmount() {
 		clearInterval(this.interval);
 	}
 

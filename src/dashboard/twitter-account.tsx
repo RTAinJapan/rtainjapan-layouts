@@ -33,13 +33,13 @@ class App extends React.Component<{}, State> {
 		};
 	}
 
-	componentDidMount() {
+	public componentDidMount() {
 		twitterRep.on('change', newVal => {
 			this.setState({userObject: newVal.userObject});
 		});
 	}
 
-	render() {
+	public render() {
 		const {userObject} = this.state;
 		return userObject ? (
 			<LoggedIn onClick={this.logout}>

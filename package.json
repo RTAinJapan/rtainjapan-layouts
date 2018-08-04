@@ -6,6 +6,7 @@
 		"bundle": "node scripts/bundle.js",
 		"start": "(cd ../.. && node index.js)",
 		"schema-types": "node scripts/schema-types.js",
+		"tslint": "tslint --project . --format stylish",
 		"format": "prettier '{{src,types,schemas}/**,.}/*.{ts,tsx,js,jsx,json}' --write"
 	},
 	"dependencies": {

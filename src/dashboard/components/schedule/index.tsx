@@ -68,7 +68,7 @@ const EditControls = styled.div`
 
 export class Schedule extends React.Component<
 	{},
-	{titles: (string | undefined)[]; currentRun: CurrentRun; nextRun: NextRun}
+	{titles: Array<string | undefined>; currentRun: CurrentRun; nextRun: NextRun}
 > {
 	constructor(props: {}) {
 		super(props);
@@ -79,7 +79,7 @@ export class Schedule extends React.Component<
 		};
 	}
 
-	componentDidMount() {
+	public componentDidMount() {
 		scheduleRep.on('change', newVal => {
 			if (!newVal) {
 				return;
@@ -100,7 +100,7 @@ export class Schedule extends React.Component<
 		});
 	}
 
-	render() {
+	public render() {
 		return (
 			<Container>
 				<SelectionContainer>

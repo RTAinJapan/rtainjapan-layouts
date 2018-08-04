@@ -41,11 +41,11 @@ export class Twitter extends React.Component<{}, {tweets: Tweets}> {
 		this.state = {tweets: []};
 	}
 
-	componentDidMount() {
+	public componentDidMount() {
 		tweetsRep.on('change', this.tweetRepChange);
 	}
 
-	render() {
+	public render() {
 		return (
 			<Container>
 				<Label>ツイート表示管理</Label>
@@ -62,7 +62,7 @@ export class Twitter extends React.Component<{}, {tweets: Tweets}> {
 		);
 	}
 
-	componentWillUnmount() {
+	public componentWillUnmount() {
 		tweetsRep.removeListener('change', this.tweetRepChange);
 	}
 

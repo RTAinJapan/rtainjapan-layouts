@@ -72,15 +72,15 @@ interface State {
 }
 
 export abstract class BaseInfo extends React.Component<Props, State> {
-	state: State = {
+	public state: State = {
 		primaryInfo: '',
 		secondaryInfo: '',
 		primarySize: 30 * 1.5,
 	};
-	containerRef = React.createRef<HTMLDivElement>();
-	primaryRef = React.createRef<HTMLDivElement>();
+	public containerRef = React.createRef<HTMLDivElement>();
+	public primaryRef = React.createRef<HTMLDivElement>();
 
-	render() {
+	public render() {
 		return (
 			<Container
 				innerRef={this.containerRef}
@@ -102,7 +102,7 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 		);
 	}
 
-	componentDidUpdate() {
+	public componentDidUpdate() {
 		const containerRef = this.containerRef.current;
 		const primaryRef = this.primaryRef.current;
 		if (!containerRef || !primaryRef) {

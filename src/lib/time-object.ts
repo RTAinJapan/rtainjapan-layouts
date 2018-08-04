@@ -8,37 +8,13 @@ export const enum TimerState {
  * TimeObject class.
  */
 export class TimeObject {
-	raw: number;
-	hours: number;
-	minutes: number;
-	seconds: number;
-	formatted: string;
-	timestamp: number = Date.now();
-	timerState: TimerState = TimerState.Stopped;
-	results: (TimeObject | null)[] = [null, null, null, null];
-	forfeit: boolean = false;
-	place?: number;
-
-	/**
-	 * Constructs a new TimeObject with the provided number of seconds.
-	 * @param seconds The value to instantiate this TimeObject with, in seconds.
-	 */
-	constructor(seconds = 0) {
-		this.raw = seconds;
-
-		const hms = TimeObject.secondsToHMS(seconds);
-		this.hours = hms.h;
-		this.minutes = hms.m;
-		this.seconds = hms.s;
-		this.formatted = TimeObject.formatHMS(hms);
-	}
 
 	/**
 	 * Increments a TimeObject by one second.
 	 * @param t - The TimeObject to increment.
 	 * @returns The TimeObject passed in as an argument.
 	 */
-	static increment(t: TimeObject) {
+	public static increment(t: TimeObject) {
 		t.raw++;
 
 		const hms = TimeObject.secondsToHMS(t.raw);
@@ -55,7 +31,7 @@ export class TimeObject {
 	 * @param t The TimeObject to increment.
 	 * @returns The TimeObject passed in as an argument.
 	 */
-	static decrement(t: TimeObject) {
+	public static decrement(t: TimeObject) {
 		t.raw--;
 
 		const hms = TimeObject.secondsToHMS(t.raw);
@@ -73,7 +49,7 @@ export class TimeObject {
 	 * @param seconds The value to set to (in seconds).
 	 * @returns The TimeObject passed in as an argument.
 	 */
-	static setSeconds(t: TimeObject, seconds: number) {
+	public static setSeconds(t: TimeObject, seconds: number) {
 		const hms = TimeObject.secondsToHMS(seconds);
 		t.hours = hms.h;
 		t.minutes = hms.m;
@@ -89,7 +65,7 @@ export class TimeObject {
 	 * @param hms The HMS object to format.
 	 * @returns The formatted time string.
 	 */
-	static formatHMS(hms: {h: number; m: number; s: number}) {
+	public static formatHMS(hms: {h: number; m: number; s: number}) {
 		let str = '';
 		if (hms.h) {
 			str += `${hms.h}:`;
@@ -106,7 +82,7 @@ export class TimeObject {
 	 * @param seconds The number of seconds to format.
 	 * @returns The formatted time sting.
 	 */
-	static formatSeconds(seconds: number) {
+	public static formatSeconds(seconds: number) {
 		const hms = TimeObject.secondsToHMS(seconds);
 		return TimeObject.formatHMS(hms);
 	}
@@ -116,7 +92,7 @@ export class TimeObject {
 	 * @param seconds A number of seconds.
 	 * @returns An HMS object.
 	 */
-	static secondsToHMS(seconds: number) {
+	public static secondsToHMS(seconds: number) {
 		return {
 			h: Math.floor(seconds / 3600),
 			m: Math.floor((seconds % 3600) / 60),
@@ -129,7 +105,7 @@ export class TimeObject {
 	 * @param timeString The formatted time string to parse (hh:mm:ss or mm:ss).
 	 * @returns The parsed time string represented as seconds.
 	 */
-	static parseSeconds(timeString: string) {
+	public static parseSeconds(timeString: string) {
 		const timeParts = timeString.split(':').map(Number);
 		if (timeParts.length === 3) {
 			return (
@@ -150,5 +126,29 @@ export class TimeObject {
 		throw new Error(
 			`Unexpected format of timeString argument: ${timeString}`
 		);
+	}
+	public raw: number;
+	public hours: number;
+	public minutes: number;
+	public seconds: number;
+	public formatted: string;
+	public timestamp: number = Date.now();
+	public timerState: TimerState = TimerState.Stopped;
+	public results: Array<TimeObject | null> = [null, null, null, null];
+	public forfeit: boolean = false;
+	public place?: number;
+
+	/**
+	 * Constructs a new TimeObject with the provided number of seconds.
+	 * @param seconds The value to instantiate this TimeObject with, in seconds.
+	 */
+	constructor(seconds = 0) {
+		this.raw = seconds;
+
+		const hms = TimeObject.secondsToHMS(seconds);
+		this.hours = hms.h;
+		this.minutes = hms.m;
+		this.seconds = hms.s;
+		this.formatted = TimeObject.formatHMS(hms);
 	}
 }

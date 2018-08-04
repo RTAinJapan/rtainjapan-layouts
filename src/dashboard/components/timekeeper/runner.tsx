@@ -65,7 +65,7 @@ export class Runner extends React.Component<{
 	timer: TimeObject;
 	index: number;
 }> {
-	render() {
+	public render() {
 		return (
 			<Container theme={{index: this.props.index}}>
 				{this.renderContent()}
