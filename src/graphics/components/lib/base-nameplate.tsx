@@ -6,6 +6,7 @@ import {currentRunRep} from '../../../lib/replicants';
 import twitchIcon from '../../images/icon/twitch.png';
 import nicoIcon from '../../images/icon/nico.png';
 import twitterIcon from '../../images/icon/twitter.png';
+import {GradientRight} from './styled';
 
 const SOCIAL_ROTATE_INTERVAL_SECONDS = 20;
 const FADE_DURATION_SECONDS = 0.5;
@@ -20,6 +21,9 @@ const Container = styled.div`
 	grid-template-rows: 1fr 3px;
 	justify-content: space-between;
 	row-gap: 6px;
+
+	${(props: {gradientBackground?: boolean}) =>
+		props.gradientBackground && GradientRight};
 `;
 
 const SubContainer = styled.div`
@@ -65,11 +69,13 @@ const Ruler = styled.div`
 const ChildrenContainer = styled.div`
 	grid-column: 2 / 3;
 	grid-row: 1 / 2;
+	align-self: end;
 	padding-left: 15px;
 `;
 
 interface Props {
 	index?: number;
+	gradientBackground?: boolean;
 }
 
 interface State {
@@ -80,17 +86,17 @@ interface State {
 
 export abstract class BaseNameplate extends React.Component<Props, State> {
 	protected readonly Container = (props: {children?: ReactNode}) => (
-		<Container>
+		<Container gradientBackground={this.props.gradientBackground}>
 			<SubContainer>
 				<img src={this.iconPath} />
 				<div />
 				<Label>{this.label}</Label>
 				<div />
-				<Name>{this.name()}</Name>
+				<Name>{this.name}</Name>
 				<div />
 				<SocialContainer style={{opacity: this.state.socialOpacity}}>
-					<img src={this.iconSrc()} />
-					<SocialInfo>{this.targetRunner().name}</SocialInfo>
+					<img src={this.iconSrc} />
+					<SocialInfo>{this.targetRunner.name}</SocialInfo>
 				</SocialContainer>
 			</SubContainer>
 			<ChildrenContainer>{props.children}</ChildrenContainer>
@@ -132,13 +138,13 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		this.applyCurrentRunChangeToState(newVal);
 
 		// Don't do anything if no social info
-		if (this.socialInfo().length === 0) {
+		if (this.socialInfo.length === 0) {
 			return;
 		}
 
 		// Move to next social type
 		this.setState({
-			socialType: this.nextSocialType() || this.state.socialType,
+			socialType: this.nextSocialType || this.state.socialType,
 		});
 
 		// Show
@@ -146,7 +152,7 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		await delay(FADE_DURATION_SECONDS * 1000);
 
 		// If only one social info don't rotate
-		if (this.socialInfo().length === 1) {
+		if (this.socialInfo.length === 1) {
 			return;
 		}
 
@@ -161,7 +167,7 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 
 			// Move to next social type
 			this.setState({
-				socialType: this.nextSocialType() || this.state.socialType,
+				socialType: this.nextSocialType || this.state.socialType,
 			});
 
 			// Show
@@ -170,7 +176,7 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		await delay(FADE_DURATION_SECONDS * 1000);
 	};
 
-	private iconSrc() {
+	private get iconSrc() {
 		switch (this.state.socialType) {
 			case SocialType.Nico:
 				return nicoIcon;
@@ -181,8 +187,8 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		}
 	}
 
-	private nextSocialType() {
-		const runner = this.targetRunner();
+	private get nextSocialType() {
+		const runner = this.targetRunner;
 		switch (this.state.socialType) {
 			case SocialType.Twitch:
 				if (runner.nico !== undefined) {
@@ -213,8 +219,8 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		}
 	}
 
-	protected socialInfo() {
-		const runner = this.targetRunner();
+	protected get socialInfo() {
+		const runner = this.targetRunner;
 		if (!runner) {
 			return [];
 		}
@@ -246,15 +252,15 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		return socialInfo;
 	}
 
-	protected name() {
-		const runner = this.targetRunner();
+	protected get name() {
+		const runner = this.targetRunner;
 		if (!runner) {
 			return '';
 		}
 		return runner.name;
 	}
 
-	private targetRunner() {
+	private get targetRunner() {
 		const {runners} = this.state;
 		if (!runners) {
 			return {};
