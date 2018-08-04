@@ -95,9 +95,7 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 			case SocialType.Twitter:
 				return twitterIcon;
 			default:
-				throw new Error(
-					`Invalid social type found: ${this.state.socialType}`
-				);
+				return undefined;
 		}
 	}
 
