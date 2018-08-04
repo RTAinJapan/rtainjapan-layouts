@@ -80,12 +80,32 @@
 				"height": 1080
 			},
 			{
+				"file": "ds1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "gb1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "hd1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
 				"file": "sd1.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
 				"file": "sd2.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "sd3.html",
 				"width": 1920,
 				"height": 1080
 			}
