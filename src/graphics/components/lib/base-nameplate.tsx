@@ -8,18 +8,22 @@ import nicoIcon from '../../images/icon/nico.png';
 import twitterIcon from '../../images/icon/twitter.png';
 import {GradientRight} from './styled';
 
-const SOCIAL_ROTATE_INTERVAL_SECONDS = 20;
+const SOCIAL_ROTATE_INTERVAL_SECONDS = 2;
 const FADE_DURATION_SECONDS = 0.5;
 
 const Container = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 60px;
 	line-height: 1;
 	color: white;
 
 	display: grid;
 	grid-template-columns: auto auto;
 	grid-template-rows: 1fr 3px;
-	/* justify-content: space-between; */
-	justify-content: stretch;
+	justify-content: space-between;
 	row-gap: 6px;
 
 	${(props: {gradientBackground?: boolean}) =>
@@ -31,13 +35,15 @@ const SubContainer = styled.div`
 	grid-row: 1 / 2;
 	padding-left: 15px;
 
-	display: grid;
-	grid-template-columns: 36px 15px auto 30px auto 30px auto;
-	justify-content: start;
-	align-items: end;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: flex-end;
 `;
 
 const SocialContainer = styled.div`
+	padding-left: 30px;
 	transition: opacity ${FADE_DURATION_SECONDS}s linear;
 
 	display: grid;
@@ -48,16 +54,23 @@ const SocialContainer = styled.div`
 const Label = styled.div`
 	font-size: 24px;
 	font-weight: 900;
+	padding-left: 15px;
 `;
 
 const Name = styled.div`
-	font-size: 36px;
+	font-size: ${(props: {fontSizeMultiplier: number}) =>
+		props.fontSizeMultiplier * 36}px;
 	font-weight: 900;
+	white-space: nowrap;
+	padding-left: 30px;
 `;
 
 const SocialInfo = styled.div`
-	font-size: 24px;
+	font-size: ${(props: {fontSizeMultiplier: number}) =>
+		props.fontSizeMultiplier * 24}px;
 	font-weight: 400;
+	display: grid;
+	align-content: center;
 `;
 
 const Ruler = styled.div`
@@ -71,7 +84,7 @@ const ChildrenContainer = styled.div`
 	grid-row: 1 / 2;
 	justify-self: end;
 	align-self: end;
-	padding-right: 15px;
+	padding: 0 15px;
 `;
 
 interface Props {
@@ -83,6 +96,8 @@ interface State {
 	runners: CurrentRun['runners'];
 	socialType?: SocialType;
 	socialOpacity: number;
+	hideLabel: boolean;
+	fontSizeMultiplier: number;
 }
 
 export abstract class BaseNameplate extends React.Component<Props, State> {
@@ -103,26 +118,26 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		const runner = this.targetRunner;
 		switch (this.state.socialType) {
 			case SocialType.Twitch:
-				if (runner.nico !== undefined) {
+				if (runner.nico) {
 					return SocialType.Nico;
 				}
-				if (runner.twitter !== undefined) {
+				if (runner.twitter) {
 					return SocialType.Twitter;
 				}
 				return undefined;
 			case SocialType.Nico:
-				if (runner.twitter !== undefined) {
+				if (runner.twitter) {
 					return SocialType.Twitter;
 				}
-				if (runner.twitch !== undefined) {
+				if (runner.twitch) {
 					return SocialType.Twitch;
 				}
 				return undefined;
 			case SocialType.Twitter:
-				if (runner.twitch !== undefined) {
+				if (runner.twitch) {
 					return SocialType.Twitch;
 				}
-				if (runner.nico !== undefined) {
+				if (runner.nico) {
 					return SocialType.Nico;
 				}
 				return undefined;
@@ -180,12 +195,15 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		if (runners.length === 0) {
 			return {};
 		}
-		return runners[this.props.index || 0];
+		const targetRunner = runners[this.props.index || 0];
+		return targetRunner || {name: 'N/A', twitch: 'hogehoge'};
 	}
 
 	public state: State = {
 		runners: [],
 		socialOpacity: 0,
+		fontSizeMultiplier: 1,
+		hideLabel: false,
 	};
 
 	public interval?: NodeJS.Timer;
@@ -198,6 +216,8 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 
 	protected abstract readonly label: string;
 
+	private container = React.createRef<HTMLDivElement>();
+
 	public componentDidMount() {
 		currentRunRep.on('change', this._currentRunChanged);
 	}
@@ -209,18 +229,40 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		}
 	}
 
+	public componentDidUpdate() {
+		const {current} = this.container;
+		if (!current) {
+			return;
+		}
+		if (current.offsetWidth < current.scrollWidth) {
+			if (this.state.hideLabel) {
+				this.setState(state => ({
+					fontSizeMultiplier: state.fontSizeMultiplier * 0.95,
+				}));
+			} else {
+				this.setState({hideLabel: true});
+			}
+		}
+	}
+
 	protected readonly Container = (props: {children?: ReactNode}) => (
-		<Container gradientBackground={this.props.gradientBackground}>
+		<Container
+			innerRef={this.container}
+			gradientBackground={this.props.gradientBackground}
+		>
 			<SubContainer>
 				<img src={this.iconPath} />
-				<div />
-				<Label>{this.label}</Label>
-				<div />
-				<Name>{this.name}</Name>
-				<div />
+				{this.state.hideLabel || <Label>{this.label}</Label>}
+				<Name fontSizeMultiplier={this.state.fontSizeMultiplier}>
+					{(this.name || '').repeat(3)}
+				</Name>
 				<SocialContainer style={{opacity: this.state.socialOpacity}}>
 					<img src={this.iconSrc} />
-					<SocialInfo>{this.targetRunner.name}</SocialInfo>
+					<SocialInfo
+						fontSizeMultiplier={this.state.fontSizeMultiplier}
+					>
+						{this.targetRunner[this.state.socialType || 'twitch']}
+					</SocialInfo>
 				</SocialContainer>
 			</SubContainer>
 			<ChildrenContainer>{props.children}</ChildrenContainer>
@@ -229,6 +271,9 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 	);
 
 	private readonly _currentRunChanged = async (newVal: CurrentRun) => {
+		this.setState({
+			fontSizeMultiplier: 1,
+		});
 		// Reset opacity
 		if (this.state.socialOpacity !== 0) {
 			this.setState({socialOpacity: 0});
