@@ -127,15 +127,25 @@ export class TimeObject {
 			`Unexpected format of timeString argument: ${timeString}`
 		);
 	}
+
 	public raw: number;
+
 	public hours: number;
+
 	public minutes: number;
+
 	public seconds: number;
+
 	public formatted: string;
+
 	public timestamp: number = Date.now();
+
 	public timerState: TimerState = TimerState.Stopped;
+
 	public results: Array<TimeObject | null> = [null, null, null, null];
-	public forfeit: boolean = false;
+
+	public forfeit = false;
+
 	public place?: number;
 
 	/**

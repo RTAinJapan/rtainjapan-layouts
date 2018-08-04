@@ -5,7 +5,9 @@ import {BaseNameplate} from './lib/base-nameplate';
 
 export class RtaijCommentator extends BaseNameplate {
 	public iconPath = commentatorIcon;
+
 	public label = 'Commentator';
+
 	public applyCurrentRunChangeToState = (newVal: CurrentRun) => {
 		this.setState({
 			runners: newVal.commentators,
@@ -13,7 +15,7 @@ export class RtaijCommentator extends BaseNameplate {
 	};
 
 	public render() {
-		const Container = this.Container;
+		const {Container} = this;
 		return <Container />;
 	}
 }

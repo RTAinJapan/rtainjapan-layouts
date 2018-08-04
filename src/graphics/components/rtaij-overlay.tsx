@@ -75,6 +75,7 @@ export class RtaijOverlay extends React.Component<Props, State> {
 		await delay(2000);
 		this.setState({logoR});
 	}, 77 * 1000);
+
 	public render() {
 		return (
 			<Container>

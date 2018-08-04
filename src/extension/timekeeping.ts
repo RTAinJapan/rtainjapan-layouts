@@ -70,7 +70,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * Starts the timer.
 	 * @param force - Forces the timer to start again, even if already running.
 	 */
-	function start(force: boolean = false) {
+	function start(force = false) {
 		if (!checklistComplete) {
 			return;
 		}

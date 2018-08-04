@@ -83,7 +83,7 @@ export class RunInfo extends React.Component<{
 
 	private readonly renderRunners = () =>
 		this.runners().map((runner, index) => (
-			<LabeledDiv key={index}>
+			<LabeledDiv key={Date.now()}>
 				<label>走者{index}</label>
 				<div>{runner && runner.name}</div>
 			</LabeledDiv>
@@ -94,7 +94,7 @@ export class RunInfo extends React.Component<{
 		if (!runners) {
 			return [];
 		}
-		return Array(4)
+		return new Array(4)
 			.fill(null)
 			.map((_, index) => runners[index] || _);
 	};

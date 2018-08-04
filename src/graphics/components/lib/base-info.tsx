@@ -77,7 +77,9 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 		secondaryInfo: '',
 		primarySize: 30 * 1.5,
 	};
+
 	public containerRef = React.createRef<HTMLDivElement>();
+
 	public primaryRef = React.createRef<HTMLDivElement>();
 
 	public render() {
@@ -111,9 +113,9 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 		const containerWidth = containerRef.clientWidth;
 		const primaryWidth = primaryRef.clientWidth;
 		if (containerWidth - primaryWidth < 60) {
-			this.setState({
-				primarySize: this.state.primarySize - 1,
-			});
+			this.setState(state => ({
+				primarySize: state.primarySize - 1,
+			}));
 		}
 	}
 }

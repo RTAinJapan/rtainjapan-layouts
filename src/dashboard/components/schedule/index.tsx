@@ -68,7 +68,11 @@ const EditControls = styled.div`
 
 export class Schedule extends React.Component<
 	{},
-	{titles: Array<string | undefined>; currentRun: CurrentRun; nextRun: NextRun}
+	{
+		titles: Array<string | undefined>;
+		currentRun: CurrentRun;
+		nextRun: NextRun;
+	}
 > {
 	constructor(props: {}) {
 		super(props);
@@ -142,12 +146,12 @@ export class Schedule extends React.Component<
 				}: ControllerStateAndHelpers<any>) => (
 					<div>
 						<TextField
-							fullWidth={true}
+							fullWidth
 							InputProps={getInputProps({
 								placeholder: 'ゲーム名',
 							})}
 						/>
-						{!isOpen ? null : (
+						{isOpen ? (
 							<Paper square>
 								{this.renderSuggestion(
 									inputValue,
@@ -155,7 +159,7 @@ export class Schedule extends React.Component<
 									highlightedIndex
 								)}
 							</Paper>
-						)}
+						) : null}
 					</div>
 				)}
 			</Downshift>

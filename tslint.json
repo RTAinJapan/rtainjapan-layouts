@@ -13,6 +13,7 @@
 		],
 		"no-submodule-imports": false,
 		"no-console": {"severity": "warn"},
-		"ordered-imports": false
+		"ordered-imports": false,
+		"no-this-assignment": false
 	}
 }

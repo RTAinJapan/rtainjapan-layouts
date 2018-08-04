@@ -5,7 +5,9 @@ import {BaseNameplate} from './lib/base-nameplate';
 
 export class RtaijRunner extends BaseNameplate {
 	public iconPath = runnerIcon;
+
 	public label = 'Runner';
+
 	public applyCurrentRunChangeToState = (newVal: CurrentRun) => {
 		this.setState({
 			runners: newVal.runners,
@@ -13,7 +15,7 @@ export class RtaijRunner extends BaseNameplate {
 	};
 
 	public render() {
-		const Container = this.Container;
+		const {Container} = this;
 		return (
 			<Container>
 				<div>1:23:45</div>

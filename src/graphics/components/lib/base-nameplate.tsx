@@ -86,7 +86,6 @@ interface State {
 }
 
 export abstract class BaseNameplate extends React.Component<Props, State> {
-
 	private get iconSrc() {
 		switch (this.state.socialType) {
 			case SocialType.Nico:
@@ -95,6 +94,10 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 				return twitchIcon;
 			case SocialType.Twitter:
 				return twitterIcon;
+			default:
+				throw new Error(
+					`Invalid social type found: ${this.state.socialType}`
+				);
 		}
 	}
 
@@ -108,7 +111,7 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 				if (runner.twitter !== undefined) {
 					return SocialType.Twitter;
 				}
-				return;
+				return undefined;
 			case SocialType.Nico:
 				if (runner.twitter !== undefined) {
 					return SocialType.Twitter;
@@ -116,7 +119,7 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 				if (runner.twitch !== undefined) {
 					return SocialType.Twitch;
 				}
-				return;
+				return undefined;
 			case SocialType.Twitter:
 				if (runner.twitch !== undefined) {
 					return SocialType.Twitch;
@@ -124,7 +127,7 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 				if (runner.nico !== undefined) {
 					return SocialType.Nico;
 				}
-				return;
+				return undefined;
 			default:
 				return SocialType.Twitch;
 		}
@@ -192,7 +195,9 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 	protected abstract readonly applyCurrentRunChangeToState: (
 		newVal: CurrentRun
 	) => void;
+
 	protected abstract readonly iconPath: any;
+
 	protected abstract readonly label: string;
 
 	public componentDidMount() {
@@ -205,6 +210,7 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 			clearInterval(this.interval);
 		}
 	}
+
 	protected readonly Container = (props: {children?: ReactNode}) => (
 		<Container gradientBackground={this.props.gradientBackground}>
 			<SubContainer>
@@ -239,9 +245,9 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		}
 
 		// Move to next social type
-		this.setState({
-			socialType: this.nextSocialType || this.state.socialType,
-		});
+		this.setState(state => ({
+			socialType: this.nextSocialType || state.socialType,
+		}));
 
 		// Show
 		this.setState({socialOpacity: 1});
@@ -262,9 +268,9 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 			await delay(FADE_DURATION_SECONDS * 1000);
 
 			// Move to next social type
-			this.setState({
-				socialType: this.nextSocialType || this.state.socialType,
-			});
+			this.setState(state => ({
+				socialType: this.nextSocialType || state.socialType,
+			}));
 
 			// Show
 			this.setState({socialOpacity: 1});

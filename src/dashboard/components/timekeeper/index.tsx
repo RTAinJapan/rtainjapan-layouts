@@ -118,11 +118,11 @@ export class Timekeeper extends React.Component<
 				<RunnersContainer>
 					{this.state.runners.map((runner, index) => (
 						<Runner
-							runner={this.state.runners[index]}
+							key={Date.now()}
 							checklistCompleted={this.state.checklistComplete}
-							timer={this.state.timer}
 							index={index}
-							key={index}
+							runner={runner}
+							timer={this.state.timer}
 						>
 							{runner}
 						</Runner>

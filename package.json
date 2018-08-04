@@ -7,7 +7,8 @@
 		"start": "(cd ../.. && node index.js)",
 		"schema-types": "node scripts/schema-types.js",
 		"tslint": "tslint --project . --format stylish",
-		"format": "prettier '{{src,types,schemas}/**,.}/*.{ts,tsx,js,jsx,json}' --write"
+		"prettier": "prettier '{{src,types,schemas}/**,.}/*.{ts,tsx,js,jsx,json}'",
+		"test": "yarn xo && yarn tslint && yarn prettier"
 	},
 	"dependencies": {
 		"@material-ui/core": "^1.4.0",
@@ -139,6 +140,7 @@
 		],
 		"rules": {
 			"no-undef": 0,
+			"no-unused-vars": 0,
 			"import/no-unresolved": 0,
 			"react/jsx-tag-spacing": 0,
 			"new-cap": [
@@ -149,7 +151,15 @@
 					]
 				}
 			],
-			"no-unused-vars": 0
+			"typescript/explicit-function-return-type": 0,
+			"import/order": 0,
+			"typescript/no-use-before-define": [2, "nofunc"],
+			"react/no-this-in-sfc": 0,
+			"typescript/member-ordering": 0,
+			"react/no-did-update-set-state": 0,
+			"import/no-unassigned-import": 0,
+			"unicorn/no-abusive-eslint-disable": 0,
+			"valid-jsdoc": 0
 		},
 		"ignores": [
 			"./types/schemas",

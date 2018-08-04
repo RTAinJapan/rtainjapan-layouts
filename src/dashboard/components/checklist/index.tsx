@@ -65,11 +65,11 @@ export class Checklist extends React.Component<
 
 	private readonly makeChecklistElement = (checklist: ChecklistSchema[0]) => (
 		<CheckboxLabel
-			label={checklist.name}
 			key={checklist.name}
 			control={
 				<Checkbox checked={checklist.complete} name={checklist.name} />
 			}
+			label={checklist.name}
 			onChange={this.toggleCheckbox}
 			style={{margin: '0'}}
 		/>

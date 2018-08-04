@@ -27,7 +27,7 @@ export const schedule = (nodecg: NodeCG) => {
 	const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
 	const nextRunRep = nodecg.Replicant<NextRun>('nextRun');
 
-	const horaroId = nodecg.bundleConfig.horaroId;
+	const {horaroId} = nodecg.bundleConfig;
 
 	let updateInterval: NodeJS.Timer;
 
@@ -181,10 +181,10 @@ export const schedule = (nodecg: NodeCG) => {
 		});
 
 		// Put first game to current game if no current game exists
-		if (!currentRunRep.value.pk) {
-			updateCurrentRun(0);
-		} else {
+		if (currentRunRep.value.pk) {
 			updateCurrentRun();
+		} else {
+			updateCurrentRun(0);
 		}
 	}
 

@@ -56,13 +56,14 @@ export const twitter = async (nodecg: NodeCG) => {
 	const twitterRep = nodecg.Replicant<Twitter>('twitter');
 	const tweetsRep = nodecg.Replicant<Tweets>('tweets', {defaultValue: []});
 	const twitterConfig = nodecg.bundleConfig.twitter;
-	const maxTweets = nodecg.bundleConfig.twitter.maxTweets;
+	const {maxTweets} = nodecg.bundleConfig.twitter;
 
 	const oauth = new OAuth({
 		consumer: {
 			key: twitterConfig.consumerKey,
 			secret: twitterConfig.consumerSecret,
 		},
+		/* eslint-disable camelcase */
 		signature_method: 'HMAC-SHA1',
 		hash_function(baseString, key) {
 			return crypto
@@ -70,6 +71,7 @@ export const twitter = async (nodecg: NodeCG) => {
 				.update(baseString)
 				.digest('base64');
 		},
+		/* eslint-enable camelcase */
 		realm: '',
 	});
 
@@ -135,6 +137,7 @@ export const twitter = async (nodecg: NodeCG) => {
 			url: REQUEST_TOKEN_URL,
 			method: 'POST',
 			data: {
+				/* eslint-disable-next-line camelcase */
 				oauth_callback: callbackUrl,
 			},
 		});
@@ -149,6 +152,7 @@ export const twitter = async (nodecg: NodeCG) => {
 	}
 
 	async function getAccessToken(oauthVerifier: string) {
+		/* eslint-disable-next-line camelcase */
 		const data = {oauth_verifier: oauthVerifier};
 		const oauthData = oauth.authorize(
 			{
@@ -231,7 +235,7 @@ export const twitter = async (nodecg: NodeCG) => {
 
 		// Tweets are split when coming in through stream API
 		// Store the strings until it can be parsed or gets too long
-		let store: string = '';
+		let store = '';
 		twitterStream.on('data', async (data: any) => {
 			if (!data || typeof data !== 'string') {
 				return;
