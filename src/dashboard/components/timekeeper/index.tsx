@@ -3,9 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import uuidv4 from 'uuid/v4';
 
-// MUI Core
-import Button from '@material-ui/core/Button';
-
 // MUI Icons
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
@@ -25,6 +22,7 @@ import {CurrentRun} from '../../../../types/schemas/currentRun';
 import {ChecklistCompleted} from '../../../../types/schemas/checklistCompleted';
 import nodecg from '../../../lib/nodecg';
 import {EditTimeModal} from './edit';
+import { NoWrapButton } from '../lib/no-wrap-button';
 
 const Container = BorderedBox.extend`
 	display: grid;
@@ -116,32 +114,32 @@ export class Timekeeper extends React.Component<{}, State> {
 			<Container>
 				<Timer>{this.state.timer.formatted}</Timer>
 				<CtrlsContainer>
-					<Button
+					<NoWrapButton
 						variant="raised"
 						fullWidth
 						disabled={shouldDisableStart}
 						onClick={startTimer}
 					>
 						<PlayArrow />開始
-					</Button>
-					<Button
+					</NoWrapButton>
+					<NoWrapButton
 						variant="raised"
 						fullWidth
 						disabled={shouldDisablePause}
 						onClick={stopTimer}
 					>
 						<Pause />停止
-					</Button>
-					<Button
+					</NoWrapButton>
+					<NoWrapButton
 						variant="raised"
 						fullWidth
 						onClick={resetTimer}
 					>
 						<Refresh />リセット
-					</Button>
-					<Button variant="raised" fullWidth onClick={this.openEdit}>
+					</NoWrapButton>
+					<NoWrapButton variant="raised" fullWidth onClick={this.openEdit}>
 						<ModeEdit />編集
-					</Button>
+					</NoWrapButton>
 				</CtrlsContainer>
 				<RunnersContainer>
 					{this.state.runners.map((runner, index) => (

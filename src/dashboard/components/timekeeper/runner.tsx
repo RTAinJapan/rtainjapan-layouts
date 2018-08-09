@@ -3,7 +3,6 @@ import React from 'react';
 import styled, {css} from 'styled-components';
 
 // MUI Core
-import Button from '@material-ui/core/Button';
 
 // MUI Icons
 import Flag from '@material-ui/icons/Flag';
@@ -15,6 +14,7 @@ import Edit from '@material-ui/icons/Edit';
 import {TimeObject} from '../../../lib/time-object';
 import {EditTimeModal} from './edit';
 import nodecg from '../../../lib/nodecg';
+import { NoWrapButton } from '../lib/no-wrap-button';
 
 const Container = styled.div`
 	padding: 0 16px;
@@ -49,7 +49,7 @@ const RunnerStatus = styled.div`
 
 const ButtonContainer = styled.div`
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(3, 80px);
 	gap: 8px;
 	justify-items: stretch;
 	align-items: center;
@@ -107,27 +107,27 @@ export class Runner extends React.Component<Props, State> {
 				</div>
 				<ButtonContainer>
 					{shouldShowFinish && (
-						<Button variant="raised" onClick={this.completeRunner}>
+						<NoWrapButton variant="raised" fullWidth onClick={this.completeRunner}>
 							<Flag />完走
-						</Button>
+						</NoWrapButton>
 					)}
 					{shouldShowResume && (
-						<Button variant="raised" onClick={this.resumeRunner}>
+						<NoWrapButton variant="raised" fullWidth onClick={this.resumeRunner}>
 							<Undo />再開
-						</Button>
+						</NoWrapButton>
 					)}
 					{shouldShowForfeit && (
-						<Button variant="raised" onClick={this.forfeitRunner}>
-							<Cancel />ﾘﾀｲｱ
-						</Button>
+						<NoWrapButton variant="raised" fullWidth onClick={this.forfeitRunner}>
+							<Cancel />リタイア
+						</NoWrapButton>
 					)}
-					<Button
+					<NoWrapButton
 						disabled={shouldDisableEdit}
 						variant="raised"
 						onClick={this.startEdit}
 					>
 						<Edit />編集
-					</Button>
+					</NoWrapButton>
 				</ButtonContainer>
 				<EditTimeModal
 					defaultValue={defaultEditValue}

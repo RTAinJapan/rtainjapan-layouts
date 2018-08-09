@@ -23,6 +23,7 @@ import {CurrentRun} from '../../../../types/schemas/currentRun';
 import {NextRun} from '../../../../types/schemas/nextRun';
 import {RunInfo} from './run-info';
 import {BorderedBox} from '../lib/bordered-box';
+import { NoWrapButton } from '../lib/no-wrap-button';
 
 const Container = BorderedBox.extend`
 	height: calc(100vh - 32px);
@@ -44,10 +45,6 @@ const TypeaheadContainer = styled.div`
 	grid-template-columns: auto auto;
 	gap: 8px;
 	align-items: center;
-`;
-
-const NoWrapButton = styled(Button)`
-	white-space: nowrap;
 `;
 
 const RunInfoContainer = styled.div`
