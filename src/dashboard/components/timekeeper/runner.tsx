@@ -13,13 +13,15 @@ import Edit from '@material-ui/icons/Edit';
 
 // Ours
 import {TimeObject} from '../../../lib/time-object';
+import {EditTimeModal} from './edit';
+import nodecg from '../../../lib/nodecg';
 
 const Container = styled.div`
 	padding: 0 16px;
 	display: grid;
 	align-items: center;
-	${({theme}) =>
-		theme.index % 2 === 0 &&
+	${(props: {index: number}) =>
+		props.index % 2 === 0 &&
 		css`
 			background-color: #dedede;
 		`};
@@ -38,8 +40,8 @@ const RunnerName = styled.div`
 const RunnerStatus = styled.div`
 	font-size: 24px;
 	color: #adadad;
-	${({theme}) =>
-		theme.finished &&
+	${(props: {finished: boolean}) =>
+		props.finished &&
 		css`
 			color: #43ac6a;
 		`};
@@ -59,70 +61,116 @@ const EmptySlot = styled.div`
 	text-align: center;
 `;
 
-export class Runner extends React.Component<{
-	runner: string | null;
+interface State {
+	isModalOpened: boolean;
+}
+
+interface Props {
+	runner: string | undefined;
 	checklistCompleted: boolean;
 	timer: TimeObject;
 	index: number;
-}> {
+}
+
+export class Runner extends React.Component<Props, State> {
+	public state: State = {isModalOpened: false};
+
 	public render() {
 		return (
-			<Container theme={{index: this.props.index}}>
+			<Container index={this.props.index}>
 				{this.renderContent()}
 			</Container>
 		);
 	}
 
-	private readonly result = () => this.props.timer.results[this.props.index];
-
-	private readonly renderStatus = () => {
-		const result = this.result();
-		return result ? result.formatted : 'Running';
-	};
-
-	private readonly renderContent = () => {
-		if (!this.props.runner) {
-			return <EmptySlot>- EMPTY SLOT -</EmptySlot>;
+	private renderContent() {
+		const {props} = this;
+		if (!props.runner) {
+			return <EmptySlot>― EMPTY SLOT ―</EmptySlot>;
 		}
+
+		const result = props.timer.results[props.index];
+		const shouldShowResume = Boolean(result);
+		const shouldDisableEdit = !shouldShowResume;
+		const shouldShowFinish = Boolean(!result || result.forfeit);
+		const shouldShowForfeit = Boolean(!result || !result.forfeit);
+		const status = result ? result.formatted : 'Running';
+		const defaultEditValue = result ? result.formatted : '00:00'
+
 		return (
 			<RunnerContainer>
 				<div>
-					<RunnerName>{this.props.runner}</RunnerName>
-					<RunnerStatus>{this.renderStatus()}</RunnerStatus>
+					<RunnerName>{props.runner}</RunnerName>
+					<RunnerStatus finished={!shouldShowFinish}>
+						{status}
+					</RunnerStatus>
 				</div>
 				<ButtonContainer>
-					{this.finished() || (
-						<Button variant="raised">
+					{shouldShowFinish && (
+						<Button variant="raised" onClick={this.completeRunner}>
 							<Flag />完走
 						</Button>
 					)}
-					{this.noResult() || (
-						<Button variant="raised">
+					{shouldShowResume && (
+						<Button variant="raised" onClick={this.resumeRunner}>
 							<Undo />再開
 						</Button>
 					)}
-					{this.forfeited() || (
-						<Button variant="raised">
-							<Cancel />リタイア
+					{shouldShowForfeit && (
+						<Button variant="raised" onClick={this.forfeitRunner}>
+							<Cancel />ﾘﾀｲｱ
 						</Button>
 					)}
-					<Button disabled={this.noResult()} variant="raised">
+					<Button
+						disabled={shouldDisableEdit}
+						variant="raised"
+						onClick={this.startEdit}
+					>
 						<Edit />編集
 					</Button>
 				</ButtonContainer>
+				<EditTimeModal
+					defaultValue={defaultEditValue}
+					open={this.state.isModalOpened}
+					onFinish={this.onEditFinish}
+				/>
 			</RunnerContainer>
 		);
+	}
+
+	private readonly startEdit = () => {
+		this.setState({
+			isModalOpened: true,
+		});
 	};
 
-	private readonly finished = () => {
-		const result = this.result();
-		return Boolean(result && !result.forfeit);
+	private readonly onEditFinish = (value?: string) => {
+		if (value) {
+			nodecg.sendMessage('editTime', {
+				index: this.props.index,
+				newTime: value,
+			});
+		}
+		this.setState({
+			isModalOpened: false,
+		});
 	};
 
-	private readonly forfeited = () => {
-		const result = this.result();
-		return Boolean(result && result.forfeit);
+	private readonly completeRunner = () => {
+		nodecg.sendMessage('completeRunner', {
+			index: this.props.index,
+			forfeit: false,
+		});
 	};
 
-	private readonly noResult = () => this.result() === null;
+	private readonly resumeRunner = () => {
+		nodecg.sendMessage('resumeRunner', this.props.index);
+	};
+
+	private readonly forfeitRunner = () => {
+		nodecg.sendMessage('completeRunner', {
+			index: this.props.index,
+			forfeit: true,
+		});
+	};
 }

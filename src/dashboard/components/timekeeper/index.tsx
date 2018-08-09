@@ -1,6 +1,7 @@
 // Packages
 import React from 'react';
 import styled from 'styled-components';
+import uuidv4 from 'uuid/v4';
 
 // MUI Core
 import Button from '@material-ui/core/Button';
@@ -20,6 +21,10 @@ import {
 } from '../../../lib/replicants';
 import {Runner} from './runner';
 import {BorderedBox} from '../lib/bordered-box';
+import {CurrentRun} from '../../../../types/schemas/currentRun';
+import {ChecklistCompleted} from '../../../../types/schemas/checklistCompleted';
+import nodecg from '../../../lib/nodecg';
+import {EditTimeModal} from './edit';
 
 const Container = BorderedBox.extend`
 	display: grid;
@@ -55,88 +60,148 @@ const RunnersContainer = styled.div`
 	grid-template-rows: repeat(4, 1fr);
 `;
 
-export class Timekeeper extends React.Component<
-	{},
-	{
-		timer: TimeObject;
-		runners: Array<string | null>;
-		checklistComplete: boolean;
-	}
-> {
-	constructor(props: {}) {
-		super(props);
-		this.state = {
-			timer: new TimeObject(0),
-			runners: [],
-			checklistComplete: false,
-		};
-	}
+const startTimer = () => {
+	nodecg.sendMessage('startTimer');
+};
+
+const stopTimer = () => {
+	nodecg.sendMessage('stopTimer');
+};
+
+const resetTimer = () => {
+	nodecg.sendMessage('resetTimer');
+};
+
+interface State {
+	timer: TimeObject;
+	runners: Array<{name: string | undefined; id: string}>;
+	checklistComplete: boolean;
+	isModalOpened: boolean;
+}
+
+export class Timekeeper extends React.Component<{}, State> {
+	public state: State = {
+		timer: new TimeObject(0),
+		runners: [],
+		checklistComplete: false,
+		isModalOpened: false,
+	};
 
 	public componentDidMount() {
-		stopwatchRep.on('change', newVal => {
-			this.setState({
-				timer: newVal,
-			});
-		});
-		currentRunRep.on('change', newVal => {
-			const runners: Array<string | null> = [null, null, null, null];
-			if (newVal.runners) {
-				newVal.runners.slice(0, 4).forEach((runner, index) => {
-					if (runner) {
-						runners[index] = runner.name || '';
-					}
-				});
-			}
-			this.setState({
-				runners,
-			});
-		});
-		checklistCompleteRep.on('change', newVal => {
-			if (newVal === this.state.checklistComplete) {
-				return;
-			}
-			this.setState({
-				checklistComplete: newVal,
-			});
-		});
+		stopwatchRep.on('change', this.stopwatchRepChangeHandler);
+		currentRunRep.on('change', this.currentRunChangeHandler);
+		checklistCompleteRep.on('change', this.checklistCompleteChangeHandler);
+	}
+
+	public componentWillUnmount() {
+		stopwatchRep.removeListener('change', this.stopwatchRepChangeHandler);
+		currentRunRep.removeListener('change', this.currentRunChangeHandler);
+		checklistCompleteRep.removeListener(
+			'change',
+			this.checklistCompleteChangeHandler
+		);
 	}
 
 	public render() {
+		// Disable start if checklist is not completed or timer is not stopped state
+		const shouldDisableStart =
+			this.state.checklistComplete !== true ||
+			this.state.timer.timerState !== TimerState.Stopped;
+
+		// Disable pause if timer is not running
+		const shouldDisablePause =
+			this.state.timer.timerState !== TimerState.Running;
+
 		return (
 			<Container>
 				<Timer>{this.state.timer.formatted}</Timer>
 				<CtrlsContainer>
-					<Button variant="raised" fullWidth>
+					<Button
+						variant="raised"
+						fullWidth
+						disabled={shouldDisableStart}
+						onClick={startTimer}
+					>
 						<PlayArrow />開始
 					</Button>
-					<Button variant="raised" fullWidth disabled={this.paused()}>
+					<Button
+						variant="raised"
+						fullWidth
+						disabled={shouldDisablePause}
+						onClick={stopTimer}
+					>
 						<Pause />停止
 					</Button>
-					<Button variant="raised" fullWidth>
+					<Button
+						variant="raised"
+						fullWidth
+						onClick={resetTimer}
+					>
 						<Refresh />リセット
 					</Button>
-					<Button variant="raised" fullWidth>
+					<Button variant="raised" fullWidth onClick={this.openEdit}>
 						<ModeEdit />編集
 					</Button>
 				</CtrlsContainer>
 				<RunnersContainer>
 					{this.state.runners.map((runner, index) => (
 						<Runner
-							key={Date.now()}
+							key={runner.id}
 							checklistCompleted={this.state.checklistComplete}
 							index={index}
-							runner={runner}
+							runner={runner.name}
 							timer={this.state.timer}
 						>
 							{runner}
 						</Runner>
 					))}
 				</RunnersContainer>
+				<EditTimeModal
+					open={this.state.isModalOpened}
+					defaultValue={this.state.timer.formatted}
+					onFinish={this.closeModal}
+				/>
 			</Container>
 		);
 	}
 
-	private readonly paused = () =>
-		this.state.timer.timerState === TimerState.Stopped &&
-		this.state.timer.raw > 0;
+	private readonly closeModal = (value?: string) => {
+		if (value) {
+			nodecg.sendMessage('editTime', {index: 'master', newTime: value});
+		}
+		this.setState({isModalOpened: false});
+	};
+
+	private readonly openEdit = () => {
+		this.setState({isModalOpened: true});
+	};
+
+	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
+		const runners: State['runners'] = new Array(4).fill(undefined);
+		const newRunners = newVal.runners;
+		for (let i = 0; i < 4; i++) {
+			const name = newRunners && newRunners[i] && newRunners[i].name;
+			runners[i] = {name, id: uuidv4()};
+		}
+		this.setState({
+			runners,
+		});
+	};
+
+	private readonly checklistCompleteChangeHandler = (
+		newVal: ChecklistCompleted
+	) => {
+		if (newVal === this.state.checklistComplete) {
+			return;
+		}
+		this.setState({
+			checklistComplete: newVal,
+		});
+	};
+
+	private readonly stopwatchRepChangeHandler = (newVal: TimeObject) => {
+		this.setState({
+			timer: newVal,
+		});
+	};
 }

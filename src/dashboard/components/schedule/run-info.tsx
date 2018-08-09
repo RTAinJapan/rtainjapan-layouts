@@ -83,7 +83,7 @@ export class RunInfo extends React.Component<{
 
 	private readonly renderRunners = () =>
 		this.runners().map((runner, index) => (
-			<LabeledDiv key={Date.now()}>
+			<LabeledDiv key={Math.random()}>
 				<label>走者{index}</label>
 				<div>{runner && runner.name}</div>
 			</LabeledDiv>

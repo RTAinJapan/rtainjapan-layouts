@@ -8,10 +8,10 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Button from '@material-ui/core/Button';
 
 // Ours
-import nodecg from '../lib/nodecg';
-import {Twitter} from '../../types/schemas/twitter';
-import twitterSignIn from './images/twitter-sign-in.png';
-import {twitterRep} from '../lib/replicants';
+import nodecg from '../../lib/nodecg';
+import {Twitter} from '../../../types/schemas/twitter';
+import twitterSignIn from '../images/twitter-sign-in.png';
+import {twitterRep} from '../../lib/replicants';
 
 const LoggedIn = styled.div`
 	display: grid;

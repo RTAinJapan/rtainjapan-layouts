@@ -1,7 +1,7 @@
 export const enum TimerState {
-	Stopped,
-	Running,
-	Finished,
+	Stopped = 'stopped',
+	Running = 'running',
+	Finished = 'finished',
 }
 
 /**

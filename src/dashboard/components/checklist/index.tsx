@@ -18,25 +18,26 @@ const Container = BorderedBox.extend`
 	grid-template-columns: repeat(2, 1fr);
 	grid-template-rows: 1fr;
 	gap: 8px;
+	user-select: none;
 `;
 const CheckboxLabel = styled(FormControlLabel)`
 	border-radius: 3px;
 	border: 1px solid black;
 `;
 
-export class Checklist extends React.Component<
-	{},
-	{checklist: ChecklistSchema}
-> {
-	constructor(props: {}) {
-		super(props);
-		this.state = {checklist: []};
-	}
+interface State {
+	checklist: ChecklistSchema;
+}
+
+export class Checklist extends React.Component<{}> {
+	public state: State = {checklist: []};
 
 	public componentDidMount() {
-		checklistRep.on('change', newVal => {
-			this.setState({checklist: newVal});
-		});
+		checklistRep.on('change', this.checklistChangeHandler);
+	}
+
+	public componentWillUnmount() {
+		checklistRep.removeListener('change', this.checklistChangeHandler)
 	}
 
 	public render() {
@@ -49,6 +50,10 @@ export class Checklist extends React.Component<
 		);
 	}
 
+	private readonly checklistChangeHandler = (newVal: ChecklistSchema) => {
+		this.setState({checklist: newVal});
+	};
+
 	private readonly toggleCheckbox = (
 		e: ChangeEvent<any>,
 		checked: boolean
@@ -58,9 +63,6 @@ export class Checklist extends React.Component<
 				name: e.target.name,
 				checked,
 			})
-			.catch(err => {
-				console.error(err);
-			});
 	};
 
 	private readonly makeChecklistElement = (checklist: ChecklistSchema[0]) => (

@@ -8,11 +8,11 @@ const TRY_TICK_INTERVAL = 10;
 const defaultStopwatch = () => new TimeObject(0);
 
 export const timekeeping = (nodecg: NodeCG) => {
-	const checklistComplete = nodecg.Replicant<ChecklistCompleted>(
+	const checklistCompleteRep = nodecg.Replicant<ChecklistCompleted>(
 		'checklistComplete'
 	);
-	const currentRun = nodecg.Replicant<CurrentRun>('currentRun');
-	const stopwatch = nodecg.Replicant<TimeObject>('stopwatch', {
+	const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
+	const stopwatchRep = nodecg.Replicant<TimeObject>('stopwatch', {
 		defaultValue: defaultStopwatch(),
 	});
 
@@ -25,13 +25,13 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * If the timer was running when NodeCG was shut down last time,
 	 * resume the timer according to how long it has been since the shutdown time.
 	 */
-	if (stopwatch.value.timerState === TimerState.Running) {
+	if (stopwatchRep.value.timerState === TimerState.Running) {
 		const missedSeconds = Math.round(
-			(Date.now() - stopwatch.value.timestamp) / 1000
+			(Date.now() - stopwatchRep.value.timestamp) / 1000
 		);
 		TimeObject.setSeconds(
-			stopwatch.value,
-			stopwatch.value.raw + missedSeconds
+			stopwatchRep.value,
+			stopwatchRep.value.raw + missedSeconds
 		);
 		start(true);
 	}
@@ -62,7 +62,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 	function tryTick() {
 		if (Date.now() - lastIncrement > 1000) {
 			lastIncrement += 1000;
-			TimeObject.increment(stopwatch.value);
+			TimeObject.increment(stopwatchRep.value);
 		}
 	}
 
@@ -71,16 +71,16 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * @param force - Forces the timer to start again, even if already running.
 	 */
 	function start(force = false) {
-		if (!checklistComplete) {
+		if (!checklistCompleteRep.value) {
 			return;
 		}
 
-		if (!force && stopwatch.value.timerState === TimerState.Running) {
+		if (!force && stopwatchRep.value.timerState === TimerState.Running) {
 			return;
 		}
 
 		clearInterval(tickInterval);
-		stopwatch.value.timerState = TimerState.Running;
+		stopwatchRep.value.timerState = TimerState.Running;
 		lastIncrement = Date.now();
 		tickInterval = setInterval(tryTick, TRY_TICK_INTERVAL);
 	}
@@ -90,7 +90,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 */
 	function stop() {
 		clearInterval(tickInterval);
-		stopwatch.value.timerState = TimerState.Stopped;
+		stopwatchRep.value.timerState = TimerState.Stopped;
 	}
 
 	/**
@@ -98,8 +98,8 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 */
 	function reset() {
 		stop();
-		TimeObject.setSeconds(stopwatch.value, 0);
-		stopwatch.value.results = [];
+		TimeObject.setSeconds(stopwatchRep.value, 0);
+		stopwatchRep.value.results = [];
 	}
 
 	/**
@@ -108,12 +108,12 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * @param data.forfeit - Whether or not the runner forfeit.
 	 */
 	function completeRunner(data: {index: number; forfeit: boolean}) {
-		if (!stopwatch.value.results[data.index]) {
-			stopwatch.value.results[data.index] = new TimeObject(
-				stopwatch.value.raw
+		if (!stopwatchRep.value.results[data.index]) {
+			stopwatchRep.value.results[data.index] = new TimeObject(
+				stopwatchRep.value.raw
 			);
 		}
-		const result = stopwatch.value.results[data.index];
+		const result = stopwatchRep.value.results[data.index];
 		if (result) {
 			result.forfeit = data.forfeit;
 			recalcPlaces();
@@ -125,17 +125,17 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * @param index - The runner to modify.
 	 */
 	function resumeRunner(index: number) {
-		stopwatch.value.results[index] = null;
+		stopwatchRep.value.results[index] = null;
 		recalcPlaces();
-		if (stopwatch.value.timerState !== TimerState.Finished) {
+		if (stopwatchRep.value.timerState !== TimerState.Finished) {
 			return;
 		}
 		const missedSeconds = Math.round(
-			(Date.now() - stopwatch.value.timestamp) / 1000
+			(Date.now() - stopwatchRep.value.timestamp) / 1000
 		);
 		TimeObject.setSeconds(
-			stopwatch.value,
-			stopwatch.value.raw + missedSeconds
+			stopwatchRep.value,
+			stopwatchRep.value.raw + missedSeconds
 		);
 		start();
 	}
@@ -162,17 +162,17 @@ export const timekeeping = (nodecg: NodeCG) => {
 		}
 
 		if (index === 'master') {
-			TimeObject.setSeconds(stopwatch.value, newSeconds);
+			TimeObject.setSeconds(stopwatchRep.value, newSeconds);
 			return;
 		}
-		const result = stopwatch.value.results[index];
+		const result = stopwatchRep.value.results[index];
 		if (!result) {
 			return;
 		}
 		TimeObject.setSeconds(result, newSeconds);
 		recalcPlaces();
-		if (currentRun.value.runners && currentRun.value.runners.length === 1) {
-			TimeObject.setSeconds(stopwatch.value, newSeconds);
+		if (currentRunRep.value.runners && currentRunRep.value.runners.length === 1) {
+			TimeObject.setSeconds(stopwatchRep.value, newSeconds);
 		}
 	}
 
@@ -180,7 +180,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * Re-calculates the podium place for all runners.
 	 */
 	function recalcPlaces() {
-		const finishedResults = stopwatch.value.results
+		const finishedResults = stopwatchRep.value.results
 			.filter(result => {
 				if (result) {
 					result.place = 0;
@@ -204,15 +204,15 @@ export const timekeeping = (nodecg: NodeCG) => {
 			r.place = index + 1;
 		});
 
-		if (currentRun.value.runners === undefined) {
+		if (currentRunRep.value.runners === undefined) {
 			return;
 		}
-		const allRunnersFinished = currentRun.value.runners.every((_, index) =>
-			Boolean(stopwatch.value.results[index])
+		const allRunnersFinished = currentRunRep.value.runners.every((_, index) =>
+			Boolean(stopwatchRep.value.results[index])
 		);
 		if (allRunnersFinished) {
 			stop();
-			stopwatch.value.timerState = TimerState.Finished;
+			stopwatchRep.value.timerState = TimerState.Finished;
 		}
 	}
 };
