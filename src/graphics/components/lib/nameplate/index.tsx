@@ -1,12 +1,15 @@
 import React, {ReactNode} from 'react';
 import styled from 'styled-components';
 import delay from 'delay';
-import {CurrentRun} from '../../../../types/schemas/currentRun';
-import {currentRunRep} from '../../../lib/replicants';
-import twitchIcon from '../../images/icon/twitch.png';
-import nicoIcon from '../../images/icon/nico.png';
-import twitterIcon from '../../images/icon/twitter.png';
-import {GradientRight} from './styled';
+import {CurrentRun} from '../../../../../types/schemas/currentRun';
+import {currentRunRep} from '../../../../lib/replicants';
+import twitchIcon from '../../../images/icon/twitch.png';
+import nicoIcon from '../../../images/icon/nico.png';
+import twitterIcon from '../../../images/icon/twitter.png';
+import {GradientRight} from '../styled';
+import {Ruler} from '../ruler';
+import {Name} from './name';
+import {Social} from './social';
 
 const SOCIAL_ROTATE_INTERVAL_SECONDS = 2;
 const FADE_DURATION_SECONDS = 0.5;
@@ -16,77 +19,39 @@ const Container = styled.div`
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 60px;
+	height: 100%;
+
 	line-height: 1;
 	color: white;
 
-	display: grid;
-	grid-template-columns: auto auto;
-	grid-template-rows: 1fr 3px;
-	justify-content: space-between;
-	row-gap: 6px;
+	box-sizing: border-box;
+	padding: 15px 15px 9px 15px;
+
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
 
 	${(props: {gradientBackground?: boolean}) =>
 		props.gradientBackground && GradientRight};
 `;
 
-const SubContainer = styled.div`
-	grid-column: 1 / 2;
-	grid-row: 1 / 2;
-	padding-left: 15px;
-
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	align-items: flex-end;
-`;
-
-const SocialContainer = styled.div`
-	padding-left: 30px;
-	transition: opacity ${FADE_DURATION_SECONDS}s linear;
-
-	display: grid;
-	grid-template-columns: 24px auto;
-	gap: 8px;
-`;
-
-const Label = styled.div`
-	font-size: 24px;
-	font-weight: 900;
-	padding-left: 15px;
-`;
-
-const Name = styled.div`
-	font-size: ${(props: {fontSizeMultiplier: number}) =>
-		props.fontSizeMultiplier * 36}px;
-	font-weight: 900;
-	white-space: nowrap;
-	padding-left: 30px;
-`;
-
-const SocialInfo = styled.div`
-	font-size: ${(props: {fontSizeMultiplier: number}) =>
-		props.fontSizeMultiplier * 24}px;
-	display: grid;
-	align-content: center;
-`;
-
-const Ruler = styled.div`
-	grid-column: 1 / 3;
-	grid-row: 2 / 3;
-	background-color: #ffff52;
+const StyledRuler = Ruler.extend`
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 3px;
+	width: 100%;
 `;
 
 const ChildrenContainer = styled.div`
-	font-size: ${(props: {fontSizeMultiplier: number}) =>
-		props.fontSizeMultiplier * 30}px;
 	grid-column: 2 / 3;
 	grid-row: 1 / 2;
 	justify-self: end;
 	align-self: end;
-	padding: 0 15px;
 	font-weight: 900;
+	font-size: ${(props: {fontSizeMultiplier: number}) =>
+		props.fontSizeMultiplier * 30}px;
+	padding: 0 15px;
 `;
 
 interface Props {
@@ -102,8 +67,8 @@ interface State {
 	fontSizeMultiplier: number;
 }
 
-export abstract class BaseNameplate extends React.Component<Props, State> {
-	private get iconSrc() {
+export abstract class Nameplate extends React.Component<Props, State> {
+	private get socialIcon() {
 		switch (this.state.socialType) {
 			case SocialType.Nico:
 				return nicoIcon;
@@ -208,75 +173,88 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		hideLabel: false,
 	};
 
-	public interval?: NodeJS.Timer;
+	public socialRotateIntervalTimer?: NodeJS.Timer;
 
 	protected abstract readonly applyCurrentRunChangeToState: (
 		newVal: CurrentRun
 	) => void;
 
-	protected abstract readonly iconPath: any;
+	protected abstract readonly labelIcon: any;
 
 	protected abstract readonly label: string;
 
 	private container = React.createRef<HTMLDivElement>();
 
+	private nameRef = React.createRef<Name>();
+
+	private socialRef = React.createRef<Social>();
+
 	public componentDidMount() {
-		currentRunRep.on('change', this._currentRunChanged);
+		currentRunRep.on('change', this.currentRunChanged);
 	}
 
 	public componentWillUnmount() {
-		currentRunRep.removeListener('change', this._currentRunChanged);
-		if (this.interval !== undefined) {
-			clearInterval(this.interval);
+		currentRunRep.removeListener('change', this.currentRunChanged);
+		if (this.socialRotateIntervalTimer !== undefined) {
+			clearInterval(this.socialRotateIntervalTimer);
 		}
 	}
 
 	public componentDidUpdate() {
-		const {current} = this.container;
-		if (!current) {
+		const containerRef = this.container.current;
+		if (!containerRef) {
 			return;
 		}
-		if (current.offsetWidth < current.scrollWidth) {
-			if (this.state.hideLabel) {
-				this.setState(state => ({
-					fontSizeMultiplier: state.fontSizeMultiplier * 0.95,
-				}));
-			} else {
-				this.setState({hideLabel: true});
-			}
+		if (containerRef.offsetWidth >= containerRef.scrollWidth) {
+			return;
+		}
+		if (this.state.hideLabel) {
+			this.setState(state => ({
+				fontSizeMultiplier: state.fontSizeMultiplier * 0.95,
+			}));
+		} else {
+			this.setState({hideLabel: true});
 		}
 	}
 
-	protected readonly Container = (props: {children?: ReactNode}) => (
-		<Container
-			innerRef={this.container}
-			gradientBackground={this.props.gradientBackground}
-		>
-			<SubContainer>
-				<img src={this.iconPath} />
-				{this.state.hideLabel || <Label>{this.label}</Label>}
-				<Name fontSizeMultiplier={this.state.fontSizeMultiplier}>
+	protected readonly Container = (props: {children?: ReactNode}) => {
+		if (!this.name) {
+			return <div />;
+		}
+		return (
+			<Container
+				innerRef={this.container}
+				gradientBackground={this.props.gradientBackground}
+			>
+				<Name
+					ref={this.nameRef}
+					labelIcon={this.labelIcon}
+					labelText={this.label}
+					hideLabel={this.state.hideLabel}
+					fontSizeMultiplier={this.state.fontSizeMultiplier}
+				>
 					{this.name}
 				</Name>
-				<SocialContainer style={{opacity: this.state.socialOpacity}}>
-					<img src={this.iconSrc} />
-					<SocialInfo
-						fontSizeMultiplier={this.state.fontSizeMultiplier}
-					>
-						{this.targetRunner[this.state.socialType || 'twitch']}
-					</SocialInfo>
-				</SocialContainer>
-			</SubContainer>
-			<ChildrenContainer
-				fontSizeMultiplier={this.state.fontSizeMultiplier}
-			>
-				{props.children}
-			</ChildrenContainer>
-			<Ruler />
-		</Container>
-	);
+				<Social
+					ref={this.socialRef}
+					opacity={this.state.socialOpacity}
+					fadeDuration={FADE_DURATION_SECONDS}
+					fontSizeMultiplier={this.state.fontSizeMultiplier}
+					icon={this.socialIcon}
+				>
+					{this.targetRunner[this.state.socialType || 'twitch']}
+				</Social>
+				<ChildrenContainer
+					fontSizeMultiplier={this.state.fontSizeMultiplier}
+				>
+					{props.children}
+				</ChildrenContainer>
+				<StyledRuler />
+			</Container>
+		);
+	};
 
-	private readonly _currentRunChanged = async (newVal: CurrentRun) => {
+	private readonly currentRunChanged = async (newVal: CurrentRun) => {
 		const show = async () => {
 			this.setState({socialOpacity: 1});
 			await delay(FADE_DURATION_SECONDS * 1000);
@@ -320,12 +298,12 @@ export abstract class BaseNameplate extends React.Component<Props, State> {
 		}
 
 		// Reset interval if already exists
-		if (this.interval !== undefined) {
-			clearInterval(this.interval);
+		if (this.socialRotateIntervalTimer !== undefined) {
+			clearInterval(this.socialRotateIntervalTimer);
 		}
 
 		// Start rotate interval
-		this.interval = setInterval(async () => {
+		this.socialRotateIntervalTimer = setInterval(async () => {
 			await hide();
 			setNextType();
 			await show();

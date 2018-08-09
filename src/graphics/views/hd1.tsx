@@ -14,59 +14,39 @@ const StyledContainer = Container.extend`
 	background-image: url(${background});
 	clip-path: polygon(
 		0 0,
-		0 225px,
-		1905px 225px,
-		1905px 690px,
-		1285px 690px,
-		1285px 225px,
-		1270px 225px,
-		1270px 690px,
-		650px 690px,
-		650px 225px,
-		635px 225px,
-		635px 690px,
-		15px 690px,
-		15px 225px,
-		0px 225px,
-		0px 1080px,
+		0 1080px,
+		465px 1080px,
+		465px 15px,
+		1905px 15px,
+		1905px 825px,
+		465px 825px,
+		465px 1080px,
 		1920px 1080px,
-		1920px 0px,
-		0px 0px
+		1920px 0
 	);
 `;
 
-const runnerStyle = css`
+const NameContainer = styled.div`
 	position: absolute;
-	bottom: 330px
-	height: 60px;
-	width: 620px;
-`;
-const LeftRunner = styled.div`
-	${runnerStyle};
 	left: 15px;
+	height: 90px;
+	width: 432px;
+	display: grid;
 `;
 
-const CentreRunner = styled.div`
-	${runnerStyle};
-	left: 650px;
+const RunnerContainer = NameContainer.extend`
+	bottom: 459px;
 `;
 
-const RightRunner = styled.div`
-	${runnerStyle};
-	right: 15px;
-`;
-
-const CommentatorContainer = styled.div`
-	${runnerStyle};
-	bottom: 255px;
-	left: 15px;
-	width: 1890px;
+const CommentatorContainer = NameContainer.extend`
+	bottom: 354px;
 `;
 
 const infoStyle = css`
 	position: absolute;
 	bottom: 15px;
 	height: 210px;
+	display: grid;
 `;
 
 const GameContainer = styled.div`
@@ -97,16 +77,9 @@ const infoHeights = {
 
 const App = () => (
 	<StyledContainer>
-		<LeftRunner>
+		<RunnerContainer>
 			<RtaijRunner index={0} gradientBackground />
-		</LeftRunner>
-		<CentreRunner>
-			<RtaijRunner index={1} gradientBackground />
-		</CentreRunner>
-		<RightRunner>
-			<RtaijRunner index={2} gradientBackground />
-		</RightRunner>
-
+		</RunnerContainer>
 		<CommentatorContainer>
 			<RtaijCommentator gradientBackground />
 		</CommentatorContainer>
@@ -123,7 +96,7 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('sd3'), () => {
+ReactDom.render(<App />, document.getElementById('hd1'), () => {
 	setTimeout(() => {
 		document.body.style.opacity = '1';
 	}, 1000);

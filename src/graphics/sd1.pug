@@ -1,12 +1,8 @@
 doctype html
 html
 	head
-		meta(charset="UTF-8")
-		script(src=`https://use.typekit.net/${process.env.TYPEKIT_ID}.js`)
-		script.
-			try { Typekit.load({ async: true }); } catch (e) { }
-		link(rel="stylesheet", href="./lib/common.css")
-		link(rel="stylesheet", href="./fonts/migmix-2p.css")
+		title sd1
+		include lib/common.pug
 	body
 		div(id="sd1")
 		script(src="./views/sd1.tsx")

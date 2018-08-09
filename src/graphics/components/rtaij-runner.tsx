@@ -1,10 +1,10 @@
 import React from 'react';
 import runnerIcon from '../images/icon/runner.png';
 import {CurrentRun} from '../../../types/schemas/currentRun';
-import {BaseNameplate} from './lib/base-nameplate';
+import {Nameplate} from './lib/nameplate';
 
-export class RtaijRunner extends BaseNameplate {
-	public iconPath = runnerIcon;
+export class RtaijRunner extends Nameplate {
+	public labelIcon = runnerIcon;
 
 	public label = 'Runner';
 
@@ -16,10 +16,6 @@ export class RtaijRunner extends BaseNameplate {
 
 	public render() {
 		const {Container} = this;
-		return (
-			<Container>
-				<div>1:23:45</div>
-			</Container>
-		);
+		return <Container />;
 	}
 }
