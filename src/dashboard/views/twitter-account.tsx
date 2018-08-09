@@ -54,7 +54,7 @@ class App extends React.Component<{}, State> {
 	}
 
 	private readonly login = async () => {
-		const url = await nodecg.sendMessage('getTwitterOauthUrl');
+		const url = await nodecg.sendMessage('twitter:startLogin');
 		window.parent.location.replace(url);
 	};
 

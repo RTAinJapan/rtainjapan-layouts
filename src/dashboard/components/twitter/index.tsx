@@ -32,6 +32,7 @@ const TweetContainer = styled.div`
 	overflow-y: scroll;
 	display: grid;
 	grid-auto-flow: row;
+	align-content: start;
 	gap: 16px;
 `;
 

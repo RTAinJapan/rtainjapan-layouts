@@ -75,7 +75,7 @@ export const twitter = async (nodecg: NodeCG) => {
 		realm: '',
 	});
 
-	nodecg.listenFor('getTwitterOauthUrl', async (_, cb) => {
+	nodecg.listenFor('twitter:startLogin', async (_, cb) => {
 		if (cb.handled) {
 			return;
 		}
@@ -94,7 +94,7 @@ export const twitter = async (nodecg: NodeCG) => {
 		}
 	});
 
-	nodecg.listenFor('twitterOauth', async (data: any) => {
+	nodecg.listenFor('twitter:loginSuccess', async (data: any) => {
 		if (data.oauthToken !== requestToken.token) {
 			return;
 		}
@@ -119,10 +119,9 @@ export const twitter = async (nodecg: NodeCG) => {
 			await startFilterStream();
 			return;
 		}
-		if (!twitterStream) {
-			return;
+		if (twitterStream) {
+			twitterStream.destroy();
 		}
-		twitterStream.destroy();
 	});
 
 	tweetsRep.on('change', newVal => {
@@ -131,6 +130,22 @@ export const twitter = async (nodecg: NodeCG) => {
 		}
 		tweetsRep.value = tweetsRep.value.slice(0, maxTweets);
 	});
+
+	nodecg.listenFor('selectTweet', (id: string) => {
+		nodecg.sendMessage('showTweet', deleteTweetById(id))
+	})
+
+	nodecg.listenFor('discardTweet', deleteTweetById)
+
+	function deleteTweetById(id: string) {
+		const selectedTweetIndex = tweetsRep.value.findIndex(t => t.id === id)
+		if (selectedTweetIndex === -1) {
+			return
+		}
+		const tweet = tweetsRep.value[selectedTweetIndex]
+		tweetsRep.value.splice(selectedTweetIndex, 1)
+		return tweet
+	}
 
 	async function getRequestToken() {
 		const oauthData = oauth.authorize({
@@ -280,14 +295,6 @@ export const twitter = async (nodecg: NodeCG) => {
 				if (store.length > 100000) {
 					store = '';
 				}
-			}
-		});
-
-		['close', 'aborted', 'end', 'error', 'readable'].forEach(ev => {
-			if (twitterStream) {
-				twitterStream.on(ev, () => {
-					nodecg.log.info(`Twitter stream: ${ev}`);
-				});
 			}
 		});
 	}

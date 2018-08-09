@@ -8,7 +8,7 @@ export const twitterCallback = () => {
 	}
 
 	const params = new URLSearchParams(storage);
-	nodecg.sendMessage('twitterOauth', {
+	nodecg.sendMessage('twitter:loginSuccess', {
 		oauthToken: params.get('oauth_token'),
 		oauthVerifier: params.get('oauth_verifier'),
 	});

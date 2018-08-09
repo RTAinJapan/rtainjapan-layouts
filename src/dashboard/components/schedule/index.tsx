@@ -1,35 +1,30 @@
 // Packages
 import React from 'react';
 import styled from 'styled-components';
-import Downshift, {
-	GetItemPropsOptions,
-	ControllerStateAndHelpers,
-} from 'downshift';
 
 // MUI Core
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
 
 // MUI Icons
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowForward from '@material-ui/icons/ArrowForward';
-import ChevronRight from '@material-ui/icons/ChevronRight';
 
 // Ours
 import {scheduleRep, currentRunRep, nextRunRep} from '../../../lib/replicants';
+import {Schedule as ScheduleSchema} from '../../../../types/schemas/schedule';
 import {CurrentRun} from '../../../../types/schemas/currentRun';
 import {NextRun} from '../../../../types/schemas/nextRun';
 import {RunInfo} from './run-info';
 import {BorderedBox} from '../lib/bordered-box';
-import { NoWrapButton } from '../lib/no-wrap-button';
+import {NoWrapButton} from '../lib/no-wrap-button';
+import {Typeahead} from './typeahead';
+import nodecg from '../../../lib/nodecg';
 
 const Container = BorderedBox.extend`
 	height: calc(100vh - 32px);
 	padding: 16px;
 	display: grid;
-	grid-template-rows: 40px 1fr;
+	grid-template-rows: auto 1fr;
 	gap: 12px;
 `;
 
@@ -37,14 +32,6 @@ const SelectionContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 50% 1fr;
 	gap: 8px;
-	align-items: center;
-`;
-
-const TypeaheadContainer = styled.div`
-	display: grid;
-	grid-template-columns: auto auto;
-	gap: 8px;
-	align-items: center;
 `;
 
 const RunInfoContainer = styled.div`
@@ -63,53 +50,48 @@ const EditControls = styled.div`
 	gap: 16px;
 `;
 
-export class Schedule extends React.Component<
-	{},
-	{
-		titles: Array<string | undefined>;
-		currentRun: CurrentRun;
-		nextRun: NextRun;
-	}
-> {
-	constructor(props: {}) {
-		super(props);
-		this.state = {
-			titles: [],
-			currentRun: {},
-			nextRun: {},
-		};
-	}
+const moveNextRun = () => {
+	nodecg.sendMessage('nextRun')
+}
+
+const movePreviousRun = () => {
+	nodecg.sendMessage('previousRun')
+}
+
+interface State {
+	titles: Array<string | undefined>;
+	currentRun: CurrentRun;
+	nextRun: NextRun;
+}
+
+export class Schedule extends React.Component<{}, State> {
+	public state: State = {
+		titles: [],
+		currentRun: {},
+		nextRun: {},
+	};
 
 	public componentDidMount() {
-		scheduleRep.on('change', newVal => {
-			if (!newVal) {
-				return;
-			}
-			const titles = newVal
-				.filter(run => run.pk !== -1)
-				.map(run => run.title);
-			this.setState({titles});
-		});
-		currentRunRep.on('change', newVal => {
-			if (!newVal) {
-				return;
-			}
-			this.setState({currentRun: newVal});
-		});
-		nextRunRep.on('change', newVal => {
-			this.setState({nextRun: newVal || {}});
-		});
+		scheduleRep.on('change', this.scheduleChangeHandler);
+		currentRunRep.on('change', this.currentRunChangeHandler);
+		nextRunRep.on('change', this.nextRunChangeHandler);
+	}
+
+	public componentWillUnmount() {
+		scheduleRep.removeListener('change', this.scheduleChangeHandler);
+		currentRunRep.removeListener('change', this.currentRunChangeHandler);
+		nextRunRep.removeListener('change', this.nextRunChangeHandler);
 	}
 
 	public render() {
 		return (
 			<Container>
 				<SelectionContainer>
-					<Button variant="raised">
+					<Button variant="raised" onClick={movePreviousRun}>
 						<ArrowBack />前
 					</Button>
-					{this.renderTypeahead()}
-					<Button variant="raised">
+					<Typeahead titles={this.state.titles} />
+					<Button variant="raised" onClick={moveNextRun}>
 						次<ArrowForward />
 					</Button>
 				</SelectionContainer>
@@ -119,11 +101,11 @@ export class Schedule extends React.Component<
 					<RunInfo run={this.state.nextRun} label="次のゲーム" />
 				</RunInfoContainer>
 				<EditControls>
-					<NoWrapButton variant="raised">
+					<NoWrapButton variant="raised" disabled>
 						編集：現在のゲーム
 					</NoWrapButton>
-					<NoWrapButton variant="raised">手動更新</NoWrapButton>
-					<NoWrapButton variant="raised">
+					<NoWrapButton variant="raised" onClick={this.updateClicked}>手動更新</NoWrapButton>
+					<NoWrapButton variant="raised" disabled>
 						編集：次のゲーム
 					</NoWrapButton>
 				</EditControls>
@@ -131,77 +113,27 @@ export class Schedule extends React.Component<
 		);
 	}
 
-	private readonly renderTypeahead = () => (
-		<TypeaheadContainer>
-			<Downshift>
-				{({
-					getInputProps,
-					isOpen,
-					inputValue,
-					highlightedIndex,
-					getItemProps,
-				}: ControllerStateAndHelpers<any>) => (
-					<div>
-						<TextField
-							fullWidth
-							InputProps={getInputProps({
-								placeholder: 'ゲーム名',
-							})}
-						/>
-						{isOpen ? (
-							<Paper square>
-								{this.renderSuggestion(
-									inputValue,
-									getItemProps,
-									highlightedIndex
-								)}
-							</Paper>
-						) : null}
-					</div>
-				)}
-			</Downshift>
-			<NoWrapButton variant="raised">
-				スキップ<ChevronRight />
-			</NoWrapButton>
-		</TypeaheadContainer>
-	);
+	private readonly updateClicked = () => {
+		nodecg.sendMessage('manualUpdate')
+	}
 
-	private readonly renderSuggestion = (
-		inputValue: string | null,
-		getItemProps: (options: GetItemPropsOptions<any>) => any,
-		highlightedIndex: number | null
-	) =>
-		this.getSuggestions(inputValue).map((suggestion, index) => (
-			<MenuItem
-				{...getItemProps({
-					item: suggestion,
-				})}
-				key={suggestion}
-				selected={index === highlightedIndex}
-				component="div"
-			>
-				{suggestion}
-			</MenuItem>
-		));
-
-	private readonly getSuggestions = (inputValue: string | null) => {
-		const suggestions: string[] = [];
-		if (inputValue) {
-			for (const title of this.state.titles) {
-				if (!title) {
-					continue;
-				}
-				const titleMatches = title
-					.toLowerCase()
-					.includes(inputValue.toLowerCase());
-				if (titleMatches) {
-					suggestions.push(title);
-				}
-				if (suggestions.length >= 5) {
-					break;
-				}
-			}
+	private readonly scheduleChangeHandler = (newVal: ScheduleSchema) => {
+		if (!newVal) {
+			return;
 		}
-		return suggestions;
+		const titles = newVal
+			.map(run => run.pk === -1 ? undefined : run.title);
+		this.setState({titles});
+	};
+
+	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
+		if (!newVal) {
+			return;
+		}
+		this.setState({currentRun: newVal});
+	};
+
+	private readonly nextRunChangeHandler = (newVal: NextRun) => {
+		this.setState({nextRun: newVal || {}});
 	};
 }

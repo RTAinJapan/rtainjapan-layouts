@@ -13,6 +13,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 // Ours
 import {Tweets} from '../../../../types/schemas/tweets';
+import nodecg from '../../../lib/nodecg';
 
 interface Props {
 	tweet: Tweets[0];
@@ -89,14 +90,11 @@ const TweetText = styled.div`
 `;
 
 export class TweetItem extends React.Component<Props, State> {
+	public state: State = this.calcTimeago();
+
 	private readonly interval = setInterval(() => {
 		this.setState(this.calcTimeago());
 	}, 60 * 1000);
-
-	constructor(props: Props) {
-		super(props);
-		this.state = this.calcTimeago();
-	}
 
 	public render() {
 		return (
@@ -119,10 +117,10 @@ export class TweetItem extends React.Component<Props, State> {
 					<TweetText>{this.props.tweet.text}</TweetText>
 				</Tweet>
 				<Controls>
-					<IconButton title="配信に表示">
+					<IconButton title="配信に表示" onClick={this.selectTweet}>
 						<CheckIcon />
 					</IconButton>
-					<IconButton title="削除する">
+					<IconButton title="削除する" onClick={this.discardTweet}>
 						<ClearIcon />
 					</IconButton>
 				</Controls>
@@ -133,6 +131,14 @@ export class TweetItem extends React.Component<Props, State> {
 	public componentWillUnmount() {
 		clearInterval(this.interval);
 	}
+
+	private readonly selectTweet = () => {
+		nodecg.sendMessage('selectTweet', this.props.tweet.id);
+	};
+
+	private readonly discardTweet = () => {
+		nodecg.sendMessage('discardTweet', this.props.tweet.id);
+	};
 
 	private readonly tweetUrl = () => {
 		const {id} = this.props.tweet;
@@ -146,12 +152,12 @@ export class TweetItem extends React.Component<Props, State> {
 		return `https://twitter.com/${screenName}`;
 	};
 
-	private readonly calcTimeago = () => {
+	private calcTimeago() {
 		return {
 			timeago: distanceInWordsToNow(this.props.tweet.createdAt, {
 				locale: ja,
 				addSuffix: true,
 			}),
 		};
-	};
+	}
 }

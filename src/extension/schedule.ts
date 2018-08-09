@@ -197,7 +197,7 @@ export const schedule = (nodecg: NodeCG) => {
 	}
 
 	function seekToNextRun() {
-		const newIndex = currentRunRep.value.index
+		const newIndex = typeof currentRunRep.value.index === 'number'
 			? currentRunRep.value.index + 1
 			: 0;
 		updateCurrentRun(newIndex);
