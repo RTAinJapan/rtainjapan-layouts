@@ -3,8 +3,6 @@ import React from 'react';
 import times from 'lodash/times'
 import styled from 'styled-components';
 import uuidv4 from 'uuid/v4';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import createMuiTheme, {Theme} from '@material-ui/core/styles/createMuiTheme';
 import green from '@material-ui/core/colors/green';
 import orange from '@material-ui/core/colors/orange';
 import pink from '@material-ui/core/colors/pink';
