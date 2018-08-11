@@ -1,7 +1,29 @@
 import {BaseInfo} from './lib/base-info';
-import {TimeObject} from '../../lib/time-object';
+import {TimeObject, TimerState} from '../../lib/time-object';
 import {stopwatchRep, currentRunRep} from '../../lib/replicants';
 import {CurrentRun} from '../../../types/schemas/currentRun';
+
+const timerStateColorMap = {
+	[TimerState.Stopped]: '#9a9fa1',
+	[TimerState.Running]: '#ffffff',
+	[TimerState.Finished]: '#ffff52',
+};
+
+const calcColorFromTimeState = (timer: TimeObject) => {
+	if (timer.timerState === TimerState.Stopped) {
+		return timerStateColorMap[TimerState.Stopped];
+	}
+	if (timer.timerState === TimerState.Running) {
+		return timerStateColorMap[TimerState.Running];
+	}
+	const allForfeit = timer.results.every(result =>
+		Boolean(result && result.forfeit)
+	);
+	if (allForfeit) {
+		return timerStateColorMap[TimerState.Stopped];
+	}
+	return timerStateColorMap[TimerState.Finished];
+};
 
 export class RtaijTimer extends BaseInfo {
 	public componentDidMount() {
@@ -21,8 +43,10 @@ export class RtaijTimer extends BaseInfo {
 	}
 
 	private readonly timerChangeHandler = (newVal: TimeObject) => {
+		const color = calcColorFromTimeState(newVal);
 		this.setState({
 			primaryInfo: newVal.formatted,
+			primaryInfoColor: color,
 		});
 	};
 

@@ -35,6 +35,7 @@ const Container = styled.div`
 interface PrimaryInfoProps {
 	spacy?: boolean;
 	fontSize: number;
+	color?: string;
 }
 const PrimaryInfo = styled.div`
 	font-weight: 900;
@@ -44,6 +45,11 @@ const PrimaryInfo = styled.div`
 		props.spacy &&
 		css`
 			padding: 9px 0;
+		`};
+	${(props: PrimaryInfoProps) =>
+		props.color &&
+		css`
+			color: ${props.color};
 		`};
 `;
 
@@ -69,6 +75,7 @@ interface State {
 	primaryInfo: string;
 	secondaryInfo: string;
 	primarySize: number;
+	primaryInfoColor?: string;
 }
 
 export abstract class BaseInfo extends React.Component<Props, State> {
@@ -95,6 +102,7 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 					fontSize={this.state.primarySize}
 					spacy={this.props.spacy}
 					innerRef={this.primaryRef}
+					color={this.state.primaryInfoColor}
 				>
 					{this.state.primaryInfo}
 				</PrimaryInfo>
