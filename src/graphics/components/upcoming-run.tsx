@@ -98,9 +98,11 @@ export class UpcomingRun extends React.Component<CurrentRun, State> {
 		}
 		const startsAt = new Date(scheduled);
 		const now = new Date();
+		const hour = differenceInHours(startsAt, now)
+		const minute = differenceInMinutes(startsAt, now) % 60
 		this.setState({
 			// prettier-ignore
-			remainingTime: `${differenceInHours(startsAt, now)}時間${differenceInMinutes(startsAt, now) % 60}分`
+			remainingTime: `${hour < 0 ? 0 : hour}時間${minute < 0 ? 0 : minute}分`
 		});
 	}
 }

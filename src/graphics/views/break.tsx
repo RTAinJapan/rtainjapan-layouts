@@ -6,9 +6,8 @@ import {RtaijOverlay} from '../components/rtaij-overlay';
 import notification from '../images/break/notification.png';
 import {BreakBackground} from '../components/break-background';
 import {Schedule} from '../../../types/schemas/schedule';
-import {scheduleRep} from '../../lib/replicants';
+import {scheduleRep, currentRunRep} from '../../lib/replicants';
 import {CurrentRun} from '../../../types/schemas/currentRun';
-import nodecg from '../../lib/nodecg';
 import {UpcomingRun} from '../components/upcoming-run';
 
 const NotificationIcon = styled.img.attrs({src: notification})`
@@ -62,13 +61,15 @@ const UpcomingContainer = styled.div`
 `;
 
 interface State {
-	upcomingRuns: CurrentRun[];
+	schedule: Schedule;
+	currentRunIndex: number;
 }
 
 class Break extends React.Component<{}, State> {
-	public state: State = {upcomingRuns: []};
+	public state: State = {schedule: [], currentRunIndex: 0};
 
 	public render() {
+		const upcomingRuns = this.state.schedule.slice(this.state.currentRunIndex, this.state.currentRunIndex + 3)
 		return (
 			<div>
 				<BreakBackground />
@@ -83,7 +84,7 @@ class Break extends React.Component<{}, State> {
 				</NotificationText>
 				<UpcomingTitle>今後の予定</UpcomingTitle>
 				<UpcomingContainer>
-					{this.state.upcomingRuns.map(run => (
+					{upcomingRuns.map(run => (
 						<UpcomingRun key={run.pk} {...run} />
 					))}
 				</UpcomingContainer>
@@ -92,26 +93,22 @@ class Break extends React.Component<{}, State> {
 	}
 
 	public componentDidMount() {
-		scheduleRep.on('change', this.updateUpcoming);
+		scheduleRep.on('change', this.scheduleChangeHandler);
+		currentRunRep.on('change', this.currentRunChangeHandler);
 	}
 
 	public componentWillUnmount() {
-		scheduleRep.removeListener('change', this.updateUpcoming);
+		scheduleRep.removeListener('change', this.scheduleChangeHandler);
+		currentRunRep.removeListener('change', this.currentRunChangeHandler);
 	}
 
-	private readonly updateUpcoming = () => {
-		nodecg.readReplicant<CurrentRun>('currentRun', currentRun => {
-			const currentRunIndex = currentRun.index || 0;
-			nodecg.readReplicant<Schedule>('schedule', schedule => {
-				this.setState({
-					upcomingRuns: schedule.slice(
-						currentRunIndex,
-						currentRunIndex + 3
-					),
-				});
-			});
-		});
+	private readonly scheduleChangeHandler = (newVal: Schedule) => {
+		this.setState({schedule: newVal})
 	};
+
+	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
+		this.setState({currentRunIndex: newVal.index || 0})
+	}
 }
 
 ReactDom.render(<Break />, document.getElementById('break'), () => {
