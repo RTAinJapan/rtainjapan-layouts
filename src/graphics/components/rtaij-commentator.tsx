@@ -9,7 +9,7 @@ export class RtaijCommentator extends Nameplate {
 	public label = 'Commentator';
 
 	public applyCurrentRunChangeToState = (newVal: CurrentRun) => {
-		const {commentators} = newVal
+		const commentators = (newVal.commentators || []).filter(c => Boolean(c.name))
 		if (!commentators) {
 			this.setState({
 				runners: undefined
@@ -25,7 +25,7 @@ export class RtaijCommentator extends Nameplate {
 
 		// 2 or more commentators: show all names and nothing else
 		this.setState({
-			runners: [{name: commentators.map(c => c.name).join(', ')}],
+			runners: [{name: commentators.map(c => c.name).filter(Boolean).join(', ')}],
 		});
 	};
 
