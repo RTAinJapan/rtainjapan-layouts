@@ -1,13 +1,34 @@
 import {BaseInfo} from './lib/base-info';
+import {TimeObject} from '../../lib/time-object';
+import {stopwatchRep, currentRunRep} from '../../lib/replicants';
+import {CurrentRun} from '../../../types/schemas/currentRun';
 
 export class RtaijTimer extends BaseInfo {
 	public componentDidMount() {
 		if (super.componentDidMount) {
 			super.componentDidMount();
 		}
-		this.setState({
-			primaryInfo: '1:23:45',
-			secondaryInfo: '予定タイム 6:17:28',
-		});
+		stopwatchRep.on('change', this.timerChangeHandler);
+		currentRunRep.on('change', this.currentRunChangeHandler);
 	}
+
+	public componentWillUnmount() {
+		if (super.componentWillUnmount) {
+			super.componentWillUnmount();
+		}
+		stopwatchRep.removeListener('change', this.timerChangeHandler);
+		currentRunRep.removeListener('change', this.currentRunChangeHandler);
+	}
+
+	private readonly timerChangeHandler = (newVal: TimeObject) => {
+		this.setState({
+			primaryInfo: newVal.formatted,
+		});
+	};
+
+	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
+		this.setState({
+			secondaryInfo: `予定タイム ${newVal.duration || '???'}`,
+		});
+	};
 }

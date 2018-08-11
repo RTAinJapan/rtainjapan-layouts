@@ -4,10 +4,16 @@ import {CurrentRun} from '../../../types/schemas/currentRun';
 
 export class RtaijGame extends BaseInfo {
 	public componentDidMount() {
+		if (super.componentDidMount) {
+			super.componentDidMount();
+		}
 		currentRunRep.on('change', this.currentRunChangeHandler);
 	}
 
 	public componentWillUnmount() {
+		if (super.componentWillUnmount) {
+			super.componentWillUnmount();
+		}
 		currentRunRep.removeListener('change', this.currentRunChangeHandler);
 	}
 
