@@ -102,7 +102,7 @@ export class TweetItem extends React.Component<Props, State> {
 				<Avatar src={this.props.tweet.user.profileImageUrl} />
 				<Tweet>
 					<TweetHeader>
-						<ProfileLink href={this.profileUrl()}>
+						<ProfileLink href={this.profileUrl()} target='_blank'>
 							<Name>{this.props.tweet.user.name}</Name>
 							<ScreenName>
 								@{this.props.tweet.user.screenName}
