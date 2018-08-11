@@ -9,8 +9,23 @@ export class RtaijCommentator extends Nameplate {
 	public label = 'Commentator';
 
 	public applyCurrentRunChangeToState = (newVal: CurrentRun) => {
+		const {commentators} = newVal
+		if (!commentators) {
+			this.setState({
+				runners: undefined
+			})
+			return;
+		}
+		if (commentators.length === 1) {
+			this.setState({
+				runners: commentators
+			})
+			return;
+		}
+
+		// 2 or more commentators: show all names and nothing else
 		this.setState({
-			runners: newVal.commentators,
+			runners: [{name: commentators.map(c => c.name).join(', ')}],
 		});
 	};
 
