@@ -14,6 +14,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 // Ours
 import {Tweets} from '../../../../types/schemas/tweets';
 import nodecg from '../../../lib/nodecg';
+import {TweetHighlighter} from '../../../lib/tweet-highlighter';
 
 interface Props {
 	tweet: Tweets[0];
@@ -114,7 +115,9 @@ export class TweetItem extends React.Component<Props, State> {
 							</Time>
 						</TweetLink>
 					</TweetHeader>
-					<TweetText>{this.props.tweet.text}</TweetText>
+					<TweetText>
+						<TweetHighlighter text={this.props.tweet.text} />
+					</TweetText>
 				</Tweet>
 				<Controls>
 					<IconButton title="配信に表示" onClick={this.selectTweet}>

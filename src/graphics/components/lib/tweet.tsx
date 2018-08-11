@@ -3,6 +3,7 @@ import styled, {css} from 'styled-components';
 import delay from 'delay';
 import {Tweets} from '../../../../types/schemas/tweets';
 import nodecg from '../../../lib/nodecg';
+import {TweetHighlighter} from '../../../lib/tweet-highlighter';
 
 const TWEET_TRANSITION_SECONDS = 2;
 const TWEET_SHOWN_DURATION_SECONDS = 10;
@@ -196,7 +197,11 @@ export class Tweet extends React.Component<Props, State> {
 						<div>@{showingTweet.user.screenName}</div>
 					</Header>
 				)}
-				{showingTweet && <Content>{showingTweet.text}</Content>}
+				{showingTweet && (
+					<Content>
+						<TweetHighlighter text={showingTweet.text.replace(/\n/g, ' ')} />
+					</Content>
+				)}
 			</Container>
 		);
 	}
