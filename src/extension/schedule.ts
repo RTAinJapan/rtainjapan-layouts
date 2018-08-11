@@ -87,9 +87,13 @@ const fetchRunnerInfo = async (spreadsheetId: string): Promise<any> => {
 };
 
 export const schedule = (nodecg: NodeCG) => {
-	const {horaroId} = nodecg.bundleConfig;
+	const {horaroId, runnerSpreadsheetId} = nodecg.bundleConfig;
 	if (!horaroId) {
 		nodecg.log.error('Horaro ID is not provided');
+		return;
+	}
+	if (!runnerSpreadsheetId) {
+		nodecg.log.error('Runner spreadsheet is not provided');
 		return;
 	}
 
@@ -146,7 +150,7 @@ export const schedule = (nodecg: NodeCG) => {
 	const updateSchedule = async () => {
 		const [horaroSchedule, runners] = await Promise.all([
 			fetchHoraroSchedule(horaroId),
-			fetchRunnerInfo(SPREADSHEET_ID),
+			fetchRunnerInfo(runnerSpreadsheetId),
 		]);
 		scheduleRep.value = horaroSchedule.map(run => {
 			return {

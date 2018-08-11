@@ -6,10 +6,7 @@
 
 export interface Configschema {
   horaroId?: string;
-  animation?: {
-    runnersInfoInterval?: number;
-    sponsorInterval?: number;
-  };
+  runnerSpreadsheetId?: string;
   twitter: {
     targetWords: string[];
     maxTweets: number;

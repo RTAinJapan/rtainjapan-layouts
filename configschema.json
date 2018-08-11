@@ -8,19 +8,8 @@
 		"horaroId": {
 			"type": "string"
 		},
-		"animation": {
-			"type": "object",
-			"additionalProperties": false,
-			"properties": {
-				"runnersInfoInterval": {
-					"type": "number",
-					"default": 10
-				},
-				"sponsorInterval": {
-					"type": "number",
-					"default": 30
-				}
-			}
+		"runnerSpreadsheetId": {
+			"type": "string"
 		},
 		"twitter": {
 			"type": "object",
