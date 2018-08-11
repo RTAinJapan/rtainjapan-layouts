@@ -167,7 +167,8 @@
 			"react/no-did-update-set-state": 0,
 			"import/no-unassigned-import": 0,
 			"unicorn/no-abusive-eslint-disable": 0,
-			"valid-jsdoc": 0
+			"valid-jsdoc": 0,
+			"capitalized-comments": 0
 		},
 		"ignores": [
 			"./types/schemas",
