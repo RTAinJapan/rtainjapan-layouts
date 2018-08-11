@@ -14,7 +14,7 @@ import Edit from '@material-ui/icons/Edit';
 import {TimeObject} from '../../../lib/time-object';
 import {EditTimeModal} from './edit';
 import nodecg from '../../../lib/nodecg';
-import { NoWrapButton } from '../lib/no-wrap-button';
+import {NoWrapButton} from '../lib/no-wrap-button';
 
 const Container = styled.div`
 	padding: 0 16px;
@@ -50,7 +50,7 @@ const RunnerStatus = styled.div`
 const ButtonContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(3, 80px);
-	gap: 8px;
+	grid-gap: 8px;
 	justify-items: stretch;
 	align-items: center;
 `;

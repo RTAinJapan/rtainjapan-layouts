@@ -31,7 +31,7 @@ const a = styled.a`
 const Container = styled.div`
 	display: grid;
 	grid-template-columns: auto 1fr auto;
-	gap: 16px;
+	grid-gap: 16px;
 
 	&:not(:last-of-type) {
 		border-bottom: 1px solid #3c3c3c;

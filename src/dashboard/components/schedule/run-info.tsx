@@ -11,7 +11,7 @@ const Container = styled.div`
 	grid-template-rows: repeat(10, auto);
 	align-content: start;
 	align-items: start;
-	gap: 16px;
+	grid-gap: 16px;
 `;
 
 const Divider = styled.div`

@@ -22,7 +22,7 @@ import {CurrentRun} from '../../../../types/schemas/currentRun';
 import {ChecklistCompleted} from '../../../../types/schemas/checklistCompleted';
 import nodecg from '../../../lib/nodecg';
 import {EditTimeModal} from './edit';
-import { NoWrapButton } from '../lib/no-wrap-button';
+import {NoWrapButton} from '../lib/no-wrap-button';
 
 const Container = BorderedBox.extend`
 	display: grid;
@@ -45,7 +45,7 @@ const CtrlsContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	grid-template-rows: repeat(2, 1fr);
-	gap: 8px;
+	grid-gap: 8px;
 	justify-items: center;
 	align-items: center;
 `;

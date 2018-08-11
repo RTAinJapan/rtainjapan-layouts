@@ -33,7 +33,7 @@ const TweetContainer = styled.div`
 	display: grid;
 	grid-auto-flow: row;
 	align-content: start;
-	gap: 16px;
+	grid-gap: 16px;
 `;
 
 export class Twitter extends React.Component<{}, {tweets: Tweets}> {

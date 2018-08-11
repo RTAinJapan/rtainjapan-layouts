@@ -25,19 +25,19 @@ const Container = BorderedBox.extend`
 	padding: 16px;
 	display: grid;
 	grid-template-rows: auto 1fr;
-	gap: 12px;
+	grid-gap: 12px;
 `;
 
 const SelectionContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 50% 1fr;
-	gap: 8px;
+	grid-gap: 8px;
 `;
 
 const RunInfoContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 0px 1fr;
-	gap: 16px;
+	grid-gap: 16px;
 `;
 
 const Divider = styled.div`
@@ -47,7 +47,7 @@ const Divider = styled.div`
 const EditControls = styled.div`
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	gap: 16px;
+	grid-gap: 16px;
 `;
 
 const moveNextRun = () => {

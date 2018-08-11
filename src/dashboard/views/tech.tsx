@@ -19,12 +19,12 @@ const Container = styled.div`
 	box-sizing: border-box;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	gap: 20px;
+	grid-gap: 20px;
 `;
 
 const Column = styled.div`
 	display: grid;
-	gap: 16px;
+	grid-gap: 16px;
 `;
 
 const LeftColumn = Column.extend`
