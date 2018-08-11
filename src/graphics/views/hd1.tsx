@@ -12,18 +12,6 @@ import {Ruler} from '../components/lib/ruler';
 
 const StyledContainer = Container.extend`
 	background-image: url(${background});
-	clip-path: polygon(
-		0 0,
-		0 1080px,
-		465px 1080px,
-		465px 15px,
-		1905px 15px,
-		1905px 825px,
-		465px 825px,
-		465px 1080px,
-		1920px 1080px,
-		1920px 0
-	);
 `;
 
 const NameContainer = styled.div`
@@ -44,6 +32,7 @@ const CommentatorContainer = NameContainer.extend`
 
 const infoStyle = css`
 	position: absolute;
+	z-index: 10;
 	bottom: 15px;
 	height: 210px;
 	display: grid;
@@ -62,10 +51,8 @@ const TimerContainer = styled.div`
 `;
 
 const StyledRuler = Ruler.extend`
-	position: absolute;
-	bottom: 15px;
+	${infoStyle};
 	left: 1110px;
-	height: 210px;
 	width: 3px;
 `;
 
@@ -75,13 +62,22 @@ const infoHeights = {
 	thickRuler: true,
 };
 
+const GameArea = styled.div`
+	position: absolute;
+	top: 15px;
+	left: ${(10 + 288 + 10) * 1.5}px;
+	width: ${960 * 1.5}px;
+	height: ${540 * 1.5}px;
+	background-color: black;
+`;
+
 const App = () => (
 	<StyledContainer>
 		<RunnerContainer>
-			<RtaijRunner index={0} gradientBackground />
+			<RtaijRunner index={0} gradientBackground columnDirection />
 		</RunnerContainer>
 		<CommentatorContainer>
-			<RtaijCommentator gradientBackground />
+			<RtaijCommentator gradientBackground columnDirection />
 		</CommentatorContainer>
 
 		<GameContainer>
@@ -92,7 +88,12 @@ const App = () => (
 			<RtaijTimer {...infoHeights} />
 		</TimerContainer>
 
-		<RtaijOverlay bottomHeightPx={240} />
+		<RtaijOverlay
+			bottomHeightPx={240}
+			TweetProps={{leftAttached: true, widthPx: (10 + 288) * 1.5}}
+		/>
+
+		<GameArea />
 	</StyledContainer>
 );
 

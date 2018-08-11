@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijOverlay} from '../components/rtaij-overlay';
 import {Container} from '../components/lib/styled';
@@ -8,80 +8,84 @@ import background from '../images/background.png';
 import {RtaijCommentator} from '../components/rtaij-commentator';
 import {RtaijGame} from '../components/rtaij-game';
 import {RtaijTimer} from '../components/rtaij-timer';
+import {Ruler} from '../components/lib/ruler';
 
 const StyledContainer = Container.extend`
 	background-image: url(${background});
-	clip-path: polygon(
-		0 0,
-		0 1080px,
-		141px 1080px,
-		141px 168px,
-		897px 168px,
-		897px 735px,
-		141px 735px,
-		141px 1080px,
-		750px 1080px,
-		750px 750px,
-		1170px 750px,
-		1170px 1065px,
-		750px 1065px,
-		750px 1080px,
-		1920px 1080px,
-		1920px 735px,
-		1023px 735px,
-		1023px 168px,
-		1779px 168px,
-		1779px 735px,
-		1920px 735px,
-		1920px 0
-	);
 `;
 
-const LeftRunner = styled.div`
+const bottomStyle = css`
 	position: absolute;
-	left: 15px;
-	top: 750px;
-	height: 60px;
-	width: 735px;
-
-	display: grid;
-`;
-
-const RightRunner = styled.div`
-	position: absolute;
-	right: 15px;
-	top: 750px;
-	height: 135px;
-	width: 735px;
-
-	display: grid;
-	grid-template-rows: 1fr 1fr;
-	gap: 15px;
+	z-index: 10;
+	bottom: 15px;
+	height: 165px;
 `;
 
 const GameContainer = styled.div`
-	position: absolute;
-	bottom: 15px;
-	height: 165px;
-	width: ${500 * 1.5}px;
+	${bottomStyle};
+	left: 0;
+	width: 1110px;
+`;
 
-	display: grid;
+const BottomSeparator = Ruler.extend`
+	${bottomStyle};
+	left: ${30 + 1050 + 30}px;
+	height: 150px;
+	width: 3px;
 `;
 
 const TimerContainer = styled.div`
-	position: absolute;
-	bottom: 15px;
-	right: ${140 * 1.5}px;
-	height: 165px;
-	width: ${360 * 1.5}px;
-
-	display: grid;
+	${bottomStyle};
+	right: 210px;
+	width: 597px;
 `;
 
 const infoHeights = {
 	primaryHeight: 68 * 1.5,
 	secondaryHeight: 38 * 1.5,
 };
+
+const gameAreaStyle = css`
+	position: absolute;
+	top: ${112 * 1.5}px;
+	width: ${504 * 1.5}px;
+	height: ${378 * 1.5}px;
+	background-color: black;
+`;
+
+const LeftGame = styled.div`
+	${gameAreaStyle};
+	left: ${94 * 1.5}px;
+`;
+
+const RightGame = styled.div`
+	${gameAreaStyle};
+	right: ${94 * 1.5}px;
+`;
+
+const runnerStyle = css`
+	position: absolute;
+	top: ${(100 + 12 + 378) * 1.5}px;
+	width: ${504 * 1.5}px;
+	height: 60px;
+`;
+const LeftRunner = styled.div`
+	${runnerStyle};
+	left: ${94 * 1.5}px;
+`;
+
+const RightRunner = styled.div`
+	${runnerStyle};
+	right: ${94 * 1.5}px;
+`;
+
+const CommentatorContainer = styled.div`
+	${runnerStyle};
+	top: ${(100 + 12 + 378 + 40 + 15) * 1.5}px;
+	left: ${94 * 1.5}px;
+	right: ${94 * 1.5}px;
+	width: auto;
+`;
 
 const App = () => (
 	<StyledContainer>
@@ -90,15 +94,20 @@ const App = () => (
 		</LeftRunner>
 		<RightRunner>
 			<RtaijRunner index={1} gradientBackground />
-			<RtaijCommentator gradientBackground />
 		</RightRunner>
+		<CommentatorContainer>
+			<RtaijCommentator gradientBackground />
+		</CommentatorContainer>
 		<GameContainer>
 			<RtaijGame {...infoHeights} />
 		</GameContainer>
+		<BottomSeparator />
 		<TimerContainer>
 			<RtaijTimer {...infoHeights} />
 		</TimerContainer>
-		<RtaijOverlay bottomHeightPx={180} />
+		<RtaijOverlay TweetProps={{rowDirection: true}} bottomHeightPx={180} />
+		<LeftGame />
+		<RightGame />
 	</StyledContainer>
 );
 

@@ -11,24 +11,15 @@ import background from '../images/background.png';
 
 const StyledContainer = Container.extend`
 	background-image: url(${background});
-	clip-path: polygon(
-		0 0,
-		0 1080px,
-		15px 1080px,
-		15px 687px,
-		687px 687px,
-		687px 1065px,
-		15px 1065px,
-		15px 1080px,
-		1920px 1080px,
-		1920px 0,
-		1905px 0,
-		1905px 915px,
-		705px 915px,
-		705px 15px,
-		1905px 15px,
-		1905px 0
-	);
+`;
+
+const GameArea = styled.div`
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	width: ${800 * 1.5}px;
+	height: ${600 * 1.5}px;
+	background-color: black;
 `;
 
 const InfoContainer = styled.div`
@@ -42,21 +33,23 @@ const InfoContainer = styled.div`
 	grid-template-rows: auto auto;
 	align-content: center;
 	justify-content: stretch;
-	gap: 30px;
+	grid-gap: 30px;
 `;
 
 const RunnerContainer = styled.div`
 	position: absolute;
-	bottom: 15px;
-	left: 687px;
-	height: 120px;
-	width: ${662 * 1.5}px;
+	bottom: 75px;
+	left: 30px;
+	right: ${160 * 1.5}px;
+	height: 60px;
+`;
 
-	display: grid;
-	grid-template-rows: auto auto;
-	grid-template-rows: 1fr 1fr;
-	align-content: stretch;
-	justify-content: stretch;
+const CommentatorContainer = styled.div`
+	position: absolute;
+	bottom: 15px;
+	left: 30px;
+	right: ${160 * 1.5}px;
+	height: 60px;
 `;
 
 const App = () => (
@@ -67,9 +60,15 @@ const App = () => (
 		</InfoContainer>
 		<RunnerContainer>
 			<RtaijRunner />
-			<RtaijCommentator />
 		</RunnerContainer>
-		<RtaijOverlay bottomHeightPx={150} />
+		<CommentatorContainer>
+			<RtaijCommentator />
+		</CommentatorContainer>
+		<RtaijOverlay
+			TweetProps={{widthPx: 360 * 1.5, hideLogo: true}}
+			bottomHeightPx={150}
+		/>
+		<GameArea />
 	</StyledContainer>
 );
 

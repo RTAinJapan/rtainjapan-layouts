@@ -12,27 +12,6 @@ import {Ruler} from '../components/lib/ruler';
 
 const StyledContainer = Container.extend`
 	background-image: url(${background});
-	clip-path: polygon(
-		0 0,
-		0 225px,
-		1905px 225px,
-		1905px 690px,
-		1285px 690px,
-		1285px 225px,
-		1270px 225px,
-		1270px 690px,
-		650px 690px,
-		650px 225px,
-		635px 225px,
-		635px 690px,
-		15px 690px,
-		15px 225px,
-		0px 225px,
-		0px 1080px,
-		1920px 1080px,
-		1920px 0px,
-		0px 0px
-	);
 `;
 
 const runnerStyle = css`
@@ -65,6 +44,7 @@ const CommentatorContainer = styled.div`
 
 const infoStyle = css`
 	position: absolute;
+	z-index: 10;
 	bottom: 15px;
 	height: 210px;
 `;
@@ -82,10 +62,8 @@ const TimerContainer = styled.div`
 `;
 
 const StyledRuler = Ruler.extend`
-	position: absolute;
-	bottom: 15px;
+	${infoStyle};
 	left: 1110px;
-	height: 210px;
 	width: 3px;
 `;
 
@@ -94,6 +72,29 @@ const infoHeights = {
 	secondaryHeight: 72,
 	thickRuler: true,
 };
+
+const gameStyle = css`
+	position: absolute;
+	width: 620px;
+	height: 465px;
+	top: 225px;
+	background-color: black;
+`;
+
+const LeftGame = styled.div`
+	${gameStyle};
+	left: 15px;
+`;
+
+const CentreGame = styled.div`
+	${gameStyle};
+	left: ${15 + 620 + 15}px;
+`;
+
+const RightGame = styled.div`
+	${gameStyle};
+	right: 15px;
+`;
 
 const App = () => (
 	<StyledContainer>
@@ -119,7 +120,11 @@ const App = () => (
 			<RtaijTimer {...infoHeights} />
 		</TimerContainer>
 
-		<RtaijOverlay bottomHeightPx={240} />
+		<RtaijOverlay bottomHeightPx={240} TweetProps={{rowDirection: true}} />
+
+		<LeftGame />
+		<CentreGame />
+		<RightGame />
 	</StyledContainer>
 );
 
