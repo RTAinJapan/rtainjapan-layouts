@@ -15,6 +15,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
 const Container = styled.div`
+	font-family: 'MigMix 2P';
 	height: 100vh;
 	width: 100vw;
 	padding: 16px;
@@ -35,6 +36,9 @@ const LeftColumn = Column.extend`
 `;
 
 const appTheme = createMuiTheme({
+	typography: {
+		fontFamily: 'MigMix 2P',
+	},
 	props: {
 		MuiButton: {
 			variant: 'raised',
