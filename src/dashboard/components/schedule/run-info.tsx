@@ -1,6 +1,7 @@
 // Packages
 import React from 'react';
 import styled from 'styled-components';
+import Typography from '@material-ui/core/Typography'
 
 // Ours
 import {CurrentRun} from '../../../../types/schemas/currentRun';
@@ -22,7 +23,10 @@ const Label = styled.div`
 	text-align: center;
 `;
 
-const LabeledDiv = styled.div``;
+const LabeledDiv = styled.div`
+	white-space: nowrap;
+	overflow: scroll;
+`;
 
 const RunnersContainer = styled.div`
 	display: grid;
@@ -30,6 +34,7 @@ const RunnersContainer = styled.div`
 	grid-template-rows: repeat(2, 1fr);
 	align-items: start;
 	justify-content: center;
+	grid-gap: 8px;
 `;
 
 const MiscContainer = styled.div`
@@ -51,7 +56,7 @@ export class RunInfo extends React.Component<{
 					{label}&nbsp;(#{run.index})
 				</Label>
 				<LabeledDiv>
-					<label>ゲーム</label>
+					<Typography variant='caption'>ゲーム</Typography>
 					<div>{run.title}</div>
 				</LabeledDiv>
 				<Divider />
@@ -60,25 +65,20 @@ export class RunInfo extends React.Component<{
 				<RunnersContainer>{this.renderCommentators()}</RunnersContainer>
 				<Divider />
 				<LabeledDiv>
-					<label>カテゴリ</label>
+					<Typography variant='caption'>カテゴリ</Typography>
 					<div>{run.category}</div>
 				</LabeledDiv>
 				<Divider />
 				<MiscContainer>
 					<LabeledDiv>
-						<label>予定時間</label>
+						<Typography variant='caption'>予定時間</Typography>
 						<div>{run.duration}</div>
 					</LabeledDiv>
 					<LabeledDiv>
-						<label>機種</label>
+						<Typography variant='caption'>機種</Typography>
 						<div>{run.hardware}</div>
 					</LabeledDiv>
 				</MiscContainer>
-				<Divider />
-				<LabeledDiv>
-					<label>メモ</label>
-					<div>N/A</div>
-				</LabeledDiv>
 			</Container>
 		);
 	}
@@ -86,7 +86,7 @@ export class RunInfo extends React.Component<{
 	private readonly renderRunners = () =>
 		this.runners().map((runner, index) => (
 			<LabeledDiv key={Math.random()}>
-				<label>走者{index}</label>
+				<Typography variant='caption'>走者{index}</Typography>
 				<div>{runner && runner.name}</div>
 			</LabeledDiv>
 		));
@@ -94,7 +94,7 @@ export class RunInfo extends React.Component<{
 	private readonly renderCommentators = () =>
 		this.commentators().map((commentator, index) => (
 			<LabeledDiv key={Math.random()}>
-				<label>解説{index}</label>
+				<Typography variant='caption'>解説{index}</Typography>
 				<div>{commentator && commentator.name}</div>
 			</LabeledDiv>
 		));
