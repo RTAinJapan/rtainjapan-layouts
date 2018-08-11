@@ -9,23 +9,32 @@ export class RtaijCommentator extends Nameplate {
 	public label = 'Commentator';
 
 	public applyCurrentRunChangeToState = (newVal: CurrentRun) => {
-		const commentators = (newVal.commentators || []).filter(c => Boolean(c.name))
+		const commentators = (newVal.commentators || []).filter(c =>
+			Boolean(c.name)
+		);
 		if (!commentators) {
 			this.setState({
-				runners: undefined
-			})
+				runners: undefined,
+			});
 			return;
 		}
 		if (commentators.length === 1) {
 			this.setState({
-				runners: commentators
-			})
+				runners: commentators,
+			});
 			return;
 		}
 
 		// 2 or more commentators: show all names and nothing else
 		this.setState({
-			runners: [{name: commentators.map(c => c.name).filter(Boolean).join(', ')}],
+			runners: [
+				{
+					name: commentators
+						.map(c => c.name)
+						.filter(Boolean)
+						.join(', '),
+				},
+			],
 		});
 	};
 

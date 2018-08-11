@@ -11,8 +11,8 @@ import {Schedule} from '../components/schedule';
 import {Timekeeper} from '../components/timekeeper';
 import {Twitter} from '../components/twitter';
 import {twitterCallback} from '../lib/twitter-callback';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
 const Container = styled.div`
 	height: 100vh;

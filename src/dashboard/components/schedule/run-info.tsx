@@ -1,7 +1,7 @@
 // Packages
 import React from 'react';
 import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography'
+import Typography from '@material-ui/core/Typography';
 
 // Ours
 import {CurrentRun} from '../../../../types/schemas/currentRun';
@@ -56,7 +56,7 @@ export class RunInfo extends React.Component<{
 					{label}&nbsp;(#{run.index})
 				</Label>
 				<LabeledDiv>
-					<Typography variant='caption'>ゲーム</Typography>
+					<Typography variant="caption">ゲーム</Typography>
 					<div>{run.title}</div>
 				</LabeledDiv>
 				<Divider />
@@ -65,17 +65,17 @@ export class RunInfo extends React.Component<{
 				<RunnersContainer>{this.renderCommentators()}</RunnersContainer>
 				<Divider />
 				<LabeledDiv>
-					<Typography variant='caption'>カテゴリ</Typography>
+					<Typography variant="caption">カテゴリ</Typography>
 					<div>{run.category}</div>
 				</LabeledDiv>
 				<Divider />
 				<MiscContainer>
 					<LabeledDiv>
-						<Typography variant='caption'>予定時間</Typography>
+						<Typography variant="caption">予定時間</Typography>
 						<div>{run.duration}</div>
 					</LabeledDiv>
 					<LabeledDiv>
-						<Typography variant='caption'>機種</Typography>
+						<Typography variant="caption">機種</Typography>
 						<div>{run.hardware}</div>
 					</LabeledDiv>
 				</MiscContainer>
@@ -86,7 +86,7 @@ export class RunInfo extends React.Component<{
 	private readonly renderRunners = () =>
 		this.runners().map((runner, index) => (
 			<LabeledDiv key={Math.random()}>
-				<Typography variant='caption'>走者{index}</Typography>
+				<Typography variant="caption">走者{index}</Typography>
 				<div>{runner && runner.name}</div>
 			</LabeledDiv>
 		));
@@ -94,7 +94,7 @@ export class RunInfo extends React.Component<{
 	private readonly renderCommentators = () =>
 		this.commentators().map((commentator, index) => (
 			<LabeledDiv key={Math.random()}>
-				<Typography variant='caption'>解説{index}</Typography>
+				<Typography variant="caption">解説{index}</Typography>
 				<div>{commentator && commentator.name}</div>
 			</LabeledDiv>
 		));

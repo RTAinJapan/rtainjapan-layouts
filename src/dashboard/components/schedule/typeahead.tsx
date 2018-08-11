@@ -35,12 +35,15 @@ interface Props {
 }
 
 export class Typeahead extends React.Component<Props, State> {
-	public state: State = {inputText: ''}
+	public state: State = {inputText: ''};
 
 	public render() {
 		return (
 			<TypeaheadContainer>
-				<Downshift inputValue={this.state.inputText} onInputValueChange={this.handleInputChange}>
+				<Downshift
+					inputValue={this.state.inputText}
+					onInputValueChange={this.handleInputChange}
+				>
 					{({
 						getInputProps,
 						isOpen,
@@ -67,7 +70,7 @@ export class Typeahead extends React.Component<Props, State> {
 						</div>
 					)}
 				</Downshift>
-				<SkipButton size='small'  onClick={this.skipClicked}>
+				<SkipButton size="small" onClick={this.skipClicked}>
 					スキップ<ChevronRight />
 				</SkipButton>
 			</TypeaheadContainer>
@@ -75,13 +78,13 @@ export class Typeahead extends React.Component<Props, State> {
 	}
 
 	private readonly handleInputChange = (inputText: string) => {
-		this.setState({inputText})
-	}
+		this.setState({inputText});
+	};
 
 	private readonly skipClicked = async () => {
 		const index = this.props.titles.indexOf(this.state.inputText);
 		await nodecg.sendMessage('setCurrentRunByIndex', index);
-		this.setState({inputText: ''})
+		this.setState({inputText: ''});
 	};
 
 	private readonly renderSuggestion = (

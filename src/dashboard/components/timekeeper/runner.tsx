@@ -107,35 +107,22 @@ export class Runner extends React.Component<Props, State> {
 				</div>
 				<ButtonContainer>
 					{shouldShowFinish && (
-						<NoWrapButton
-
-							fullWidth
-							onClick={this.completeRunner}
-						>
+						<NoWrapButton fullWidth onClick={this.completeRunner}>
 							<Flag />完走
 						</NoWrapButton>
 					)}
 					{shouldShowResume && (
-						<NoWrapButton
-
-							fullWidth
-							onClick={this.resumeRunner}
-						>
+						<NoWrapButton fullWidth onClick={this.resumeRunner}>
 							<Undo />再開
 						</NoWrapButton>
 					)}
 					{shouldShowForfeit && (
-						<NoWrapButton
-
-							fullWidth
-							onClick={this.forfeitRunner}
-						>
+						<NoWrapButton fullWidth onClick={this.forfeitRunner}>
 							<Cancel />リタイア
 						</NoWrapButton>
 					)}
 					<NoWrapButton
 						disabled={shouldDisableEdit}
-
 						onClick={this.startEdit}
 					>
 						<Edit />編集

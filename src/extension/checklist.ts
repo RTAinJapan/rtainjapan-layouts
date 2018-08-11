@@ -15,9 +15,11 @@ export const checklist = (nodecg: NodeCG) => {
 	checklistRep.on('change', updateChecklistComplete);
 
 	function toggleCheckbox({name, checked}: {name: string; checked: boolean}) {
-		const checklistItem = checklistRep.value.find(task => task.name === name);
+		const checklistItem = checklistRep.value.find(
+			task => task.name === name
+		);
 		if (checklistItem) {
-			checklistItem.complete = checked
+			checklistItem.complete = checked;
 		}
 	}
 

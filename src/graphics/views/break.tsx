@@ -69,7 +69,10 @@ class Break extends React.Component<{}, State> {
 	public state: State = {schedule: [], currentRunIndex: 0};
 
 	public render() {
-		const upcomingRuns = this.state.schedule.slice(this.state.currentRunIndex, this.state.currentRunIndex + 3)
+		const upcomingRuns = this.state.schedule.slice(
+			this.state.currentRunIndex,
+			this.state.currentRunIndex + 3
+		);
 		return (
 			<div>
 				<BreakBackground />
@@ -103,12 +106,12 @@ class Break extends React.Component<{}, State> {
 	}
 
 	private readonly scheduleChangeHandler = (newVal: Schedule) => {
-		this.setState({schedule: newVal})
+		this.setState({schedule: newVal});
 	};
 
 	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
-		this.setState({currentRunIndex: newVal.index || 0})
-	}
+		this.setState({currentRunIndex: newVal.index || 0});
+	};
 }
 
 ReactDom.render(<Break />, document.getElementById('break'), () => {

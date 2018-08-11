@@ -1,5 +1,5 @@
 import React from 'react';
-import max from 'lodash/max'
+import max from 'lodash/max';
 import styled from 'styled-components';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
@@ -122,7 +122,8 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 						);
 					})}
 					{new Array(4).fill(null).map((_, index) => {
-						const commentator: RunnerList[0] = commentators[index] || {};
+						const commentator: RunnerList[0] =
+							commentators[index] || {};
 						return (
 							// eslint-disable-next-line react/no-array-index-key
 							<div key={index}>
@@ -174,12 +175,8 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 						);
 					})}
 					<div>
-						<Button  onClick={this.updateClicked}>
-							更新
-						</Button>
-						<Button  onClick={this.finish}>
-							キャンセル
-						</Button>
+						<Button onClick={this.updateClicked}>更新</Button>
+						<Button onClick={this.finish}>キャンセル</Button>
 					</div>
 				</Container>
 			</Modal>
@@ -187,8 +184,8 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 	}
 
 	private readonly onRendered = () => {
-		this.setState(this.props.defaultValue)
-	}
+		this.setState(this.props.defaultValue);
+	};
 
 	private readonly updateRunnerInfo = <T extends keyof RunnerList[0]>(
 		updatingIndex: number,
@@ -202,14 +199,14 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 			const oldRunner = state.runners[updatingIndex] || {};
 			const newRunner = {...oldRunner, [key]: value};
 			const newRunners: RunnerList = [];
-			const iterateLength = (max([updatingIndex, state.runners.length - 1]) || 0) + 1
-			for (let i = 0; i < iterateLength; i++ ) {
+			const iterateLength =
+				(max([updatingIndex, state.runners.length - 1]) || 0) + 1;
+			for (let i = 0; i < iterateLength; i++) {
 				if (i === updatingIndex) {
 					newRunners.push(newRunner);
 				} else {
 					newRunners.push(state.runners[i]);
 				}
-
 			}
 			return {runners: newRunners};
 		});
@@ -227,21 +224,21 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 			const oldOne = state.commentators[updatingIndex] || {};
 			const newOne = {...oldOne, [key]: value};
 			const newOnes: RunnerList = [];
-			const iterateLength = (max([updatingIndex, state.commentators.length - 1]) || 0) + 1
-			for (let i = 0; i < iterateLength; i++ ) {
+			const iterateLength =
+				(max([updatingIndex, state.commentators.length - 1]) || 0) + 1;
+			for (let i = 0; i < iterateLength; i++) {
 				if (i === updatingIndex) {
 					newOnes.push(newOne);
 				} else {
 					newOnes.push(state.commentators[i]);
 				}
-
 			}
 			return {commentators: newOnes};
 		});
 	};
 
 	private readonly updateClicked = async () => {
-		await nodecg.sendMessage('modifyRun', this.state)
+		await nodecg.sendMessage('modifyRun', this.state);
 		this.finish();
 	};
 

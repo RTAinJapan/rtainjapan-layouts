@@ -1,6 +1,6 @@
 // Packages
 import React from 'react';
-import times from 'lodash/times'
+import times from 'lodash/times';
 import styled from 'styled-components';
 import uuidv4 from 'uuid/v4';
 import green from '@material-ui/core/colors/green';

@@ -44,7 +44,7 @@ class App extends React.Component<{}, State> {
 		return userObject ? (
 			<LoggedIn onClick={this.logout}>
 				<div>ログイン中：@{userObject.screen_name}</div>
-				<Button >ログアウト</Button>
+				<Button>ログアウト</Button>
 			</LoggedIn>
 		) : (
 			<ButtonBase>
