@@ -2,6 +2,7 @@ import React from 'react';
 import styled, {css} from 'styled-components';
 import {Ruler} from './ruler';
 import {GradientCentre} from './styled';
+import { currentRunRep } from '../../../lib/replicants';
 
 interface ContainerProps {
 	thickRuler?: boolean;
@@ -75,7 +76,7 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 	public state: State = {
 		primaryInfo: '',
 		secondaryInfo: '',
-		primarySize: 30 * 1.5,
+		primarySize: 40 * 1.5,
 	};
 
 	public containerRef = React.createRef<HTMLDivElement>();
@@ -104,6 +105,14 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 		);
 	}
 
+	public componentDidMount() {
+		currentRunRep.on('change', this._currentRunChangeHandler)
+	}
+
+	public componentWillUnmount() {
+		currentRunRep.removeListener('change', this._currentRunChangeHandler)
+	}
+
 	public componentDidUpdate() {
 		const containerRef = this.containerRef.current;
 		const primaryRef = this.primaryRef.current;
@@ -117,5 +126,9 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 				primarySize: state.primarySize - 1,
 			}));
 		}
+	}
+
+	private readonly _currentRunChangeHandler = () => {
+		this.setState({primarySize: 40 * 1.5})
 	}
 }
