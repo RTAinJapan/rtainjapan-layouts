@@ -63,4 +63,7 @@ export const App = () => (
 
 twitterCallback();
 
+document.body.style.margin = '0';
+document.body.style.padding = '0';
+
 ReactDom.render(<App />, document.getElementById('tech'));
