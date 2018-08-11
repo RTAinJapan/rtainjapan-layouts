@@ -34,6 +34,7 @@ interface Props {
 export class EditRun extends React.Component<Props, CurrentRun> {
 	public render() {
 		const runners = this.props.defaultValue.runners || [];
+		const commentators = this.props.defaultValue.commentators || [];
 		return (
 			<Modal
 				aria-labelledby="simple-modal-title"
@@ -120,6 +121,58 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 							</div>
 						);
 					})}
+					{new Array(4).fill(null).map((_, index) => {
+						const commentator: RunnerList[0] = commentators[index] || {};
+						return (
+							// eslint-disable-next-line react/no-array-index-key
+							<div key={index}>
+								<TextField
+									label={`解説${index} 名前`}
+									defaultValue={commentator.name}
+									onChange={e => {
+										this.updateCommentatorInfo(
+											index,
+											'name',
+											e.currentTarget.value
+										);
+									}}
+								/>
+								<TextField
+									label={`解説${index} Twitch`}
+									defaultValue={commentator.twitch}
+									onChange={e => {
+										this.updateCommentatorInfo(
+											index,
+											'twitch',
+											e.currentTarget.value
+										);
+									}}
+								/>
+								<TextField
+									label={`解説${index} ニコ生`}
+									defaultValue={commentator.nico}
+									onChange={e => {
+										this.updateCommentatorInfo(
+											index,
+											'nico',
+											e.currentTarget.value
+										);
+									}}
+								/>
+								<TextField
+									label={`解説${index} Twitter`}
+									defaultValue={commentator.twitter}
+									onChange={e => {
+										this.updateCommentatorInfo(
+											index,
+											'twitter',
+											e.currentTarget.value
+										);
+									}}
+								/>
+							</div>
+						);
+					})}
 					<div>
 						<Button variant="raised" onClick={this.updateClicked}>
 							更新
@@ -144,7 +197,7 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 	) => {
 		this.setState(state => {
 			if (!state.runners) {
-				return {title: state.title};
+				return {};
 			}
 			const oldRunner = state.runners[updatingIndex] || {};
 			const newRunner = {...oldRunner, [key]: value};
@@ -159,6 +212,31 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 
 			}
 			return {runners: newRunners};
+		});
+	};
+
+	private readonly updateCommentatorInfo = <T extends keyof RunnerList[0]>(
+		updatingIndex: number,
+		key: T,
+		value: RunnerList[0][T]
+	) => {
+		this.setState(state => {
+			if (!state.commentators) {
+				return {};
+			}
+			const oldOne = state.commentators[updatingIndex] || {};
+			const newOne = {...oldOne, [key]: value};
+			const newOnes: RunnerList = [];
+			const iterateLength = (max([updatingIndex, state.commentators.length - 1]) || 0) + 1
+			for (let i = 0; i < iterateLength; i++ ) {
+				if (i === updatingIndex) {
+					newOnes.push(newOne);
+				} else {
+					newOnes.push(state.commentators[i]);
+				}
+
+			}
+			return {commentators: newOnes};
 		});
 	};
 

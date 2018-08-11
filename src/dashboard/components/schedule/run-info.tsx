@@ -8,7 +8,7 @@ import {NextRun} from '../../../../types/schemas/nextRun';
 
 const Container = styled.div`
 	display: grid;
-	grid-template-rows: repeat(10, auto);
+	grid-auto-flow: row;
 	align-content: start;
 	align-items: start;
 	grid-gap: 16px;
@@ -57,6 +57,8 @@ export class RunInfo extends React.Component<{
 				<Divider />
 				<RunnersContainer>{this.renderRunners()}</RunnersContainer>
 				<Divider />
+				<RunnersContainer>{this.renderCommentators()}</RunnersContainer>
+				<Divider />
 				<LabeledDiv>
 					<label>カテゴリ</label>
 					<div>{run.category}</div>
@@ -89,11 +91,29 @@ export class RunInfo extends React.Component<{
 			</LabeledDiv>
 		));
 
+	private readonly renderCommentators = () =>
+		this.commentators().map((commentator, index) => (
+			<LabeledDiv key={Math.random()}>
+				<label>解説{index}</label>
+				<div>{commentator && commentator.name}</div>
+			</LabeledDiv>
+		));
+
 	private readonly runners = () => {
 		const {runners} = this.props.run;
 		if (!runners) {
 			return [];
 		}
 		return new Array(4).fill(null).map((_, index) => runners[index] || _);
+	};
+
+	private readonly commentators = () => {
+		const {commentators} = this.props.run;
+		if (!commentators) {
+			return [];
+		}
+		return new Array(4)
+			.fill(null)
+			.map((_, index) => commentators[index] || _);
 	};
 }
