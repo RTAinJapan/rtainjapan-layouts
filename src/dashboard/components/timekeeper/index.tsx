@@ -1,7 +1,14 @@
 // Packages
 import React from 'react';
+import times from 'lodash/times'
 import styled from 'styled-components';
 import uuidv4 from 'uuid/v4';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import createMuiTheme, {Theme} from '@material-ui/core/styles/createMuiTheme';
+import green from '@material-ui/core/colors/green';
+import orange from '@material-ui/core/colors/orange';
+import pink from '@material-ui/core/colors/pink';
+import grey from '@material-ui/core/colors/grey';
 
 // MUI Icons
 import PlayArrow from '@material-ui/icons/PlayArrow';
@@ -23,6 +30,7 @@ import {ChecklistCompleted} from '../../../../types/schemas/checklistCompleted';
 import nodecg from '../../../lib/nodecg';
 import {EditTimeModal} from './edit';
 import {NoWrapButton} from '../lib/no-wrap-button';
+import {ColoredButton} from '../lib/colored-button';
 
 const Container = BorderedBox.extend`
 	display: grid;
@@ -58,6 +66,17 @@ const RunnersContainer = styled.div`
 	grid-template-rows: repeat(4, 1fr);
 `;
 
+const mainCtrlButtonTheme = (outer: Theme | null) =>
+	createMuiTheme({
+		...outer,
+		props: {
+			MuiButton: {
+				fullWidth: true,
+				variant: 'raised',
+			},
+		},
+	});
+
 const startTimer = () => {
 	nodecg.sendMessage('startTimer');
 };
@@ -85,6 +104,83 @@ export class Timekeeper extends React.Component<{}, State> {
 		isModalOpened: false,
 	};
 
+	public render() {
+		const {state} = this;
+
+		// Disable start if checklist is not completed or timer is not stopped state
+		const shouldDisableStart =
+			state.checklistComplete !== true ||
+			state.timer.timerState !== TimerState.Stopped;
+
+		// Disable pause if timer is not running
+		const shouldDisablePause =
+			state.timer.timerState !== TimerState.Running;
+
+		return (
+			<Container>
+				<Timer>{state.timer.formatted}</Timer>
+				<CtrlsContainer>
+					<MuiThemeProvider theme={mainCtrlButtonTheme}>
+						<ColoredButton
+							color={green}
+							ButtonProps={{
+								disabled: shouldDisableStart,
+								onClick: startTimer,
+							}}
+						>
+							<PlayArrow />開始
+						</ColoredButton>
+						<ColoredButton
+							color={orange}
+							ButtonProps={{
+								disabled: shouldDisablePause,
+								onClick: stopTimer,
+							}}
+						>
+							<Pause />停止
+						</ColoredButton>
+						<ColoredButton
+							color={pink}
+							ButtonProps={{
+								onClick: resetTimer,
+							}}
+						>
+							<Refresh />リセット
+						</ColoredButton>
+						<ColoredButton
+							color={grey}
+							ButtonProps={{
+								onClick: this.openEdit,
+							}}
+						>
+							<ModeEdit />編集
+						</ColoredButton>
+					</MuiThemeProvider>
+				</CtrlsContainer>
+
+				<RunnersContainer>
+					{state.runners.map((runner, index) => (
+						<Runner
+							key={runner.id}
+							checklistCompleted={state.checklistComplete}
+							index={index}
+							runner={runner.name}
+							timer={state.timer}
+						>
+							{runner}
+						</Runner>
+					))}
+				</RunnersContainer>
+
+				<EditTimeModal
+					open={state.isModalOpened}
+					defaultValue={state.timer.formatted}
+					onFinish={this.closeModal}
+				/>
+			</Container>
+		);
+	}
+
 	public componentDidMount() {
 		stopwatchRep.on('change', this.stopwatchRepChangeHandler);
 		currentRunRep.on('change', this.currentRunChangeHandler);
@@ -100,73 +196,6 @@ export class Timekeeper extends React.Component<{}, State> {
 		);
 	}
 
-	public render() {
-		// Disable start if checklist is not completed or timer is not stopped state
-		const shouldDisableStart =
-			this.state.checklistComplete !== true ||
-			this.state.timer.timerState !== TimerState.Stopped;
-
-		// Disable pause if timer is not running
-		const shouldDisablePause =
-			this.state.timer.timerState !== TimerState.Running;
-
-		return (
-			<Container>
-				<Timer>{this.state.timer.formatted}</Timer>
-				<CtrlsContainer>
-					<NoWrapButton
-						variant="raised"
-						fullWidth
-						disabled={shouldDisableStart}
-						onClick={startTimer}
-					>
-						<PlayArrow />開始
-					</NoWrapButton>
-					<NoWrapButton
-						variant="raised"
-						fullWidth
-						disabled={shouldDisablePause}
-						onClick={stopTimer}
-					>
-						<Pause />停止
-					</NoWrapButton>
-					<NoWrapButton
-						variant="raised"
-						fullWidth
-						onClick={resetTimer}
-					>
-						<Refresh />リセット
-					</NoWrapButton>
-					<NoWrapButton
-						variant="raised"
-						fullWidth
-						onClick={this.openEdit}
-					>
-						<ModeEdit />編集
-					</NoWrapButton>
-				</CtrlsContainer>
-				<RunnersContainer>
-					{this.state.runners.map((runner, index) => (
-						<Runner
-							key={runner.id}
-							checklistCompleted={this.state.checklistComplete}
-							index={index}
-							runner={runner.name}
-							timer={this.state.timer}
-						>
-							{runner}
-						</Runner>
-					))}
-				</RunnersContainer>
-				<EditTimeModal
-					open={this.state.isModalOpened}
-					defaultValue={this.state.timer.formatted}
-					onFinish={this.closeModal}
-				/>
-			</Container>
-		);
-	}
-
 	private readonly closeModal = (value?: string) => {
 		if (value) {
 			nodecg.sendMessage('editTime', {index: 'master', newTime: value});
@@ -179,12 +208,13 @@ export class Timekeeper extends React.Component<{}, State> {
 	};
 
 	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
-		const runners: State['runners'] = new Array(4).fill(undefined);
+		const runners: State['runners'] = [];
 		const newRunners = newVal.runners;
-		for (let i = 0; i < 4; i++) {
+		times(4, i => {
 			const name = newRunners && newRunners[i] && newRunners[i].name;
 			runners[i] = {name, id: uuidv4()};
-		}
+
+		})
 		this.setState({
 			runners,
 		});
