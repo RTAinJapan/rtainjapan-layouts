@@ -5,7 +5,7 @@ import delay from 'delay';
 
 import logoR from '../images/logo/index.png';
 import logoTainjapan from '../images/logo/tainjapan.png';
-import twitchLogo from '../images/twitch.png'
+import twitchLogo from '../images/twitch.png';
 import {Tweet} from './lib/tweet';
 
 const LOGO_TRANSFORM_DURATION_SECONDS = 1;
@@ -99,7 +99,12 @@ export class RtaijOverlay extends React.Component<Props, State> {
 
 	private logoRInterval = setInterval(async () => {
 		const gifs = await import('../images/logo/*.gif');
-		const randomGif = sample(Object.values(gifs));
+		const randomGif: string | undefined = sample(
+			Object.values(gifs.default)
+		);
+		if (!randomGif) {
+			return;
+		}
 		this.setState({logoR: randomGif});
 		await delay(5000);
 		this.setState({logoR});
