@@ -4,6 +4,7 @@
 /.cache
 **/*.log
 .env
+/scripts/deploy.sh
 
 /extension
 /dashboard

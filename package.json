@@ -4,6 +4,7 @@
 	"private": true,
 	"scripts": {
 		"bundle": "node scripts/bundle.js",
+		"build": "del dashboard extension graphics twitter-callback && NODE_ENV=production yarn bundle",
 		"start": "(cd ../.. && node index.js)",
 		"schema-types": "node scripts/schema-types.js",
 		"tslint": "tslint --project . --format stylish",
