@@ -114,6 +114,18 @@ export const twitter = async (nodecg: NodeCG) => {
 		await saveAccessToken({token: '', secret: ''});
 	});
 
+	nodecg.listenFor('selectTweet', (id: string) => {
+		nodecg.sendMessage('showTweet', deleteTweetById(id));
+	});
+
+	nodecg.listenFor('discardTweet', deleteTweetById);
+
+	try {
+		await loadAccessToken();
+	} catch (_) {
+		await saveAccessToken({token: '', secret: ''});
+	}
+
 	twitterRep.on('change', async newVal => {
 		if (newVal && newVal.userObject) {
 			await startFilterStream();
@@ -130,12 +142,6 @@ export const twitter = async (nodecg: NodeCG) => {
 		}
 		tweetsRep.value = tweetsRep.value.slice(0, maxTweets);
 	});
-
-	nodecg.listenFor('selectTweet', (id: string) => {
-		nodecg.sendMessage('showTweet', deleteTweetById(id))
-	})
-
-	nodecg.listenFor('discardTweet', deleteTweetById)
 
 	function deleteTweetById(id: string) {
 		const selectedTweetIndex = tweetsRep.value.findIndex(t => t.id === id);
