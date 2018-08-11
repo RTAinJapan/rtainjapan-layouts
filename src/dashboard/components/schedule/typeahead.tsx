@@ -67,7 +67,7 @@ export class Typeahead extends React.Component<Props, State> {
 						</div>
 					)}
 				</Downshift>
-				<SkipButton size='small' variant="raised" onClick={this.skipClicked}>
+				<SkipButton size='small'  onClick={this.skipClicked}>
 					スキップ<ChevronRight />
 				</SkipButton>
 			</TypeaheadContainer>

@@ -29,7 +29,6 @@ import {CurrentRun} from '../../../../types/schemas/currentRun';
 import {ChecklistCompleted} from '../../../../types/schemas/checklistCompleted';
 import nodecg from '../../../lib/nodecg';
 import {EditTimeModal} from './edit';
-import {NoWrapButton} from '../lib/no-wrap-button';
 import {ColoredButton} from '../lib/colored-button';
 
 const Container = BorderedBox.extend`
@@ -65,17 +64,6 @@ const RunnersContainer = styled.div`
 	display: grid;
 	grid-template-rows: repeat(4, 1fr);
 `;
-
-const mainCtrlButtonTheme = (outer: Theme | null) =>
-	createMuiTheme({
-		...outer,
-		props: {
-			MuiButton: {
-				fullWidth: true,
-				variant: 'raised',
-			},
-		},
-	});
 
 const startTimer = () => {
 	nodecg.sendMessage('startTimer');
@@ -120,42 +108,44 @@ export class Timekeeper extends React.Component<{}, State> {
 			<Container>
 				<Timer>{state.timer.formatted}</Timer>
 				<CtrlsContainer>
-					<MuiThemeProvider theme={mainCtrlButtonTheme}>
-						<ColoredButton
-							color={green}
-							ButtonProps={{
-								disabled: shouldDisableStart,
-								onClick: startTimer,
-							}}
-						>
-							<PlayArrow />開始
-						</ColoredButton>
-						<ColoredButton
-							color={orange}
-							ButtonProps={{
-								disabled: shouldDisablePause,
-								onClick: stopTimer,
-							}}
-						>
-							<Pause />停止
-						</ColoredButton>
-						<ColoredButton
-							color={pink}
-							ButtonProps={{
-								onClick: resetTimer,
-							}}
-						>
-							<Refresh />リセット
-						</ColoredButton>
-						<ColoredButton
-							color={grey}
-							ButtonProps={{
-								onClick: this.openEdit,
-							}}
-						>
-							<ModeEdit />編集
-						</ColoredButton>
-					</MuiThemeProvider>
+					<ColoredButton
+						color={green}
+						ButtonProps={{
+							disabled: shouldDisableStart,
+							onClick: startTimer,
+							fullWidth: true,
+						}}
+					>
+						<PlayArrow />開始
+					</ColoredButton>
+					<ColoredButton
+						color={orange}
+						ButtonProps={{
+							disabled: shouldDisablePause,
+							onClick: stopTimer,
+							fullWidth: true,
+						}}
+					>
+						<Pause />停止
+					</ColoredButton>
+					<ColoredButton
+						color={pink}
+						ButtonProps={{
+							onClick: resetTimer,
+							fullWidth: true,
+						}}
+					>
+						<Refresh />リセット
+					</ColoredButton>
+					<ColoredButton
+						color={grey}
+						ButtonProps={{
+							onClick: this.openEdit,
+							fullWidth: true,
+						}}
+					>
+						<ModeEdit />編集
+					</ColoredButton>
 				</CtrlsContainer>
 
 				<RunnersContainer>
@@ -213,8 +203,7 @@ export class Timekeeper extends React.Component<{}, State> {
 		times(4, i => {
 			const name = newRunners && newRunners[i] && newRunners[i].name;
 			runners[i] = {name, id: uuidv4()};
-
-		})
+		});
 		this.setState({
 			runners,
 		});

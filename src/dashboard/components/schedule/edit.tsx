@@ -174,10 +174,10 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 						);
 					})}
 					<div>
-						<Button variant="raised" onClick={this.updateClicked}>
+						<Button  onClick={this.updateClicked}>
 							更新
 						</Button>
-						<Button variant="raised" onClick={this.finish}>
+						<Button  onClick={this.finish}>
 							キャンセル
 						</Button>
 					</div>

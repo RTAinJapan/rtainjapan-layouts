@@ -108,7 +108,7 @@ export class Runner extends React.Component<Props, State> {
 				<ButtonContainer>
 					{shouldShowFinish && (
 						<NoWrapButton
-							variant="raised"
+
 							fullWidth
 							onClick={this.completeRunner}
 						>
@@ -117,7 +117,7 @@ export class Runner extends React.Component<Props, State> {
 					)}
 					{shouldShowResume && (
 						<NoWrapButton
-							variant="raised"
+
 							fullWidth
 							onClick={this.resumeRunner}
 						>
@@ -126,7 +126,7 @@ export class Runner extends React.Component<Props, State> {
 					)}
 					{shouldShowForfeit && (
 						<NoWrapButton
-							variant="raised"
+
 							fullWidth
 							onClick={this.forfeitRunner}
 						>
@@ -135,7 +135,7 @@ export class Runner extends React.Component<Props, State> {
 					)}
 					<NoWrapButton
 						disabled={shouldDisableEdit}
-						variant="raised"
+
 						onClick={this.startEdit}
 					>
 						<Edit />編集

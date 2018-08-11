@@ -11,6 +11,10 @@ import {Schedule} from '../components/schedule';
 import {Timekeeper} from '../components/timekeeper';
 import {Twitter} from '../components/twitter';
 import {twitterCallback} from '../lib/twitter-callback';
+import {
+	MuiThemeProvider,
+	createMuiTheme,
+} from '../../../node_modules/@material-ui/core';
 
 const Container = styled.div`
 	height: 100vh;
@@ -32,24 +36,31 @@ const LeftColumn = Column.extend`
 	grid-template-rows: 1fr auto;
 `;
 
+const appTheme = createMuiTheme({
+	props: {
+		MuiButton: {
+			variant: 'raised',
+		},
+	},
+});
+
 export const App = () => (
-	<Container>
-		<LeftColumn>
-			<Timekeeper />
-			<Checklist />
-		</LeftColumn>
-		<Column>
-			<Schedule />
-		</Column>
-		<Column>
-			<Twitter />
-		</Column>
-	</Container>
+	<MuiThemeProvider theme={appTheme}>
+		<Container>
+			<LeftColumn>
+				<Timekeeper />
+				<Checklist />
+			</LeftColumn>
+			<Column>
+				<Schedule />
+			</Column>
+			<Column>
+				<Twitter />
+			</Column>
+		</Container>
+	</MuiThemeProvider>
 );
 
 twitterCallback();
-
-document.body.style.margin = '0';
-document.body.style.padding = '0';
 
 ReactDom.render(<App />, document.getElementById('tech'));

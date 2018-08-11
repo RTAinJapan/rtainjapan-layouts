@@ -89,11 +89,11 @@ export class Schedule extends React.Component<{}, State> {
 		return (
 			<Container>
 				<SelectionContainer>
-					<Button variant="raised" onClick={movePreviousRun}>
+					<Button  onClick={movePreviousRun}>
 						<ArrowBack />前
 					</Button>
 					<Typeahead titles={this.state.titles} />
-					<Button variant="raised" onClick={moveNextRun}>
+					<Button  onClick={moveNextRun}>
 						次<ArrowForward />
 					</Button>
 				</SelectionContainer>
@@ -104,15 +104,15 @@ export class Schedule extends React.Component<{}, State> {
 				</RunInfoContainer>
 				<EditControls>
 					<NoWrapButton
-						variant="raised"
+						
 						onClick={this.editCurrentRun}
 					>
 						編集：現在のゲーム
 					</NoWrapButton>
-					<NoWrapButton variant="raised" onClick={this.updateClicked}>
+					<NoWrapButton  onClick={this.updateClicked}>
 						手動更新
 					</NoWrapButton>
-					<NoWrapButton variant="raised" onClick={this.editNextRun}>
+					<NoWrapButton  onClick={this.editNextRun}>
 						編集：次のゲーム
 					</NoWrapButton>
 				</EditControls>
