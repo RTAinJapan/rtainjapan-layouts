@@ -119,7 +119,16 @@ export abstract class Nameplate extends React.Component<Props, State> {
 				}
 				return undefined;
 			default:
-				return SocialType.Twitch;
+				if (runner.twitch) {
+					return SocialType.Twitch;
+				}
+				if (runner.nico) {
+					return SocialType.Nico;
+				}
+				if (runner.twitter) {
+					return SocialType.Twitter;
+				}
+				return undefined;
 		}
 	}
 
@@ -148,7 +157,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 		}
 		if (runner.twitter) {
 			socialInfo.push({
-				socialType: SocialType.Twitch,
+				socialType: SocialType.Twitter,
 				info: runner.twitter,
 			});
 		}
