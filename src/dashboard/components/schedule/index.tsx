@@ -19,6 +19,7 @@ import {BorderedBox} from '../lib/bordered-box';
 import {NoWrapButton} from '../lib/no-wrap-button';
 import {Typeahead} from './typeahead';
 import nodecg from '../../../lib/nodecg';
+import {EditRun} from './edit';
 
 const Container = BorderedBox.extend`
 	height: calc(100vh - 32px);
@@ -62,6 +63,7 @@ interface State {
 	titles: Array<string | undefined>;
 	currentRun: CurrentRun;
 	nextRun: NextRun;
+	edit?: 'current' | 'next';
 }
 
 export class Schedule extends React.Component<{}, State> {
@@ -101,17 +103,43 @@ export class Schedule extends React.Component<{}, State> {
 					<RunInfo run={this.state.nextRun} label="次のゲーム" />
 				</RunInfoContainer>
 				<EditControls>
-					<NoWrapButton variant="raised" disabled>
+					<NoWrapButton
+						variant="raised"
+						onClick={this.editCurrentRun}
+					>
 						編集：現在のゲーム
 					</NoWrapButton>
-					<NoWrapButton variant="raised" onClick={this.updateClicked}>手動更新</NoWrapButton>
-					<NoWrapButton variant="raised" disabled>
+					<NoWrapButton variant="raised" onClick={this.updateClicked}>
+						手動更新
+					</NoWrapButton>
+					<NoWrapButton variant="raised" onClick={this.editNextRun}>
 						編集：次のゲーム
 					</NoWrapButton>
 				</EditControls>
+				<EditRun
+					edit={this.state.edit}
+					defaultValue={
+						this.state.edit === 'current'
+							? this.state.currentRun
+							: this.state.nextRun
+					}
+					onFinish={this.onEditFinish}
+				/>
 			</Container>
 		);
 	}
+
+	private readonly editCurrentRun = () => {
+		this.setState({edit: 'current'});
+	};
+
+	private readonly editNextRun = () => {
+		this.setState({edit: 'next'});
+	};
+
+	private readonly onEditFinish = () => {
+		this.setState({edit: undefined});
+	};
 
 	private readonly updateClicked = () => {
 		nodecg.sendMessage('manualUpdate');
@@ -121,8 +149,7 @@ export class Schedule extends React.Component<{}, State> {
 		if (!newVal) {
 			return;
 		}
-		const titles = newVal
-			.map(run => run.pk === -1 ? undefined : run.title);
+		const titles = newVal.map(run => run.title);
 		this.setState({titles});
 	};
 

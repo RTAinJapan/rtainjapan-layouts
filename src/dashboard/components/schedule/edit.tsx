@@ -1,0 +1,173 @@
+import React from 'react';
+import max from 'lodash/max'
+import styled from 'styled-components';
+import Modal from '@material-ui/core/Modal';
+import Button from '@material-ui/core/Button';
+import TypoGraphy from '@material-ui/core/TypoGraphy';
+import TextField from '@material-ui/core/TextField';
+import {CurrentRun} from '../../../../types/schemas/currentRun';
+import {RunnerList} from '../../../../types/schemas/runnerList';
+import nodecg from '../../../lib/nodecg';
+
+const Container = styled.div`
+	position: absolute;
+
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	background-color: white;
+	box-sizing: border-box;
+	padding: 16px;
+
+	display: grid;
+	grid-auto-flow: row;
+	grid-gap: 8px;
+`;
+
+interface Props {
+	edit: 'current' | 'next' | undefined;
+	defaultValue: CurrentRun;
+	onFinish(): void;
+}
+
+export class EditRun extends React.Component<Props, CurrentRun> {
+	public render() {
+		const runners = this.props.defaultValue.runners || [];
+		return (
+			<Modal
+				aria-labelledby="simple-modal-title"
+				aria-describedby="simple-modal-description"
+				open={Boolean(this.props.edit)}
+				// Missing type
+				// @ts-ignore
+				onRendered={this.onRendered}
+			>
+				<Container>
+					<TypoGraphy variant="headline">
+						{this.props.edit === 'current' ? '現在の' : '次の'}ゲームを編集
+					</TypoGraphy>
+					<TextField
+						defaultValue={this.props.defaultValue.title}
+						label="タイトル"
+						onChange={e => {
+							this.setState({title: e.currentTarget.value});
+						}}
+					/>
+					<TextField
+						defaultValue={this.props.defaultValue.category}
+						label="カテゴリ"
+						onChange={e => {
+							this.setState({category: e.currentTarget.value});
+						}}
+					/>
+					<TextField
+						defaultValue={this.props.defaultValue.duration}
+						label="予定タイム"
+						onChange={e => {
+							this.setState({duration: e.currentTarget.value});
+						}}
+					/>
+					{new Array(4).fill(null).map((_, index) => {
+						const runner: RunnerList[0] = runners[index] || {};
+						return (
+							// eslint-disable-next-line react/no-array-index-key
+							<div key={index}>
+								<TextField
+									label={`走者${index} 名前`}
+									defaultValue={runner.name}
+									onChange={e => {
+										this.updateRunnerInfo(
+											index,
+											'name',
+											e.currentTarget.value
+										);
+									}}
+								/>
+								<TextField
+									label={`走者${index} Twitch`}
+									defaultValue={runner.twitch}
+									onChange={e => {
+										this.updateRunnerInfo(
+											index,
+											'twitch',
+											e.currentTarget.value
+										);
+									}}
+								/>
+								<TextField
+									label={`走者${index} ニコ生`}
+									defaultValue={runner.nico}
+									onChange={e => {
+										this.updateRunnerInfo(
+											index,
+											'nico',
+											e.currentTarget.value
+										);
+									}}
+								/>
+								<TextField
+									label={`走者${index} Twitter`}
+									defaultValue={runner.twitter}
+									onChange={e => {
+										this.updateRunnerInfo(
+											index,
+											'twitter',
+											e.currentTarget.value
+										);
+									}}
+								/>
+							</div>
+						);
+					})}
+					<div>
+						<Button variant="raised" onClick={this.updateClicked}>
+							更新
+						</Button>
+						<Button variant="raised" onClick={this.finish}>
+							キャンセル
+						</Button>
+					</div>
+				</Container>
+			</Modal>
+		);
+	}
+
+	private readonly onRendered = () => {
+		this.setState(this.props.defaultValue)
+	}
+
+	private readonly updateRunnerInfo = <T extends keyof RunnerList[0]>(
+		updatingIndex: number,
+		key: T,
+		value: RunnerList[0][T]
+	) => {
+		this.setState(state => {
+			if (!state.runners) {
+				return {title: state.title};
+			}
+			const oldRunner = state.runners[updatingIndex] || {};
+			const newRunner = {...oldRunner, [key]: value};
+			const newRunners: RunnerList = [];
+			const iterateLength = (max([updatingIndex, state.runners.length - 1]) || 0) + 1
+			for (let i = 0; i < iterateLength; i++ ) {
+				if (i === updatingIndex) {
+					newRunners.push(newRunner);
+				} else {
+					newRunners.push(state.runners[i]);
+				}
+
+			}
+			return {runners: newRunners};
+		});
+	};
+
+	private readonly updateClicked = async () => {
+		await nodecg.sendMessage('modifyRun', this.state)
+		this.finish();
+	};
+
+	private readonly finish = () => {
+		this.props.onFinish();
+	};
+}
