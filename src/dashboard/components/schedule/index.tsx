@@ -51,12 +51,12 @@ const EditControls = styled.div`
 `;
 
 const moveNextRun = () => {
-	nodecg.sendMessage('nextRun')
-}
+	nodecg.sendMessage('nextRun');
+};
 
 const movePreviousRun = () => {
-	nodecg.sendMessage('previousRun')
-}
+	nodecg.sendMessage('previousRun');
+};
 
 interface State {
 	titles: Array<string | undefined>;
@@ -114,8 +114,8 @@ export class Schedule extends React.Component<{}, State> {
 	}
 
 	private readonly updateClicked = () => {
-		nodecg.sendMessage('manualUpdate')
-	}
+		nodecg.sendMessage('manualUpdate');
+	};
 
 	private readonly scheduleChangeHandler = (newVal: ScheduleSchema) => {
 		if (!newVal) {

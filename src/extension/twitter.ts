@@ -138,13 +138,13 @@ export const twitter = async (nodecg: NodeCG) => {
 	nodecg.listenFor('discardTweet', deleteTweetById)
 
 	function deleteTweetById(id: string) {
-		const selectedTweetIndex = tweetsRep.value.findIndex(t => t.id === id)
+		const selectedTweetIndex = tweetsRep.value.findIndex(t => t.id === id);
 		if (selectedTweetIndex === -1) {
-			return
+			return;
 		}
-		const tweet = tweetsRep.value[selectedTweetIndex]
-		tweetsRep.value.splice(selectedTweetIndex, 1)
-		return tweet
+		const tweet = tweetsRep.value[selectedTweetIndex];
+		tweetsRep.value.splice(selectedTweetIndex, 1);
+		return tweet;
 	}
 
 	async function getRequestToken() {
@@ -237,7 +237,7 @@ export const twitter = async (nodecg: NodeCG) => {
 		} catch (err) {
 			if (err && err.response && err.response.status === 420) {
 				nodecg.log.warn(
-					'Failed to start stream API due to rate limit. Retrying in 1 addMinutes.'
+					'Failed to start stream API due to rate limit. Retrying in 1 minute.'
 				);
 				await delay(60 * 1000);
 				await startFilterStream();

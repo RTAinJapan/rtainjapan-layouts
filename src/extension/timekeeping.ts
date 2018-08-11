@@ -171,7 +171,10 @@ export const timekeeping = (nodecg: NodeCG) => {
 		}
 		TimeObject.setSeconds(result, newSeconds);
 		recalcPlaces();
-		if (currentRunRep.value.runners && currentRunRep.value.runners.length === 1) {
+		if (
+			currentRunRep.value.runners &&
+			currentRunRep.value.runners.length === 1
+		) {
 			TimeObject.setSeconds(stopwatchRep.value, newSeconds);
 		}
 	}
@@ -207,8 +210,8 @@ export const timekeeping = (nodecg: NodeCG) => {
 		if (currentRunRep.value.runners === undefined) {
 			return;
 		}
-		const allRunnersFinished = currentRunRep.value.runners.every((_, index) =>
-			Boolean(stopwatchRep.value.results[index])
+		const allRunnersFinished = currentRunRep.value.runners.every(
+			(_, index) => Boolean(stopwatchRep.value.results[index])
 		);
 		if (allRunnersFinished) {
 			stop();

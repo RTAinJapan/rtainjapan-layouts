@@ -163,7 +163,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 			return {};
 		}
 		const targetRunner = runners[this.props.index || 0];
-		return targetRunner || {name: 'N/A', twitch: 'hogehoge'};
+		return targetRunner || {name: 'N/A'};
 	}
 
 	public state: State = {

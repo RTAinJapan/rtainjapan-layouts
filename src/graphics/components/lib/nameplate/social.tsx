@@ -40,9 +40,7 @@ export class Social extends React.Component<Props> {
 		return (
 			<Container {...this.props}>
 				<img src={this.props.icon} />
-				<Text
-					fontSizeMultiplier={this.props.fontSizeMultiplier}
-				>
+				<Text fontSizeMultiplier={this.props.fontSizeMultiplier}>
 					{this.props.children}
 				</Text>
 			</Container>

@@ -95,7 +95,7 @@ export class Runner extends React.Component<Props, State> {
 		const shouldShowFinish = Boolean(!result || result.forfeit);
 		const shouldShowForfeit = Boolean(!result || !result.forfeit);
 		const status = result ? result.formatted : 'Running';
-		const defaultEditValue = result ? result.formatted : '00:00'
+		const defaultEditValue = result ? result.formatted : '00:00';
 
 		return (
 			<RunnerContainer>
@@ -107,17 +107,29 @@ export class Runner extends React.Component<Props, State> {
 				</div>
 				<ButtonContainer>
 					{shouldShowFinish && (
-						<NoWrapButton variant="raised" fullWidth onClick={this.completeRunner}>
+						<NoWrapButton
+							variant="raised"
+							fullWidth
+							onClick={this.completeRunner}
+						>
 							<Flag />完走
 						</NoWrapButton>
 					)}
 					{shouldShowResume && (
-						<NoWrapButton variant="raised" fullWidth onClick={this.resumeRunner}>
+						<NoWrapButton
+							variant="raised"
+							fullWidth
+							onClick={this.resumeRunner}
+						>
 							<Undo />再開
 						</NoWrapButton>
 					)}
 					{shouldShowForfeit && (
-						<NoWrapButton variant="raised" fullWidth onClick={this.forfeitRunner}>
+						<NoWrapButton
+							variant="raised"
+							fullWidth
+							onClick={this.forfeitRunner}
+						>
 							<Cancel />リタイア
 						</NoWrapButton>
 					)}

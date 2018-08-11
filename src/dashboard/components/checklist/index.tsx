@@ -37,7 +37,7 @@ export class Checklist extends React.Component<{}> {
 	}
 
 	public componentWillUnmount() {
-		checklistRep.removeListener('change', this.checklistChangeHandler)
+		checklistRep.removeListener('change', this.checklistChangeHandler);
 	}
 
 	public render() {
@@ -58,11 +58,10 @@ export class Checklist extends React.Component<{}> {
 		e: ChangeEvent<any>,
 		checked: boolean
 	) => {
-		nodecg
-			.sendMessage('toggleCheckbox', {
+		nodecg.sendMessage('toggleCheckbox', {
 				name: e.target.name,
 				checked,
-			})
+		});
 	};
 
 	private readonly makeChecklistElement = (checklist: ChecklistSchema[0]) => (

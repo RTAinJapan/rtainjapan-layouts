@@ -1,9 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import TypoGraphy from '@material-ui/core/TypoGraphy';
 import TextField from '@material-ui/core/TextField';
-import styled from '../../../../node_modules/styled-components';
 
 const Container = styled.div`
 	position: absolute;
@@ -28,7 +28,7 @@ const Buttons = styled.div`
 	align-self: flex-end;
 `;
 
-const timeFormat = /^(\d+:)?[0-5]?\d:[0-5]?\d$/
+const timeFormat = /^(\d+:)?[0-5]?\d:[0-5]?\d$/;
 
 interface Props {
 	open: boolean;
@@ -44,7 +44,7 @@ export class EditTimeModal extends React.Component<Props, State> {
 	public state: State = {value: this.props.defaultValue};
 
 	public render() {
-		const isValid = timeFormat.test(this.state.value)
+		const isValid = timeFormat.test(this.state.value);
 		return (
 			<Modal
 				aria-labelledby="simple-modal-title"
@@ -74,12 +74,12 @@ export class EditTimeModal extends React.Component<Props, State> {
 	}
 
 	private readonly updateClicked = () => {
-		this.props.onFinish(this.state.value)
-	}
+		this.props.onFinish(this.state.value);
+	};
 
 	private readonly cancelClicked = () => {
-		this.props.onFinish()
-	}
+		this.props.onFinish();
+	};
 
 	private readonly handleInput = (e: React.FormEvent<HTMLInputElement>) => {
 		this.setState({

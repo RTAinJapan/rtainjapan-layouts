@@ -50,12 +50,14 @@ export const schedule = (nodecg: NodeCG) => {
 			cb();
 		}
 	});
+
 	nodecg.listenFor('previousRun', (_, cb) => {
 		seekToPreviousRun();
 		if (cb && !cb.handled) {
 			cb();
 		}
 	});
+
 	nodecg.listenFor('setCurrentRunByIndex', (index, cb) => {
 		updateCurrentRun(index);
 		if (cb && !cb.handled) {
@@ -68,15 +70,15 @@ export const schedule = (nodecg: NodeCG) => {
 			cb();
 		}
 	});
+
 	nodecg.listenFor<ModifyRun>('modifyRun', (data, cb) => {
 		if (currentRunRep.value.pk === data.pk) {
 			Object.assign(currentRunRep.value, data);
 		} else if (nextRunRep.value.pk === data.pk) {
 			Object.assign(nextRunRep.value, data);
 		} else {
-			nodecg.log.warn('[modifyRun] run not found:', data);
+				nodecg.log.warn('[modifyRun] run not found:', data);
 		}
-
 		if (cb && !cb.handled) {
 			cb();
 		}
@@ -111,14 +113,14 @@ export const schedule = (nodecg: NodeCG) => {
 		})().catch(err => {
 			nodecg.log.error("Couldn't update Horaro schedule");
 			nodecg.log.error(err);
-		});
+	});
 	}
 
 	function fetchHoraroSchedule() {
 		updateHoraroSchedule();
 		clearUpdateInterval();
 		setUpdateInterval();
-	}
+			}
 
 	function mergeSchedule() {
 		const gameList = gameListRep.value;
@@ -151,7 +153,7 @@ export const schedule = (nodecg: NodeCG) => {
 					nico: runner.nico,
 					twitter: runner.twitter,
 				};
-			});
+	});
 
 			// Find commentator info
 			const commentators = commentatorPkAry.map(commentatorPk => {
@@ -164,7 +166,7 @@ export const schedule = (nodecg: NodeCG) => {
 					nico: commentator.nico,
 					twitter: commentator.twitter,
 				};
-			});
+	});
 
 			return {
 				pk,
@@ -178,7 +180,7 @@ export const schedule = (nodecg: NodeCG) => {
 				runners,
 				commentators,
 			};
-		});
+	});
 
 		// Put first game to current game if no current game exists
 		if (currentRunRep.value.pk) {

@@ -137,7 +137,11 @@ export class Timekeeper extends React.Component<{}, State> {
 					>
 						<Refresh />リセット
 					</NoWrapButton>
-					<NoWrapButton variant="raised" fullWidth onClick={this.openEdit}>
+					<NoWrapButton
+						variant="raised"
+						fullWidth
+						onClick={this.openEdit}
+					>
 						<ModeEdit />編集
 					</NoWrapButton>
 				</CtrlsContainer>

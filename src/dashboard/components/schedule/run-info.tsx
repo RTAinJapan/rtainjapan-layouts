@@ -75,7 +75,7 @@ export class RunInfo extends React.Component<{
 				<Divider />
 				<LabeledDiv>
 					<label>メモ</label>
-					<div>hogehoge</div>
+					<div>N/A</div>
 				</LabeledDiv>
 			</Container>
 		);
