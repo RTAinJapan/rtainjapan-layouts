@@ -3,6 +3,7 @@ export interface HoraroApi {
 		columns: string[];
 		items: {
 			data: {[key: string]: any};
+			scheduled: string;
 			scheduled_t: number;
 		}[];
 	};

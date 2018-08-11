@@ -5,8 +5,18 @@ export interface NodeCG {
 		name: string,
 		options?: {defaultValue: T}
 	): Replicant<T>;
+	readReplicant<T = never>(name: string, cb: (value: T) => void): void;
+	readReplicant<T = never>(
+		name: string,
+		bundle: string,
+		cb: (value: T) => void
+	): void;
 	sendMessage<T = never, U = never>(message: string, data?: T): Promise<U>;
 	listenFor<T = never>(
+		message: string,
+		handler: (data: T, cb: ListenForCbObj) => void
+	): void;
+	unlisten<T = never>(
 		message: string,
 		handler: (data: T, cb: ListenForCbObj) => void
 	): void;

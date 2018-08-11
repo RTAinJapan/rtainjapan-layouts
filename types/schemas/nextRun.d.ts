@@ -5,7 +5,7 @@
  */
 
 export interface NextRun {
-  pk?: number;
+  pk?: number | string;
   index?: number;
   scheduled?: number;
   title?: string;

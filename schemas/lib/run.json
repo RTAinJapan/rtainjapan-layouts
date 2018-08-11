@@ -4,7 +4,7 @@
 	"type": "object",
 	"properties": {
 		"pk": {
-			"type": "number"
+			"type": ["number", "string"]
 		},
 		"index": {
 			"type": "number"
