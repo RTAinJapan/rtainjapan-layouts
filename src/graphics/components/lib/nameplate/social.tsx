@@ -1,18 +1,10 @@
 import React from 'react';
-import styled, {css} from '../../../../../node_modules/styled-components';
+import styled from '../../../../../node_modules/styled-components';
 
-interface ContainerProps {
-	opacity: number;
-	fadeDuration: number;
-}
 const Container = styled.div`
-	${(props: ContainerProps) => css`
-		opacity: ${props.opacity};
-		transition: opacity ${props.fadeDuration}s linear;
-	`};
 	max-width: 100%;
 
-	padding-top: 6px;
+	padding: 6px 0 0 30px;
 	align-self: flex-end;
 
 	display: flex;
@@ -30,16 +22,14 @@ const Text = styled.div`
 `;
 
 interface Props {
-	opacity: number;
 	fontSizeMultiplier: number;
 	icon: string;
-	fadeDuration: number;
 }
 export class Social extends React.Component<Props> {
 	public render() {
 		return (
-			<Container {...this.props}>
-				<img src={this.props.icon} />
+			<Container>
+				<img style={{zIndex: 10}} src={this.props.icon} />
 				<Text fontSizeMultiplier={this.props.fontSizeMultiplier}>
 					{this.props.children}
 				</Text>

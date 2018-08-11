@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import delay from 'delay';
 import {CurrentRun} from '../../../../../types/schemas/currentRun';
 import {currentRunRep} from '../../../../lib/replicants';
@@ -11,9 +11,12 @@ import {Ruler} from '../ruler';
 import {Name} from './name';
 import {Social} from './social';
 
-const SOCIAL_ROTATE_INTERVAL_SECONDS = 2;
-const FADE_DURATION_SECONDS = 0.5;
+const SOCIAL_ROTATE_INTERVAL_SECONDS = 20;
 
+interface ContainerProps {
+	gradientBackground?: boolean;
+	columnDirection?: boolean;
+}
 const Container = styled.div`
 	position: absolute;
 	top: 0;
@@ -28,11 +31,17 @@ const Container = styled.div`
 	padding: 15px 15px 9px 15px;
 
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
+	${(props: ContainerProps) =>
+		props.columnDirection &&
+		css`
+			flex-direction: column;
+		`};
 	flex-wrap: nowrap;
 
-	${(props: {gradientBackground?: boolean}) =>
-		props.gradientBackground && GradientRight};
+	${(props: ContainerProps) => props.gradientBackground && GradientRight};
+
+	z-index: 10;
 `;
 
 const StyledRuler = Ruler.extend`
@@ -57,6 +66,7 @@ const ChildrenContainer = styled.div`
 interface Props {
 	index?: number;
 	gradientBackground?: boolean;
+	columnDirection?: boolean;
 }
 
 interface State {
@@ -225,6 +235,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 			<Container
 				innerRef={this.container}
 				gradientBackground={this.props.gradientBackground}
+				columnDirection={this.props.columnDirection}
 			>
 				<Name
 					ref={this.nameRef}
@@ -235,15 +246,15 @@ export abstract class Nameplate extends React.Component<Props, State> {
 				>
 					{this.name}
 				</Name>
-				<Social
-					ref={this.socialRef}
-					opacity={this.state.socialOpacity}
-					fadeDuration={FADE_DURATION_SECONDS}
-					fontSizeMultiplier={this.state.fontSizeMultiplier}
-					icon={this.socialIcon}
-				>
-					{this.targetRunner[this.state.socialType || 'twitch']}
-				</Social>
+				{this.state.socialType && (
+					<Social
+						ref={this.socialRef}
+						fontSizeMultiplier={this.state.fontSizeMultiplier}
+						icon={this.socialIcon}
+					>
+						{this.targetRunner[this.state.socialType || 'twitch']}
+					</Social>
+				)}
 				<ChildrenContainer
 					fontSizeMultiplier={this.state.fontSizeMultiplier}
 				>
@@ -255,13 +266,11 @@ export abstract class Nameplate extends React.Component<Props, State> {
 	};
 
 	private readonly currentRunChanged = async (newVal: CurrentRun) => {
-		const show = async () => {
+		const show = () => {
 			this.setState({socialOpacity: 1});
-			await delay(FADE_DURATION_SECONDS * 1000);
 		};
-		const hide = async () => {
+		const hide = () => {
 			this.setState({socialOpacity: 0});
-			await delay(FADE_DURATION_SECONDS * 1000);
 		};
 		const setNextType = () => {
 			this.setState(state => ({
@@ -279,18 +288,19 @@ export abstract class Nameplate extends React.Component<Props, State> {
 		});
 
 		if (this.state.socialOpacity !== 0) {
-			await hide();
+			hide();
 		}
 
 		this.applyCurrentRunChangeToState(newVal);
 
 		// Don't do anything if no social info
 		if (this.socialInfo.length === 0) {
+			this.setState({socialType: undefined});
 			return;
 		}
 
 		setNextType();
-		await show();
+		show();
 
 		// If only one social info don't rotate
 		if (this.socialInfo.length === 1) {
@@ -304,9 +314,9 @@ export abstract class Nameplate extends React.Component<Props, State> {
 
 		// Start rotate interval
 		this.socialRotateIntervalTimer = setInterval(async () => {
-			await hide();
+			hide();
 			setNextType();
-			await show();
+			show();
 		}, SOCIAL_ROTATE_INTERVAL_SECONDS * 1000);
 	};
 }
