@@ -169,7 +169,8 @@
 			"import/no-unassigned-import": 0,
 			"unicorn/no-abusive-eslint-disable": 0,
 			"valid-jsdoc": 0,
-			"capitalized-comments": 0
+			"capitalized-comments": 0,
+			"react/prop-types": 0
 		},
 		"ignores": [
 			"./types/schemas",
