@@ -26,17 +26,21 @@ const Suggestion = styled(Paper)`
 	z-index: 1;
 `;
 
+interface State {
+	inputText: string;
+}
+
 interface Props {
 	titles: Array<string | undefined>;
 }
 
-export class Typeahead extends React.Component<Props> {
-	private readonly inputRef = React.createRef<HTMLInputElement>()
+export class Typeahead extends React.Component<Props, State> {
+	public state: State = {inputText: ''}
 
 	public render() {
 		return (
 			<TypeaheadContainer>
-				<Downshift>
+				<Downshift inputValue={this.state.inputText} onInputValueChange={this.handleInputChange}>
 					{({
 						getInputProps,
 						isOpen,
@@ -50,7 +54,6 @@ export class Typeahead extends React.Component<Props> {
 								InputProps={getInputProps({
 									placeholder: 'ゲーム名',
 								})}
-								inputRef={this.inputRef}
 							/>
 							{isOpen && (
 								<Suggestion square>
@@ -64,21 +67,22 @@ export class Typeahead extends React.Component<Props> {
 						</div>
 					)}
 				</Downshift>
-				<SkipButton variant="raised" onClick={this.skipClicked}>
+				<SkipButton size='small' variant="raised" onClick={this.skipClicked}>
 					スキップ<ChevronRight />
 				</SkipButton>
 			</TypeaheadContainer>
 		);
 	}
 
-	private readonly skipClicked = () => {
-		const inputRef = this.inputRef.current
-		if (!inputRef) {
-			return;
-		}
-		const index = this.props.titles.indexOf(inputRef.value)
-		nodecg.sendMessage('setCurrentRunByIndex', index)
+	private readonly handleInputChange = (inputText: string) => {
+		this.setState({inputText})
 	}
+
+	private readonly skipClicked = async () => {
+		const index = this.props.titles.indexOf(this.state.inputText);
+		await nodecg.sendMessage('setCurrentRunByIndex', index);
+		this.setState({inputText: ''})
+	};
 
 	private readonly renderSuggestion = (
 		inputValue: string | null,
