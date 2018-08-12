@@ -87,12 +87,13 @@ const StyledRuler = Ruler.extend`
 
 const ChildrenContainer = styled.div`
 	color: #ffff52;
-	justify-self: end;
-	align-self: end;
+	align-self: flex-end;
+	flex-grow: 1;
+	text-align: right;
 	font-weight: 900;
 	font-size: ${(props: {fontSizeMultiplier: number}) =>
 		props.fontSizeMultiplier * 30}px;
-	padding: 0 15px;
+	padding-left: 15px;
 `;
 
 const SocialContainer = styled.div`
