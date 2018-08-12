@@ -15,7 +15,11 @@ export const ColoredButton: React.ComponentType<Props> = props => (
 			createMuiTheme({...outer, palette: {primary: props.color}})
 		}
 	>
-		<Button {...props.ButtonProps} color="primary">
+		<Button
+			{...props.ButtonProps}
+			style={{whiteSpace: 'nowrap'}}
+			color="primary"
+		>
 			{props.children}
 		</Button>
 	</MuiThemeProvider>

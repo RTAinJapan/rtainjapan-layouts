@@ -3,6 +3,9 @@ import React from 'react';
 import styled, {css} from 'styled-components';
 
 // MUI Core
+import green from '@material-ui/core/colors/green';
+import blueGrey from '@material-ui/core/colors/blueGrey';
+import grey from '@material-ui/core/colors/grey';
 
 // MUI Icons
 import Flag from '@material-ui/icons/Flag';
@@ -15,6 +18,7 @@ import {TimeObject} from '../../../lib/time-object';
 import {EditTimeModal} from './edit';
 import nodecg from '../../../lib/nodecg';
 import {NoWrapButton} from '../lib/no-wrap-button';
+import {ColoredButton} from '../lib/colored-button';
 
 const Container = styled.div`
 	padding: 0 16px;
@@ -107,26 +111,48 @@ export class Runner extends React.Component<Props, State> {
 				</div>
 				<ButtonContainer>
 					{shouldShowFinish && (
-						<NoWrapButton fullWidth onClick={this.completeRunner}>
+						<ColoredButton
+							color={green}
+							ButtonProps={{
+								fullWidth: true,
+								onClick: this.completeRunner,
+							}}
+						>
 							<Flag />完走
-						</NoWrapButton>
+						</ColoredButton>
 					)}
 					{shouldShowResume && (
-						<NoWrapButton fullWidth onClick={this.resumeRunner}>
+						<ColoredButton
+							color={green}
+							ButtonProps={{
+								fullWidth: true,
+								onClick: this.resumeRunner,
+							}}
+						>
 							<Undo />再開
-						</NoWrapButton>
+						</ColoredButton>
 					)}
 					{shouldShowForfeit && (
-						<NoWrapButton fullWidth onClick={this.forfeitRunner}>
+						<ColoredButton
+							color={blueGrey}
+							ButtonProps={{
+								fullWidth: true,
+								onClick: this.forfeitRunner,
+							}}
+						>
 							<Cancel />リタイア
-						</NoWrapButton>
+						</ColoredButton>
 					)}
-					<NoWrapButton
-						disabled={shouldDisableEdit}
-						onClick={this.startEdit}
+					<ColoredButton
+						color={grey}
+						ButtonProps={{
+							fullWidth: true,
+							onClick: this.startEdit,
+							disabled: shouldDisableEdit,
+						}}
 					>
 						<Edit />編集
-					</NoWrapButton>
+					</ColoredButton>
 				</ButtonContainer>
 				<EditTimeModal
 					defaultValue={defaultEditValue}
