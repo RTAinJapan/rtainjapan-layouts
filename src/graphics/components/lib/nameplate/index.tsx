@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
+import delay from 'delay';
 import {CurrentRun} from '../../../../../types/schemas/currentRun';
 import {currentRunRep, stopwatchRep} from '../../../../lib/replicants';
 import twitchIcon from '../../../images/icon/twitch.png';
@@ -196,7 +197,8 @@ export abstract class Nameplate extends React.Component<Props, State> {
 		}
 	}
 
-	public componentDidUpdate() {
+	public async componentDidUpdate() {
+		await delay(0)
 		const containerRef = this.container.current;
 		if (!containerRef) {
 			return;
