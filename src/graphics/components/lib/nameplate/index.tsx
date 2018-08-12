@@ -136,7 +136,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 
 	public render() {
 		const {state} = this;
-		if (!state.runner) {
+		if (!state.runner || !state.runner.name) {
 			return <div />;
 		}
 		const socialInfo = calcSocialInfo(state.runner);
