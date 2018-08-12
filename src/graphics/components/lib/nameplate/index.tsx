@@ -93,7 +93,7 @@ const ChildrenContainer = styled.div`
 	font-weight: 900;
 	font-size: ${(props: {fontSizeMultiplier: number}) =>
 		props.fontSizeMultiplier * 30}px;
-	padding-left: 15px;
+	padding: 0 15px;
 `;
 
 const SocialContainer = styled.div`
