@@ -199,7 +199,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 	}
 
 	public async componentDidUpdate() {
-		await delay(0)
+		await delay(0);
 		const containerRef = this.container.current;
 		if (!containerRef) {
 			return;

@@ -17,7 +17,6 @@ import Edit from '@material-ui/icons/Edit';
 import {TimeObject} from '../../../lib/time-object';
 import {EditTimeModal} from './edit';
 import nodecg from '../../../lib/nodecg';
-import {NoWrapButton} from '../lib/no-wrap-button';
 import {ColoredButton} from '../lib/colored-button';
 
 const Container = styled.div`
