@@ -199,7 +199,9 @@ export class Tweet extends React.Component<Props, State> {
 				)}
 				{showingTweet && (
 					<Content>
-						<TweetHighlighter text={showingTweet.text.replace(/\n/g, ' ')} />
+						<TweetHighlighter
+							text={showingTweet.text.replace(/\n/g, ' ')}
+						/>
 					</Content>
 				)}
 			</Container>
