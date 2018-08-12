@@ -97,8 +97,7 @@ const ChildrenContainer = styled.div`
 
 const SocialContainer = styled.div`
 	display: grid;
-	grid-template-columns: 1fr;
-	grid-template-rows: 1fr;
+	justify-content: end;
 `;
 
 interface Props {
@@ -162,6 +161,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 					{socialInfo.map((info, index) => (
 						<Social
 							key={info.type}
+							columnDirection={this.props.columnDirection}
 							fontSizeMultiplier={this.state.fontSizeMultiplier}
 							icon={socialIcon(info.type)}
 							show={showingSocialIndex === index}
