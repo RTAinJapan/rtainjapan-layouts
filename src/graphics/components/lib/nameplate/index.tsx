@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {CurrentRun} from '../../../../../types/schemas/currentRun';
-import {currentRunRep} from '../../../../lib/replicants';
+import {currentRunRep, stopwatchRep} from '../../../../lib/replicants';
 import twitchIcon from '../../../images/icon/twitch.png';
 import nicoIcon from '../../../images/icon/nico.png';
 import twitterIcon from '../../../images/icon/twitter.png';
@@ -10,6 +10,7 @@ import {Ruler} from '../ruler';
 import {Name} from './name';
 import {Social} from './social';
 import {RunnerList} from '../../../../../types/schemas/runnerList';
+import {TimeObject} from '../../../../lib/time-object';
 
 const SOCIAL_ROTATE_INTERVAL_SECONDS = 20;
 
@@ -84,8 +85,7 @@ const StyledRuler = Ruler.extend`
 `;
 
 const ChildrenContainer = styled.div`
-	grid-column: 2 / 3;
-	grid-row: 1 / 2;
+	color: #ffff52;
 	justify-self: end;
 	align-self: end;
 	font-weight: 900;
@@ -112,6 +112,7 @@ interface State {
 	hideLabel: boolean;
 	fontSizeMultiplier: number;
 	showingSocialIndex: number;
+	finalTime?: string;
 }
 
 export abstract class Nameplate extends React.Component<Props, State> {
@@ -169,9 +170,14 @@ export abstract class Nameplate extends React.Component<Props, State> {
 					))}
 				</SocialContainer>
 
-				<ChildrenContainer
-					fontSizeMultiplier={this.state.fontSizeMultiplier}
-				/>
+				{this.props.showFinishTime &&
+					state.finalTime && (
+						<ChildrenContainer
+							fontSizeMultiplier={this.state.fontSizeMultiplier}
+						>
+							{state.finalTime}
+						</ChildrenContainer>
+					)}
 				<StyledRuler />
 			</Container>
 		);
@@ -179,10 +185,12 @@ export abstract class Nameplate extends React.Component<Props, State> {
 
 	public componentDidMount() {
 		currentRunRep.on('change', this.currentRunChanged);
+		stopwatchRep.on('change', this.timerChanged);
 	}
 
 	public componentWillUnmount() {
 		currentRunRep.removeListener('change', this.currentRunChanged);
+		stopwatchRep.removeListener('change', this.timerChanged);
 		if (this.socialRotateIntervalTimer !== undefined) {
 			clearInterval(this.socialRotateIntervalTimer);
 		}
@@ -205,7 +213,15 @@ export abstract class Nameplate extends React.Component<Props, State> {
 		}
 	}
 
-	private readonly currentRunChanged = async (newVal: CurrentRun) => {
+	private readonly timerChanged = (newVal: TimeObject) => {
+		const result = newVal.results[this.props.index];
+		if (!result || !result.formatted) {
+			return;
+		}
+		this.setState({finalTime: result.formatted});
+	};
+
+	private readonly currentRunChanged = (newVal: CurrentRun) => {
 		this.setState({
 			fontSizeMultiplier: 1,
 			hideLabel: false,
@@ -223,7 +239,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 		if (this.socialRotateIntervalTimer !== undefined) {
 			clearInterval(this.socialRotateIntervalTimer);
 		}
-		this.socialRotateIntervalTimer = setInterval(async () => {
+		this.socialRotateIntervalTimer = setInterval(() => {
 			this.setState(state => ({
 				showingSocialIndex: (state.showingSocialIndex + 1) % 6,
 			}));

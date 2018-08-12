@@ -99,13 +99,13 @@ const RightGame = styled.div`
 const App = () => (
 	<StyledContainer>
 		<LeftRunner>
-			<RtaijRunner index={0} gradientBackground />
+			<RtaijRunner index={0} showFinishTime gradientBackground />
 		</LeftRunner>
 		<CentreRunner>
-			<RtaijRunner index={1} gradientBackground />
+			<RtaijRunner index={1} showFinishTime gradientBackground />
 		</CentreRunner>
 		<RightRunner>
-			<RtaijRunner index={2} gradientBackground />
+			<RtaijRunner index={2} showFinishTime gradientBackground />
 		</RightRunner>
 
 		<CommentatorContainer>

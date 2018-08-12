@@ -90,10 +90,10 @@ const CommentatorContainer = styled.div`
 const App = () => (
 	<StyledContainer>
 		<LeftRunner>
-			<RtaijRunner index={0} gradientBackground />
+			<RtaijRunner index={0} showFinishTime gradientBackground />
 		</LeftRunner>
 		<RightRunner>
-			<RtaijRunner index={1} gradientBackground />
+			<RtaijRunner index={1} showFinishTime gradientBackground />
 		</RightRunner>
 		<CommentatorContainer>
 			<RtaijCommentator index={0} gradientBackground />
