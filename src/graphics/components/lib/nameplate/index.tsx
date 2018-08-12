@@ -113,7 +113,7 @@ interface State {
 	hideLabel: boolean;
 	fontSizeMultiplier: number;
 	showingSocialIndex: number;
-	finalTime?: string;
+	finalTime: string | undefined;
 }
 
 export abstract class Nameplate extends React.Component<Props, State> {
@@ -121,6 +121,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 		fontSizeMultiplier: 1,
 		hideLabel: false,
 		showingSocialIndex: 0,
+		finalTime: undefined,
 	};
 
 	public socialRotateIntervalTimer?: NodeJS.Timer;
@@ -218,10 +219,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 
 	private readonly timerChanged = (newVal: TimeObject) => {
 		const result = newVal.results[this.props.index];
-		if (!result || !result.formatted) {
-			return;
-		}
-		this.setState({finalTime: result.formatted});
+		this.setState({finalTime: result ? result.formatted : undefined});
 	};
 
 	private readonly currentRunChanged = (newVal: CurrentRun) => {
