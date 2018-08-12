@@ -3,7 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 // MUI Core
-import Button from '@material-ui/core/Button';
+import purple from '@material-ui/core/colors/purple'
+import pink from '@material-ui/core/colors/pink'
 
 // MUI Icons
 import ArrowBack from '@material-ui/icons/ArrowBack';
@@ -20,6 +21,7 @@ import {NoWrapButton} from '../lib/no-wrap-button';
 import {Typeahead} from './typeahead';
 import nodecg from '../../../lib/nodecg';
 import {EditRun} from './edit';
+import { ColoredButton } from '../lib/colored-button';
 
 const Container = BorderedBox.extend`
 	height: calc(100vh - 32px);
@@ -89,13 +91,13 @@ export class Schedule extends React.Component<{}, State> {
 		return (
 			<Container>
 				<SelectionContainer>
-					<Button onClick={movePreviousRun}>
+					<ColoredButton color={purple} ButtonProps={{onClick: movePreviousRun}}>
 						<ArrowBack />前
-					</Button>
+					</ColoredButton>
 					<Typeahead titles={this.state.titles} />
-					<Button onClick={moveNextRun}>
+					<ColoredButton color={purple} ButtonProps={{onClick: moveNextRun}}>
 						次<ArrowForward />
-					</Button>
+					</ColoredButton>
 				</SelectionContainer>
 				<RunInfoContainer>
 					<RunInfo run={this.state.currentRun} label="現在のゲーム" />
@@ -103,15 +105,15 @@ export class Schedule extends React.Component<{}, State> {
 					<RunInfo run={this.state.nextRun} label="次のゲーム" />
 				</RunInfoContainer>
 				<EditControls>
-					<NoWrapButton onClick={this.editCurrentRun}>
+					<ColoredButton color={pink} ButtonProps={{onClick: this.editCurrentRun}}>
 						編集：現在のゲーム
-					</NoWrapButton>
+					</ColoredButton>
 					<NoWrapButton onClick={this.updateClicked}>
 						手動更新
 					</NoWrapButton>
-					<NoWrapButton onClick={this.editNextRun}>
+					<ColoredButton color={pink} ButtonProps={{onClick: this.editNextRun}}>
 						編集：次のゲーム
-					</NoWrapButton>
+					</ColoredButton>
 				</EditControls>
 				<EditRun
 					edit={this.state.edit}
