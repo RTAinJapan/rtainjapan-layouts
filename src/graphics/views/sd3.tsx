@@ -109,7 +109,7 @@ const App = () => (
 		</RightRunner>
 
 		<CommentatorContainer>
-			<RtaijCommentator gradientBackground />
+			<RtaijCommentator index={0} gradientBackground />
 		</CommentatorContainer>
 
 		<GameContainer>

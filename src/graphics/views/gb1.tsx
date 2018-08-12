@@ -59,10 +59,10 @@ const App = () => (
 			<RtaijTimer gradientBackground />
 		</InfoContainer>
 		<RunnerContainer>
-			<RtaijRunner />
+			<RtaijRunner index={0} />
 		</RunnerContainer>
 		<CommentatorContainer>
-			<RtaijCommentator />
+			<RtaijCommentator index={0} />
 		</CommentatorContainer>
 		<RtaijOverlay
 			TweetProps={{widthPx: 450 * 1.5, hideLogo: true}}

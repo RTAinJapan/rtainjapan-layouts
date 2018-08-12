@@ -1,6 +1,5 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import styled, {css} from 'styled-components';
-import delay from 'delay';
 import {CurrentRun} from '../../../../../types/schemas/currentRun';
 import {currentRunRep} from '../../../../lib/replicants';
 import twitchIcon from '../../../images/icon/twitch.png';
@@ -10,8 +9,40 @@ import {GradientRight} from '../styled';
 import {Ruler} from '../ruler';
 import {Name} from './name';
 import {Social} from './social';
+import {RunnerList} from '../../../../../types/schemas/runnerList';
 
 const SOCIAL_ROTATE_INTERVAL_SECONDS = 20;
+
+const enum SocialType {
+	Twitch = 'twitch',
+	Nico = 'nico',
+	Twitter = 'twitter',
+}
+
+const socialIcon = (socialType: SocialType) => {
+	switch (socialType) {
+		case SocialType.Nico:
+			return nicoIcon;
+		case SocialType.Twitch:
+			return twitchIcon;
+		case SocialType.Twitter:
+			return twitterIcon;
+		default:
+			return undefined;
+	}
+};
+
+const calcSocialInfo = (runner: NonNullable<RunnerList[0]>) => {
+	const allSocialInfo = [
+		{type: SocialType.Twitch, info: runner.twitch},
+		{type: SocialType.Nico, info: runner.nico},
+		{type: SocialType.Twitter, info: runner.twitter},
+	];
+	return allSocialInfo.filter(
+		(info): info is typeof allSocialInfo[0] & {info: string} =>
+			typeof info.info === 'string' && info.info !== ''
+	);
+};
 
 interface ContainerProps {
 	gradientBackground?: boolean;
@@ -63,140 +94,38 @@ const ChildrenContainer = styled.div`
 	padding: 0 15px;
 `;
 
+const SocialContainer = styled.div`
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+`;
+
 interface Props {
-	index?: number;
+	index: number;
 	gradientBackground?: boolean;
 	columnDirection?: boolean;
+	showFinishTime?: boolean;
 }
 
 interface State {
-	runners: CurrentRun['runners'];
-	socialType?: SocialType;
-	socialOpacity: number;
+	runner?: RunnerList[0];
 	hideLabel: boolean;
 	fontSizeMultiplier: number;
+	showingSocialIndex: number;
 }
 
 export abstract class Nameplate extends React.Component<Props, State> {
-	private get socialIcon() {
-		switch (this.state.socialType) {
-			case SocialType.Nico:
-				return nicoIcon;
-			case SocialType.Twitch:
-				return twitchIcon;
-			case SocialType.Twitter:
-				return twitterIcon;
-			default:
-				return undefined;
-		}
-	}
-
-	private get nextSocialType() {
-		const runner = this.targetRunner;
-		switch (this.state.socialType) {
-			case SocialType.Twitch:
-				if (runner.nico) {
-					return SocialType.Nico;
-				}
-				if (runner.twitter) {
-					return SocialType.Twitter;
-				}
-				return undefined;
-			case SocialType.Nico:
-				if (runner.twitter) {
-					return SocialType.Twitter;
-				}
-				if (runner.twitch) {
-					return SocialType.Twitch;
-				}
-				return undefined;
-			case SocialType.Twitter:
-				if (runner.twitch) {
-					return SocialType.Twitch;
-				}
-				if (runner.nico) {
-					return SocialType.Nico;
-				}
-				return undefined;
-			default:
-				if (runner.twitch) {
-					return SocialType.Twitch;
-				}
-				if (runner.nico) {
-					return SocialType.Nico;
-				}
-				if (runner.twitter) {
-					return SocialType.Twitter;
-				}
-				return undefined;
-		}
-	}
-
-	protected get socialInfo() {
-		const runner = this.targetRunner;
-		if (!runner) {
-			return [];
-		}
-
-		const socialInfo: Array<{
-			socialType: SocialType;
-			info: string;
-		}> = [];
-
-		if (runner.twitch) {
-			socialInfo.push({
-				socialType: SocialType.Twitch,
-				info: runner.twitch,
-			});
-		}
-		if (runner.nico) {
-			socialInfo.push({
-				socialType: SocialType.Nico,
-				info: runner.nico,
-			});
-		}
-		if (runner.twitter) {
-			socialInfo.push({
-				socialType: SocialType.Twitter,
-				info: runner.twitter,
-			});
-		}
-
-		return socialInfo;
-	}
-
-	protected get name() {
-		const runner = this.targetRunner;
-		if (!runner) {
-			return '';
-		}
-		return runner.name;
-	}
-
-	private get targetRunner() {
-		const {runners} = this.state;
-		if (!runners) {
-			return {};
-		}
-		if (runners.length === 0) {
-			return {};
-		}
-		const targetRunner = runners[this.props.index || 0];
-		return targetRunner || {name: 'N/A'};
-	}
-
 	public state: State = {
-		runners: [],
-		socialOpacity: 0,
 		fontSizeMultiplier: 1,
 		hideLabel: false,
+		showingSocialIndex: 0,
 	};
 
 	public socialRotateIntervalTimer?: NodeJS.Timer;
 
-	protected abstract readonly applyCurrentRunChangeToState: (
+	protected abstract readonly calcNewRunner: (
 		newVal: CurrentRun
-	) => void;
+	) => RunnerList[0] | undefined;
 
 	protected abstract readonly labelIcon: any;
 
@@ -204,9 +133,49 @@ export abstract class Nameplate extends React.Component<Props, State> {
 
 	private container = React.createRef<HTMLDivElement>();
 
-	private nameRef = React.createRef<Name>();
+	public render() {
+		const {state} = this;
+		if (!state.runner) {
+			return <div />;
+		}
+		const socialInfo = calcSocialInfo(state.runner);
+		const socialLength = socialInfo.length;
+		const showingSocialIndex = state.showingSocialIndex % socialLength;
+		return (
+			<Container
+				innerRef={this.container}
+				gradientBackground={this.props.gradientBackground}
+				columnDirection={this.props.columnDirection}
+			>
+				<Name
+					labelIcon={this.labelIcon}
+					labelText={this.label}
+					hideLabel={this.state.hideLabel}
+					fontSizeMultiplier={this.state.fontSizeMultiplier}
+				>
+					{state.runner.name}
+				</Name>
 
-	private socialRef = React.createRef<Social>();
+				<SocialContainer>
+					{socialInfo.map((info, index) => (
+						<Social
+							key={info.type}
+							fontSizeMultiplier={this.state.fontSizeMultiplier}
+							icon={socialIcon(info.type)}
+							show={showingSocialIndex === index}
+						>
+							{info.info}
+						</Social>
+					))}
+				</SocialContainer>
+
+				<ChildrenContainer
+					fontSizeMultiplier={this.state.fontSizeMultiplier}
+				/>
+				<StyledRuler />
+			</Container>
+		);
+	}
 
 	public componentDidMount() {
 		currentRunRep.on('change', this.currentRunChanged);
@@ -236,102 +205,28 @@ export abstract class Nameplate extends React.Component<Props, State> {
 		}
 	}
 
-	protected readonly Container = (props: {children?: ReactNode}) => {
-		if (!this.name) {
-			return <div />;
-		}
-		return (
-			<Container
-				innerRef={this.container}
-				gradientBackground={this.props.gradientBackground}
-				columnDirection={this.props.columnDirection}
-			>
-				<Name
-					ref={this.nameRef}
-					labelIcon={this.labelIcon}
-					labelText={this.label}
-					hideLabel={this.state.hideLabel}
-					fontSizeMultiplier={this.state.fontSizeMultiplier}
-				>
-					{this.name}
-				</Name>
-				{this.state.socialType && (
-					<Social
-						ref={this.socialRef}
-						fontSizeMultiplier={this.state.fontSizeMultiplier}
-						icon={this.socialIcon}
-					>
-						{this.targetRunner[this.state.socialType || 'twitch']}
-					</Social>
-				)}
-				<ChildrenContainer
-					fontSizeMultiplier={this.state.fontSizeMultiplier}
-				>
-					{props.children}
-				</ChildrenContainer>
-				<StyledRuler />
-			</Container>
-		);
-	};
-
 	private readonly currentRunChanged = async (newVal: CurrentRun) => {
-		const show = () => {
-			this.setState({socialOpacity: 1});
-		};
-		const hide = () => {
-			this.setState({socialOpacity: 0});
-		};
-		const setNextType = () => {
-			this.setState(state => ({
-				socialType: this.nextSocialType || state.socialType,
-			}));
-		};
-
-		// Unknown race condition sometimes disables auto scaling
-		await delay(0);
-
-		// Reset font size
 		this.setState({
 			fontSizeMultiplier: 1,
 			hideLabel: false,
+			showingSocialIndex: 0,
 		});
-
-		if (this.state.socialOpacity !== 0) {
-			hide();
-		}
-
-		this.applyCurrentRunChangeToState(newVal);
-
-		// Don't do anything if no social info
-		if (this.socialInfo.length === 0) {
-			this.setState({socialType: undefined});
+		const runner = this.calcNewRunner(newVal);
+		this.setState({runner});
+		if (!runner) {
 			return;
 		}
-
-		setNextType();
-		show();
-
-		// If only one social info don't rotate
-		if (this.socialInfo.length === 1) {
+		const socialInfo = calcSocialInfo(runner);
+		if (socialInfo.length <= 1) {
 			return;
 		}
-
-		// Reset interval if already exists
 		if (this.socialRotateIntervalTimer !== undefined) {
 			clearInterval(this.socialRotateIntervalTimer);
 		}
-
-		// Start rotate interval
 		this.socialRotateIntervalTimer = setInterval(async () => {
-			hide();
-			setNextType();
-			show();
+			this.setState(state => ({
+				showingSocialIndex: (state.showingSocialIndex + 1) % 6,
+			}));
 		}, SOCIAL_ROTATE_INTERVAL_SECONDS * 1000);
 	};
-}
-
-const enum SocialType {
-	Twitch = 'twitch',
-	Nico = 'nico',
-	Twitter = 'twitter',
 }
