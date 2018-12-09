@@ -6,16 +6,10 @@
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
 
-		"declaration": false,
-		"declarationMap": false,
-		"sourceMap": true,
-		"inlineSourceMap": false,
-
 		"target": "esnext",
 		"lib": ["esnext", "dom"],
 		"jsx": "react",
 		"esModuleInterop": true,
-		"module": "commonjs",
 		"moduleResolution": "node",
 		"importHelpers": true
 	}

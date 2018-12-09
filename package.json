@@ -1,8 +1,5 @@
 {
 	"private": true,
-	"workspaces": [
-		"rtainjapan-layouts"
-	],
 	"scripts": {
 		"format": "prettier '**/*.{ts,tsx,json,html}'",
 		"postinstall": "make postinstall",

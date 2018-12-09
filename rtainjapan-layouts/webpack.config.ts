@@ -5,6 +5,7 @@ import HtmlPlugin from 'html-webpack-plugin';
 import path from 'path';
 import webpack from 'webpack';
 import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
+import nodeExternals from 'webpack-node-externals';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -18,7 +19,8 @@ const baseConfig: Partial<webpack.Configuration> = {
 
 const makeBrowserConfig = (name: string): webpack.Configuration => {
 	const entry: webpack.Entry = {};
-	for (const file of globby.sync(`./src/${name}/views/*.tsx`)) {
+	const files = globby.sync(`./src/${name}/views/*.tsx`);
+	for (const file of files) {
 		entry[path.basename(file, '.tsx')] = file;
 	}
 
@@ -29,7 +31,15 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 		output: {path: path.resolve(__dirname, name), filename: '[name].js'},
 		module: {
 			rules: [
-				{test: /\.tsx?$/, loader: 'awesome-typescript-loader'},
+				{
+					test: /\.tsx?$/,
+					loader: 'awesome-typescript-loader',
+					options: {
+						useCache: true,
+						configFileName: `./src/${name}/tsconfig.json`,
+						transpileOnly: true,
+					},
+				},
 				{test: /\.png$/, loader: 'file-loader'},
 			],
 		},
@@ -70,9 +80,20 @@ const extensionConfig: webpack.Configuration = {
 		filename: 'index.js',
 	},
 	module: {
-		rules: [{test: /\.ts$/, loader: 'awesome-typescript-loader'}],
+		rules: [
+			{
+				test: /\.ts$/,
+				loader: 'awesome-typescript-loader',
+				options: {
+					useCache: true,
+					configFileName: './src/extension/tsconfig.json',
+					transpileOnly: true,
+				},
+			},
+		],
 	},
-	plugins: [new CleanPlugin(['extension'])],
+	externals: [nodeExternals()],
+	plugins: [new CleanPlugin(['extension']), new CheckerPlugin()],
 };
 
 export default [

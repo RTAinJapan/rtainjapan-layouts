@@ -2,7 +2,7 @@
 	"name": "rtainjapan-layouts",
 	"version": "0.0.1",
 	"private": true,
-	"devDependencies": {
+	"dependencies": {
 		"axios": "^0.18.0",
 		"date-fns": "^1.29.0",
 		"delay": "^4.1.0",
@@ -11,7 +11,9 @@
 		"lodash": "^4.17.11",
 		"oauth-1.0a": "^2.2.5",
 		"source-map-support": "^0.5.9",
-		"write-json-file": "^3.0.2",
+		"write-json-file": "^3.0.2"
+	},
+	"devDependencies": {
 		"@material-ui/core": "^3.6.1",
 		"@material-ui/icons": "^3.0.1",
 		"@types/clean-webpack-plugin": "^0.1.2",
@@ -29,6 +31,7 @@
 		"@types/uuid": "^3.4.4",
 		"@types/webpack": "^4.4.20",
 		"@types/webpack-bundle-analyzer": "^2.13.0",
+		"@types/webpack-node-externals": "^1.6.3",
 		"@types/write-json-file": "^2.2.1",
 		"awesome-typescript-loader": "^5.2.1",
 		"clean-webpack-plugin": "^1.0.0",
@@ -47,7 +50,8 @@
 		"uuid": "^3.3.2",
 		"webpack": "^4.27.1",
 		"webpack-bundle-analyzer": "^3.0.3",
-		"webpack-cli": "^3.1.2"
+		"webpack-cli": "^3.1.2",
+		"webpack-node-externals": "^1.7.2"
 	},
 	"engines": {
 		"node": "^10.14.0"

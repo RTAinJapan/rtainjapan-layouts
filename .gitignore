@@ -5,6 +5,8 @@ cfg/*
 /rtainjapan-layouts/graphics
 /rtainjapan-layouts/extension
 
+.awcache
+
 # Logs
 logs
 *.log
