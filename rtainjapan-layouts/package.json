@@ -2,7 +2,7 @@
 	"name": "rtainjapan-layouts",
 	"version": "0.0.1",
 	"private": true,
-	"dependencies": {
+	"devDependencies": {
 		"axios": "^0.18.0",
 		"date-fns": "^1.29.0",
 		"delay": "^4.1.0",
@@ -11,9 +11,7 @@
 		"lodash": "^4.17.11",
 		"oauth-1.0a": "^2.2.5",
 		"source-map-support": "^0.5.9",
-		"write-json-file": "^3.0.2"
-	},
-	"devDependencies": {
+		"write-json-file": "^3.0.2",
 		"@material-ui/core": "^3.6.1",
 		"@material-ui/icons": "^3.0.1",
 		"@types/clean-webpack-plugin": "^0.1.2",
