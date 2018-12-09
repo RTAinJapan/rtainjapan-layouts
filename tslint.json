@@ -1,19 +1,10 @@
 {
-	"defaultSeverity": "error",
-	"extends": ["tslint:latest", "tslint-config-prettier"],
+	"extends": ["@hoishin/tslint-config"],
 	"rules": {
-		"interface-name": false,
-		"object-literal-sort-keys": false,
-		"variable-name": [
-			true,
-			"check-format",
-			"allow-pascal-case",
-			"allow-leading-underscore",
-			"ban-keywords"
-		],
-		"no-submodule-imports": false,
-		"no-console": {"severity": "warn"},
-		"ordered-imports": false,
-		"no-this-assignment": false
+		"no-null-keyword": false,
+		"no-unsafe-any": false,
+		"only-arrow-functions": false,
+		"no-default-export": false,
+		"no-any": false
 	}
 }

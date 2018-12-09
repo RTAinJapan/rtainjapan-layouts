@@ -6,15 +6,17 @@
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
 
-		"target": "es2017",
+		"declaration": false,
+		"declarationMap": false,
+		"sourceMap": true,
+		"inlineSourceMap": false,
+
+		"target": "esnext",
 		"lib": ["esnext", "dom"],
 		"jsx": "react",
 		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-		"skipLibCheck": true,
-		"moduleResolution": "node",
 		"module": "commonjs",
-		"noEmit": true
-	},
-	"include": ["src/**/*.ts", "src/**/*.tsx", "types/**/*.d.ts"]
+		"moduleResolution": "node",
+		"importHelpers": true
+	}
 }

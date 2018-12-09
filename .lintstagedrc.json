@@ -1,0 +1,5 @@
+{
+	"*.{ts,tsx}": "tslint -p . -t stylish",
+	"*.{ts,tsx,json,html}": "prettier --write",
+	"package.json": "sort-package-json"
+}
