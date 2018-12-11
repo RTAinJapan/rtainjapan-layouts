@@ -6,15 +6,11 @@
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
 
-		"target": "es2017",
+		"target": "esnext",
 		"lib": ["esnext", "dom"],
 		"jsx": "react",
 		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-		"skipLibCheck": true,
 		"moduleResolution": "node",
-		"module": "commonjs",
-		"noEmit": true
-	},
-	"include": ["src/**/*.ts", "src/**/*.tsx", "types/**/*.d.ts"]
+		"importHelpers": true
+	}
 }

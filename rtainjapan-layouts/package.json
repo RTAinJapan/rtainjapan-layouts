@@ -1,0 +1,131 @@
+{
+	"name": "rtainjapan-layouts",
+	"version": "0.0.1",
+	"private": true,
+	"dependencies": {
+		"axios": "^0.18.0",
+		"date-fns": "^1.29.0",
+		"delay": "^4.1.0",
+		"google-spreadsheet": "^2.0.6",
+		"load-json-file": "^5.1.0",
+		"lodash": "^4.17.11",
+		"oauth-1.0a": "^2.2.5",
+		"source-map-support": "^0.5.9",
+		"write-json-file": "^3.0.2"
+	},
+	"devDependencies": {
+		"@material-ui/core": "^3.6.1",
+		"@material-ui/icons": "^3.0.1",
+		"@types/clean-webpack-plugin": "^0.1.2",
+		"@types/globby": "^8.0.0",
+		"@types/html-webpack-plugin": "^3.2.0",
+		"@types/jest": "^23.3.10",
+		"@types/load-json-file": "^2.0.7",
+		"@types/lodash": "^4.14.118",
+		"@types/node": "^10.12.12",
+		"@types/react": "^16.7.13",
+		"@types/react-dom": "^16.0.11",
+		"@types/react-highlight-words": "^0.12.0",
+		"@types/source-map-support": "^0.4.1",
+		"@types/styled-components": "^4.1.2",
+		"@types/uuid": "^3.4.4",
+		"@types/webpack": "^4.4.20",
+		"@types/webpack-bundle-analyzer": "^2.13.0",
+		"@types/webpack-node-externals": "^1.6.3",
+		"@types/write-json-file": "^2.2.1",
+		"awesome-typescript-loader": "^5.2.1",
+		"clean-webpack-plugin": "^1.0.0",
+		"downshift": "^2.0.14",
+		"file-loader": "^2.0.0",
+		"globby": "^8.0.1",
+		"html-webpack-plugin": "^4.0.0-beta.4",
+		"jest": "^23.6.0",
+		"react": "^16.6.3",
+		"react-dom": "^16.6.3",
+		"react-highlight-words": "^0.12.0",
+		"styled-components": "^4.1.2",
+		"ts-jest": "^23.10.5",
+		"ts-node": "^7.0.1",
+		"typescript": "^3.2.2",
+		"uuid": "^3.3.2",
+		"webpack": "^4.27.1",
+		"webpack-bundle-analyzer": "^3.0.3",
+		"webpack-cli": "^3.1.2",
+		"webpack-node-externals": "^1.7.2"
+	},
+	"engines": {
+		"node": "^10.14.0"
+	},
+	"nodecg": {
+		"compatibleRange": "1.3.0",
+		"dashboardPanels": [
+			{
+				"name": "stream",
+				"title": "配信担当ダッシュボード",
+				"file": "tech.html",
+				"headerColor": "#00BEBE",
+				"fullbleed": true
+			},
+			{
+				"name": "twitter-account",
+				"title": "Twitterアカウント",
+				"file": "twitter-account.html",
+				"width": 3,
+				"headerColor": "#00BEBE",
+				"workspace": "Misc"
+			}
+		],
+		"graphics": [
+			{
+				"file": "break.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "ds1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "gb1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "hd1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "sd1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "sd2.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "sd3.html",
+				"width": 1920,
+				"height": 1080
+			}
+		],
+		"assetCategories": [
+			{
+				"name": "sponsorLogos",
+				"title": "スポンサーロゴ",
+				"allowedTypes": [
+					"png"
+				]
+			}
+		],
+		"mount": [
+			{
+				"directory": "twitter-callback",
+				"endpoint": "twitter-callback"
+			}
+		]
+	}
+}
