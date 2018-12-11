@@ -5,6 +5,7 @@
 		"no-unsafe-any": false,
 		"only-arrow-functions": false,
 		"no-default-export": false,
-		"no-any": false
+		"no-any": false,
+		"no-floating-promises": false
 	}
 }

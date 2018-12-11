@@ -8,6 +8,9 @@ import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 
 const isProduction = process.env.NODE_ENV === 'production';
+const isWatch =
+	process.env.npm_config_argv &&
+	process.env.npm_config_argv.includes('--watch');
 
 const baseConfig: Partial<webpack.Configuration> = {
 	mode: isProduction ? 'production' : 'development',
@@ -56,7 +59,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 			),
 			new CheckerPlugin(),
 			new BundleAnalyzerPlugin({
-				analyzerMode: isProduction ? 'disabled' : 'static',
+				analyzerMode: isProduction || isWatch ? 'disabled' : 'static',
 			}),
 		],
 		optimization: {
