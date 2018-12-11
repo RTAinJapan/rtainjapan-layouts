@@ -6,6 +6,7 @@ cfg/*
 /rtainjapan-layouts/extension
 
 .awcache
+.vscode
 
 # Logs
 logs
