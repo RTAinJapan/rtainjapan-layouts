@@ -1,5 +1,0 @@
-{
-	"hooks": {
-		"pre-commit": "depcruise rtainjapan-layouts/src && lint-staged"
-	}
-}

@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
-import TypoGraphy from '@material-ui/core/TypoGraphy';
+import TypoGraphy from '@material-ui/core/Typography';
 import React from 'react';
 import styled from 'styled-components';
 

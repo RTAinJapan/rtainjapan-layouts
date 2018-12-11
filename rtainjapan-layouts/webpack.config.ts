@@ -14,7 +14,7 @@ const isWatch =
 
 const baseConfig: Partial<webpack.Configuration> = {
 	mode: isProduction ? 'production' : 'development',
-	devtool: 'cheap-source-map',
+	devtool: isProduction ? 'source-map' : 'cheap-source-map',
 	resolve: {
 		extensions: ['.js', '.ts', '.tsx'],
 	},
@@ -81,6 +81,7 @@ const extensionConfig: webpack.Configuration = {
 	output: {
 		path: path.resolve(__dirname, 'extension'),
 		filename: 'index.js',
+		libraryTarget: 'commonjs2',
 	},
 	module: {
 		rules: [

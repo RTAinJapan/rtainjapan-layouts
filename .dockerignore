@@ -1,3 +1,13 @@
-node_modules
-rtainjapan-layouts/node_modules
-rtainjapan-layouts/.awcache
+*
+!rtainjapan-layouts
+!Makefile
+!package.json
+!tsconfig.json
+!yarn.lock
+
+rtainjapan-layouts/*
+!rtainjapan-layouts/src
+!rtainjapan-layouts/webpack
+!rtainjapan-layouts/package.json
+!rtainjapan-layouts/webpack.config.ts
+!rtainjapan-layouts/yarn.lock

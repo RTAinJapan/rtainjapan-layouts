@@ -1,11 +1,12 @@
 import 'source-map-support/register';
-import {NodeCG} from '../../types/nodecg';
+
+import {NodeCG} from 'nodecg/types/server';
 import {checklist} from './checklist';
 import {schedule} from './schedule';
 import {timekeeping} from './timekeeping';
 import {twitter} from './twitter';
 
-module.exports = (nodecg: NodeCG) => {
+export = (nodecg: NodeCG) => {
 	checklist(nodecg);
 	schedule(nodecg);
 	timekeeping(nodecg);
