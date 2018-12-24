@@ -58,7 +58,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 						filename: `${entryName}.html`,
 						chunks: [entryName],
 						title: entryName,
-						template: 'webpack/template.html',
+						template: `webpack/${name}.html`,
 					}),
 			),
 			new BundleAnalyzerPlugin({

@@ -1,15 +1,15 @@
 @font-face {
 	font-family: 'MigMix 2P';
-	src: url('migmix-2p-bold.woff2') format('woff2'),
-		url('migmix-2p-bold.woff') format('woff');
-	font-weight: bold;
+	src: url('./migmix-2p-regular.woff2') format('woff2'),
+		url('./migmix-2p-regular.woff') format('woff');
+	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'MigMix 2P';
-	src: url('migmix-2p-regular.woff2') format('woff2'),
-		url('migmix-2p-regular.woff') format('woff');
-	font-weight: normal;
+	src: url('./migmix-2p-bold.woff2') format('woff2'),
+		url('./migmix-2p-bold.woff') format('woff');
+	font-weight: bold;
 	font-style: normal;
 }
