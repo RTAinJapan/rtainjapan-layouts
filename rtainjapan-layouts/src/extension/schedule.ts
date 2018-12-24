@@ -8,6 +8,8 @@ import {
 	Run,
 	Schedule,
 } from '../replicants';
+import defaultGames from './default/games';
+import defaultRunners from './default/runners';
 
 const getDefaultRun = (): Run => ({
 	category: '',
@@ -130,5 +132,34 @@ export default (nodecg: NodeCG) => {
 				nextRunRep.value = cloneDeep(newVal[1]);
 			}
 		}
+	});
+
+	let startTime = new Date('2018-12-27T12:00:00+0900').getTime();
+	scheduleRep.value = defaultGames.map((game, index) => {
+		const scheduleGame = {
+			...game,
+			index,
+			scheduled: startTime,
+			platform: '',
+			runners: game.runnerPkAry.map(
+				(pk) =>
+					defaultRunners.find((runner) => runner.pk === pk) || {
+						name: 'NOT_FOUND',
+					},
+			),
+			commentators: game.commentatorPkAry.map(
+				(pk) =>
+					defaultRunners.find((runner) => runner.pk === pk) || {
+						name: 'NOT_FOUND',
+					},
+			),
+		};
+		const durationHms = game.duration
+			.split(':')
+			.map((n) => parseInt(n, 10));
+		startTime +=
+			((durationHms[0] * 60 + durationHms[1]) * 60 + durationHms[2]) *
+			1000;
+		return scheduleGame;
 	});
 };
