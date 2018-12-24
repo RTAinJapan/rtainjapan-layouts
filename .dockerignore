@@ -7,6 +7,7 @@
 
 rtainjapan-layouts/*
 !rtainjapan-layouts/src
+!rtainjapan-layouts/twitter-callback
 !rtainjapan-layouts/webpack
 !rtainjapan-layouts/package.json
 !rtainjapan-layouts/webpack.config.ts
