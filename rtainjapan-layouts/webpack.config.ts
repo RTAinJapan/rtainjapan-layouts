@@ -45,8 +45,11 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 					},
 				},
 				{
-					test: /\.png$/,
+					test: /\.(png|woff2?)$/,
 					loader: 'file-loader',
+					options: {
+						name: '[name]__[hash].[ext]',
+					},
 				},
 				{
 					test: /\.s?css$/,
@@ -58,8 +61,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 							loader: 'css-loader',
 							options: {
 								modules: true,
-								localIdentName:
-									'[name]__[sha256:hash:base64:5]',
+								localIdentName: '[local]__[hash:5]',
 								sourceMap: true,
 								camelCase: true,
 								importLoaders: 1,
