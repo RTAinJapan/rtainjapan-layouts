@@ -10,7 +10,6 @@ import styled from 'styled-components';
 // import {Schedule} from '../components/schedule';
 import {Timekeeper} from '../components/timekeeper';
 // import {Twitter} from '../components/twitter';
-import {twitterCallback} from '../lib/twitter-callback';
 
 const Container = styled.div`
 	font-family: 'MigMix 2P';
@@ -58,7 +57,15 @@ export const App = () => (
 	</MuiThemeProvider>
 );
 
-twitterCallback();
+const storage = localStorage.getItem('twitter-callback');
+localStorage.removeItem('twitter-callback');
+if (storage) {
+	const params = new URLSearchParams(storage);
+	nodecg.sendMessage('twitter:loginSuccess', {
+		oauthToken: params.get('oauth_token'),
+		oauthVerifier: params.get('oauth_verifier'),
+	});
+}
 
 document.body.style.margin = '0';
 document.body.style.padding = '0';
