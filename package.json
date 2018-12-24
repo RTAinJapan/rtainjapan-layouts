@@ -30,7 +30,7 @@
 	},
 	"lint-staged": {
 		"*.{ts,tsx}": [
-			"tslint -p . -t stylish --fix",
+			"yarn lint --fix",
 			"git add"
 		],
 		"*.{ts,tsx,json,html}": [
