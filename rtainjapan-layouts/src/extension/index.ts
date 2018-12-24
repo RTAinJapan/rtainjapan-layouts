@@ -2,7 +2,7 @@ import 'source-map-support/register';
 
 import {NodeCG} from 'nodecg/types/server';
 import {checklist} from './checklist';
-import {schedule} from './schedule';
+import schedule from './schedule';
 import {timekeeping} from './timekeeping';
 import {twitter} from './twitter';
 

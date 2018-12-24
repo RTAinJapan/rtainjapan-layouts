@@ -1,100 +1,37 @@
-import axios from 'axios';
-import GoogleSpreadsheet from 'google-spreadsheet';
 import cloneDeep from 'lodash/cloneDeep';
 import {NodeCG} from 'nodecg/types/server';
-import {Checklist, CurrentRun, NextRun, Schedule} from '../lib/replicant';
+import {
+	Checklist,
+	CurrentRun,
+	NextRun,
+	ReplicantName as R,
+	Run,
+	Schedule,
+} from '../replicants';
 
-const UPDATE_INTERVAL = 60 * 1000;
+const getDefaultRun = (): Run => ({
+	category: '',
+	duration: '',
+	index: 0,
+	pk: 0,
+	platform: '',
+	scheduled: 0,
+	title: '',
+	runners: [],
+	commentators: [],
+});
 
-const fetchHoraroSchedule = async (horaroId: string) => {
-	const url = `https://horaro.org/-/api/v1/schedules/${horaroId}`;
-	const {
-		data: {data},
-	} = await axios.get(url);
-	const {columns} = data;
-	const indices = {
-		title: columns.indexOf('ゲームタイトル'),
-		category: columns.indexOf('カテゴリ'),
-		duration: columns.indexOf('予定タイム'),
-		id: columns.indexOf('id'),
-		runnerId: columns.indexOf('runnerId'),
-		commentatorId: columns.indexOf('commentatorId'),
-	};
-
-	return data.items
-		.filter(run => {
-			const title = run.data[indices.title];
-			return title && !title.startsWith('セットアップ');
-		})
-		.map((run, index) => {
-			const pk: string = run.data[indices.id];
-			const scheduled = run.scheduled_t * 1000;
-			const title: string = run.data[indices.title];
-			const category: string = run.data[indices.category];
-			const duration: string = run.data[indices.duration];
-			const runnerId: string = run.data[indices.runnerId];
-			const commentatorId: string = run.data[indices.commentatorId];
-			return {
-				pk,
-				index,
-				scheduled,
-				title,
-				category,
-				duration,
-				runnerId: runnerId ? runnerId.split(',') : [],
-				commentatorId: commentatorId ? commentatorId.split(',') : [],
-			};
-		});
-};
-
-const fetchRunnerInfo = async (spreadsheetId: string): Promise<any> => {
-	const spreadsheet = new GoogleSpreadsheet(spreadsheetId);
-	return new Promise<any>((resolve, reject) => {
-		spreadsheet.getInfo((err: any, info: any) => {
-			if (err) {
-				reject(err);
-			}
-			if (!info.worksheets[0]) {
-				reject(
-					new Error(
-						`No worksheet found from spreadsheet ${spreadsheetId}`
-					)
-				);
-			}
-			// tslint:disable-next-line no-shadowed-variable
-			info.worksheets[0].getRows((err: any, rows: any[]) => {
-				if (err) {
-					reject(err);
-				}
-				resolve(
-					rows.map(row => ({
-						id: row.id,
-						name: row.name,
-						twitch: row.twitch,
-						nico: row.nico,
-						twitter: row.twitter,
-					}))
-				);
-			});
-		});
+export default (nodecg: NodeCG) => {
+	const scheduleRep = nodecg.Replicant<Schedule>(R.Schedule, {
+		defaultValue: [],
 	});
-};
-
-export const schedule = (nodecg: NodeCG) => {
-	const {horaroId, runnerSpreadsheetId} = nodecg.bundleConfig;
-	if (!horaroId) {
-		nodecg.log.error('Horaro ID is not provided');
-		return;
-	}
-	if (!runnerSpreadsheetId) {
-		nodecg.log.error('Runner spreadsheet is not provided');
-		return;
-	}
-
-	const scheduleRep = nodecg.Replicant<Schedule>('schedule');
-	const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
-	const nextRunRep = nodecg.Replicant<NextRun>('nextRun');
-	const checklistRep = nodecg.Replicant<Checklist>('checklist');
+	const currentRunRep = nodecg.Replicant<CurrentRun>(R.CurrentRun, {
+		defaultValue: getDefaultRun(),
+	});
+	const nextRunRep = nodecg.Replicant<NextRun>(R.NextRun, {
+		defaultValue: getDefaultRun(),
+	});
+	const checklistRep = nodecg.Replicant<Checklist>(R.Checklist);
 
 	const resetChecklist = () => {
 		checklistRep.value = checklistRep.value.map(item => ({
@@ -141,31 +78,6 @@ export const schedule = (nodecg: NodeCG) => {
 		currentRunRep.value = cloneDeep(scheduleRep.value[currentIndex - 1]);
 	};
 
-	const updateSchedule = async () => {
-		const [horaroSchedule, runners] = await Promise.all([
-			fetchHoraroSchedule(horaroId),
-			fetchRunnerInfo(runnerSpreadsheetId),
-		]);
-		scheduleRep.value = horaroSchedule.map(run => {
-			return {
-				pk: run.pk,
-				index: run.index,
-				scheduled: run.scheduled,
-				title: run.title || '',
-				engTitle: '',
-				category: run.category || '',
-				hardware: '',
-				duration: run.duration || '',
-				runners: run.runnerId.map(runnerId =>
-					runners.find((runner: any) => runner.id === runnerId)
-				),
-				commentators: run.commentatorId.map(commentatorId =>
-					runners.find((runner: any) => runner.id === commentatorId)
-				),
-			};
-		});
-	};
-
 	nodecg.listenFor('nextRun', (_, cb) => {
 		seekToNextRun();
 		if (cb && !cb.handled) {
@@ -207,10 +119,6 @@ export const schedule = (nodecg: NodeCG) => {
 		}
 	});
 
-	nodecg.listenFor('manualUpdate', () => {
-		updateSchedule();
-	});
-
 	// Prevent empty current run
 	scheduleRep.on('change', newVal => {
 		const isCurrentRunEmpty =
@@ -223,7 +131,4 @@ export const schedule = (nodecg: NodeCG) => {
 			}
 		}
 	});
-
-	updateSchedule();
-	setInterval(updateSchedule, UPDATE_INTERVAL);
 };

@@ -1,53 +1,34 @@
 import {NodeCG} from 'nodecg/types/server';
-import {ChecklistCompleted, CurrentRun, Timer} from '../lib/replicant';
-import {TimerState} from '../lib/replicant/lib';
-import {increment, newTimer, parseSeconds, setSeconds} from '../lib/timer';
+import {
+	ChecklistCompleted,
+	CurrentRun,
+	ReplicantName as R,
+	Timer,
+	TimerState,
+} from '../replicants';
+import {increment, newTimer, parseSeconds, setSeconds} from '../shared/timer';
 
 const TRY_TICK_INTERVAL = 10;
 
-const defaultStopwatch = () => newTimer(0);
+const getDefaultTimer = () => newTimer(0);
 
 export const timekeeping = (nodecg: NodeCG) => {
-	const checklistCompleteRep = nodecg.Replicant<ChecklistCompleted>(
-		'checklistComplete'
+	const checklistCompletedRep = nodecg.Replicant<ChecklistCompleted>(
+		R.ChecklistCompleted
 	);
-	const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
-	const stopwatchRep = nodecg.Replicant<Timer>('stopwatch', {
-		defaultValue: defaultStopwatch(),
+	const currentRunRep = nodecg.Replicant<CurrentRun>(R.CurrentRun);
+	const timerRep = nodecg.Replicant<Timer>(R.Timer, {
+		defaultValue: getDefaultTimer(),
 	});
 
-	// The UNIX time when the timer incremented last time
-	let lastIncrement: number;
-	// Keeps the timeout object
-	let tickInterval: number;
-
 	/**
-	 * If the timer was running when NodeCG was shut down last time,
-	 * resume the timer according to how long it has been since the shutdown time.
+	 * The UNIX time when the timer incremented last time
 	 */
-	if (stopwatchRep.value.timerState === TimerState.Running) {
-		const missedSeconds = Math.round(
-			(Date.now() - stopwatchRep.value.timestamp) / 1000
-		);
-		setSeconds(stopwatchRep.value, stopwatchRep.value.raw + missedSeconds);
-		start(true);
-	}
-
-	// Listen to start/stop/reset event from master timer
-	nodecg.listenFor('startTimer', start);
-	nodecg.listenFor('stopTimer', stop);
-	nodecg.listenFor('resetTimer', reset);
-
-	// Listen to completeRunner event for a runner
-	// @param data = {index, forfeit}
-	nodecg.listenFor('completeRunner', completeRunner);
-
-	// Listen to resumeRunner event for a runner
-	nodecg.listenFor('resumeRunner', resumeRunner);
-
-	// Listen to editTime event
-	// @param {index, newTime}
-	nodecg.listenFor('editTime', editTime);
+	let lastIncrement = 0;
+	/**
+	 * Keeps the timeout object
+	 */
+	let tickInterval: NodeJS.Timer;
 
 	/**
 	 * Increments the timer by one second if at least one second
@@ -56,128 +37,56 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * Executing this function makes the timer very accurate to UNIX time,
 	 * and can be easily extended to millisecond timer.
 	 */
-	function tryTick() {
+	const tryTick = () => {
 		if (Date.now() - lastIncrement > 1000) {
 			lastIncrement += 1000;
-			increment(stopwatchRep.value);
+			increment(timerRep.value);
 		}
-	}
+	};
 
 	/**
 	 * Starts the timer.
 	 * @param force - Forces the timer to start again, even if already running.
 	 */
-	function start(force = false) {
-		if (!checklistCompleteRep.value) {
+	const start = (force = false) => {
+		// Don't start if checklist is not completed
+		if (!checklistCompletedRep.value) {
 			return;
 		}
 
-		if (!force && stopwatchRep.value.timerState === TimerState.Running) {
+		// Don't start the time if it's already running
+		if (!force && timerRep.value.timerState === TimerState.Running) {
 			return;
 		}
 
 		clearInterval(tickInterval);
-		stopwatchRep.value.timerState = TimerState.Running;
+		timerRep.value.timerState = TimerState.Running;
 		lastIncrement = Date.now();
-		tickInterval = window.setInterval(tryTick, TRY_TICK_INTERVAL);
-	}
+		tickInterval = setInterval(tryTick, TRY_TICK_INTERVAL);
+	};
 
 	/**
 	 * Stops the timer.
 	 */
-	function stop() {
+	const stop = () => {
 		clearInterval(tickInterval);
-		stopwatchRep.value.timerState = TimerState.Stopped;
-	}
+		timerRep.value.timerState = TimerState.Stopped;
+	};
 
 	/**
 	 * Stops and resets the timer, and clears the timer and results.
 	 */
-	function reset() {
+	const reset = () => {
 		stop();
-		setSeconds(stopwatchRep.value, 0);
-		stopwatchRep.value.results = [];
-	}
-
-	/**
-	 * Marks a runner as complete.
-	 * @param data.index - The runner to modify.
-	 * @param data.forfeit - Whether or not the runner forfeit.
-	 */
-	function completeRunner(data: {index: number; forfeit: boolean}) {
-		if (!stopwatchRep.value.results[data.index]) {
-			stopwatchRep.value.results[data.index] = newTimer(
-				stopwatchRep.value.raw
-			);
-		}
-		const result = stopwatchRep.value.results[data.index];
-		if (result) {
-			result.forfeit = data.forfeit;
-			recalcPlaces();
-		}
-	}
-
-	/**
-	 * Marks a runner as still running.
-	 * @param index - The runner to modify.
-	 */
-	function resumeRunner(index: number) {
-		stopwatchRep.value.results[index] = null;
-		recalcPlaces();
-		if (stopwatchRep.value.timerState !== TimerState.Finished) {
-			return;
-		}
-		const missedSeconds = Math.round(
-			(Date.now() - stopwatchRep.value.timestamp) / 1000
-		);
-		setSeconds(stopwatchRep.value, stopwatchRep.value.raw + missedSeconds);
-		start();
-	}
-
-	/**
-	 * Edits the final time of a results.
-	 * @param index - The runner to modify time of.
-	 * @param newTime - A hh:mm:ss/mm:ss formatted new time.
-	 */
-	function editTime({
-		index,
-		newTime,
-	}: {
-		index: number | 'master';
-		newTime: string;
-	}) {
-		if (!newTime) {
-			return;
-		}
-
-		const newSeconds = parseSeconds(newTime);
-		if (isNaN(newSeconds)) {
-			return;
-		}
-
-		if (index === 'master') {
-			setSeconds(stopwatchRep.value, newSeconds);
-			return;
-		}
-		const result = stopwatchRep.value.results[index];
-		if (!result) {
-			return;
-		}
-		setSeconds(result, newSeconds);
-		recalcPlaces();
-		if (
-			currentRunRep.value.runners &&
-			currentRunRep.value.runners.length === 1
-		) {
-			setSeconds(stopwatchRep.value, newSeconds);
-		}
-	}
+		setSeconds(timerRep.value, 0);
+		timerRep.value.results = [];
+	};
 
 	/**
 	 * Re-calculates the podium place for all runners.
 	 */
-	function recalcPlaces() {
-		const finishedResults = stopwatchRep.value.results
+	const recalcPlaces = () => {
+		const finishedResults = timerRep.value.results
 			.filter(result => {
 				if (result) {
 					result.place = 0;
@@ -205,11 +114,100 @@ export const timekeeping = (nodecg: NodeCG) => {
 			return;
 		}
 		const allRunnersFinished = currentRunRep.value.runners.every(
-			(_, index) => Boolean(stopwatchRep.value.results[index])
+			(_, index) => Boolean(timerRep.value.results[index])
 		);
 		if (allRunnersFinished) {
 			stop();
-			stopwatchRep.value.timerState = TimerState.Finished;
+			timerRep.value.timerState = TimerState.Finished;
 		}
+	};
+
+	/**
+	 * Marks a runner as complete.
+	 * @param data.index - The runner to modify.
+	 * @param data.forfeit - Whether or not the runner forfeit.
+	 */
+	const completeRunner = (data: {index: number; forfeit: boolean}) => {
+		if (!timerRep.value.results[data.index]) {
+			timerRep.value.results[data.index] = newTimer(timerRep.value.raw);
+		}
+		const result = timerRep.value.results[data.index];
+		if (result) {
+			result.forfeit = data.forfeit;
+			recalcPlaces();
+		}
+	};
+
+	/**
+	 * Marks a runner as still running.
+	 * @param index - The runner to modify.
+	 */
+	const resumeRunner = (index: number) => {
+		timerRep.value.results[index] = null;
+		recalcPlaces();
+		if (timerRep.value.timerState !== TimerState.Finished) {
+			return;
+		}
+		const missedSeconds = Math.round(
+			(Date.now() - timerRep.value.timestamp) / 1000
+		);
+		setSeconds(timerRep.value, timerRep.value.raw + missedSeconds);
+		start();
+	};
+
+	/**
+	 * Edits the final time of a results.
+	 * @param index - The runner to modify time of.
+	 * @param newTime - A hh:mm:ss/mm:ss formatted new time.
+	 */
+	const editTime = ({
+		index,
+		newTime,
+	}: {
+		index: number | 'master';
+		newTime: string;
+	}) => {
+		if (!newTime) {
+			return;
+		}
+
+		const newSeconds = parseSeconds(newTime);
+		if (isNaN(newSeconds)) {
+			return;
+		}
+
+		if (index === 'master') {
+			setSeconds(timerRep.value, newSeconds);
+			return;
+		}
+		const result = timerRep.value.results[index];
+		if (!result) {
+			return;
+		}
+		setSeconds(result, newSeconds);
+		recalcPlaces();
+		if (
+			currentRunRep.value.runners &&
+			currentRunRep.value.runners.length === 1
+		) {
+			setSeconds(timerRep.value, newSeconds);
+		}
+	};
+
+	// If the timer was running when NodeCG was shut down last time,
+	// resume the timer according to how long it has been since the shutdown time.
+	if (timerRep.value.timerState === TimerState.Running) {
+		const missedSeconds = Math.round(
+			(Date.now() - timerRep.value.timestamp) / 1000
+		);
+		setSeconds(timerRep.value, timerRep.value.raw + missedSeconds);
+		start(true);
 	}
+
+	nodecg.listenFor('startTimer', start);
+	nodecg.listenFor('stopTimer', stop);
+	nodecg.listenFor('resetTimer', reset);
+	nodecg.listenFor('completeRunner', completeRunner);
+	nodecg.listenFor('resumeRunner', resumeRunner);
+	nodecg.listenFor('editTime', editTime);
 };

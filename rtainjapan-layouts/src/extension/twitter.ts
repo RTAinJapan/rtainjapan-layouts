@@ -3,18 +3,13 @@ import crypto from 'crypto';
 import delay from 'delay';
 import {IncomingMessage} from 'http';
 import loadJsonFile from 'load-json-file';
+import {NodeCG} from 'nodecg/types/server';
 import OAuth from 'oauth-1.0a';
 import path from 'path';
 import {URLSearchParams} from 'url';
 import writeJsonFile from 'write-json-file';
-import {NodeCG} from '../../types/nodecg';
-import {Tweets} from '../../types/schemas/tweets';
-import {Twitter} from '../../types/schemas/twitter';
-
-interface Token {
-	token: string;
-	secret: string;
-}
+import BundleConfig from '../bundle-config';
+import {ReplicantName as R, Tweets, Twitter} from '../replicants';
 
 const REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token';
 const ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token';
@@ -23,137 +18,87 @@ const VERIFY_CREDENTIALS_URL =
 const STATUSES_FILTER_URL =
 	'https://stream.twitter.com/1.1/statuses/filter.json';
 
-const accessTokenPath = path.resolve(
-	__dirname,
-	'./db/twitter-access-token.json'
-);
+/**
+ * Twitter access token stored in JSON file
+ */
+interface Token {
+	token: string;
+	secret: string;
+}
+const isToken = (data: any): data is Token => {
+	return (
+		data &&
+		typeof data.token === 'string' &&
+		typeof data.secret === 'string'
+	);
+};
+
+const accessTokenPath = path.resolve(__dirname, 'db/twitter-access-token.json');
 const loadAccessToken = async () => {
-	const accessToken: Token = await loadJsonFile(accessTokenPath);
-	if (
-		!accessToken ||
-		typeof accessToken.token !== 'string' ||
-		typeof accessToken.secret !== 'string'
-	) {
+	const accessToken = await loadJsonFile(accessTokenPath);
+	if (!isToken(accessToken)) {
 		throw new Error('Invalid Twitter access token loaded from DB');
 	}
 	return accessToken;
 };
 const saveAccessToken = async ({token, secret}: Token) => {
-	return writeJsonFile(accessTokenPath, {token, secret});
+	await writeJsonFile(accessTokenPath, {token, secret});
 };
 
+/**
+ * Twitter request token stored in memory
+ */
 let requestToken = {
 	token: '',
 	secret: '',
 };
 
+/**
+ * Twitter stream API interface
+ */
 let twitterStream: IncomingMessage | null = null;
 
 export const twitter = async (nodecg: NodeCG) => {
-	// prettier-ignore
-	const callbackUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/twitter-callback/index.html`;
-
-	const twitterRep = nodecg.Replicant<Twitter>('twitter');
-	const tweetsRep = nodecg.Replicant<Tweets>('tweets', {defaultValue: []});
-	const twitterConfig = nodecg.bundleConfig.twitter;
-	const {maxTweets} = nodecg.bundleConfig.twitter;
-
-	const oauth = new OAuth({
-		consumer: {
-			key: twitterConfig.consumerKey,
-			secret: twitterConfig.consumerSecret,
-		},
-		/* eslint-disable camelcase */
-		signature_method: 'HMAC-SHA1',
-		hash_function(baseString, key) {
-			return crypto
-				.createHmac('sha1', key)
-				.update(baseString)
-				.digest('base64');
-		},
-		/* eslint-enable camelcase */
-		realm: '',
-	});
-
-	nodecg.listenFor('twitter:startLogin', async (_, cb) => {
-		if (cb.handled) {
-			return;
-		}
-
-		try {
-			requestToken = await getRequestToken();
-			cb(
-				null,
-				// prettier-ignore
-				`https://api.twitter.com/oauth/authenticate?oauth_token=${requestToken.token}`
-			);
-		} catch (err) {
-			nodecg.log.error('Failed to get Twitter oauth token');
-			nodecg.log.error(err);
-			cb(err);
-		}
-	});
-
-	nodecg.listenFor('twitter:loginSuccess', async (data: any) => {
-		if (data.oauthToken !== requestToken.token) {
-			return;
-		}
-
-		try {
-			const accessToken = await getAccessToken(data.oauthVerifier);
-			await saveAccessToken(accessToken);
-			twitterRep.value.userObject = await verifyCredentials();
-		} catch (err) {
-			nodecg.log.error('Failed to authenticate user');
-			nodecg.log.error(err);
-		}
-	});
-
-	nodecg.listenFor('twitter:logout', async () => {
-		twitterRep.value.userObject = null;
-		await saveAccessToken({token: '', secret: ''});
-	});
-
-	nodecg.listenFor('selectTweet', (id: string) => {
-		nodecg.sendMessage('showTweet', deleteTweetById(id));
-	});
-
-	nodecg.listenFor('discardTweet', deleteTweetById);
-
+	// Try to load access token file and save one if it errors
 	try {
 		await loadAccessToken();
 	} catch (_) {
 		await saveAccessToken({token: '', secret: ''});
 	}
 
-	twitterRep.on('change', async newVal => {
-		if (newVal && newVal.userObject) {
-			await startFilterStream();
-			return;
-		}
-		if (twitterStream) {
-			twitterStream.destroy();
-		}
+	// prettier-ignore
+	const callbackUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/twitter-callback/index.html`;
+
+	const twitterRep = nodecg.Replicant<Twitter>(R.Twitter);
+	const tweetsRep = nodecg.Replicant<Tweets>(R.Tweets, {defaultValue: []});
+	const bundleConfig = nodecg.bundleConfig as BundleConfig;
+
+	const oauth = new OAuth({
+		consumer: {
+			key: bundleConfig.twitter.consumerKey,
+			secret: bundleConfig.twitter.consumerSecret,
+		},
+		signature_method: 'HMAC-SHA1',
+		hash_function: (baseString, key) => {
+			return crypto
+				.createHmac('sha1', key)
+				.update(baseString)
+				.digest('base64');
+		},
+		realm: '',
 	});
 
-	tweetsRep.on('change', newVal => {
-		if (newVal.length <= maxTweets) {
-			return;
-		}
-		tweetsRep.value = tweetsRep.value.slice(0, maxTweets);
-	});
-
-	function deleteTweetById(id: string) {
+	const deleteTweetById = (id: string) => {
 		const selectedTweetIndex = tweetsRep.value.findIndex(t => t.id === id);
 		if (selectedTweetIndex === -1) {
-			return;
+			return undefined;
 		}
 		const tweet = tweetsRep.value[selectedTweetIndex];
 		tweetsRep.value.splice(selectedTweetIndex, 1);
 		return tweet;
-	}
+	};
 
-	async function getRequestToken() {
+	const getRequestToken = async () => {
 		const oauthData = oauth.authorize({
 			url: REQUEST_TOKEN_URL,
 			method: 'POST',
@@ -170,9 +115,9 @@ export const twitter = async (nodecg: NodeCG) => {
 			token: requestTokenParams.get('oauth_token') || '',
 			secret: requestTokenParams.get('oauth_token_secret') || '',
 		};
-	}
+	};
 
-	async function getAccessToken(oauthVerifier: string) {
+	const getAccessToken = async (oauthVerifier: string) => {
 		/* eslint-disable-next-line camelcase */
 		const data = {oauth_verifier: oauthVerifier};
 		const oauthData = oauth.authorize(
@@ -194,9 +139,9 @@ export const twitter = async (nodecg: NodeCG) => {
 			token: accessTokenParams.get('oauth_token') || '',
 			secret: accessTokenParams.get('oauth_token_secret') || '',
 		};
-	}
+	};
 
-	async function verifyCredentials() {
+	const verifyCredentials = async () => {
 		const accessToken = await loadAccessToken();
 		const oauthData = oauth.authorize(
 			{
@@ -209,9 +154,9 @@ export const twitter = async (nodecg: NodeCG) => {
 			headers: oauth.toHeader(oauthData),
 		});
 		return res.data;
-	}
+	};
 
-	async function startFilterStream() {
+	const startFilterStream = async () => {
 		try {
 			const accessToken = await loadAccessToken();
 			if (!accessToken.token || !accessToken.secret) {
@@ -303,5 +248,74 @@ export const twitter = async (nodecg: NodeCG) => {
 				}
 			}
 		});
-	}
+	};
+
+	nodecg.listenFor('twitter:startLogin', async (_, cb) => {
+		if (!cb || cb.handled) {
+			return;
+		}
+
+		try {
+			requestToken = await getRequestToken();
+			// prettier-ignore
+			const redirectUrl = `https://api.twitter.com/oauth/authenticate?oauth_token=${requestToken.token}`
+			cb(null, redirectUrl);
+		} catch (err) {
+			nodecg.log.error('Failed to get Twitter oauth token');
+			nodecg.log.error(err);
+			cb(err);
+		}
+	});
+
+	nodecg.listenFor(
+		'twitter:loginSuccess',
+		async (data: {oauthToken: string; oauthVerifier: string}) => {
+			if (data.oauthToken !== requestToken.token) {
+				return;
+			}
+
+			try {
+				const accessToken = await getAccessToken(data.oauthVerifier);
+				await saveAccessToken(accessToken);
+				twitterRep.value.userObject = await verifyCredentials();
+			} catch (err) {
+				nodecg.log.error('Failed to authenticate user');
+				nodecg.log.error(err);
+			}
+		}
+	);
+
+	nodecg.listenFor('twitter:logout', async () => {
+		twitterRep.value.userObject = undefined;
+		await saveAccessToken({token: '', secret: ''});
+	});
+
+	nodecg.listenFor('selectTweet', (id: string) => {
+		nodecg.sendMessage('showTweet', deleteTweetById(id));
+	});
+
+	nodecg.listenFor('discardTweet', deleteTweetById);
+
+	twitterRep.on('change', async newVal => {
+		if (newVal && newVal.userObject) {
+			await startFilterStream();
+			return;
+		}
+		if (twitterStream) {
+			nodecg.log.info(
+				'Twitter Replicant changed, destroying current Twitter stream'
+			);
+			twitterStream.destroy();
+		}
+	});
+
+	tweetsRep.on('change', newVal => {
+		if (newVal.length <= bundleConfig.twitter.maxTweets) {
+			return;
+		}
+		tweetsRep.value = tweetsRep.value.slice(
+			0,
+			bundleConfig.twitter.maxTweets
+		);
+	});
 };
