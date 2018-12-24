@@ -6,6 +6,12 @@
 		"only-arrow-functions": false,
 		"no-default-export": false,
 		"no-any": false,
-		"no-floating-promises": false
+		"no-floating-promises": false,
+		"import-blacklist": [
+			true,
+			"@material-ui/core",
+			"@material-ui/icons",
+			"lodash"
+		]
 	}
 }
