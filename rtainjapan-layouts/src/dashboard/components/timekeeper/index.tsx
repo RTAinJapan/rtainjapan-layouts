@@ -6,13 +6,13 @@ import Edit from '@material-ui/icons/Edit';
 import Pause from '@material-ui/icons/Pause';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Refresh from '@material-ui/icons/Refresh';
-import times from 'lodash/times';
 import React from 'react';
 import styled from 'styled-components';
 import uuidv4 from 'uuid/v4';
 import {
 	ChecklistCompleted,
 	CurrentRun,
+	ReplicantName as R,
 	Timer,
 	TimerState,
 } from '../../../replicants';
@@ -23,10 +23,10 @@ import {EditTimeModal} from './edit';
 import {Runner} from './runner';
 
 const checklistCompletedRep = nodecg.Replicant<ChecklistCompleted>(
-	'checklistCompleted',
+	R.ChecklistCompleted,
 );
-const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
-const timerRep = nodecg.Replicant<Timer>('timer');
+const currentRunRep = nodecg.Replicant<CurrentRun>(R.CurrentRun);
+const timerRep = nodecg.Replicant<Timer>(R.Timer);
 
 const Container = styled(BorderedBox)`
 	display: grid;
@@ -199,14 +199,13 @@ export class Timekeeper extends React.Component<{}, State> {
 	};
 
 	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
-		const runners: State['runners'] = [];
 		const newRunners = newVal.runners;
-		times(4, (i) => {
-			const name = newRunners && newRunners[i] && newRunners[i].name;
-			runners[i] = {name, id: uuidv4()};
-		});
 		this.setState({
-			runners,
+			runners: Array.from({length: 4}, (_, index) => {
+				const name =
+					newRunners && newRunners[index] && newRunners[index].name;
+				return {name, id: uuidv4()};
+			}),
 		});
 	};
 

@@ -1,9 +1,11 @@
+import '../../fonts/migmix-2p/index.css';
+import '../../shared/react-devtools';
+
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import React from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
-import '../../shared/react-devtools';
 import {Checklist} from '../components/checklist';
 import {Schedule} from '../components/schedule';
 import {Timekeeper} from '../components/timekeeper';
@@ -34,10 +36,11 @@ const LeftColumn = styled(Column)`
 const appTheme = createMuiTheme({
 	typography: {
 		fontFamily: 'MigMix 2P',
+		useNextVariants: true,
 	},
 	props: {
 		MuiButton: {
-			variant: 'raised',
+			variant: 'contained',
 		},
 	},
 });
