@@ -1,7 +1,7 @@
 {
 	"private": true,
 	"scripts": {
-		"format": "prettier '**/*.{ts,tsx,json,html}'",
+		"format": "prettier '**/*.{ts,tsx,json,html}' --write",
 		"postinstall": "make postinstall",
 		"lint": "tslint -p . -t stylish",
 		"start": "node node_modules/nodecg"
