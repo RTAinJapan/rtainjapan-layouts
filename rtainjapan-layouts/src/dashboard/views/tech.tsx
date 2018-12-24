@@ -10,7 +10,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
 import {Checklist} from '../components/checklist';
-// import {Schedule} from '../components/schedule';
+import {Schedule} from '../components/schedule';
 import {Timekeeper} from '../components/timekeeper';
 // import {Twitter} from '../components/twitter';
 
@@ -38,7 +38,7 @@ const LeftColumn = styled(Column)`
 
 const appTheme = createMuiTheme({
 	typography: {
-		fontFamily: 'MigMix 2P',
+		fontFamily: "'MigMix 2P'",
 		useNextVariants: true,
 	},
 	props: {
@@ -55,7 +55,9 @@ export const App = () => (
 				<Timekeeper />
 				<Checklist />
 			</LeftColumn>
-			<Column>{/* <Schedule /> */}</Column>
+			<Column>
+				<Schedule />
+			</Column>
 			<Column>{/* <Twitter /> */}</Column>
 		</Container>
 	</MuiThemeProvider>

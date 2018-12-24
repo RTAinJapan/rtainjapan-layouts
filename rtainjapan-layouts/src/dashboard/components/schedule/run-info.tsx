@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import styled from 'styled-components';
-import {CurrentRun, NextRun} from '../../../replicants';
+import {Run} from '../../../replicants';
 
 const Container = styled.div`
 	display: grid;
@@ -41,7 +41,7 @@ const MiscContainer = styled.div`
 `;
 
 export class RunInfo extends React.Component<{
-	run: CurrentRun | NextRun;
+	run: Run;
 	label: string;
 }> {
 	public render() {

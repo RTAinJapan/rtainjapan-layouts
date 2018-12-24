@@ -1,3 +1,4 @@
+import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -8,21 +9,11 @@ import Downshift, {
 } from 'downshift';
 import React from 'react';
 import styled from 'styled-components';
-import {NoWrapButton} from '../lib/no-wrap-button';
 
 const TypeaheadContainer = styled.div`
 	display: flex;
 	flex-flow: column nowrap;
 	justify-content: center;
-`;
-
-const SkipButton = styled(NoWrapButton)`
-	align-self: flex-end;
-`;
-
-const Suggestion = styled(Paper)`
-	position: absolute;
-	z-index: 1;
 `;
 
 interface State {
@@ -58,21 +49,31 @@ export class Typeahead extends React.Component<Props, State> {
 								})}
 							/>
 							{isOpen && (
-								<Suggestion square>
+								<Paper
+									style={{
+										position: 'absolute',
+										zIndex: 1,
+									}}
+									square
+								>
 									{this.renderSuggestion(
 										inputValue,
 										getItemProps,
 										highlightedIndex,
 									)}
-								</Suggestion>
+								</Paper>
 							)}
 						</div>
 					)}
 				</Downshift>
-				<SkipButton size='small' onClick={this.skipClicked}>
+				<Button
+					style={{whiteSpace: 'nowrap', alignSelf: 'flex-end'}}
+					size='small'
+					onClick={this.skipClicked}
+				>
 					スキップ
 					<ChevronRight />
-				</SkipButton>
+				</Button>
 			</TypeaheadContainer>
 		);
 	}

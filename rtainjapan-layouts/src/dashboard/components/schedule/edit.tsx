@@ -38,8 +38,6 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 				aria-labelledby='simple-modal-title'
 				aria-describedby='simple-modal-description'
 				open={Boolean(this.props.edit)}
-				// Missing type
-				// @ts-ignore
 				onRendered={this.onRendered}
 			>
 				<Container>
@@ -68,10 +66,9 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 							this.setState({duration: e.currentTarget.value});
 						}}
 					/>
-					{new Array(4).fill(null).map((_, index) => {
+					{Array.from({length: 4}, (_, index) => {
 						const runner: RunnerList[0] = runners[index] || {};
 						return (
-							// eslint-disable-next-line react/no-array-index-key
 							<div key={index}>
 								<TextField
 									label={`走者${index} 名前`}
@@ -121,8 +118,11 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 						);
 					})}
 					{new Array(4).fill(null).map((_, index) => {
-						const commentator: RunnerList[0] =
-							commentators[index] || {};
+						const commentator: RunnerList[0] = {
+							pk: 0,
+							name: '',
+							...commentators[index],
+						};
 						return (
 							// eslint-disable-next-line react/no-array-index-key
 							<div key={index}>
@@ -193,9 +193,9 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 	) => {
 		this.setState((state) => {
 			if (!state.runners) {
-				return {};
+				return null;
 			}
-			const oldRunner = state.runners[updatingIndex] || {};
+			const oldRunner = state.runners[updatingIndex];
 			const newRunner = {...oldRunner, [key]: value};
 			const newRunners: RunnerList = [];
 			const iterateLength =
@@ -218,7 +218,7 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 	) => {
 		this.setState((state) => {
 			if (!state.commentators) {
-				return {};
+				return null;
 			}
 			const oldOne = state.commentators[updatingIndex] || {};
 			const newOne = {...oldOne, [key]: value};

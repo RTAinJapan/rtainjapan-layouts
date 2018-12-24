@@ -1,3 +1,4 @@
+import Button from '@material-ui/core/Button';
 import pink from '@material-ui/core/colors/pink';
 import purple from '@material-ui/core/colors/purple';
 import ArrowBack from '@material-ui/icons/ArrowBack';
@@ -7,18 +8,18 @@ import styled from 'styled-components';
 import {
 	CurrentRun,
 	NextRun,
+	ReplicantName as R,
 	Schedule as ScheduleSchema,
 } from '../../../replicants';
 import {BorderedBox} from '../lib/bordered-box';
 import {ColoredButton} from '../lib/colored-button';
-import {NoWrapButton} from '../lib/no-wrap-button';
 import {EditRun} from './edit';
 import {RunInfo} from './run-info';
 import {Typeahead} from './typeahead';
 
-const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
-const nextRunRep = nodecg.Replicant<NextRun>('currentRun');
-const scheduleRep = nodecg.Replicant<ScheduleSchema>('currentRun');
+const currentRunRep = nodecg.Replicant<CurrentRun>(R.CurrentRun);
+const nextRunRep = nodecg.Replicant<NextRun>(R.NextRun);
+const scheduleRep = nodecg.Replicant<ScheduleSchema>(R.Schedule);
 
 const Container = styled(BorderedBox)`
 	height: calc(100vh - 32px);
@@ -83,6 +84,10 @@ export class Schedule extends React.Component<{}, State> {
 	}
 
 	public render() {
+		if (!this.state.currentRun || !this.state.nextRun) {
+			return null;
+		}
+
 		return (
 			<Container>
 				<SelectionContainer>
@@ -112,9 +117,12 @@ export class Schedule extends React.Component<{}, State> {
 					>
 						編集：現在のゲーム
 					</ColoredButton>
-					<NoWrapButton onClick={this.updateClicked}>
+					<Button
+						style={{whiteSpace: 'nowrap'}}
+						onClick={this.updateClicked}
+					>
 						手動更新
-					</NoWrapButton>
+					</Button>
 					<ColoredButton
 						color={pink}
 						ButtonProps={{onClick: this.editNextRun}}
