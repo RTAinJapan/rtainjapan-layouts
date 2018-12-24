@@ -7,5 +7,10 @@
 		"module": "esnext",
 		"lib": ["esnext", "dom"]
 	},
-	"include": ["**/*.ts", "**/*.tsx", "../shims.d.ts"]
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		"../shims.d.ts",
+		"../../../node_modules/nodecg/types/browser.d.ts"
+	]
 }
