@@ -2,6 +2,7 @@ import {CheckerPlugin} from 'awesome-typescript-loader';
 import CleanPlugin from 'clean-webpack-plugin';
 import globby from 'globby';
 import HtmlPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import webpack from 'webpack';
 import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
@@ -47,6 +48,26 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 					test: /\.png$/,
 					loader: 'file-loader',
 				},
+				{
+					test: /\.s?css$/,
+					loaders: [
+						isProduction
+							? MiniCssExtractPlugin.loader
+							: 'style-loader',
+						{
+							loader: 'css-loader',
+							options: {
+								modules: true,
+								localIdentName:
+									'[name]__[sha256:hash:base64:5]',
+								sourceMap: true,
+								camelCase: true,
+								importLoaders: 1,
+							},
+						},
+						'sass-loader',
+					],
+				},
 			],
 		},
 		plugins: [
@@ -61,6 +82,10 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 						template: `webpack/${name}.html`,
 					}),
 			),
+			new MiniCssExtractPlugin({
+				filename: '[name]-[hash].css',
+				chunkFilename: '[id]-[hash].css',
+			}),
 			new BundleAnalyzerPlugin({
 				analyzerMode:
 					isProduction || !useAnalyzer ? 'disabled' : 'static',

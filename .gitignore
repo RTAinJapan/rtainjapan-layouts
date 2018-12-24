@@ -1,6 +1,5 @@
 cfg/*
 !cfg/.gitkeep
-
 db/*
 !db/.gitkeep
 
@@ -12,6 +11,8 @@ db/*
 
 .awcache
 .vscode
+*.css.d.ts
+*.scss.d.ts
 
 # Logs
 logs
