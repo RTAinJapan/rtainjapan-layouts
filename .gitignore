@@ -1,6 +1,9 @@
 cfg/*
 !cfg/.gitkeep
 
+db/*
+!db/.gitkeep
+
 /rtainjapan-layouts/dashboard
 /rtainjapan-layouts/graphics
 /rtainjapan-layouts/extension

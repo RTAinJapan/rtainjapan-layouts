@@ -6,3 +6,5 @@ postinstall:
 	cd $(NODECG_PATH) && bower install --production --allow-root
 	ln -sf ../../../rtainjapan-layouts $(NODECG_PATH)/bundles
 	ln -sf ../../cfg $(NODECG_PATH)
+	rm -rf $(NODECG_PATH)/db
+	ln -sf ../../db $(NODECG_PATH)
