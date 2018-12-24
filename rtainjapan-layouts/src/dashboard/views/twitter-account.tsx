@@ -5,9 +5,16 @@ import ReactDom from 'react-dom';
 import styled from 'styled-components';
 import {ReplicantName as R, Twitter} from '../../replicants';
 import twitterSignIn from '../images/twitter-sign-in.png';
-import * as styles from './twitter-account.scss';
 
 const twitterRep = nodecg.Replicant<Twitter>(R.Twitter);
+
+const LoggedIn = styled.div`
+	display: grid;
+	grid-template-columns: auto auto;
+	justify-content: space-between;
+	justify-items: center;
+	align-items: center;
+`;
 
 interface State {
 	userObject: Twitter['userObject'];
@@ -30,10 +37,10 @@ class App extends React.Component<{}, State> {
 	public render() {
 		const {userObject} = this.state;
 		return userObject ? (
-			<div className={styles.loggedIn} onClick={this.logout}>
+			<LoggedIn onClick={this.logout}>
 				<div>ログイン中：@{userObject.screen_name}</div>
 				<Button>ログアウト</Button>
-			</div>
+			</LoggedIn>
 		) : (
 			<ButtonBase>
 				<img onClick={this.login} src={twitterSignIn} />
