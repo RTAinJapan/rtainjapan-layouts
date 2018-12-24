@@ -5,8 +5,8 @@ import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import ja from 'date-fns/locale/ja';
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {Tweets} from '../../../lib/replicant';
-import {TweetHighlighter} from '../../../lib/TweetHighlighter';
+import {Tweets} from '../../../replicants';
+import {TweetHighlighter} from '../../../shared/tweet-highlighter';
 
 interface Props {
 	tweet: Tweets[0];

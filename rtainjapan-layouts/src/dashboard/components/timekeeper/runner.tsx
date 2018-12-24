@@ -7,7 +7,7 @@ import Flag from '@material-ui/icons/Flag';
 import Undo from '@material-ui/icons/Undo';
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {Timer} from '../../../lib/replicant';
+import {Timer} from '../../../replicants';
 import {ColoredButton} from '../lib/colored-button';
 import {EditTimeModal} from './edit';
 

@@ -1,11 +1,7 @@
-// Packages
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import styled from 'styled-components';
-
-// Ours
-import {CurrentRun} from '../../../../types/schemas/currentRun';
-import {NextRun} from '../../../../types/schemas/nextRun';
+import {CurrentRun, NextRun} from '../../../replicants';
 
 const Container = styled.div`
 	display: grid;
@@ -76,7 +72,7 @@ export class RunInfo extends React.Component<{
 					</LabeledDiv>
 					<LabeledDiv>
 						<Typography variant="caption">機種</Typography>
-						<div>{run.hardware}</div>
+						<div>{run.platform}</div>
 					</LabeledDiv>
 				</MiscContainer>
 			</Container>

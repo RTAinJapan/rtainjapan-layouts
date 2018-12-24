@@ -3,7 +3,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import React from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
-import {Twitter} from '../../lib/replicant';
+import {Twitter} from '../../replicants';
 import twitterSignIn from '../images/twitter-sign-in.png';
 
 const twitterRep = nodecg.Replicant<Twitter>('twitter');

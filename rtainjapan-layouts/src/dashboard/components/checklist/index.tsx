@@ -2,7 +2,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import React, {ChangeEvent} from 'react';
 import styled from 'styled-components';
-import {Checklist as ChecklistSchema} from '../../../lib/replicant';
+import {Checklist as ChecklistSchema} from '../../../replicants';
 import {BorderedBox} from '../lib/bordered-box';
 
 const checklistRep = nodecg.Replicant<ChecklistSchema>('checklist');

@@ -1,8 +1,8 @@
 import delay from 'delay';
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {Tweets} from '../../../lib/replicant';
 import {TweetHighlighter} from '../../../lib/TweetHighlighter';
+import {Tweets} from '../../../replicants';
 
 const TWEET_TRANSITION_SECONDS = 2;
 const TWEET_SHOWN_DURATION_SECONDS = 10;

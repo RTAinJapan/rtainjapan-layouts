@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
 
-import {CurrentRun, Schedule} from '../../lib/replicant';
+import {CurrentRun, Schedule} from '../../replicants';
 import {BreakBackground} from '../components/break-background';
 import {RtaijOverlay} from '../components/rtaij-overlay';
 import {UpcomingRun} from '../components/upcoming-run';

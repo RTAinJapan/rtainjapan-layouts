@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Tweets} from '../../../lib/replicant';
+import {Tweets} from '../../../replicants';
 import {BorderedBox} from '../lib/bordered-box';
 import {TweetItem} from './tweet-item';
 

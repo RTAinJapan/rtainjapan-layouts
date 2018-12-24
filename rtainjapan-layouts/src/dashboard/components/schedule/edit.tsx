@@ -5,7 +5,7 @@ import TypoGraphy from '@material-ui/core/Typography';
 import max from 'lodash/max';
 import React from 'react';
 import styled from 'styled-components';
-import {CurrentRun, RunnerList} from '../../../lib/replicant';
+import {CurrentRun, RunnerList} from '../../../replicants';
 
 const Container = styled.div`
 	position: absolute;

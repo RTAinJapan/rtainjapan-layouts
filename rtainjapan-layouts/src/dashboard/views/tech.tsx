@@ -1,13 +1,9 @@
-import '../../lib/react-devtools';
-
-// Packages
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import React from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
-
-// Ours
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import '../../shared/react-devtools';
 import {Checklist} from '../components/checklist';
 import {Schedule} from '../components/schedule';
 import {Timekeeper} from '../components/timekeeper';

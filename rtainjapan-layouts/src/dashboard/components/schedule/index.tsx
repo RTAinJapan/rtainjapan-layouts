@@ -8,7 +8,7 @@ import {
 	CurrentRun,
 	NextRun,
 	Schedule as ScheduleSchema,
-} from '../../../lib/replicant';
+} from '../../../replicants';
 import {BorderedBox} from '../lib/bordered-box';
 import {ColoredButton} from '../lib/colored-button';
 import {NoWrapButton} from '../lib/no-wrap-button';

@@ -1,7 +1,7 @@
 import delay from 'delay';
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {CurrentRun, RunnerList, Timer} from '../../../../lib/replicant';
+import {CurrentRun, RunnerList, Timer} from '../../../../replicants';
 import nicoIcon from '../../../images/icon/nico.png';
 import twitchIcon from '../../../images/icon/twitch.png';
 import twitterIcon from '../../../images/icon/twitter.png';

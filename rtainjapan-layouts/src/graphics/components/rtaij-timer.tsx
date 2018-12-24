@@ -1,5 +1,5 @@
-import {CurrentRun, Timer} from '../../lib/replicant';
-import {TimerState} from '../../lib/replicant/lib';
+import {CurrentRun, Timer} from '../../replicants';
+import {TimerState} from '../../replicants/lib';
 import {BaseInfo} from './lib/base-info';
 
 const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');

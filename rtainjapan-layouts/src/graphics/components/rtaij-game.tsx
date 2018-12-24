@@ -1,4 +1,4 @@
-import {CurrentRun} from '../../lib/replicant';
+import {CurrentRun} from '../../replicants';
 import {BaseInfo} from './lib/base-info';
 
 const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');

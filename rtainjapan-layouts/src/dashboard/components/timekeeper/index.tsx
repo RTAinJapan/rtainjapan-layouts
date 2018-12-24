@@ -10,9 +10,13 @@ import times from 'lodash/times';
 import React from 'react';
 import styled from 'styled-components';
 import uuidv4 from 'uuid/v4';
-import {ChecklistCompleted, CurrentRun, Timer} from '../../../lib/replicant';
-import {TimerState} from '../../../lib/replicant/lib';
-import {newTimer} from '../../../lib/timer';
+import {
+	ChecklistCompleted,
+	CurrentRun,
+	Timer,
+	TimerState,
+} from '../../../replicants';
+import {newTimer} from '../../../shared/timer';
 import {BorderedBox} from '../lib/bordered-box';
 import {ColoredButton} from '../lib/colored-button';
 import {EditTimeModal} from './edit';
