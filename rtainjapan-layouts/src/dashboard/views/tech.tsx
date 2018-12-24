@@ -1,4 +1,7 @@
+import 'modern-normalize/modern-normalize.css';
+
 import '../../fonts/migmix-2p/index.css';
+
 import '../../shared/react-devtools';
 
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
@@ -12,9 +15,10 @@ import {Timekeeper} from '../components/timekeeper';
 // import {Twitter} from '../components/twitter';
 
 const Container = styled.div`
+	color: #000;
 	font-family: 'MigMix 2P';
 	height: 100vh;
-	width: 100vw;
+	width: 1920px;
 	padding: 16px;
 	box-sizing: border-box;
 	display: grid;
@@ -66,8 +70,5 @@ if (storage) {
 		oauthVerifier: params.get('oauth_verifier'),
 	});
 }
-
-document.body.style.margin = '0';
-document.body.style.padding = '0';
 
 ReactDom.render(<App />, document.getElementById('tech'));
