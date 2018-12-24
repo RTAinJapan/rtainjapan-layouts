@@ -1,4 +1,4 @@
-import {NodeCG} from '../../types/nodecg';
+import {NodeCG} from 'nodecg/types/server';
 import defaultChecklist from './default/checklist';
 
 export const checklist = (nodecg: NodeCG) => {

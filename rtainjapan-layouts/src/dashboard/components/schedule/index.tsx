@@ -60,16 +60,14 @@ const movePreviousRun = () => {
 
 interface State {
 	titles: Array<string | undefined>;
-	currentRun: CurrentRun;
-	nextRun: NextRun;
+	currentRun?: CurrentRun;
+	nextRun?: NextRun;
 	edit?: 'current' | 'next';
 }
 
 export class Schedule extends React.Component<{}, State> {
-	public state = {
+	public state: State = {
 		titles: [],
-		currentRun: {},
-		nextRun: {},
 	};
 
 	public componentDidMount() {

@@ -30,7 +30,7 @@ const Column = styled.div`
 	grid-gap: 16px;
 `;
 
-const LeftColumn = Column.extend`
+const LeftColumn = styled(Column)`
 	height: calc(100vh - 32px);
 	grid-template-rows: 1fr auto;
 `;
