@@ -7,7 +7,7 @@ const settings: TsJsonSchema.PartialArgs = {
 	ref: true,
 	aliasRef: false,
 	titles: true,
-	noExtraProps: true,
+	noExtraProps: false,
 	required: true,
 	strictNullChecks: true,
 };
