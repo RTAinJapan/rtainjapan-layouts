@@ -62,14 +62,14 @@ export class Typeahead extends React.Component<Props, State> {
 									{this.renderSuggestion(
 										inputValue,
 										getItemProps,
-										highlightedIndex
+										highlightedIndex,
 									)}
 								</Suggestion>
 							)}
 						</div>
 					)}
 				</Downshift>
-				<SkipButton size="small" onClick={this.skipClicked}>
+				<SkipButton size='small' onClick={this.skipClicked}>
 					スキップ
 					<ChevronRight />
 				</SkipButton>
@@ -90,7 +90,7 @@ export class Typeahead extends React.Component<Props, State> {
 	private readonly renderSuggestion = (
 		inputValue: string | null,
 		getItemProps: (options: GetItemPropsOptions<any>) => any,
-		highlightedIndex: number | null
+		highlightedIndex: number | null,
 	) =>
 		this.getSuggestions(inputValue).map((suggestion, index) => (
 			<MenuItem
@@ -99,7 +99,7 @@ export class Typeahead extends React.Component<Props, State> {
 				})}
 				key={suggestion}
 				selected={index === highlightedIndex}
-				component="div"
+				component='div'
 			>
 				{suggestion}
 			</MenuItem>

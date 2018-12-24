@@ -3,7 +3,7 @@ import Highlighter from 'react-highlight-words';
 
 export const TweetHighlighter: React.FunctionComponent<{
 	text: string;
-}> = props => (
+}> = (props) => (
 	<Highlighter
 		searchWords={['#rtainjapan']}
 		textToHighlight={props.text}

@@ -18,8 +18,8 @@ const calcColorFromTimeState = (timer: Timer) => {
 	if (timer.timerState === TimerState.Running) {
 		return timerStateColorMap[TimerState.Running];
 	}
-	const allForfeit = timer.results.every(result =>
-		Boolean(result && result.forfeit)
+	const allForfeit = timer.results.every((result) =>
+		Boolean(result && result.forfeit),
 	);
 	if (allForfeit) {
 		return timerStateColorMap[TimerState.Stopped];

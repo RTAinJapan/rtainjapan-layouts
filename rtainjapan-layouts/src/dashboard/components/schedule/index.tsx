@@ -101,9 +101,9 @@ export class Schedule extends React.Component<{}, State> {
 					</ColoredButton>
 				</SelectionContainer>
 				<RunInfoContainer>
-					<RunInfo run={this.state.currentRun} label="現在のゲーム" />
+					<RunInfo run={this.state.currentRun} label='現在のゲーム' />
 					<Divider />
-					<RunInfo run={this.state.nextRun} label="次のゲーム" />
+					<RunInfo run={this.state.nextRun} label='次のゲーム' />
 				</RunInfoContainer>
 				<EditControls>
 					<ColoredButton
@@ -155,7 +155,7 @@ export class Schedule extends React.Component<{}, State> {
 		if (!newVal) {
 			return;
 		}
-		const titles = newVal.map(run => run.title);
+		const titles = newVal.map((run) => run.title);
 		this.setState({titles});
 	};
 

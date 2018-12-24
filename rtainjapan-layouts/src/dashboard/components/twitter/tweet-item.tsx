@@ -95,13 +95,13 @@ export class TweetItem extends React.Component<Props, State> {
 				<Avatar src={this.props.tweet.user.profileImageUrl} />
 				<Tweet>
 					<TweetHeader>
-						<ProfileLink href={this.profileUrl()} target="_blank">
+						<ProfileLink href={this.profileUrl()} target='_blank'>
 							<Name>{this.props.tweet.user.name}</Name>
 							<ScreenName>
 								@{this.props.tweet.user.screenName}
 							</ScreenName>
 						</ProfileLink>
-						<TweetLink href={this.tweetUrl()} target="_blank">
+						<TweetLink href={this.tweetUrl()} target='_blank'>
 							<Time dateTime={this.props.tweet.createdAt}>
 								{this.state.timeago}
 							</Time>
@@ -112,10 +112,10 @@ export class TweetItem extends React.Component<Props, State> {
 					</TweetText>
 				</Tweet>
 				<Controls>
-					<IconButton title="配信に表示" onClick={this.selectTweet}>
+					<IconButton title='配信に表示' onClick={this.selectTweet}>
 						<CheckIcon />
 					</IconButton>
-					<IconButton title="削除する" onClick={this.discardTweet}>
+					<IconButton title='削除する' onClick={this.discardTweet}>
 						<ClearIcon />
 					</IconButton>
 				</Controls>

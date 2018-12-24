@@ -124,7 +124,7 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 		const containerWidth = containerRef.clientWidth;
 		const primaryWidth = primaryRef.clientWidth;
 		if (containerWidth - primaryWidth < 60) {
-			this.setState(state => ({
+			this.setState((state) => ({
 				primarySize: state.primarySize - 1,
 			}));
 		}

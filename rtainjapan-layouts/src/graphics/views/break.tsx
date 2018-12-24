@@ -72,7 +72,7 @@ class Break extends React.Component<{}, State> {
 	public render() {
 		const upcomingRuns = this.state.schedule.slice(
 			this.state.currentRunIndex,
-			this.state.currentRunIndex + 3
+			this.state.currentRunIndex + 3,
 		);
 		return (
 			<div>
@@ -88,7 +88,7 @@ class Break extends React.Component<{}, State> {
 				</NotificationText>
 				<UpcomingTitle>今後の予定</UpcomingTitle>
 				<UpcomingContainer>
-					{upcomingRuns.map(run => (
+					{upcomingRuns.map((run) => (
 						<UpcomingRun key={run.pk} {...run} />
 					))}
 				</UpcomingContainer>

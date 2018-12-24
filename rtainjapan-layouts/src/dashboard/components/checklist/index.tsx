@@ -38,8 +38,8 @@ export class Checklist extends React.Component {
 	public render() {
 		return (
 			<Container>
-				{this.state.checklist.map(checklist =>
-					this.makeChecklistElement(checklist)
+				{this.state.checklist.map((checklist) =>
+					this.makeChecklistElement(checklist),
 				)}
 			</Container>
 		);
@@ -51,7 +51,7 @@ export class Checklist extends React.Component {
 
 	private readonly toggleCheckbox = (
 		e: ChangeEvent<any>,
-		checked: boolean
+		checked: boolean,
 	) => {
 		nodecg.sendMessage('toggleCheckbox', {
 			name: e.target.name,

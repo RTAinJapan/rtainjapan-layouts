@@ -23,7 +23,7 @@ import {EditTimeModal} from './edit';
 import {Runner} from './runner';
 
 const checklistCompletedRep = nodecg.Replicant<ChecklistCompleted>(
-	'checklistCompleted'
+	'checklistCompleted',
 );
 const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
 const timerRep = nodecg.Replicant<Timer>('timer');
@@ -183,7 +183,7 @@ export class Timekeeper extends React.Component<{}, State> {
 		currentRunRep.removeListener('change', this.currentRunChangeHandler);
 		checklistCompletedRep.removeListener(
 			'change',
-			this.checklistCompleteChangeHandler
+			this.checklistCompleteChangeHandler,
 		);
 	}
 
@@ -201,7 +201,7 @@ export class Timekeeper extends React.Component<{}, State> {
 	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
 		const runners: State['runners'] = [];
 		const newRunners = newVal.runners;
-		times(4, i => {
+		times(4, (i) => {
 			const name = newRunners && newRunners[i] && newRunners[i].name;
 			runners[i] = {name, id: uuidv4()};
 		});
@@ -211,7 +211,7 @@ export class Timekeeper extends React.Component<{}, State> {
 	};
 
 	private readonly checklistCompleteChangeHandler = (
-		newVal: ChecklistCompleted
+		newVal: ChecklistCompleted,
 	) => {
 		if (newVal === this.state.checklistComplete) {
 			return;

@@ -9,16 +9,16 @@ interface Props {
 	ButtonProps?: ButtonProps;
 }
 
-export const ColoredButton: React.ComponentType<Props> = props => (
+export const ColoredButton: React.ComponentType<Props> = (props) => (
 	<MuiThemeProvider
-		theme={outer =>
+		theme={(outer) =>
 			createMuiTheme({...outer, palette: {primary: props.color}})
 		}
 	>
 		<Button
 			{...props.ButtonProps}
 			style={{whiteSpace: 'nowrap'}}
-			color="primary"
+			color='primary'
 		>
 			{props.children}
 		</Button>

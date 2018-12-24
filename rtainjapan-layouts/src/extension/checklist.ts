@@ -8,7 +8,7 @@ export const checklist = (nodecg: NodeCG) => {
 	});
 	const checklistCompleted = nodecg.Replicant<ChecklistCompleted>(
 		R.ChecklistCompleted,
-		{defaultValue: false}
+		{defaultValue: false},
 	);
 
 	const toggleCheckbox = (payload: {name: string; checked: boolean}) => {
@@ -28,7 +28,7 @@ export const checklist = (nodecg: NodeCG) => {
 
 	const updateChecklistComplete = () => {
 		checklistCompleted.value = checklistRep.value.every(
-			category => category.complete
+			(category) => category.complete,
 		);
 	};
 

@@ -14,7 +14,7 @@ const getDefaultTimer = () => newTimer(0);
 
 export const timekeeping = (nodecg: NodeCG) => {
 	const checklistCompletedRep = nodecg.Replicant<ChecklistCompleted>(
-		R.ChecklistCompleted
+		R.ChecklistCompleted,
 	);
 	const currentRunRep = nodecg.Replicant<CurrentRun>(R.CurrentRun);
 	const timerRep = nodecg.Replicant<Timer>(R.Timer, {
@@ -87,7 +87,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 */
 	const recalcPlaces = () => {
 		const finishedResults = timerRep.value.results
-			.filter(result => {
+			.filter((result) => {
 				if (result) {
 					result.place = 0;
 					return !result.forfeit;
@@ -114,7 +114,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 			return;
 		}
 		const allRunnersFinished = currentRunRep.value.runners.every(
-			(_, index) => Boolean(timerRep.value.results[index])
+			(_, index) => Boolean(timerRep.value.results[index]),
 		);
 		if (allRunnersFinished) {
 			stop();
@@ -149,7 +149,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 			return;
 		}
 		const missedSeconds = Math.round(
-			(Date.now() - timerRep.value.timestamp) / 1000
+			(Date.now() - timerRep.value.timestamp) / 1000,
 		);
 		setSeconds(timerRep.value, timerRep.value.raw + missedSeconds);
 		start();
@@ -198,7 +198,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 	// resume the timer according to how long it has been since the shutdown time.
 	if (timerRep.value.timerState === TimerState.Running) {
 		const missedSeconds = Math.round(
-			(Date.now() - timerRep.value.timestamp) / 1000
+			(Date.now() - timerRep.value.timestamp) / 1000,
 		);
 		setSeconds(timerRep.value, timerRep.value.raw + missedSeconds);
 		start(true);

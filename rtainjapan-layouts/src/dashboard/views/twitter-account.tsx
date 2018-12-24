@@ -29,7 +29,7 @@ class App extends React.Component<{}, State> {
 	}
 
 	public componentDidMount() {
-		twitterRep.on('change', newVal => {
+		twitterRep.on('change', (newVal) => {
 			this.setState({userObject: newVal.userObject});
 		});
 	}

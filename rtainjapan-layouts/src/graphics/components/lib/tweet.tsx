@@ -157,7 +157,7 @@ export class Tweet extends React.Component<Props, State> {
 			return;
 		}
 		// Set the tweet, and pop the queue
-		this.setState(state => ({
+		this.setState((state) => ({
 			showingTweet: state.tweetQueue[0],
 			tweetQueue: state.tweetQueue.slice(1),
 		}));
@@ -208,7 +208,7 @@ export class Tweet extends React.Component<Props, State> {
 	}
 
 	private readonly showTweetHandler = async (tweet: Tweets[0]) => {
-		this.setState(state => ({
+		this.setState((state) => ({
 			tweetQueue: [...state.tweetQueue, tweet],
 		}));
 	};

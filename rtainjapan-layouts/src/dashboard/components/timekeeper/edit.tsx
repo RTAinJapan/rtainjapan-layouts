@@ -47,19 +47,19 @@ export class EditTimeModal extends React.Component<Props, State> {
 		const isValid = timeFormat.test(this.state.value);
 		return (
 			<Modal
-				aria-labelledby="simple-modal-title"
-				aria-describedby="simple-modal-description"
+				aria-labelledby='simple-modal-title'
+				aria-describedby='simple-modal-description'
 				open={this.props.open}
 			>
 				<Container>
-					<TypoGraphy variant="headline">
+					<TypoGraphy variant='headline'>
 						マスタータイマー更新
 					</TypoGraphy>
 					<Inputs>
 						<TextField
 							required
 							value={this.state.value}
-							margin="normal"
+							margin='normal'
 							error={!isValid}
 							onChange={this.handleInput}
 						/>

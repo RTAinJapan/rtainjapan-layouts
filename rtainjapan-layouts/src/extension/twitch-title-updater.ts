@@ -19,7 +19,7 @@ export const twitchTitleUpdater = (nodecg: NodeCG) => {
 		!nodecg.config.login.twitch.enabled
 	) {
 		log.info(
-			"Enable NodeCG's login feature to enable Twitch title updater"
+			"Enable NodeCG's login feature to enable Twitch title updater",
 		);
 		return;
 	}
@@ -29,7 +29,7 @@ export const twitchTitleUpdater = (nodecg: NodeCG) => {
 		.includes('channel_editor');
 	if (!hasEditorScope) {
 		log.info(
-			'Include channel_editor scope for the Twitch authentication to enable Twitch title updater'
+			'Include channel_editor scope for the Twitch authentication to enable Twitch title updater',
 		);
 		return;
 	}
@@ -64,7 +64,7 @@ export const twitchTitleUpdater = (nodecg: NodeCG) => {
 			log.info(
 				`You must login as ${
 					nodecg.bundleConfig.twitch.targetChannel
-				} to update Twitch status automatically.`
+				} to update Twitch status automatically.`,
 			);
 			return;
 		}
@@ -85,7 +85,7 @@ export const twitchTitleUpdater = (nodecg: NodeCG) => {
 			channel: {
 				status: nodecg.bundleConfig.twitch.titleTemplate.replace(
 					/\${gameName}/gi,
-					lastTitle
+					lastTitle,
 				),
 				game: lastEngTitle,
 			},
@@ -101,10 +101,10 @@ export const twitchTitleUpdater = (nodecg: NodeCG) => {
 			})
 			.then(() => {
 				log.info(
-					`Succesfully updated Twitch title and game to ${lastEngTitle}`
+					`Succesfully updated Twitch title and game to ${lastEngTitle}`,
 				);
 			})
-			.catch(err => {
+			.catch((err) => {
 				log.error('Failed to update Twitch title and game:');
 				log.error(err);
 			});

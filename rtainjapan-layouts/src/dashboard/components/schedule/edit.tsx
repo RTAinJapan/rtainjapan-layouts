@@ -35,36 +35,36 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 		const commentators = this.props.defaultValue.commentators || [];
 		return (
 			<Modal
-				aria-labelledby="simple-modal-title"
-				aria-describedby="simple-modal-description"
+				aria-labelledby='simple-modal-title'
+				aria-describedby='simple-modal-description'
 				open={Boolean(this.props.edit)}
 				// Missing type
 				// @ts-ignore
 				onRendered={this.onRendered}
 			>
 				<Container>
-					<TypoGraphy variant="headline">
+					<TypoGraphy variant='headline'>
 						{this.props.edit === 'current' ? '現在の' : '次の'}
 						ゲームを編集
 					</TypoGraphy>
 					<TextField
 						defaultValue={this.props.defaultValue.title}
-						label="タイトル"
-						onChange={e => {
+						label='タイトル'
+						onChange={(e) => {
 							this.setState({title: e.currentTarget.value});
 						}}
 					/>
 					<TextField
 						defaultValue={this.props.defaultValue.category}
-						label="カテゴリ"
-						onChange={e => {
+						label='カテゴリ'
+						onChange={(e) => {
 							this.setState({category: e.currentTarget.value});
 						}}
 					/>
 					<TextField
 						defaultValue={this.props.defaultValue.duration}
-						label="予定タイム"
-						onChange={e => {
+						label='予定タイム'
+						onChange={(e) => {
 							this.setState({duration: e.currentTarget.value});
 						}}
 					/>
@@ -76,44 +76,44 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 								<TextField
 									label={`走者${index} 名前`}
 									defaultValue={runner.name}
-									onChange={e => {
+									onChange={(e) => {
 										this.updateRunnerInfo(
 											index,
 											'name',
-											e.currentTarget.value
+											e.currentTarget.value,
 										);
 									}}
 								/>
 								<TextField
 									label={`走者${index} Twitch`}
 									defaultValue={runner.twitch}
-									onChange={e => {
+									onChange={(e) => {
 										this.updateRunnerInfo(
 											index,
 											'twitch',
-											e.currentTarget.value
+											e.currentTarget.value,
 										);
 									}}
 								/>
 								<TextField
 									label={`走者${index} ニコ生`}
 									defaultValue={runner.nico}
-									onChange={e => {
+									onChange={(e) => {
 										this.updateRunnerInfo(
 											index,
 											'nico',
-											e.currentTarget.value
+											e.currentTarget.value,
 										);
 									}}
 								/>
 								<TextField
 									label={`走者${index} Twitter`}
 									defaultValue={runner.twitter}
-									onChange={e => {
+									onChange={(e) => {
 										this.updateRunnerInfo(
 											index,
 											'twitter',
-											e.currentTarget.value
+											e.currentTarget.value,
 										);
 									}}
 								/>
@@ -129,44 +129,44 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 								<TextField
 									label={`解説${index} 名前`}
 									defaultValue={commentator.name}
-									onChange={e => {
+									onChange={(e) => {
 										this.updateCommentatorInfo(
 											index,
 											'name',
-											e.currentTarget.value
+											e.currentTarget.value,
 										);
 									}}
 								/>
 								<TextField
 									label={`解説${index} Twitch`}
 									defaultValue={commentator.twitch}
-									onChange={e => {
+									onChange={(e) => {
 										this.updateCommentatorInfo(
 											index,
 											'twitch',
-											e.currentTarget.value
+											e.currentTarget.value,
 										);
 									}}
 								/>
 								<TextField
 									label={`解説${index} ニコ生`}
 									defaultValue={commentator.nico}
-									onChange={e => {
+									onChange={(e) => {
 										this.updateCommentatorInfo(
 											index,
 											'nico',
-											e.currentTarget.value
+											e.currentTarget.value,
 										);
 									}}
 								/>
 								<TextField
 									label={`解説${index} Twitter`}
 									defaultValue={commentator.twitter}
-									onChange={e => {
+									onChange={(e) => {
 										this.updateCommentatorInfo(
 											index,
 											'twitter',
-											e.currentTarget.value
+											e.currentTarget.value,
 										);
 									}}
 								/>
@@ -189,9 +189,9 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 	private readonly updateRunnerInfo = <T extends keyof RunnerList[0]>(
 		updatingIndex: number,
 		key: T,
-		value: RunnerList[0][T]
+		value: RunnerList[0][T],
 	) => {
-		this.setState(state => {
+		this.setState((state) => {
 			if (!state.runners) {
 				return {};
 			}
@@ -214,9 +214,9 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 	private readonly updateCommentatorInfo = <T extends keyof RunnerList[0]>(
 		updatingIndex: number,
 		key: T,
-		value: RunnerList[0][T]
+		value: RunnerList[0][T],
 	) => {
-		this.setState(state => {
+		this.setState((state) => {
 			if (!state.commentators) {
 				return {};
 			}

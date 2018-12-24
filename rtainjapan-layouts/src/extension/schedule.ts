@@ -34,7 +34,7 @@ export default (nodecg: NodeCG) => {
 	const checklistRep = nodecg.Replicant<Checklist>(R.Checklist);
 
 	const resetChecklist = () => {
-		checklistRep.value = checklistRep.value.map(item => ({
+		checklistRep.value = checklistRep.value.map((item) => ({
 			...item,
 			complete: false,
 		}));
@@ -120,7 +120,7 @@ export default (nodecg: NodeCG) => {
 	});
 
 	// Prevent empty current run
-	scheduleRep.on('change', newVal => {
+	scheduleRep.on('change', (newVal) => {
 		const isCurrentRunEmpty =
 			!currentRunRep.value || !currentRunRep.value.pk;
 		if (isCurrentRunEmpty) {

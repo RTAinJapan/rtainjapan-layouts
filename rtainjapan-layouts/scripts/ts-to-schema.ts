@@ -21,7 +21,7 @@ const settings: TsJsonSchema.PartialArgs = {
 		const outputPath = path.resolve(
 			__dirname,
 			'../schemas',
-			`${type}.json`
+			`${type}.json`,
 		);
 		const schema = TsJsonSchema.generateSchema(program, type, settings);
 		if (!schema) {
@@ -31,7 +31,7 @@ const settings: TsJsonSchema.PartialArgs = {
 			.then(() => {
 				console.log(`${path.relative(process.cwd(), outputPath)}`);
 			})
-			.catch(err => {
+			.catch((err) => {
 				console.error(err);
 			});
 	}
@@ -44,7 +44,7 @@ const settings: TsJsonSchema.PartialArgs = {
 	const schema = TsJsonSchema.generateSchema(
 		program,
 		'BundleConfig',
-		settings
+		settings,
 	);
 	if (!schema) {
 		throw new Error(`Schema is empty for BundleConfig`);
@@ -54,7 +54,7 @@ const settings: TsJsonSchema.PartialArgs = {
 		.then(() => {
 			console.log(`${path.relative(process.cwd(), outputPath)}`);
 		})
-		.catch(err => {
+		.catch((err) => {
 			console.error(err);
 		});
 }

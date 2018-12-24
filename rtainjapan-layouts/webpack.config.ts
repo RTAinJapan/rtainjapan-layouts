@@ -53,13 +53,13 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 			new CleanPlugin([path.resolve(__dirname, name)]),
 			new CheckerPlugin(),
 			...Object.keys(entry).map(
-				entryName =>
+				(entryName) =>
 					new HtmlPlugin({
 						filename: `${entryName}.html`,
 						chunks: [entryName],
 						title: entryName,
 						template: 'webpack/template.html',
-					})
+					}),
 			),
 			new BundleAnalyzerPlugin({
 				analyzerMode:

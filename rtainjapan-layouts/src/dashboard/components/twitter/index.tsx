@@ -55,7 +55,7 @@ export class Twitter extends React.Component<{}, {tweets: Tweets}> {
 					<Empty>表示するツイートがありません</Empty>
 				) : (
 					<TweetContainer>
-						{this.state.tweets.map(tweet => (
+						{this.state.tweets.map((tweet) => (
 							<TweetItem key={tweet.id} tweet={tweet} />
 						))}
 					</TweetContainer>

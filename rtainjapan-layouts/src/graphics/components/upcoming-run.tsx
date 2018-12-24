@@ -66,7 +66,7 @@ export class UpcomingRun extends React.Component<CurrentRun, State> {
 		const {title, category} = props;
 		const runners =
 			props.runners &&
-			`Runner: ${props.runners.map(runner => runner.name).join(', ')}`;
+			`Runner: ${props.runners.map((runner) => runner.name).join(', ')}`;
 		const misc =
 			category && runners
 				? /* eslint-disable-next-line no-irregular-whitespace */

@@ -42,7 +42,7 @@ const calcSocialInfo = (runner: NonNullable<RunnerList[0]>) => {
 	];
 	return allSocialInfo.filter(
 		(info): info is typeof allSocialInfo[0] & {info: string} =>
-			typeof info.info === 'string' && info.info !== ''
+			typeof info.info === 'string' && info.info !== '',
 	);
 };
 
@@ -127,7 +127,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 	public socialRotateIntervalTimer?: number;
 
 	protected abstract readonly calcNewRunner: (
-		newVal: CurrentRun
+		newVal: CurrentRun,
 	) => RunnerList[0] | undefined;
 
 	protected abstract readonly labelIcon: any;
@@ -208,7 +208,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 			return;
 		}
 		if (this.state.hideLabel) {
-			this.setState(state => ({
+			this.setState((state) => ({
 				fontSizeMultiplier: state.fontSizeMultiplier * 0.95,
 			}));
 		} else {
@@ -240,7 +240,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 			clearInterval(this.socialRotateIntervalTimer);
 		}
 		this.socialRotateIntervalTimer = window.setInterval(() => {
-			this.setState(state => ({
+			this.setState((state) => ({
 				showingSocialIndex: (state.showingSocialIndex + 1) % 6,
 			}));
 		}, SOCIAL_ROTATE_INTERVAL_SECONDS * 1000);

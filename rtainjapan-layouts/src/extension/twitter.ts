@@ -89,7 +89,9 @@ export const twitter = async (nodecg: NodeCG) => {
 	});
 
 	const deleteTweetById = (id: string) => {
-		const selectedTweetIndex = tweetsRep.value.findIndex(t => t.id === id);
+		const selectedTweetIndex = tweetsRep.value.findIndex(
+			(t) => t.id === id,
+		);
 		if (selectedTweetIndex === -1) {
 			return undefined;
 		}
@@ -129,7 +131,7 @@ export const twitter = async (nodecg: NodeCG) => {
 			{
 				key: requestToken.token,
 				secret: requestToken.token,
-			}
+			},
 		);
 		const res = await axios.post(ACCESS_TOKEN_URL, data, {
 			headers: oauth.toHeader(oauthData),
@@ -148,7 +150,7 @@ export const twitter = async (nodecg: NodeCG) => {
 				url: VERIFY_CREDENTIALS_URL,
 				method: 'GET',
 			},
-			{key: accessToken.token, secret: accessToken.secret}
+			{key: accessToken.token, secret: accessToken.secret},
 		);
 		const res = await axios.get(VERIFY_CREDENTIALS_URL, {
 			headers: oauth.toHeader(oauthData),
@@ -171,7 +173,7 @@ export const twitter = async (nodecg: NodeCG) => {
 					method: 'POST',
 					data,
 				},
-				{key: accessToken.token, secret: accessToken.secret}
+				{key: accessToken.token, secret: accessToken.secret},
 			);
 
 			const res = await axios.post<IncomingMessage>(
@@ -181,14 +183,14 @@ export const twitter = async (nodecg: NodeCG) => {
 					responseType: 'stream',
 					headers: oauth.toHeader(oauthData),
 					params: data,
-				}
+				},
 			);
 			twitterStream = res.data;
 			twitterStream.setEncoding('utf8');
 		} catch (err) {
 			if (err && err.response && err.response.status === 420) {
 				nodecg.log.warn(
-					'Failed to start stream API due to rate limit. Retrying in 1 minute.'
+					'Failed to start stream API due to rate limit. Retrying in 1 minute.',
 				);
 				await delay(60 * 1000);
 				await startFilterStream();
@@ -233,7 +235,7 @@ export const twitter = async (nodecg: NodeCG) => {
 						name: tweetObject.user.name,
 						screenName: tweetObject.user.screen_name,
 						profileImageUrl: new URL(
-							tweetObject.user.profile_image_url_https
+							tweetObject.user.profile_image_url_https,
 						).toString(),
 					},
 				};
@@ -282,7 +284,7 @@ export const twitter = async (nodecg: NodeCG) => {
 				nodecg.log.error('Failed to authenticate user');
 				nodecg.log.error(err);
 			}
-		}
+		},
 	);
 
 	nodecg.listenFor('twitter:logout', async () => {
@@ -296,26 +298,26 @@ export const twitter = async (nodecg: NodeCG) => {
 
 	nodecg.listenFor('discardTweet', deleteTweetById);
 
-	twitterRep.on('change', async newVal => {
+	twitterRep.on('change', async (newVal) => {
 		if (newVal && newVal.userObject) {
 			await startFilterStream();
 			return;
 		}
 		if (twitterStream) {
 			nodecg.log.info(
-				'Twitter Replicant changed, destroying current Twitter stream'
+				'Twitter Replicant changed, destroying current Twitter stream',
 			);
 			twitterStream.destroy();
 		}
 	});
 
-	tweetsRep.on('change', newVal => {
+	tweetsRep.on('change', (newVal) => {
 		if (newVal.length <= bundleConfig.twitter.maxTweets) {
 			return;
 		}
 		tweetsRep.value = tweetsRep.value.slice(
 			0,
-			bundleConfig.twitter.maxTweets
+			bundleConfig.twitter.maxTweets,
 		);
 	});
 };
