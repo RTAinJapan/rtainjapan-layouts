@@ -12,6 +12,7 @@ const settings: TsJsonSchema.PartialArgs = {
 	strictNullChecks: true,
 };
 
+// Replicant schema
 {
 	const program = TsJsonSchema.getProgramFromFiles([
 		path.resolve(__dirname, '../src/replicants/index.ts'),
@@ -37,6 +38,7 @@ const settings: TsJsonSchema.PartialArgs = {
 	}
 }
 
+// Bundle config schema
 {
 	const program = TsJsonSchema.getProgramFromFiles([
 		path.resolve(__dirname, '../src/bundle-config/index.ts'),
