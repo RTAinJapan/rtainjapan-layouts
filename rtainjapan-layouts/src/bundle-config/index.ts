@@ -1,6 +1,4 @@
-export interface BundleConfig {
-	horaroId?: string;
-	runnerSpreadsheetId?: string;
+interface BundleConfig {
 	twitter: {
 		targetWords: string[];
 		maxTweets: number;
@@ -12,3 +10,5 @@ export interface BundleConfig {
 		titleTemplate: string;
 	};
 }
+
+export default BundleConfig;

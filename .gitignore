@@ -8,6 +8,7 @@ db/*
 /rtainjapan-layouts/graphics
 /rtainjapan-layouts/extension
 /rtainjapan-layouts/schemas
+/rtainjapan-layouts/configschema.json
 
 .awcache
 .vscode

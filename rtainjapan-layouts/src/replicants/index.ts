@@ -1,5 +1,21 @@
 import {Run, Runner, TimerState} from './lib';
 
+export {Run, Runner, TimerState};
+
+export enum ReplicantName {
+	Checklist = 'Checklist',
+	ChecklistCompleted = 'ChecklistCompleted',
+	CurrentRun = 'CurrentRun',
+	NextRun = 'NextRun',
+	GameList = 'GameList',
+	RunnerList = 'RunnerList',
+	Schedule = 'Schedule',
+	Tweets = 'Tweets',
+	Twitter = 'Twitter',
+	Horaro = 'Horaro',
+	Timer = 'Timer',
+}
+
 export type Checklist = Array<{
 	name: string;
 	complete: boolean;
@@ -58,7 +74,7 @@ export interface Timer {
 	formatted: string;
 	timestamp: number;
 	timerState: TimerState;
-	results: Array<Timer | null>;
+	results: any[];
 	forfeit: boolean;
 	place?: number;
 }

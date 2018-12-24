@@ -1,5 +1,5 @@
-import {Timer} from './replicant';
-import {TimerState} from './replicant/lib';
+import {Timer} from '../replicants';
+import {TimerState} from '../replicants/lib';
 
 /**
  * Parses a number of seconds into an HMS object.
