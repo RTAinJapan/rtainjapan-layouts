@@ -48,6 +48,7 @@
 		"ts-jest": "^23.10.5",
 		"ts-node": "^7.0.1",
 		"typescript": "^3.2.2",
+		"typescript-json-schema": "^0.33.0",
 		"uuid": "^3.3.2",
 		"webpack": "^4.27.1",
 		"webpack-bundle-analyzer": "^3.0.3",

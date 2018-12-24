@@ -4,6 +4,7 @@ cfg/*
 /rtainjapan-layouts/dashboard
 /rtainjapan-layouts/graphics
 /rtainjapan-layouts/extension
+/rtainjapan-layouts/schemas
 
 .awcache
 .vscode
