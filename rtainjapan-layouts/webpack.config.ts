@@ -8,11 +8,9 @@ import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 
 const isProduction = process.env.NODE_ENV === 'production';
-const isWatch =
-	process.env.npm_config_argv &&
-	process.env.npm_config_argv.includes('--watch');
+const useAnalyzer = process.env.USE_ANALYZER === 'true';
 
-const baseConfig: Partial<webpack.Configuration> = {
+const commonConfig: Partial<webpack.Configuration> = {
 	mode: isProduction ? 'production' : 'development',
 	devtool: isProduction ? 'source-map' : 'cheap-source-map',
 	resolve: {
@@ -28,10 +26,13 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 	}
 
 	return {
-		...baseConfig,
+		...commonConfig,
 		name,
 		entry,
-		output: {path: path.resolve(__dirname, name), filename: '[name].js'},
+		output: {
+			path: path.resolve(__dirname, name),
+			filename: '[name].js',
+		},
 		module: {
 			rules: [
 				{
@@ -39,14 +40,17 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 					loader: 'awesome-typescript-loader',
 					options: {
 						useCache: true,
-						configFileName: `./src/${name}/tsconfig.json`,
+						configFileName: `./src/${name}/tsconfig.webpack.json`,
 					},
 				},
-				{test: /\.png$/, loader: 'file-loader'},
+				{
+					test: /\.png$/,
+					loader: 'file-loader',
+				},
 			],
 		},
 		plugins: [
-			new CleanPlugin([name]),
+			new CleanPlugin([path.resolve(__dirname, name)]),
 			new CheckerPlugin(),
 			...Object.keys(entry).map(
 				entryName =>
@@ -58,22 +62,23 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 					})
 			),
 			new BundleAnalyzerPlugin({
-				analyzerMode: isProduction || isWatch ? 'disabled' : 'static',
+				analyzerMode:
+					isProduction || !useAnalyzer ? 'disabled' : 'static',
 			}),
 		],
 		optimization: {
 			splitChunks: {
 				chunks: 'all',
-				minSize: 0,
 			},
 		},
 	};
 };
 
 const extensionConfig: webpack.Configuration = {
-	...baseConfig,
+	...commonConfig,
 	name: 'extension',
 	target: 'node',
+	node: false,
 	entry: {
 		index: './src/extension/index.ts',
 	},
@@ -89,13 +94,16 @@ const extensionConfig: webpack.Configuration = {
 				loader: 'awesome-typescript-loader',
 				options: {
 					useCache: true,
-					configFileName: './src/extension/tsconfig.json',
+					configFileName: './src/extension/tsconfig.webpack.json',
 				},
 			},
 		],
 	},
 	externals: [nodeExternals()],
-	plugins: [new CleanPlugin(['extension']), new CheckerPlugin()],
+	plugins: [
+		new CleanPlugin([path.resolve(__dirname, 'extension')]),
+		new CheckerPlugin(),
+	],
 };
 
 export default [

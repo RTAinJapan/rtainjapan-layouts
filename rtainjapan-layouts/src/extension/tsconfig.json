@@ -1,9 +1,9 @@
 {
 	"extends": "../../../tsconfig",
 	"compilerOptions": {
-		"module": "commonjs",
-		"sourceMap": true,
-		"lib": ["esnext"]
+		"noEmit": true,
+
+		"module": "commonjs"
 	},
-	"files": ["index.ts"]
+	"include": ["**/*.ts", "../shims.d.ts"]
 }

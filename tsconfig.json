@@ -6,9 +6,8 @@
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
 
-		"target": "esnext",
-		"lib": ["esnext", "dom"],
-		"jsx": "react",
+		"target": "es2017",
+		"lib": ["esnext"],
 		"esModuleInterop": true,
 		"moduleResolution": "node",
 		"importHelpers": true

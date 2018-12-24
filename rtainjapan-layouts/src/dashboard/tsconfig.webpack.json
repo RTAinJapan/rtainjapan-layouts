@@ -1,0 +1,12 @@
+{
+	"extends": "./tsconfig",
+	"compilerOptions": {
+		"sourceMap": true,
+		"noEmit": false
+	},
+	"include": [
+		"views/*.tsx",
+		"../../../node_modules/nodecg/types/browser.d.ts",
+		"../shims.d.ts"
+	]
+}
