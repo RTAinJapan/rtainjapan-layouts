@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import {CheckerPlugin} from 'awesome-typescript-loader';
 import CleanPlugin from 'clean-webpack-plugin';
 import globby from 'globby';
@@ -82,6 +85,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 						chunks: [entryName],
 						title: entryName,
 						template: `webpack/${name}.html`,
+						typekitId: process.env.TYPEKIT_ID,
 					}),
 			),
 			new MiniCssExtractPlugin({

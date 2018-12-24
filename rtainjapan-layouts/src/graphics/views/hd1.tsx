@@ -10,7 +10,7 @@ import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import background from '../images/background.png';
 
-const StyledContainer = Container.extend`
+const StyledContainer = styled(Container)`
 	background-image: url(${background});
 `;
 
@@ -22,11 +22,11 @@ const NameContainer = styled.div`
 	display: grid;
 `;
 
-const RunnerContainer = NameContainer.extend`
+const RunnerContainer = styled(NameContainer)`
 	bottom: 459px;
 `;
 
-const CommentatorContainer = NameContainer.extend`
+const CommentatorContainer = styled(NameContainer)`
 	bottom: 354px;
 `;
 
@@ -50,7 +50,7 @@ const TimerContainer = styled.div`
 	width: 597px;
 `;
 
-const StyledRuler = Ruler.extend`
+const StyledRuler = styled(Ruler)`
 	${infoStyle};
 	left: 1110px;
 	width: 3px;

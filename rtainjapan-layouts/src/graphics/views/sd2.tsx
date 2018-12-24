@@ -10,7 +10,7 @@ import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import background from '../images/background.png';
 
-const StyledContainer = Container.extend`
+const StyledContainer = styled(Container)`
 	background-image: url(${background});
 `;
 
@@ -27,7 +27,7 @@ const GameContainer = styled.div`
 	width: 1110px;
 `;
 
-const BottomSeparator = Ruler.extend`
+const BottomSeparator = styled(Ruler)`
 	${bottomStyle};
 	left: ${30 + 1050 + 30}px;
 	height: 150px;

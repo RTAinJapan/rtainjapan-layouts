@@ -1,8 +1,8 @@
 import delay from 'delay';
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {TweetHighlighter} from '../../../lib/TweetHighlighter';
 import {Tweets} from '../../../replicants';
+import {TweetHighlighter} from '../../../shared/tweet-highlighter';
 
 const TWEET_TRANSITION_SECONDS = 2;
 const TWEET_SHOWN_DURATION_SECONDS = 10;
@@ -50,7 +50,8 @@ const Container = styled.div`
 		maxHeightPx &&
 		css`
 			max-height: ${maxHeightPx}px;
-		`} ${({widthPx}: ContainerProps) =>
+		`};
+	${({widthPx}: ContainerProps) =>
 		widthPx &&
 		css`
 			width: ${widthPx}px;

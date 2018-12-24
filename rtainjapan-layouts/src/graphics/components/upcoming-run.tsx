@@ -1,7 +1,7 @@
 import {differenceInHours, differenceInMinutes} from 'date-fns';
 import React from 'react';
 import styled from 'styled-components';
-import {CurrentRun} from '../../../types/schemas/currentRun';
+import {CurrentRun} from '../../replicants';
 import separator from '../images/break/separator.png';
 
 const Container = styled.div`
@@ -42,7 +42,7 @@ const Misc = styled.div`
 	line-height: ${20 * 1.5}px;
 `;
 
-const Time = Misc.extend`
+const Time = styled(Misc)`
 	text-align: center;
 `;
 

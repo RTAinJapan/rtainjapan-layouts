@@ -59,7 +59,7 @@ const SecondaryInfo = styled.div`
 	line-height: 48px;
 `;
 
-const StyledRuler = Ruler.extend`
+const StyledRuler = styled(Ruler)`
 	margin: 0 30px;
 `;
 
@@ -92,7 +92,7 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 	public render() {
 		return (
 			<Container
-				innerRef={this.containerRef}
+				ref={this.containerRef}
 				thickRuler={this.props.thickRuler}
 				gradientBackground={this.props.gradientBackground}
 				primaryHeight={this.props.primaryHeight}
@@ -101,7 +101,7 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 				<PrimaryInfo
 					fontSize={this.state.primarySize}
 					spacy={this.props.spacy}
-					innerRef={this.primaryRef}
+					ref={this.primaryRef}
 					color={this.state.primaryInfoColor}
 				>
 					{this.state.primaryInfo}

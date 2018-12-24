@@ -1,4 +1,4 @@
-import {CurrentRun} from '../../../types/schemas/currentRun';
+import {CurrentRun} from '../../replicants';
 import runnerIcon from '../images/icon/runner.png';
 import {Nameplate} from './lib/nameplate';
 

@@ -1,7 +1,7 @@
 import delay from 'delay';
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {CurrentRun, RunnerList, Timer} from '../../../../replicants';
+import {CurrentRun, Runner, RunnerList, Timer} from '../../../../replicants';
 import nicoIcon from '../../../images/icon/nico.png';
 import twitchIcon from '../../../images/icon/twitch.png';
 import twitterIcon from '../../../images/icon/twitter.png';
@@ -77,7 +77,7 @@ const Container = styled.div`
 	z-index: 10;
 `;
 
-const StyledRuler = Ruler.extend`
+const StyledRuler = styled(Ruler)`
 	position: absolute;
 	left: 0;
 	bottom: 0;
@@ -109,7 +109,7 @@ interface Props {
 }
 
 interface State {
-	runner?: RunnerList[0];
+	runner?: Runner;
 	hideLabel: boolean;
 	fontSizeMultiplier: number;
 	showingSocialIndex: number;
@@ -126,9 +126,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 
 	public socialRotateIntervalTimer?: number;
 
-	protected abstract readonly calcNewRunner: (
-		newVal: CurrentRun,
-	) => RunnerList[0] | undefined;
+	protected abstract readonly calcNewRunner: (newVal: CurrentRun) => Runner;
 
 	protected abstract readonly labelIcon: any;
 
@@ -146,7 +144,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 		const showingSocialIndex = state.showingSocialIndex % socialLength;
 		return (
 			<Container
-				innerRef={this.container}
+				ref={this.container}
 				gradientBackground={this.props.gradientBackground}
 				columnDirection={this.props.columnDirection}
 			>
@@ -165,7 +163,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 							key={info.type}
 							columnDirection={this.props.columnDirection}
 							fontSizeMultiplier={this.state.fontSizeMultiplier}
-							icon={socialIcon(info.type)}
+							icon={socialIcon(info.type) || ''}
 							show={showingSocialIndex === index}
 						>
 							{info.info}
@@ -216,7 +214,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 		}
 	}
 
-	private readonly timerChanged = (newVal: TimeObject) => {
+	private readonly timerChanged = (newVal: Timer) => {
 		const result = newVal.results[this.props.index];
 		this.setState({finalTime: result ? result.formatted : undefined});
 	};

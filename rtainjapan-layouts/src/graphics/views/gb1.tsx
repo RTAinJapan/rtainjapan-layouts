@@ -9,7 +9,7 @@ import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import background from '../images/background.png';
 
-const StyledContainer = Container.extend`
+const StyledContainer = styled(Container)`
 	background-image: url(${background});
 `;
 
