@@ -1,3 +1,5 @@
+import '../styles/common.css';
+
 import React from 'react';
 import ReactDom from 'react-dom';
 import styled, {css} from 'styled-components';
@@ -16,7 +18,7 @@ const StyledContainer = styled(Container)`
 
 const runnerStyle = css`
 	position: absolute;
-	bottom: 330px
+	bottom: 330px;
 	height: 60px;
 	width: 620px;
 `;
@@ -128,8 +130,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('sd3'), () => {
-	setTimeout(() => {
-		document.body.style.opacity = '1';
-	}, 1000);
-});
+ReactDom.render(<App />, document.getElementById('sd3'));

@@ -1,15 +1,18 @@
+import '../../fonts/migmix-2p/index.css';
+import '../styles/common.css';
+
 import React from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
 
-import {CurrentRun, Schedule} from '../../replicants';
+import {CurrentRun, ReplicantName as R, Schedule} from '../../replicants';
 import {BreakBackground} from '../components/break-background';
 import {RtaijOverlay} from '../components/rtaij-overlay';
 import {UpcomingRun} from '../components/upcoming-run';
 import notification from '../images/break/notification.png';
 
-const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
-const scheduleRep = nodecg.Replicant<Schedule>('schedule');
+const currentRunRep = nodecg.Replicant<CurrentRun>(R.CurrentRun);
+const scheduleRep = nodecg.Replicant<Schedule>(R.Schedule);
 
 const NotificationIcon = styled.img.attrs({src: notification})`
 	position: absolute;
@@ -115,8 +118,4 @@ class Break extends React.Component<{}, State> {
 	};
 }
 
-ReactDom.render(<Break />, document.getElementById('break'), () => {
-	setTimeout(() => {
-		document.body.style.opacity = '1';
-	}, 1000);
-});
+ReactDom.render(<Break />, document.getElementById('break'));

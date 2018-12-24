@@ -1,8 +1,27 @@
+@keyframes dot {
+	0% {
+		transform: translateX(0px);
+	}
+	100% {
+		transform: translateX(-100px);
+	}
+}
+
+@keyframes rtachan {
+	0% {
+		transform: translateY(0px);
+	}
+	100% {
+		transform: translateY(30px);
+	}
+}
+
 * {
 	margin: 0px;
 	padding: 0px;
 	border: 0px;
 }
+
 div.bg {
 	position: absolute;
 	top: 0px;
@@ -128,27 +147,9 @@ img.pale8 {
 	animation: dot 5.7s linear infinite;
 }
 
-@keyframes dot {
-	0% {
-		transform: translateX(0px);
-	}
-	100% {
-		transform: translateX(-100px);
-	}
-}
-
 img.rtachan {
 	position: absolute;
 	top: 550px;
 	left: 1150px;
 	animation: rtachan 1.5s ease-out infinite alternate;
-}
-
-@keyframes rtachan {
-	0% {
-		transform: translateY(0px);
-	}
-	100% {
-		transform: translateY(30px);
-	}
 }

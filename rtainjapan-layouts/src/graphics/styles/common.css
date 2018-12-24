@@ -1,0 +1,8 @@
+@import '../../../node_modules/modern-normalize/modern-normalize.css';
+
+body {
+	font-family: 'tbudgothic-std';
+	font-weight: 400;
+	width: 1920px;
+	height: 1080px;
+}

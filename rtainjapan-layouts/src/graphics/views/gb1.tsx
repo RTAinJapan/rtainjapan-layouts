@@ -1,3 +1,5 @@
+import '../styles/common.css';
+
 import React from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
@@ -72,8 +74,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('gb1'), () => {
-	setTimeout(() => {
-		document.body.style.opacity = '1';
-	}, 1000);
-});
+ReactDom.render(<App />, document.getElementById('gb1'));
