@@ -1,4 +1,5 @@
 export interface Runner {
+	pk: number;
 	name: string;
 	twitch?: string;
 	nico?: string;

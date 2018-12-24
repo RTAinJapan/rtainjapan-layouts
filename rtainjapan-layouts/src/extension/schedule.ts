@@ -141,18 +141,24 @@ export default (nodecg: NodeCG) => {
 			index,
 			scheduled: startTime,
 			platform: '',
-			runners: game.runnerPkAry.map(
-				(pk) =>
-					defaultRunners.find((runner) => runner.pk === pk) || {
-						name: 'NOT_FOUND',
-					},
-			),
-			commentators: game.commentatorPkAry.map(
-				(pk) =>
-					defaultRunners.find((runner) => runner.pk === pk) || {
-						name: 'NOT_FOUND',
-					},
-			),
+			runners: game.runnerPkAry.map((pk) => {
+				const runner = defaultRunners.find((r) => r.pk === pk);
+				if (!runner) {
+					throw new Error(
+						`Runner pk ${pk} on run ${game.pk} doesn't exist`,
+					);
+				}
+				return runner;
+			}),
+			commentators: game.commentatorPkAry.map((pk) => {
+				const commentator = defaultRunners.find((r) => r.pk === pk);
+				if (!commentator) {
+					throw new Error(
+						`Commentator ${pk} on run ${game.pk} doesn't exist`,
+					);
+				}
+				return commentator;
+			}),
 		};
 		const durationHms = game.duration
 			.split(':')

@@ -4,7 +4,8 @@
 	"private": true,
 	"scripts": {
 		"csstypes": "tcm -c -p \"src/**/*.{css,scss}\"",
-		"dev-dashboard": "concurrently --raw \"yarn webpack --config-name dashboard -w\" \"yarn csstypes -w\""
+		"dev-dashboard": "concurrently --raw \"yarn webpack --config-name dashboard -w\" \"yarn csstypes -w\"",
+		"dev-extension": "concurrently --raw \"yarn webpack --config-name extension -w\" \"yarn csstypes -w\""
 	},
 	"dependencies": {
 		"axios": "^0.18.0",

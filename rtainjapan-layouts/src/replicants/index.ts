@@ -40,7 +40,7 @@ export type GameList = Array<{
 	duration: string;
 }>;
 
-export type RunnerList = Array<Runner & {pk: number}>;
+export type RunnerList = Runner[];
 
 export type Schedule = Run[];
 
