@@ -40,7 +40,6 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 					options: {
 						useCache: true,
 						configFileName: `./src/${name}/tsconfig.json`,
-						transpileOnly: true,
 					},
 				},
 				{test: /\.png$/, loader: 'file-loader'},
@@ -48,6 +47,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 		},
 		plugins: [
 			new CleanPlugin([name]),
+			new CheckerPlugin(),
 			...Object.keys(entry).map(
 				entryName =>
 					new HtmlPlugin({
@@ -57,7 +57,6 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 						template: 'webpack/template.html',
 					})
 			),
-			new CheckerPlugin(),
 			new BundleAnalyzerPlugin({
 				analyzerMode: isProduction || isWatch ? 'disabled' : 'static',
 			}),
@@ -91,7 +90,6 @@ const extensionConfig: webpack.Configuration = {
 				options: {
 					useCache: true,
 					configFileName: './src/extension/tsconfig.json',
-					transpileOnly: true,
 				},
 			},
 		],
