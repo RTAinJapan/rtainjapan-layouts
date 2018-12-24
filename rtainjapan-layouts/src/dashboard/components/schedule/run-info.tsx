@@ -21,7 +21,7 @@ const Label = styled.div`
 
 const LabeledDiv = styled.div`
 	white-space: nowrap;
-	overflow: scroll;
+	overflow: hidden;
 `;
 
 const RunnersContainer = styled.div`

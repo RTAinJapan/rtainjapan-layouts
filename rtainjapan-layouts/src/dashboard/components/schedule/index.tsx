@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button';
 import pink from '@material-ui/core/colors/pink';
 import purple from '@material-ui/core/colors/purple';
 import ArrowBack from '@material-ui/icons/ArrowBack';
@@ -47,7 +46,7 @@ const Divider = styled.div`
 
 const EditControls = styled.div`
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(2, 1fr);
 	grid-gap: 16px;
 `;
 
@@ -117,12 +116,6 @@ export class Schedule extends React.Component<{}, State> {
 					>
 						編集：現在のゲーム
 					</ColoredButton>
-					<Button
-						style={{whiteSpace: 'nowrap'}}
-						onClick={this.updateClicked}
-					>
-						手動更新
-					</Button>
 					<ColoredButton
 						color={pink}
 						ButtonProps={{onClick: this.editNextRun}}
@@ -153,10 +146,6 @@ export class Schedule extends React.Component<{}, State> {
 
 	private readonly onEditFinish = () => {
 		this.setState({edit: undefined});
-	};
-
-	private readonly updateClicked = () => {
-		nodecg.sendMessage('manualUpdate');
 	};
 
 	private readonly scheduleChangeHandler = (newVal: ScheduleSchema) => {

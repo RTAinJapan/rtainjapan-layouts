@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Tweets} from '../../../replicants';
+import {ReplicantName as R, Tweets} from '../../../replicants';
 import {BorderedBox} from '../lib/bordered-box';
 import {TweetItem} from './tweet-item';
 
-const tweetsRep = nodecg.Replicant<Tweets>('tweets');
+const tweetsRep = nodecg.Replicant<Tweets>(R.Tweets);
 
 const Container = styled(BorderedBox)`
 	height: calc(100vh - 32px);

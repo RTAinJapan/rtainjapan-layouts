@@ -36,7 +36,7 @@ class App extends React.Component<{}, State> {
 
 	public render() {
 		const {userObject} = this.state;
-		return userObject ? (
+		return userObject && Object.keys(userObject).length > 0 ? (
 			<LoggedIn onClick={this.logout}>
 				<div>ログイン中：@{userObject.screen_name}</div>
 				<Button>ログアウト</Button>

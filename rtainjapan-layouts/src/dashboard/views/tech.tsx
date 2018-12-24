@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import {Checklist} from '../components/checklist';
 import {Schedule} from '../components/schedule';
 import {Timekeeper} from '../components/timekeeper';
-// import {Twitter} from '../components/twitter';
+import {Twitter} from '../components/twitter';
 
 const Container = styled.div`
 	color: #000;
@@ -58,7 +58,9 @@ export const App = () => (
 			<Column>
 				<Schedule />
 			</Column>
-			<Column>{/* <Twitter /> */}</Column>
+			<Column>
+				<Twitter />
+			</Column>
 		</Container>
 	</MuiThemeProvider>
 );
