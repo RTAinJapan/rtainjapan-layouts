@@ -9,7 +9,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import React from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
-// import {Checklist} from '../components/checklist';
+import {Checklist} from '../components/checklist';
 // import {Schedule} from '../components/schedule';
 import {Timekeeper} from '../components/timekeeper';
 // import {Twitter} from '../components/twitter';
@@ -53,7 +53,7 @@ export const App = () => (
 		<Container>
 			<LeftColumn>
 				<Timekeeper />
-				{/* <Checklist /> */}
+				<Checklist />
 			</LeftColumn>
 			<Column>{/* <Schedule /> */}</Column>
 			<Column>{/* <Twitter /> */}</Column>

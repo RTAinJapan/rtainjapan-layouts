@@ -2,10 +2,13 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import React, {ChangeEvent} from 'react';
 import styled from 'styled-components';
-import {Checklist as ChecklistSchema} from '../../../replicants';
+import {
+	Checklist as ChecklistType,
+	ReplicantName as R,
+} from '../../../replicants';
 import {BorderedBox} from '../lib/bordered-box';
 
-const checklistRep = nodecg.Replicant<ChecklistSchema>('checklist');
+const checklistRep = nodecg.Replicant<ChecklistType>(R.Checklist);
 
 const Container = styled(BorderedBox)`
 	padding: 16px;
@@ -15,13 +18,9 @@ const Container = styled(BorderedBox)`
 	grid-gap: 8px;
 	user-select: none;
 `;
-const CheckboxLabel = styled(FormControlLabel)`
-	border-radius: 3px;
-	border: 1px solid black;
-`;
 
 interface State {
-	checklist: ChecklistSchema;
+	checklist: ChecklistType;
 }
 
 export class Checklist extends React.Component {
@@ -45,7 +44,7 @@ export class Checklist extends React.Component {
 		);
 	}
 
-	private readonly checklistChangeHandler = (newVal: ChecklistSchema) => {
+	private readonly checklistChangeHandler = (newVal: ChecklistType) => {
 		this.setState({checklist: newVal});
 	};
 
@@ -59,15 +58,19 @@ export class Checklist extends React.Component {
 		});
 	};
 
-	private readonly makeChecklistElement = (checklist: ChecklistSchema[0]) => (
-		<CheckboxLabel
+	private readonly makeChecklistElement = (checklist: ChecklistType[0]) => (
+		<FormControlLabel
 			key={checklist.name}
 			control={
 				<Checkbox checked={checklist.complete} name={checklist.name} />
 			}
 			label={checklist.name}
 			onChange={this.toggleCheckbox}
-			style={{margin: '0'}}
+			style={{
+				margin: '0',
+				borderRadius: '3px',
+				border: '1px solid black',
+			}}
 		/>
 	);
 }
