@@ -1,7 +1,7 @@
 {
 	"private": true,
 	"scripts": {
-		"format": "prettier '**/*.{ts,tsx,json,html}' --write",
+		"format": "prettier '**/*.{ts,tsx,json,html,yml,css,scss,md}' --write",
 		"postinstall": "ts-node scripts/postinstall.ts",
 		"lint": "tslint -p . -t stylish",
 		"start": "node node_modules/nodecg"
@@ -34,14 +34,14 @@
 	},
 	"lint-staged": {
 		"*.{ts,tsx}": [
-			"yarn lint --fix",
+			"tslint -p . -t stylish --fix",
 			"git add"
 		],
-		"*.{ts,tsx,json,html}": [
+		"*.{ts,tsx,json,html,yml,css,scss,md}": [
 			"prettier --write",
 			"git add"
 		],
-		"package.json": [
+		"**/package.json": [
 			"sort-package-json",
 			"git add"
 		]
