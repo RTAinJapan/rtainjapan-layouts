@@ -1,4 +1,3 @@
-import '../../fonts/migmix-2p/index.css';
 import '../styles/common.css';
 
 import React from 'react';
