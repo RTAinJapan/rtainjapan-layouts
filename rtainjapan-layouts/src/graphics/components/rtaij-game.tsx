@@ -1,7 +1,7 @@
-import {CurrentRun} from '../../replicants';
+import {CurrentRun, ReplicantName as R} from '../../replicants';
 import {BaseInfo} from './lib/base-info';
 
-const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
+const currentRunRep = nodecg.Replicant<CurrentRun>(R.CurrentRun);
 
 export class RtaijGame extends BaseInfo {
 	public componentDidMount() {

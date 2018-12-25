@@ -1,7 +1,13 @@
 import delay from 'delay';
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {CurrentRun, Runner, RunnerList, Timer} from '../../../../replicants';
+import {
+	CurrentRun,
+	ReplicantName as R,
+	Runner,
+	RunnerList,
+	Timer,
+} from '../../../../replicants';
 import nicoIcon from '../../../images/icon/nico.png';
 import twitchIcon from '../../../images/icon/twitch.png';
 import twitterIcon from '../../../images/icon/twitter.png';
@@ -10,8 +16,8 @@ import {GradientRight} from '../styled';
 import {Name} from './name';
 import {Social} from './social';
 
-const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
-const timerRep = nodecg.Replicant<Timer>('timer');
+const currentRunRep = nodecg.Replicant<CurrentRun>(R.CurrentRun);
+const timerRep = nodecg.Replicant<Timer>(R.Timer);
 
 const SOCIAL_ROTATE_INTERVAL_SECONDS = 20;
 

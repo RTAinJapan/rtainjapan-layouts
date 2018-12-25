@@ -1,9 +1,13 @@
-import {CurrentRun, Timer} from '../../replicants';
-import {TimerState} from '../../replicants/lib';
+import {
+	CurrentRun,
+	ReplicantName as R,
+	Timer,
+	TimerState,
+} from '../../replicants';
 import {BaseInfo} from './lib/base-info';
 
-const currentRunRep = nodecg.Replicant<CurrentRun>('currentRun');
-const timerRep = nodecg.Replicant<Timer>('timer');
+const currentRunRep = nodecg.Replicant<CurrentRun>(R.CurrentRun);
+const timerRep = nodecg.Replicant<Timer>(R.Timer);
 
 const timerStateColorMap = {
 	[TimerState.Stopped]: '#9a9fa1',
