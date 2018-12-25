@@ -14,6 +14,27 @@ import background from '../images/background.png';
 
 const StyledContainer = styled(Container)`
 	background-image: url(${background});
+	clip-path: polygon(
+		0px 0px,
+		15px 0px,
+		15px 741px,
+		15px 1065px,
+		447px 1065px,
+		447px 741px,
+		15px 741px,
+		15px 0px,
+		465px 0px,
+		465px 15px,
+		465px 825px,
+		1905px 825px,
+		1905px 15px,
+		465px 15px,
+		465px 0px,
+		1920px 0px,
+		1920px 1080px,
+		0px 1080px,
+		0px 0px
+	);
 `;
 
 const NameContainer = styled.div`
@@ -42,19 +63,19 @@ const infoStyle = css`
 
 const GameContainer = styled.div`
 	${infoStyle};
-	left: 0;
-	width: 1110px;
+	left: 480px;
+	width: 765px;
 `;
 
 const TimerContainer = styled.div`
 	${infoStyle};
-	right: 210px;
-	width: 597px;
+	right: 240px;
+	width: 372px;
 `;
 
 const StyledRuler = styled(Ruler)`
 	${infoStyle};
-	left: 1110px;
+	right: 642px;
 	width: 3px;
 `;
 
@@ -63,15 +84,6 @@ const infoHeights = {
 	secondaryHeight: 72,
 	thickRuler: true,
 };
-
-const GameArea = styled.div`
-	position: absolute;
-	top: 15px;
-	left: ${(10 + 288 + 10) * 1.5}px;
-	width: ${960 * 1.5}px;
-	height: ${540 * 1.5}px;
-	background-color: black;
-`;
 
 const App = () => (
 	<StyledContainer>
@@ -94,8 +106,6 @@ const App = () => (
 			bottomHeightPx={240}
 			TweetProps={{leftAttached: true, widthPx: (10 + 288) * 1.5}}
 		/>
-
-		<GameArea />
 	</StyledContainer>
 );
 
