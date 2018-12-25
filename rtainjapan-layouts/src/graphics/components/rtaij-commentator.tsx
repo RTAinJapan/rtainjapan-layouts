@@ -10,6 +10,14 @@ export class RtaijCommentator extends Nameplate {
 	protected calcNewRunner = (newVal: CurrentRun) => {
 		const commentators = newVal.commentators.filter(Boolean);
 
+		// 0 commentator
+		if (commentators.length === 0) {
+			return {
+				pk: 0,
+				name: '',
+			};
+		}
+
 		// 1 commentator
 		if (commentators.length === 1) {
 			return commentators[0];
