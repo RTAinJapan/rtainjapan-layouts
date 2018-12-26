@@ -1,6 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
-
 import {CheckerPlugin} from 'awesome-typescript-loader';
 import CleanPlugin from 'clean-webpack-plugin';
 import globby from 'globby';
