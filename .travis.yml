@@ -7,10 +7,20 @@ env:
   - DOCKER_REPO=rtainjapan/rtainjapan-layouts
 
 script:
-  - docker build -t $DOCKER_REPO:$(git rev-parse --short HEAD) --build-arg TYPEKIT_ID=$TYPEKIT_ID .
+  - docker build -t $DOCKER_REPO:$TRAVIS_COMMIT --build-arg TYPEKIT_ID=$TYPEKIT_ID .
 
 deploy:
-  provider: script
-  script: bash scripts/docker-push
-  on:
-    branch: master
+  - provider: script
+    script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker tag $DOCKER_REPO:$TRAVIS_COMMIT $DOCKER_REPO:next
+      - docker push $DOCKER_REPO
+    on:
+      branch: master
+  - provider: script
+    script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker tag $DOCKER_REPO:$TRAVIS_COMMIT $DOCKER_REPO:latest
+      - docker push $DOCKER_REPO
+    on:
+      branch: master
