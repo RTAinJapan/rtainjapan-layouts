@@ -1,0 +1,8 @@
+#!/bin/bash
+
+[[ -z $TYPEKIT_ID ]] && echo "Missing TYPEKIT_ID" && exit 1 || true
+
+DOCKER_IMAGE=rtainjapan/rtainjapan-layouts:manual
+
+docker build --build-arg TYPEKIT_ID=$TYPEKIT_ID -t $DOCKER_IMAGE .
+docker push $DOCKER_IMAGE
