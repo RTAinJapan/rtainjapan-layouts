@@ -7,4 +7,10 @@ env:
   - DOCKER_REPO=rtainjapan/rtainjapan-layouts
 
 script:
-  - echo $TRAVIS_COMMIT
+  - docker build -t $DOCKER_REPO:$(git rev-parse --short HEAD) --build-arg TYPEKIT_ID=$TYPEKIT_ID .
+
+deploy:
+  provider: script
+  script: bash scripts/docker-push
+  on:
+    branch: master
