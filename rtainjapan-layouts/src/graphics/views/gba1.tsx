@@ -2,7 +2,7 @@ import '../styles/common.css';
 
 import React from 'react';
 import ReactDom from 'react-dom';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import {Container} from '../components/lib/styled';
 import {RtaijCommentator} from '../components/rtaij-commentator';
 import {RtaijGame} from '../components/rtaij-game';
@@ -15,20 +15,20 @@ const StyledContainer = styled(Container)`
 	background-image: url(${background});
 	clip-path: polygon(
 		0px 0px,
-		90px 0px,
-		90px 687px,
-		90px 1065px,
-		762px 1065px,
-		762px 687px,
-		90px 687px,
-		90px 0px,
-		840px 0px,
-		840px 24px,
-		840px 915px,
-		1830px 915px,
-		1830px 24px,
-		840px 24px,
-		840px 0px,
+		54px 0px,
+		54px 686px,
+		54px 1065px,
+		726px 1065px,
+		726px 686px,
+		54px 686px,
+		54px 0px,
+		741px 0px,
+		741px 165px,
+		741px 915px,
+		1851px 915px,
+		1851px 165px,
+		741px 165px,
+		741px 0px,
 		1920px 0px,
 		1920px 1080px,
 		0px 1080px,
@@ -40,30 +40,25 @@ const InfoContainer = styled.div`
 	position: absolute;
 	top: 150px;
 	left: 0px;
-	width: ${560 * 1.5}px;
-	height: ${358 * 1.5}px;
+	height: 536px;
+	width: ${54 + 672}px;
 
 	display: grid;
 	grid-template-rows: auto auto;
 	align-content: center;
 	justify-content: stretch;
-	grid-gap: 30px;
-`;
-
-const runnerStyle = css`
-	position: absolute;
-	left: ${(60 + 448) * 1.5}px;
-	right: ${160 * 1.5}px;
-	height: 60px;
+	grid-gap: 20px;
 `;
 
 const RunnerContainer = styled.div`
-	${runnerStyle};
+	position: absolute;
 	bottom: 75px;
+	left: ${54 + 672}px;
+	right: 240px;
+	height: 60px;
 `;
 
-const CommentatorContainer = styled.div`
-	${runnerStyle};
+const CommentatorContainer = styled(RunnerContainer)`
 	bottom: 15px;
 `;
 
@@ -79,11 +74,8 @@ const App = () => (
 		<CommentatorContainer>
 			<RtaijCommentator index={0} />
 		</CommentatorContainer>
-		<RtaijOverlay
-			TweetProps={{widthPx: 450 * 1.5, hideLogo: true}}
-			bottomHeightPx={150}
-		/>
+		<RtaijOverlay TweetProps={{rowDirection: true}} bottomHeightPx={150} />
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('gb1'));
+ReactDom.render(<App />, document.getElementById('gba1'));

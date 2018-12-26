@@ -15,27 +15,27 @@ const StyledContainer = styled(Container)`
 	background-image: url(${background});
 	clip-path: polygon(
 		0px 0px,
-		141px 0px,
-		141px 168px,
-		141px 735px,
-		897px 735px,
-		897px 168px,
-		141px 168px,
-		141px 0px,
-		750px 0px,
-		750px 750px,
-		750px 1065px,
-		1170px 1065px,
-		1170px 750px,
-		750px 750px,
-		750px 0px,
-		1023px 0px,
-		1023px 168px,
-		1023px 735px,
-		1779px 735px,
-		1779px 168px,
-		1023px 168px,
-		1023px 0px,
+		15px 0px,
+		15px 163.5px,
+		15px 690px,
+		951px 690px,
+		951px 163.5px,
+		15px 163.5px,
+		15px 0px,
+		720px 0px,
+		720px 705px,
+		720px 1065px,
+		1200px 1065px,
+		1200px 705px,
+		720px 705px,
+		720px 0px,
+		969px 0px,
+		969px 163.5px,
+		969px 690px,
+		1905px 690px,
+		1905px 163.5px,
+		969px 163.5px,
+		969px 0px,
 		1920px 0px,
 		1920px 1080px,
 		0px 1080px,
@@ -46,20 +46,20 @@ const StyledContainer = styled(Container)`
 const bottomStyle = css`
 	position: absolute;
 	z-index: 10;
-	bottom: 15px;
-	height: 165px;
+	bottom: 0;
+	height: 180px;
 `;
 
 const GameContainer = styled.div`
 	${bottomStyle};
 	left: 0;
-	width: ${(20 + 460 + 20) * 1.5}px;
+	width: ${(20 + 440 + 20) * 1.5}px;
 `;
 
 const TimerContainer = styled.div`
 	${bottomStyle};
 	right: 210px;
-	width: 540px;
+	width: 510px;
 `;
 
 const infoHeights = {
@@ -69,8 +69,8 @@ const infoHeights = {
 
 const runnerStyle = css`
 	position: absolute;
-	top: ${(100 + 12 + 378 + 10) * 1.5}px;
-	width: ${490 * 1.5}px;
+	top: ${(100 + 9 + 351 + 10) * 1.5}px;
+	width: ${470 * 1.5}px;
 	height: 60px;
 `;
 const LeftRunner = styled.div`
@@ -85,10 +85,8 @@ const RightRunner = styled.div`
 
 const CommentatorContainer = styled.div`
 	${runnerStyle};
-	top: ${(100 + 12 + 378 + 10 + 40 + 10) * 1.5}px;
-	left: ${(20 + 460 + 20 + 280) * 1.5}px;
+	top: ${(100 + 9 + 351 + 10 + 40 + 10) * 1.5}px;
 	right: 15px;
-	width: auto;
 `;
 
 const App = () => (
@@ -112,4 +110,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('sd2'));
+ReactDom.render(<App />, document.getElementById('hd2'));

@@ -5,23 +5,42 @@ import ReactDom from 'react-dom';
 import styled from 'styled-components';
 
 import {CurrentRun, ReplicantName as R, Schedule} from '../../replicants';
-import {BreakBackground} from '../components/break-background';
+import {Container} from '../components/lib/styled';
 import {RtaijOverlay} from '../components/rtaij-overlay';
 import {UpcomingRun} from '../components/upcoming-run';
+import breakBackgroundImg from '../images/break/break-background.png';
 import notification from '../images/break/notification.png';
 
 const currentRunRep = nodecg.Replicant<CurrentRun>(R.CurrentRun);
 const scheduleRep = nodecg.Replicant<Schedule>(R.Schedule);
 
+const StyledContainer = styled(Container)`
+	background-image: url(${breakBackgroundImg});
+	clip-path: polygon(
+		0px 0px,
+		15px 0px,
+		15px 714px,
+		15px 1065px,
+		639px 1065px,
+		639px 714px,
+		15px 714px,
+		15px 0px,
+		1920px 0px,
+		1920px 1080px,
+		0px 1080px,
+		0px 0px
+	);
+`;
+
 const NotificationIcon = styled.img.attrs({src: notification})`
 	position: absolute;
-	left: 60px;
+	left: ${15 + 624 + 30}px;
 	bottom: 15px;
 `;
 
 const NotificationText = styled.div`
 	position: absolute;
-	left: 225px;
+	left: ${15 + 624 + 30 + 135 + 30}px;
 	bottom: 0px;
 	height: 150px;
 
@@ -41,7 +60,7 @@ const UpcomingTitle = styled.div`
 	left: 60px;
 	width: 180px;
 
-	background-color: #4d7dff;
+	background-color: #60392f;
 	box-shadow: 4.5px 4.5px 6px -1.5px rgba(0, 0, 0, 1);
 
 	font-family: 'MigMix 2P';
@@ -54,12 +73,12 @@ const UpcomingTitle = styled.div`
 
 const UpcomingContainer = styled.div`
 	position: absolute;
-	top: ${150 + 50 + 45 + 70}px;
+	top: ${150 + 50 + 45 + 48}px;
 	left: 120px;
 
 	display: grid;
 	grid-auto-flow: row;
-	grid-gap: 70px;
+	grid-gap: 48px;
 	justify-items: start;
 `;
 
@@ -77,8 +96,7 @@ class Break extends React.Component<{}, State> {
 			this.state.currentRunIndex + 3,
 		);
 		return (
-			<div>
-				<BreakBackground />
+			<StyledContainer>
 				<RtaijOverlay
 					bottomHeightPx={150}
 					isBreak
@@ -94,7 +112,7 @@ class Break extends React.Component<{}, State> {
 						<UpcomingRun key={run.pk} {...run} />
 					))}
 				</UpcomingContainer>
-			</div>
+			</StyledContainer>
 		);
 	}
 

@@ -3,6 +3,7 @@ import '../styles/common.css';
 import React from 'react';
 import ReactDom from 'react-dom';
 import styled, {css} from 'styled-components';
+import {Ruler} from '../components/lib/ruler';
 import {Container} from '../components/lib/styled';
 import {RtaijCommentator} from '../components/rtaij-commentator';
 import {RtaijGame} from '../components/rtaij-game';
@@ -15,27 +16,27 @@ const StyledContainer = styled(Container)`
 	background-image: url(${background});
 	clip-path: polygon(
 		0px 0px,
-		141px 0px,
-		141px 168px,
-		141px 735px,
-		897px 735px,
-		897px 168px,
-		141px 168px,
-		141px 0px,
-		750px 0px,
-		750px 750px,
-		750px 1065px,
-		1170px 1065px,
-		1170px 750px,
-		750px 750px,
-		750px 0px,
-		1023px 0px,
-		1023px 168px,
-		1023px 735px,
-		1779px 735px,
-		1779px 168px,
-		1023px 168px,
-		1023px 0px,
+		15px 0px,
+		15px 705px,
+		15px 1065px,
+		495px 1065px,
+		495px 705px,
+		15px 705px,
+		15px 0px,
+		252px 0px,
+		252px 165px,
+		252px 690px,
+		952px 690px,
+		952px 165px,
+		252px 165px,
+		252px 0px,
+		968px 0px,
+		968px 165px,
+		968px 690px,
+		1668px 690px,
+		1668px 165px,
+		968px 165px,
+		968px 0px,
 		1920px 0px,
 		1920px 1080px,
 		0px 1080px,
@@ -46,70 +47,69 @@ const StyledContainer = styled(Container)`
 const bottomStyle = css`
 	position: absolute;
 	z-index: 10;
-	bottom: 15px;
-	height: 165px;
+	height: 225px;
+	bottom: 0;
 `;
 
 const GameContainer = styled.div`
 	${bottomStyle};
-	left: 0;
-	width: ${(20 + 460 + 20) * 1.5}px;
+	left: 495px;
+	width: 780px;
 `;
 
 const TimerContainer = styled.div`
 	${bottomStyle};
 	right: 210px;
-	width: 540px;
+	width: 432px;
 `;
 
 const infoHeights = {
-	primaryHeight: 68 * 1.5,
-	secondaryHeight: 38 * 1.5,
+	primaryHeight: 132,
+	secondaryHeight: 72,
 };
 
 const runnerStyle = css`
 	position: absolute;
-	top: ${(100 + 12 + 378 + 10) * 1.5}px;
-	width: ${490 * 1.5}px;
+	left: ${15 + 480}px;
+	right: 15px;
+	width: auto;
 	height: 60px;
 `;
-const LeftRunner = styled.div`
+const Runner = styled.div`
 	${runnerStyle};
-	left: 15px;
-`;
-
-const RightRunner = styled.div`
-	${runnerStyle};
-	right: 15px;
+	top: ${15 + 675 + 15}px;
 `;
 
 const CommentatorContainer = styled.div`
 	${runnerStyle};
-	top: ${(100 + 12 + 378 + 10 + 40 + 10) * 1.5}px;
-	left: ${(20 + 460 + 20 + 280) * 1.5}px;
-	right: 15px;
-	width: auto;
+	top: ${15 + 675 + 15 + 60 + 15}px;
+`;
+
+const StyledRuler = styled(Ruler)`
+	${bottomStyle}
+	left: ${15 + 480 + 30 + 720 + 30}px;
+	bottom: 15px;
+	width: 3px;
+	height: ${225 - 30}px;
 `;
 
 const App = () => (
 	<StyledContainer>
-		<LeftRunner>
+		<Runner>
 			<RtaijRunner index={0} showFinishTime gradientBackground />
-		</LeftRunner>
-		<RightRunner>
-			<RtaijRunner index={1} showFinishTime gradientBackground />
-		</RightRunner>
+		</Runner>
 		<CommentatorContainer>
 			<RtaijCommentator index={0} gradientBackground />
 		</CommentatorContainer>
 		<GameContainer>
 			<RtaijGame {...infoHeights} />
 		</GameContainer>
+		<StyledRuler />
 		<TimerContainer>
 			<RtaijTimer {...infoHeights} />
 		</TimerContainer>
-		<RtaijOverlay TweetProps={{rowDirection: true}} bottomHeightPx={180} />
+		<RtaijOverlay bottomHeightPx={225} TweetProps={{rowDirection: true}} />
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('sd2'));
+ReactDom.render(<App />, document.getElementById('ds1-flat'));

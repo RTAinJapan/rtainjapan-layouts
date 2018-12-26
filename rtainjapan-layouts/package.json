@@ -114,6 +114,11 @@
 				"height": 1080
 			},
 			{
+				"file": "hd2.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
 				"file": "sd1.html",
 				"width": 1920,
 				"height": 1080
@@ -125,6 +130,26 @@
 			},
 			{
 				"file": "sd3.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "3ds1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "ds1-flat.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "gba1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "gba2.html",
 				"width": 1920,
 				"height": 1080
 			}

@@ -6,7 +6,7 @@ import separator from '../images/break/separator.png';
 
 const Container = styled.div`
 	font-family: 'MigMix 2P';
-	color: #2d4273;
+	color: #60392f;
 
 	height: 90px;
 	box-sizing: border-box;
@@ -19,9 +19,9 @@ const Container = styled.div`
 	flex-flow: row nowrap;
 	align-items: center;
 
-	border-left: 15px #a7bfff solid;
+	border-left: 15px #d2997b solid;
 	&:first-child {
-		border-left-color: #4d7dff;
+		border-left-color: #824218;
 	}
 `;
 
