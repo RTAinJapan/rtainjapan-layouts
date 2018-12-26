@@ -4,9 +4,6 @@ language: minimal
 services:
   - docker
 
-addons:
-  ssh_known_hosts: $DEPLOY_HOST
-
 env:
   - DOCKER_REPO=rtainjapan/rtainjapan-layouts
 
