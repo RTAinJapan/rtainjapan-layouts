@@ -14,7 +14,7 @@ COPY rtainjapan-layouts/package.json rtainjapan-layouts/yarn.lock ./
 RUN yarn
 
 COPY . /nodecg/
-RUN ts-node -T scripts/ts-to-schema.ts
+RUN ts-node scripts/ts-to-schema.ts
 RUN yarn csstypes
 RUN NODE_ENV=production yarn webpack
 
