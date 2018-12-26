@@ -1,12 +1,13 @@
 *
+!scripts
 !rtainjapan-layouts
-!Makefile
 !package.json
 !tsconfig.json
 !yarn.lock
 
 rtainjapan-layouts/*
 !rtainjapan-layouts/src
+!rtainjapan-layouts/scripts
 !rtainjapan-layouts/twitter-callback
 !rtainjapan-layouts/webpack
 !rtainjapan-layouts/package.json

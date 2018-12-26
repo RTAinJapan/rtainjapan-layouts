@@ -1,9 +1,12 @@
 FROM node:10.14.0 AS build
 
-RUN yarn global add bower
+ARG TYPEKIT_ID
+
+RUN yarn global add ts-node typescript
 
 WORKDIR /nodecg
-COPY package.json yarn.lock Makefile ./
+COPY package.json yarn.lock tsconfig.json ./
+COPY scripts ./scripts
 RUN yarn
 
 WORKDIR /nodecg/rtainjapan-layouts
@@ -11,41 +14,31 @@ COPY rtainjapan-layouts/package.json rtainjapan-layouts/yarn.lock ./
 RUN yarn
 
 COPY . /nodecg/
+RUN ts-node -T scripts/ts-to-schema.ts
+RUN yarn csstypes
 RUN NODE_ENV=production yarn webpack
 
 
-FROM node:10.14.0-alpine AS node_modules_build
+FROM node:10.14.0-alpine
 
 ENV NODE_ENV=production
 
-RUN apk --no-cache add make bash git && yarn global add bower
-
 WORKDIR /nodecg
-COPY package.json yarn.lock Makefile ./
-RUN yarn
+COPY package.json yarn.lock ./
+RUN yarn --ignore-scripts
+COPY --from=build /nodecg/node_modules/nodecg /nodecg/node_modules/nodecg
 
 WORKDIR /nodecg/rtainjapan-layouts
 COPY rtainjapan-layouts/package.json rtainjapan-layouts/yarn.lock ./
-RUN yarn
-
-
-FROM node:10.14.0-alpine AS run
-
-ENV NODE_ENV=production
-
-WORKDIR /nodecg
-COPY --from=build /nodecg/package.json ./
-COPY --from=node_modules_build /nodecg/node_modules ./node_modules
-
-WORKDIR /nodecg/rtainjapan-layouts
+RUN yarn --ignore-scripts
 COPY --from=build /nodecg/rtainjapan-layouts/dashboard ./dashboard
 COPY --from=build /nodecg/rtainjapan-layouts/graphics ./graphics
 COPY --from=build /nodecg/rtainjapan-layouts/extension ./extension
-COPY --from=build /nodecg/rtainjapan-layouts/package.json ./
-COPY --from=node_modules_build /nodecg/rtainjapan-layouts/node_modules ./node_modules
+COPY --from=build /nodecg/rtainjapan-layouts/schemas ./schemas
+COPY --from=build /nodecg/rtainjapan-layouts/configschema.json ./configschema.json
 
 WORKDIR /nodecg
-RUN mkdir cfg
+RUN mkdir cfg db
 
 EXPOSE 9090
 

@@ -2,7 +2,7 @@
 	"private": true,
 	"scripts": {
 		"format": "prettier '**/*.{ts,tsx,json,html,yml,css,scss,md}' --write",
-		"postinstall": "ts-node scripts/postinstall.ts",
+		"postinstall": "ts-node -T scripts/postinstall.ts",
 		"lint": "tslint -p . -t stylish",
 		"start": "node node_modules/nodecg"
 	},
@@ -16,15 +16,16 @@
 	},
 	"devDependencies": {
 		"@hoishin/tslint-config": "^2.0.2",
-		"@types/del": "^3.0.1",
+		"@types/rimraf": "^2.0.2",
 		"bower": "^1.8.4",
-		"del": "^3.0.0",
 		"dependency-cruiser": "^4.9.0",
 		"husky": "^1.2.1",
 		"lint-staged": "^8.1.0",
 		"prettier": "^1.15.3",
+		"rimraf": "^2.6.2",
 		"sort-package-json": "^1.17.1",
 		"ts-node": "^7.0.1",
+		"tslib": "^1.9.3",
 		"tslint": "^5.12.0",
 		"tslint-config-prettier": "^1.17.0",
 		"typescript": "^3.2.2"
