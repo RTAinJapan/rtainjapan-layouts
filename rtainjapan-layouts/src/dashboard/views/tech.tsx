@@ -65,14 +65,26 @@ export const App = () => (
 	</MuiThemeProvider>
 );
 
-const storage = localStorage.getItem('twitter-callback');
+const twitterCallback = localStorage.getItem('twitter-callback');
 localStorage.removeItem('twitter-callback');
-if (storage) {
-	const params = new URLSearchParams(storage);
+if (twitterCallback) {
+	const params = new URLSearchParams(twitterCallback);
 	nodecg.sendMessage('twitter:loginSuccess', {
 		oauthToken: params.get('oauth_token'),
 		oauthVerifier: params.get('oauth_verifier'),
 	});
+}
+
+const spotifyCallback = localStorage.getItem('sjotify-callback');
+localStorage.removeItem('spotify-callback');
+if (spotifyCallback) {
+	const params = new URLSearchParams(spotifyCallback);
+	if (params.get('error')) {
+		nodecg.log.error('Error after spotify callback');
+	} else {
+		const code = params.get('code');
+		nodecg.sendMessage('spotify:authenticated', {code});
+	}
 }
 
 ReactDom.render(<App />, document.getElementById('tech'));

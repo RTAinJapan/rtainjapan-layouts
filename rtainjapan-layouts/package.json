@@ -88,6 +88,14 @@
 				"width": 3,
 				"headerColor": "#00BEBE",
 				"workspace": "Misc"
+			},
+			{
+				"name": "spotify-auth",
+				"title": "Spotifyアカウント",
+				"file": "spotify-auth.html",
+				"width": 3,
+				"headerColor": "#00BEBE",
+				"workspace": "Misc"
 			}
 		],
 		"graphics": [
@@ -160,6 +168,10 @@
 			{
 				"directory": "twitter-callback",
 				"endpoint": "twitter-callback"
+			},
+			{
+				"directory": "spotify-callback",
+				"endpoint": "spotify-callback"
 			}
 		]
 	}
