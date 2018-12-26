@@ -31,11 +31,12 @@ COPY --from=build /nodecg/node_modules/nodecg /nodecg/node_modules/nodecg
 WORKDIR /nodecg/rtainjapan-layouts
 COPY rtainjapan-layouts/package.json rtainjapan-layouts/yarn.lock ./
 RUN yarn --ignore-scripts
+COPY --from=build /nodecg/rtainjapan-layouts/schemas ./schemas
+COPY --from=build /nodecg/rtainjapan-layouts/configschema.json ./configschema.json
 COPY --from=build /nodecg/rtainjapan-layouts/dashboard ./dashboard
 COPY --from=build /nodecg/rtainjapan-layouts/graphics ./graphics
 COPY --from=build /nodecg/rtainjapan-layouts/extension ./extension
-COPY --from=build /nodecg/rtainjapan-layouts/schemas ./schemas
-COPY --from=build /nodecg/rtainjapan-layouts/configschema.json ./configschema.json
+COPY rtainjapan-layouts/twitter-callback ./twitter-callback
 
 WORKDIR /nodecg
 RUN mkdir cfg db
