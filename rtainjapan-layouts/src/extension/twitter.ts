@@ -279,7 +279,7 @@ export const twitter = async (nodecg: NodeCG) => {
 			try {
 				const accessToken = await getAccessToken(data.oauthVerifier);
 				await saveAccessToken(accessToken);
-				twitterRep.value.userObject = await verifyCredentials();
+				twitterRep.value = {userObject: await verifyCredentials()};
 			} catch (err) {
 				nodecg.log.error('Failed to authenticate user');
 				nodecg.log.error(err);
