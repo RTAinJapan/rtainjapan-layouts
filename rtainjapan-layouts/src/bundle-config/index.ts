@@ -5,7 +5,7 @@ interface BundleConfig {
 		consumerKey: string;
 		consumerSecret: string;
 	};
-	twitch: {
+	twitch?: {
 		targetChannel: string;
 		titleTemplate: string;
 	};
