@@ -1,0 +1,19 @@
+dist: xenial
+language: minimal
+services:
+  - docker
+
+env:
+  - DOCKER_REPO=rtainjapan/rtainjapan-layouts
+
+script:
+  - docker build -t $DOCKER_REPO:$TRAVIS_COMMIT --build-arg TYPEKIT_ID=$TYPEKIT_ID .
+
+deploy:
+  provider: script
+  script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker tag $DOCKER_REPO:$TRAVIS_COMMIT $DOCKER_REPO:latest
+    - docker push $DOCKER_REPO
+  on:
+    branch: master
