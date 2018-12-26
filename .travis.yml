@@ -6,5 +6,5 @@ services:
 env:
   - DOCKER_REPO=rtainjapan/rtainjapan-layouts
 
-scripts:
+script:
   - echo $TRAVIS_COMMIT
