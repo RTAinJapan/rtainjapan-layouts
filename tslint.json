@@ -12,6 +12,7 @@
 			"@material-ui/core",
 			"@material-ui/icons",
 			"lodash"
-		]
+		],
+		"prefer-function-over-method": false
 	}
 }

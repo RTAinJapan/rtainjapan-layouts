@@ -4,7 +4,12 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
 
-import {CurrentRun, ReplicantName as R, Schedule} from '../../replicants';
+import {
+	CurrentRun,
+	ReplicantName as R,
+	Schedule,
+	Spotify,
+} from '../../replicants';
 import {Container} from '../components/lib/styled';
 import {RtaijOverlay} from '../components/rtaij-overlay';
 import {UpcomingRun} from '../components/upcoming-run';
@@ -82,13 +87,29 @@ const UpcomingContainer = styled.div`
 	justify-items: start;
 `;
 
+const CurrentTrackContainer = styled.div`
+	position: absolute;
+	bottom: 165px;
+	right: 15px;
+	height: 40px;
+	background-color: rgba(27, 20, 8, 0.6);
+	font-size: 22px;
+	line-height: 22px;
+	padding: 9px 16px;
+
+	color: white;
+	border-radius: 12px;
+`;
+
 interface State {
 	schedule: Schedule;
 	currentRunIndex: number;
+	currentTrack?: {name: string; artists: string};
 }
 
 class Break extends React.Component<{}, State> {
 	public state: State = {schedule: [], currentRunIndex: 0};
+	private readonly spotifyRep = nodecg.Replicant<Spotify>(R.Spotify);
 
 	public render() {
 		const upcomingRuns = this.state.schedule.slice(
@@ -112,6 +133,13 @@ class Break extends React.Component<{}, State> {
 						<UpcomingRun key={run.pk} {...run} />
 					))}
 				</UpcomingContainer>
+				{this.state.currentTrack && (
+					<CurrentTrackContainer>
+						{`♪ ${this.state.currentTrack.name} - ${
+							this.state.currentTrack.artists
+						}`}
+					</CurrentTrackContainer>
+				)}
 			</StyledContainer>
 		);
 	}
@@ -119,6 +147,9 @@ class Break extends React.Component<{}, State> {
 	public componentDidMount() {
 		scheduleRep.on('change', this.scheduleChangeHandler);
 		currentRunRep.on('change', this.currentRunChangeHandler);
+		this.spotifyRep.on('change', (newVal) => {
+			this.setState({currentTrack: newVal.currentTrack});
+		});
 	}
 
 	public componentWillUnmount() {

@@ -20,7 +20,7 @@ const Top = styled.div`
 	height: 150px;
 	width: 100%;
 	top: 0;
-	background-color: rgba(2, 14, 21, 0.6);
+	background-color: rgba(27, 20, 8, 0.6);
 	${({theme}) =>
 		theme.isBreak &&
 		css`
@@ -32,7 +32,7 @@ const Bottom = styled.div`
 	position: absolute;
 	width: 100%;
 	bottom: 0;
-	background-color: rgba(2, 14, 21, 0.6);
+	background-color: rgba(27, 20, 8, 0.6);
 `;
 
 const LogoR = styled.img`

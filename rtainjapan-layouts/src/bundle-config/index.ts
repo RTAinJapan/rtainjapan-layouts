@@ -5,6 +5,10 @@ interface BundleConfig {
 		consumerKey: string;
 		consumerSecret: string;
 	};
+	spotify: {
+		clientId: string;
+		clientSecret: string;
+	};
 	twitch?: {
 		targetChannel: string;
 		titleTemplate: string;

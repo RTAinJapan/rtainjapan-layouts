@@ -14,6 +14,7 @@ export enum ReplicantName {
 	Twitter = 'Twitter',
 	Horaro = 'Horaro',
 	Timer = 'Timer',
+	Spotify = 'Spotify',
 }
 
 export type Checklist = Array<{
@@ -77,4 +78,11 @@ export interface Timer {
 	results: any[];
 	forfeit: boolean;
 	place?: number;
+}
+
+export interface Spotify {
+	currentTrack?: {
+		name: string;
+		artists: string;
+	};
 }
