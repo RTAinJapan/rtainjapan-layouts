@@ -9,10 +9,6 @@ interface BundleConfig {
 		clientId: string;
 		clientSecret: string;
 	};
-	twitch?: {
-		targetChannel: string;
-		titleTemplate: string;
-	};
 	googleApi: {
 		spreadsheetId: string;
 		clientEmail: string;
