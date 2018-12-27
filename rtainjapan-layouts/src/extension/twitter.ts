@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 import crypto from 'crypto';
 import delay from 'delay';
 import {IncomingMessage} from 'http';
@@ -182,11 +182,29 @@ export const twitter = async (nodecg: NodeCG) => {
 			twitterStream = res.data;
 			twitterStream.setEncoding('utf8');
 		} catch (err) {
-			if (err && err.response && err.response.status === 420) {
-				nodecg.log.warn(
-					'Failed to start stream API due to rate limit. Retrying in 1 minute.',
-				);
-				await delay(60 * 1000);
+			const error: AxiosError = err;
+			if (error && error.response && error.response.status === 420) {
+				if (error.response.headers['x-rate-limit-reset']) {
+					const resetTime =
+						parseInt(
+							error.response.headers['x-rate-limit-reset'],
+							10,
+						) * 1000;
+					const remainTime = resetTime - Date.now();
+					if (remainTime < 0) {
+						nodecg.log.error(
+							'Twitter steam api reset time is past...',
+						);
+					}
+					nodecg.log.warn(
+						`Failed to start stream API due to rate limit. Retrying in ${Math.floor(
+							remainTime / 1000 / 60,
+						)} minute.`,
+					);
+					await delay(remainTime);
+				} else {
+					await delay(15 * 60 * 1000);
+				}
 				await startFilterStream();
 			} else {
 				nodecg.log.error('Failed to start stream API');
