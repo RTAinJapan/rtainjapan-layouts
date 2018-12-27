@@ -90,7 +90,6 @@ export const spotify = async (nodecg: NodeCG) => {
 	nodecg.listenFor(
 		'spotify:authenticated',
 		async (payload: {code: string | null}) => {
-			console.log('hello!');
 			if (!payload.code) {
 				nodecg.log.error(
 					'User authenticated through Spotify, but missing code',
@@ -114,14 +113,9 @@ export const spotify = async (nodecg: NodeCG) => {
 					Authorization: `Basic ${authHeader}`,
 					'Content-Type': 'application/x-www-form-urlencoded',
 				};
-				const res = await axios
-					.post(tokenReqUrl.href, params, {
-						headers,
-					})
-					.catch((err) => {
-						console.log(err.response.data);
-						throw err;
-					});
+				const res = await axios.post(tokenReqUrl.href, params, {
+					headers,
+				});
 				const accessToken: unknown = res.data.access_token;
 				if (typeof accessToken !== 'string') {
 					nodecg.log.error('Access token from Spotify is not string');
