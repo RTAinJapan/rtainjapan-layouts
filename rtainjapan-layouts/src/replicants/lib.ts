@@ -1,5 +1,4 @@
 export interface Runner {
-	pk: number;
 	name: string;
 	twitch?: string;
 	nico?: string;
@@ -11,10 +10,9 @@ export interface Run {
 	index: number;
 	scheduled: number;
 	title: string;
-	engTitle?: string;
 	category?: string;
-	platform: string;
-	duration?: string;
+	platform?: string;
+	duration: string;
 	runners: Runner[];
 	commentators: Runner[];
 }

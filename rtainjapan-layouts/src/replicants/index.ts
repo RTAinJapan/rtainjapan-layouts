@@ -7,12 +7,9 @@ export enum ReplicantName {
 	ChecklistCompleted = 'ChecklistCompleted',
 	CurrentRun = 'CurrentRun',
 	NextRun = 'NextRun',
-	GameList = 'GameList',
-	RunnerList = 'RunnerList',
 	Schedule = 'Schedule',
 	Tweets = 'Tweets',
 	Twitter = 'Twitter',
-	Horaro = 'Horaro',
 	Timer = 'Timer',
 	Spotify = 'Spotify',
 }
@@ -27,21 +24,6 @@ export type ChecklistCompleted = boolean;
 export type CurrentRun = Run;
 
 export type NextRun = Run;
-
-export type GameList = Array<{
-	pk: number;
-	title: string;
-	engTitle?: string;
-	runners: string;
-	commentators: string;
-	category: string;
-	platform: string;
-	runnerPkAry: number[];
-	commentatorPkAry: number[];
-	duration: string;
-}>;
-
-export type RunnerList = Runner[];
 
 export type Schedule = Run[];
 
@@ -62,11 +44,6 @@ export interface Twitter {
 	};
 }
 
-export type Horaro = Array<{
-	pk: number;
-	scheduled: number;
-}>;
-
 export interface Timer {
 	raw: number;
 	hours: number;
@@ -82,7 +59,7 @@ export interface Timer {
 
 export interface Spotify {
 	currentTrack?: {
-		name?: string;
-		artists?: string;
+		name: string;
+		artists: string;
 	};
 }
