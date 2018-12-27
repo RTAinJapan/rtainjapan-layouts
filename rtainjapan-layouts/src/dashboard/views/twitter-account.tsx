@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import React from 'react';
 import ReactDom from 'react-dom';
@@ -36,15 +35,17 @@ class App extends React.Component<{}, State> {
 
 	public render() {
 		const {userObject} = this.state;
-		return userObject && Object.keys(userObject).length > 0 ? (
-			<LoggedIn onClick={this.logout}>
-				<div>ログイン中：@{userObject.screen_name}</div>
-				<Button>ログアウト</Button>
-			</LoggedIn>
-		) : (
-			<ButtonBase>
-				<img onClick={this.login} src={twitterSignIn} />
-			</ButtonBase>
+		return (
+			<div>
+				{userObject && userObject.screen_name && (
+					<LoggedIn onClick={this.logout}>
+						<div>ログイン中：@{userObject.screen_name}</div>
+					</LoggedIn>
+				)}
+				<ButtonBase>
+					<img onClick={this.login} src={twitterSignIn} />
+				</ButtonBase>
+			</div>
 		);
 	}
 

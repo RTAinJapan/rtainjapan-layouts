@@ -35,10 +35,15 @@ class App extends React.Component<{}, State> {
 	}
 
 	public render() {
-		return this.state.currentTrack ? (
-			<div>再生中: {this.state.currentTrack.name}</div>
-		) : (
-			<Button onClick={this.login}>ログイン</Button>
+		return (
+			<div>
+				{this.state.currentTrack && (
+					<div>再生中: {this.state.currentTrack.name}</div>
+				)}
+				<Button variant='contained' onClick={this.login}>
+					ログイン
+				</Button>
+			</div>
 		);
 	}
 
