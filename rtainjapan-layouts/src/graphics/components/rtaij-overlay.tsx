@@ -77,6 +77,7 @@ interface State {
 	logoRestTransformed: boolean;
 }
 interface Props {
+	showSponser?: boolean;
 	isBreak?: boolean;
 	bottomHeightPx: number;
 	TweetProps?: {
@@ -117,7 +118,7 @@ export class RtaijOverlay extends React.Component<Props, State> {
 					</LogoTaContainer>
 				</Top>
 				<Bottom style={{height: `${this.props.bottomHeightPx}px`}}>
-					<Sponsor />
+					{this.props.showSponser && <Sponsor />}
 				</Bottom>
 				<Tweet
 					{...this.props.TweetProps}
