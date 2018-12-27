@@ -59,13 +59,6 @@ let requestToken = {
 let twitterStream: IncomingMessage | null = null;
 
 export const twitter = async (nodecg: NodeCG) => {
-	// Try to load access token file and save one if it errors
-	try {
-		await loadAccessToken();
-	} catch (_) {
-		await saveAccessToken({token: '', secret: ''});
-	}
-
 	// prettier-ignore
 	const callbackUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/twitter-callback/index.html`;
 
@@ -162,6 +155,7 @@ export const twitter = async (nodecg: NodeCG) => {
 		try {
 			const accessToken = await loadAccessToken();
 			if (!accessToken.token || !accessToken.secret) {
+				twitterRep.value = {};
 				return;
 			}
 			const data = {
@@ -297,6 +291,13 @@ export const twitter = async (nodecg: NodeCG) => {
 	});
 
 	nodecg.listenFor('discardTweet', deleteTweetById);
+
+	// Try to load access token file and save one if it errors
+	try {
+		await loadAccessToken();
+	} catch (_) {
+		await saveAccessToken({token: '', secret: ''});
+	}
 
 	twitterRep.on('change', async (newVal) => {
 		if (newVal && newVal.userObject) {
