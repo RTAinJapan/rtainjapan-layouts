@@ -1,7 +1,5 @@
 import 'modern-normalize/modern-normalize.css';
 
-import '../../fonts/migmix-2p/index.css';
-
 import '../../shared/react-devtools';
 
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
@@ -16,7 +14,6 @@ import {Twitter} from '../components/twitter';
 
 const Container = styled.div`
 	color: #000;
-	font-family: 'MigMix 2P';
 	height: 100vh;
 	width: 1920px;
 	padding: 16px;
