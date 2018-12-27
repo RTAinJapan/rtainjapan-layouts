@@ -22,7 +22,12 @@ class App extends React.Component<{}, State> {
 			if (!newVal.currentTrack) {
 				return;
 			}
-			this.setState({currentTrack: newVal.currentTrack});
+			this.setState({
+				currentTrack: {
+					name: newVal.currentTrack.name || '',
+					artists: newVal.currentTrack.artists || '',
+				},
+			});
 		});
 	}
 	componentWillUnmount() {
