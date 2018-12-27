@@ -10,21 +10,21 @@ env:
 script:
   - docker build -t $DOCKER_REPO:$TRAVIS_COMMIT --build-arg TYPEKIT_ID=$TYPEKIT_ID .
 
-before_deploy:
-  - openssl aes-256-cbc -K $encrypted_609041c98da5_key -iv $encrypted_609041c98da5_iv -in travis/id_rsa.enc -out /tmp/id_rsa -d
-  - eval "$(ssh-agent -s)"
-  - chmod 600 /tmp/id_rsa
-  - ssh-add /tmp/id_rsa
+# before_deploy:
+#   - openssl aes-256-cbc -K $encrypted_609041c98da5_key -iv $encrypted_609041c98da5_iv -in travis/id_rsa.enc -out /tmp/id_rsa -d
+#   - eval "$(ssh-agent -s)"
+#   - chmod 600 /tmp/id_rsa
+#   - ssh-add /tmp/id_rsa
 
-deploy:
-  - provider: script
-    script: './travis/docker-deploy'
-    on:
-      branch: master
-  - provider: script
-    script: './travis/staging-deploy'
-    on:
-      branch: master
+# deploy:
+#   - provider: script
+#     script: './travis/docker-deploy'
+#     on:
+#       branch: master
+#   - provider: script
+#     script: './travis/staging-deploy'
+#     on:
+#       branch: master
 
 notifications:
   slack:
