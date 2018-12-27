@@ -147,7 +147,7 @@ export default (nodecg: NodeCG) => {
 			index,
 			scheduled: startTime,
 			platform: '',
-			runners: game.runnerPkAry.map((pk) => {
+			runners: (game.runnerPkAry as number[]).map((pk) => {
 				const runner = defaultRunners.find((r) => r.pk === pk);
 				if (!runner) {
 					throw new Error(
