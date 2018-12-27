@@ -13,6 +13,11 @@ interface BundleConfig {
 		targetChannel: string;
 		titleTemplate: string;
 	};
+	googleApi: {
+		spreadsheetId: string;
+		clientEmail: string;
+		privateKey: string;
+	};
 }
 
 export default BundleConfig;

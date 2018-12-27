@@ -1,5 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import {NodeCG} from 'nodecg/types/server';
+import BundleConfig from '../bundle-config';
 import {
 	Checklist,
 	CurrentRun,
@@ -8,12 +9,11 @@ import {
 	Run,
 	Schedule,
 } from '../replicants';
-import defaultGames from './default/games';
-import defaultRunners from './default/runners';
+import {getAuth, getData} from './util/spreadsheet';
 
 const getDefaultRun = (): Run => ({
 	category: '',
-	duration: '',
+	duration: '0:10:00',
 	index: 0,
 	pk: 0,
 	platform: '',
@@ -23,7 +23,15 @@ const getDefaultRun = (): Run => ({
 	commentators: [],
 });
 
-export default (nodecg: NodeCG) => {
+const hmsToMs = (hms: string) => {
+	const [h, m, s] = hms.split(':');
+	return (
+		((parseInt(h, 10) * 60 + parseInt(m, 10)) * 60 + parseInt(s, 10)) * 1000
+	);
+};
+
+export default async (nodecg: NodeCG) => {
+	const bundleConfig: BundleConfig = nodecg.bundleConfig;
 	const scheduleRep = nodecg.Replicant<Schedule>(R.Schedule, {
 		defaultValue: [],
 	});
@@ -34,6 +42,14 @@ export default (nodecg: NodeCG) => {
 		defaultValue: getDefaultRun(),
 	});
 	const checklistRep = nodecg.Replicant<Checklist>(R.Checklist);
+
+	const googleApiAuth = await getAuth(
+		bundleConfig.googleApi.clientEmail,
+		bundleConfig.googleApi.privateKey,
+	);
+
+	const getGamesData = async () =>
+		getData(bundleConfig.googleApi.spreadsheetId, googleApiAuth);
 
 	const resetChecklist = () => {
 		checklistRep.value = checklistRep.value.map((item) => ({
@@ -140,38 +156,28 @@ export default (nodecg: NodeCG) => {
 		}
 	});
 
-	let startTime = new Date('2018-12-27T12:00:00+0900').getTime();
-	scheduleRep.value = defaultGames.map((game, index) => {
-		const scheduleGame = {
-			...game,
-			index,
-			scheduled: startTime,
-			platform: '',
-			runners: (game.runnerPkAry as number[]).map((pk) => {
-				const runner = defaultRunners.find((r) => r.pk === pk);
-				if (!runner) {
-					throw new Error(
-						`Runner pk ${pk} on run ${game.pk} doesn't exist`,
-					);
-				}
-				return runner;
-			}),
-			commentators: game.commentatorPkAry.map((pk) => {
-				const commentator = defaultRunners.find((r) => r.pk === pk);
-				if (!commentator) {
-					throw new Error(
-						`Commentator ${pk} on run ${game.pk} doesn't exist`,
-					);
-				}
-				return commentator;
-			}),
-		};
-		const durationHms = game.duration
-			? game.duration.split(':').map((n) => parseInt(n, 10))
-			: [1, 0, 0];
-		startTime +=
-			((durationHms[0] * 60 + durationHms[1]) * 60 + durationHms[2]) *
-			1000;
-		return scheduleGame;
-	});
+	const update = async () => {
+		try {
+			const fetchedData = await getGamesData();
+			let startTime = new Date('2018-12-27T12:00:00+0900').getTime();
+			scheduleRep.value = fetchedData.map((game, index) => {
+				const scheduleGame = {
+					...game,
+					duration: game.runDuration,
+					pk: index,
+					index,
+					scheduled: startTime,
+					commentators: [],
+				};
+				startTime += hmsToMs(game.runDuration);
+				startTime += hmsToMs(game.setupDuration);
+				return scheduleGame;
+			});
+		} catch (err) {
+			nodecg.log.error('Error while fetching schedule from spreadsheet');
+			nodecg.log.error(err);
+		}
+	};
+	update();
+	setInterval(update, 60 * 1000);
 };

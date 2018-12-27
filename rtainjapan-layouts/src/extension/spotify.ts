@@ -48,6 +48,9 @@ export const spotify = async (nodecg: NodeCG) => {
 	};
 	const getCurrentTrack = async () => {
 		const token = await loadAccessToken();
+		if (!token) {
+			return;
+		}
 		try {
 			const res = await axios.get(currentTrackUrl.href, {
 				headers: {Authorization: `Bearer ${token}`},
@@ -79,14 +82,6 @@ export const spotify = async (nodecg: NodeCG) => {
 		}
 	};
 
-	// Try to load token and create one if there is none
-	try {
-		await loadAccessToken();
-		getCurrentTrack();
-	} catch (_) {
-		await writeAccessToken('');
-	}
-
 	nodecg.listenFor('spotify:login', (_, cb) => {
 		if (cb && !cb.handled) {
 			cb(null, redirectUrl);
@@ -96,6 +91,7 @@ export const spotify = async (nodecg: NodeCG) => {
 	nodecg.listenFor(
 		'spotify:authenticated',
 		async (payload: {code: string | null}) => {
+			console.log('hello!');
 			if (!payload.code) {
 				nodecg.log.error(
 					'User authenticated through Spotify, but missing code',
@@ -142,4 +138,12 @@ export const spotify = async (nodecg: NodeCG) => {
 			}
 		},
 	);
+
+	// Try to load token and create one if there is none
+	try {
+		await loadAccessToken();
+		getCurrentTrack();
+	} catch (_) {
+		await writeAccessToken('');
+	}
 };

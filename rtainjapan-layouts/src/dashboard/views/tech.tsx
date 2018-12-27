@@ -71,7 +71,7 @@ if (twitterCallback) {
 	});
 }
 
-const spotifyCallback = localStorage.getItem('sjotify-callback');
+const spotifyCallback = localStorage.getItem('spotify-callback');
 localStorage.removeItem('spotify-callback');
 if (spotifyCallback) {
 	const params = new URLSearchParams(spotifyCallback);

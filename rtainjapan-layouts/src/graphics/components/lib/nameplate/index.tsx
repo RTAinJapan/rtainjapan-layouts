@@ -5,7 +5,6 @@ import {
 	CurrentRun,
 	ReplicantName as R,
 	Runner,
-	RunnerList,
 	Timer,
 } from '../../../../replicants';
 import nicoIcon from '../../../images/icon/nico.png';
@@ -40,7 +39,7 @@ const socialIcon = (socialType: SocialType) => {
 	}
 };
 
-const calcSocialInfo = (runner: NonNullable<RunnerList[0]>) => {
+const calcSocialInfo = (runner: NonNullable<Runner>) => {
 	const allSocialInfo = [
 		{type: SocialType.Twitch, info: runner.twitch},
 		{type: SocialType.Nico, info: runner.nico},

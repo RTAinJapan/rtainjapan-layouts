@@ -25,7 +25,6 @@ export class RtaijCommentator extends Nameplate {
 
 		// 2 or more commentators: show all names and nothing else
 		return {
-			pk: commentators[0].pk,
 			name: commentators
 				.map((c) => c.name)
 				.filter(Boolean)

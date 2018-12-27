@@ -4,14 +4,16 @@
 	"private": true,
 	"scripts": {
 		"csstypes": "tcm -c -p \"src/**/*.{css,scss}\"",
-		"dev-dashboard": "concurrently --raw \"yarn webpack --config-name dashboard -w\" \"yarn csstypes -w\"",
-		"dev-extension": "concurrently --raw \"yarn webpack --config-name extension -w\" \"yarn csstypes -w\""
+		"dev": "concurrently --raw \"yarn webpack -w\" \"yarn csstypes -w\" \"yarn genschemas:watch\"",
+		"genschemas": "ts-node scripts/ts-to-schema.ts",
+		"genschemas:watch": "onchange src/replicants src/bundle-config -i -- ts-node scripts/ts-to-schema.ts"
 	},
 	"dependencies": {
 		"axios": "^0.18.0",
 		"date-fns": "^1.30.1",
 		"delay": "^4.1.0",
 		"google-spreadsheet": "^2.0.6",
+		"googleapis": "^36.0.0",
 		"load-json-file": "^5.1.0",
 		"lodash": "^4.17.11",
 		"oauth-1.0a": "^2.2.5",
@@ -51,6 +53,7 @@
 		"mini-css-extract-plugin": "^0.5.0",
 		"modern-normalize": "^0.5.0",
 		"node-sass": "^4.11.0",
+		"onchange": "^5.2.0",
 		"react": "^16.6.3",
 		"react-dom": "^16.6.3",
 		"react-highlight-words": "^0.14.0",
