@@ -4,9 +4,11 @@
 	"private": true,
 	"scripts": {
 		"csstypes": "tcm -c -p \"src/**/*.{css,scss}\"",
-		"dev": "concurrently --raw \"yarn webpack -w\" \"yarn csstypes -w\" \"yarn genschemas:watch\"",
-		"genschemas": "ts-node scripts/ts-to-schema.ts",
-		"genschemas:watch": "onchange src/replicants src/bundle-config -i -- ts-node scripts/ts-to-schema.ts"
+		"dev": "run-p dev:*",
+		"dev:csstypes": "yarn csstypes -w",
+		"dev:genschemas": "onchange src/replicants src/bundle-config -i -- yarn gen-schemas",
+		"dev:webpack": "webpack -w",
+		"gen-schemas": "ts-node -T scripts/ts-to-schema.ts"
 	},
 	"dependencies": {
 		"axios": "^0.18.0",
@@ -53,6 +55,7 @@
 		"mini-css-extract-plugin": "^0.5.0",
 		"modern-normalize": "^0.5.0",
 		"node-sass": "^4.11.0",
+		"npm-run-all": "^4.1.5",
 		"onchange": "^5.2.0",
 		"react": "^16.6.3",
 		"react-dom": "^16.6.3",

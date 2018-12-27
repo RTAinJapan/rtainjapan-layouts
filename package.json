@@ -1,8 +1,9 @@
 {
 	"private": true,
 	"scripts": {
+		"dev": "yarn --cwd rtainjapan-layouts dev",
 		"format": "prettier '**/*.{ts,tsx,json,html,yml,css,scss,md}' --write",
-		"postinstall": "ts-node scripts/postinstall.ts",
+		"postinstall": "yarn --cwd rtainjapan-layouts && ts-node -T scripts/postinstall.ts",
 		"lint": "tslint -p . -t stylish",
 		"start": "node node_modules/nodecg"
 	},
