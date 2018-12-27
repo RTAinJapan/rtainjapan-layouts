@@ -37,7 +37,7 @@ COPY --from=build /nodecg/rtainjapan-layouts/dashboard ./dashboard
 COPY --from=build /nodecg/rtainjapan-layouts/graphics ./graphics
 COPY --from=build /nodecg/rtainjapan-layouts/extension ./extension
 COPY rtainjapan-layouts/twitter-callback ./twitter-callback
-COPY rtainjapan-layouts/spotify-callback ./twitter-callback
+COPY rtainjapan-layouts/spotify-callback ./spotify-callback
 
 WORKDIR /nodecg
 RUN mkdir cfg db
