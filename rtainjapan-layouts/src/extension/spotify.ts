@@ -62,12 +62,11 @@ export const spotify = async (nodecg: NodeCG) => {
 			}
 			const name = res.data.item.name;
 			const artists = sumArtists(res.data.item.artists);
-			console.log({name, artists});
 			spotifyRep.value = {currentTrack: {name, artists}};
 			const remainMs = res.data.item.duration_ms - res.data.progress_ms;
 			refreshTimer(setTimeout(getCurrentTrack, remainMs + bufferMs));
 		} catch (err) {
-			console.error(err);
+			nodecg.log.error(err);
 			if (
 				err.response &&
 				err.response.status === 429 &&
