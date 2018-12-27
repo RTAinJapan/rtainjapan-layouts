@@ -167,8 +167,8 @@ export default (nodecg: NodeCG) => {
 			}),
 		};
 		const durationHms = game.duration
-			.split(':')
-			.map((n) => parseInt(n, 10));
+			? game.duration.split(':').map((n) => parseInt(n, 10))
+			: [1, 0, 0];
 		startTime +=
 			((durationHms[0] * 60 + durationHms[1]) * 60 + durationHms[2]) *
 			1000;

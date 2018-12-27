@@ -12,9 +12,9 @@ export interface Run {
 	scheduled: number;
 	title: string;
 	engTitle?: string;
-	category: string;
+	category?: string;
 	platform: string;
-	duration: string;
+	duration?: string;
 	runners: Runner[];
 	commentators: Runner[];
 }

@@ -82,7 +82,7 @@ export interface Timer {
 
 export interface Spotify {
 	currentTrack?: {
-		name: string;
-		artists: string;
+		name?: string;
+		artists?: string;
 	};
 }

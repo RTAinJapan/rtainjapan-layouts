@@ -148,7 +148,9 @@ class Break extends React.Component<{}, State> {
 		scheduleRep.on('change', this.scheduleChangeHandler);
 		currentRunRep.on('change', this.currentRunChangeHandler);
 		this.spotifyRep.on('change', (newVal) => {
-			this.setState({currentTrack: newVal.currentTrack});
+			this.setState({
+				currentTrack: {name: '', artists: '', ...newVal.currentTrack},
+			});
 		});
 	}
 
