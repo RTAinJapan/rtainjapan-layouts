@@ -35,7 +35,6 @@ const LeftColumn = styled(Column)`
 
 const appTheme = createMuiTheme({
 	typography: {
-		fontFamily: "'MigMix 2P'",
 		useNextVariants: true,
 	},
 	props: {
