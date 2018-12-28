@@ -102,6 +102,22 @@
 				"width": 3,
 				"headerColor": "#00BEBE",
 				"workspace": "Misc"
+			},
+			{
+				"name": "edit-tourny",
+				"title": "走者情報入れ替え",
+				"file": "edit-tourny.html",
+				"width": 6,
+				"headerColor": "#00BEBE",
+				"workspace": "Special"
+			},
+			{
+				"name": "current-runners",
+				"title": "現在のゲームの走者",
+				"file": "current-runners.html",
+				"width": 2,
+				"headerColor": "#00BEBE",
+				"workspace": "Special"
 			}
 		],
 		"graphics": [
