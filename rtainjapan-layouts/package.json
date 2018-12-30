@@ -107,7 +107,7 @@
 				"name": "edit-tourny",
 				"title": "走者情報入れ替え",
 				"file": "edit-tourny.html",
-				"width": 6,
+				"width": 8,
 				"headerColor": "#00BEBE",
 				"workspace": "Special"
 			},
