@@ -52,7 +52,7 @@ export class Twitter extends React.Component<{}, State> {
 		this.tweetsRep.removeAllListeners();
 	}
 
-	public render() {
+	render() {
 		return (
 			<Container>
 				<Label>ツイート表示管理</Label>

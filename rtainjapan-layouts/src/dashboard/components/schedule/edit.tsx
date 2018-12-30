@@ -123,7 +123,6 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 							...commentators[index],
 						};
 						return (
-							// eslint-disable-next-line react/no-array-index-key
 							<div key={index}>
 								<TextField
 									label={`解説${index} 名前`}

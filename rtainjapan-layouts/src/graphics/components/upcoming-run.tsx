@@ -69,8 +69,7 @@ export class UpcomingRun extends React.Component<CurrentRun, State> {
 			`Runner: ${props.runners.map((runner) => runner.name).join(', ')}`;
 		const misc =
 			category && runners
-				? /* eslint-disable-next-line no-irregular-whitespace */
-				  `${category} | ${runners}`
+				? `${category} | ${runners}`
 				: category || runners;
 		return (
 			<Container>
