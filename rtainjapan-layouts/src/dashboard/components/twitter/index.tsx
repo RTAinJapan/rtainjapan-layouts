@@ -4,8 +4,6 @@ import {ReplicantName as R, Tweets} from '../../../replicants';
 import {BorderedBox} from '../lib/bordered-box';
 import {TweetItem} from './tweet-item';
 
-const tweetsRep = nodecg.Replicant<Tweets>(R.Tweets);
-
 const Container = styled(BorderedBox)`
 	height: calc(100vh - 32px);
 	display: grid;
@@ -37,40 +35,45 @@ const TweetListContainer = styled.div`
 	grid-gap: 16px;
 `;
 
-export class Twitter extends React.Component<{}, {tweets: Tweets}> {
-	constructor(props: {}) {
-		super(props);
-		this.state = {tweets: []};
-	}
+interface State {
+	tweets: Tweets;
+}
 
-	public componentDidMount() {
-		tweetsRep.on('change', this.tweetRepChange);
+export class Twitter extends React.Component<{}, State> {
+	tweetsRep = nodecg.Replicant<Tweets>(R.Tweets);
+	state: State = {tweets: []};
+
+	componentDidMount() {
+		this.tweetsRep.on('change', (newVal: Tweets) => {
+			this.setState({tweets: newVal});
+		});
+	}
+	componentWillUnmount() {
+		this.tweetsRep.removeAllListeners();
 	}
 
 	public render() {
 		return (
 			<Container>
 				<Label>ツイート表示管理</Label>
-				{this.state.tweets.length === 0 ? (
-					<EmptyContainer>
-						表示するツイートがありません
-					</EmptyContainer>
-				) : (
-					<TweetListContainer>
-						{this.state.tweets.map((tweet) => (
-							<TweetItem key={tweet.id} tweet={tweet} />
-						))}
-					</TweetListContainer>
-				)}
+				{this.twitterContentElement}
 			</Container>
 		);
 	}
 
-	public componentWillUnmount() {
-		tweetsRep.removeListener('change', this.tweetRepChange);
+	private get twitterContentElement() {
+		if (this.state.tweets.length === 0) {
+			return (
+				<EmptyContainer>表示するツイートがありません</EmptyContainer>
+			);
+		} else {
+			return (
+				<TweetListContainer>
+					{this.state.tweets.map((tweet) => (
+						<TweetItem key={tweet.id} tweet={tweet} />
+					))}
+				</TweetListContainer>
+			);
+		}
 	}
-
-	private readonly tweetRepChange = (newVal: Tweets) => {
-		this.setState({tweets: newVal});
-	};
 }
