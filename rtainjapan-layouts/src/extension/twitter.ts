@@ -11,13 +11,6 @@ import writeJsonFile from 'write-json-file';
 import BundleConfig from '../bundle-config';
 import {ReplicantName as R, Tweets, Twitter} from '../replicants';
 
-const REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token';
-const ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token';
-const VERIFY_CREDENTIALS_URL =
-	'https://api.twitter.com/1.1/account/verify_credentials.json';
-const STATUSES_FILTER_URL =
-	'https://stream.twitter.com/1.1/statuses/filter.json';
-
 /**
  * Twitter access token stored in JSON file
  */
@@ -64,7 +57,7 @@ export const twitter = async (nodecg: NodeCG) => {
 
 	const twitterRep = nodecg.Replicant<Twitter>(R.Twitter);
 	const tweetsRep = nodecg.Replicant<Tweets>(R.Tweets, {defaultValue: []});
-	const bundleConfig = nodecg.bundleConfig as BundleConfig;
+	const bundleConfig: BundleConfig = nodecg.bundleConfig;
 
 	const oauth = new OAuth({
 		consumer: {
@@ -94,11 +87,11 @@ export const twitter = async (nodecg: NodeCG) => {
 	};
 
 	const getRequestToken = async () => {
+		const REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token';
 		const oauthData = oauth.authorize({
 			url: REQUEST_TOKEN_URL,
 			method: 'POST',
 			data: {
-				/* eslint-disable-next-line camelcase */
 				oauth_callback: callbackUrl,
 			},
 		});
@@ -113,7 +106,7 @@ export const twitter = async (nodecg: NodeCG) => {
 	};
 
 	const getAccessToken = async (oauthVerifier: string) => {
-		/* eslint-disable-next-line camelcase */
+		const ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token';
 		const data = {oauth_verifier: oauthVerifier};
 		const oauthData = oauth.authorize(
 			{
@@ -121,10 +114,7 @@ export const twitter = async (nodecg: NodeCG) => {
 				method: 'POST',
 				data,
 			},
-			{
-				key: requestToken.token,
-				secret: requestToken.token,
-			},
+			{key: requestToken.token, secret: requestToken.token},
 		);
 		const res = await axios.post(ACCESS_TOKEN_URL, data, {
 			headers: oauth.toHeader(oauthData),
@@ -137,6 +127,8 @@ export const twitter = async (nodecg: NodeCG) => {
 	};
 
 	const verifyCredentials = async () => {
+		const VERIFY_CREDENTIALS_URL =
+			'https://api.twitter.com/1.1/account/verify_credentials.json';
 		const accessToken = await loadAccessToken();
 		const oauthData = oauth.authorize(
 			{
@@ -153,6 +145,8 @@ export const twitter = async (nodecg: NodeCG) => {
 
 	const startFilterStream = async () => {
 		try {
+			const STATUSES_FILTER_URL =
+				'https://stream.twitter.com/1.1/statuses/filter.json';
 			const accessToken = await loadAccessToken();
 			if (!accessToken.token || !accessToken.secret) {
 				twitterRep.value = {};
@@ -179,6 +173,11 @@ export const twitter = async (nodecg: NodeCG) => {
 					params: data,
 				},
 			);
+			if (twitterStream) {
+				try {
+					twitterStream.destroy();
+				} catch (_) {}
+			}
 			twitterStream = res.data;
 			twitterStream.setEncoding('utf8');
 		} catch (err) {
@@ -205,7 +204,7 @@ export const twitter = async (nodecg: NodeCG) => {
 				} else {
 					await delay(15 * 60 * 1000);
 				}
-				await startFilterStream();
+				startFilterStream();
 			} else {
 				nodecg.log.error('Failed to start stream API');
 				nodecg.log.error(err.message);
@@ -216,7 +215,7 @@ export const twitter = async (nodecg: NodeCG) => {
 		// Tweets are split when coming in through stream API
 		// Store the strings until it can be parsed or gets too long
 		let store = '';
-		twitterStream.on('data', async (data: any) => {
+		twitterStream.on('data', async (data) => {
 			if (!data || typeof data !== 'string') {
 				return;
 			}
@@ -238,6 +237,13 @@ export const twitter = async (nodecg: NodeCG) => {
 					return;
 				}
 
+				const tweetAlreadyExists = tweetsRep.value.some(
+					(t) => t.id === tweetObject.id_str,
+				);
+				if (tweetAlreadyExists) {
+					return;
+				}
+
 				// Store only necessary data
 				const tweet = {
 					id: tweetObject.id_str,
@@ -251,7 +257,9 @@ export const twitter = async (nodecg: NodeCG) => {
 						).toString(),
 					},
 				};
-				tweetsRep.value = [tweet, ...tweetsRep.value];
+
+				// Insert the new tweet at the start of the list
+				tweetsRep.value.unshift(tweet);
 			} catch (err) {
 				if (err.message !== 'Unexpected end of JSON input') {
 					nodecg.log.error(err);
@@ -336,7 +344,7 @@ export const twitter = async (nodecg: NodeCG) => {
 		}
 		tweetsRep.value = tweetsRep.value.slice(
 			0,
-			bundleConfig.twitter.maxTweets,
+			bundleConfig.twitter.maxTweets - 10,
 		);
 	});
 };

@@ -13,6 +13,7 @@
 			"@material-ui/icons",
 			"lodash"
 		],
-		"prefer-function-over-method": false
+		"prefer-function-over-method": false,
+		"cyclomatic-complexity": [true, 20]
 	}
 }
