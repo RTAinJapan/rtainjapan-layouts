@@ -19,7 +19,7 @@ const Label = styled.div`
 	text-align: center;
 `;
 
-const Empty = styled.div`
+const EmptyContainer = styled.div`
 	margin: 16px;
 	box-sizing: border-box;
 	border: 4px dashed #b7b7b7;
@@ -28,7 +28,7 @@ const Empty = styled.div`
 	justify-items: center;
 `;
 
-const TweetContainer = styled.div`
+const TweetListContainer = styled.div`
 	padding: 16px;
 	overflow-y: scroll;
 	display: grid;
@@ -52,13 +52,15 @@ export class Twitter extends React.Component<{}, {tweets: Tweets}> {
 			<Container>
 				<Label>ツイート表示管理</Label>
 				{this.state.tweets.length === 0 ? (
-					<Empty>表示するツイートがありません</Empty>
+					<EmptyContainer>
+						表示するツイートがありません
+					</EmptyContainer>
 				) : (
-					<TweetContainer>
+					<TweetListContainer>
 						{this.state.tweets.map((tweet) => (
 							<TweetItem key={tweet.id} tweet={tweet} />
 						))}
-					</TweetContainer>
+					</TweetListContainer>
 				)}
 			</Container>
 		);
