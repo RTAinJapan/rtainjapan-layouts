@@ -28,7 +28,7 @@
 		"@material-ui/icons": "3.0.1",
 		"@types/clean-webpack-plugin": "0.1.2",
 		"@types/globby": "8.0.0",
-		"@types/html-webpack-plugin": "3.2.0",
+		"@types/html-webpack-plugin": "3.2.1",
 		"@types/jest": "23.3.14",
 		"@types/load-json-file": "2.0.7",
 		"@types/lodash": "4.14.119",
