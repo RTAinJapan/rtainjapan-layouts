@@ -39,7 +39,7 @@
 		"@types/react-highlight-words": "0.12.0",
 		"@types/source-map-support": "0.4.1",
 		"@types/styled-components": "4.1.4",
-		"@types/uuid": "3.4.4",
+		"@types/uuid": "3.4.5",
 		"@types/webpack": "4.4.22",
 		"@types/webpack-bundle-analyzer": "2.13.0",
 		"@types/webpack-node-externals": "1.6.3",
