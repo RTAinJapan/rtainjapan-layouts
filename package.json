@@ -16,7 +16,7 @@
 		"nodecg": "1.3.0"
 	},
 	"devDependencies": {
-		"@hoishin/tslint-config": "2.0.2",
+		"@hoishin/tslint-config": "2.0.3",
 		"@types/rimraf": "2.0.2",
 		"bower": "1.8.4",
 		"dependency-cruiser": "4.9.0",
