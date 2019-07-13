@@ -131,10 +131,10 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@hoishin/tslint-config@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@hoishin/tslint-config/-/tslint-config-2.0.2.tgz#a4fa0f3596de5345b8cfc409621d11c2e0409d46"
-  integrity sha512-5yQXK+lg7GXuJXiwOilWP6aKUqDgUhrG8X/Y34ud1ILAZMf6UL79EQNWjwiifq86mvV3JNLra2uSZQBVbO9JFg==
+"@hoishin/tslint-config@2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@hoishin/tslint-config/-/tslint-config-2.0.3.tgz#01853670bda83f68791ff87c26eaf9becaa2696a"
+  integrity sha512-PMtgJ41DzQbXpCvdu9I9zS4BeGcQwL78P6YPZLPIZEJ5kpuTYPPy2lVCkXwaNUO1CAYwKbzuLb6NS7yHSFgk7Q==
 
 "@iamstarkov/listr-update-renderer@0.4.1":
   version "0.4.1"
