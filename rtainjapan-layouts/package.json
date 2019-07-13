@@ -34,7 +34,7 @@
 		"@types/lodash": "4.14.119",
 		"@types/mini-css-extract-plugin": "0.2.0",
 		"@types/node": "10.12.18",
-		"@types/react": "16.7.18",
+		"@types/react": "16.8.23",
 		"@types/react-dom": "16.0.11",
 		"@types/react-highlight-words": "0.12.0",
 		"@types/source-map-support": "0.4.1",
