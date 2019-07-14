@@ -18,7 +18,7 @@
 		"googleapis": "36.0.0",
 		"load-json-file": "5.1.0",
 		"lodash": "4.17.14",
-		"oauth-1.0a": "2.2.5",
+		"oauth-1.0a": "2.2.6",
 		"source-map-support": "0.5.9",
 		"tslib": "1.10.0",
 		"write-json-file": "3.0.2"
