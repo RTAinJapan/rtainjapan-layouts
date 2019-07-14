@@ -21,7 +21,7 @@
 		"oauth-1.0a": "2.2.5",
 		"source-map-support": "0.5.9",
 		"tslib": "1.9.3",
-		"write-json-file": "3.0.2"
+		"write-json-file": "3.2.0"
 	},
 	"devDependencies": {
 		"@material-ui/core": "3.9.3",
