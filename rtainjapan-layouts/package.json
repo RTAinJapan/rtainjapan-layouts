@@ -19,7 +19,7 @@
 		"load-json-file": "6.2.0",
 		"lodash": "4.17.14",
 		"oauth-1.0a": "2.2.6",
-		"source-map-support": "0.5.9",
+		"source-map-support": "0.5.12",
 		"tslib": "1.10.0",
 		"write-json-file": "4.1.1"
 	},
@@ -37,7 +37,7 @@
 		"@types/react": "16.8.23",
 		"@types/react-dom": "16.8.4",
 		"@types/react-highlight-words": "0.12.0",
-		"@types/source-map-support": "0.4.1",
+		"@types/source-map-support": "0.5.0",
 		"@types/styled-components": "4.1.4",
 		"@types/uuid": "3.4.5",
 		"@types/webpack": "4.4.35",
