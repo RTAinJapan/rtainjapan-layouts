@@ -318,10 +318,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/webpack-bundle-analyzer@2.13.0":
-  version "2.13.0"
-  resolved "https://registry.yarnpkg.com/@types/webpack-bundle-analyzer/-/webpack-bundle-analyzer-2.13.0.tgz#07bcd469690869c249047a7ca993a8f918922e33"
-  integrity sha512-+qy5xatScNZW4NbIVaiV38XOeHbKRa4FIPeMf2VDpZEon9W/cxjaVR080vRrRGvfq4tRvOusTEypSMxTvjcSzw==
+"@types/webpack-bundle-analyzer@2.13.1":
+  version "2.13.1"
+  resolved "https://registry.yarnpkg.com/@types/webpack-bundle-analyzer/-/webpack-bundle-analyzer-2.13.1.tgz#25154f36585c0abc90f7e58fd3197c83fced789a"
+  integrity sha512-9M9jingj0izx1VfglYYJ+dvd0YCMlFgtrSCeb+C3VIQP8hmTXGJ5qqVeqiBnv0ffMyeKWqyij4K2F4VBcazQNw==
   dependencies:
     "@types/webpack" "*"
 
