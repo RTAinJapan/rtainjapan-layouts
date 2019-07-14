@@ -41,7 +41,7 @@
 		"@types/styled-components": "4.1.4",
 		"@types/uuid": "3.4.5",
 		"@types/webpack": "4.4.22",
-		"@types/webpack-bundle-analyzer": "2.13.0",
+		"@types/webpack-bundle-analyzer": "2.13.1",
 		"@types/webpack-node-externals": "1.6.3",
 		"@types/write-json-file": "2.2.1",
 		"awesome-typescript-loader": "5.2.1",
