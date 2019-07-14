@@ -24,7 +24,7 @@
 		"lint-staged": "8.2.1",
 		"prettier": "1.15.3",
 		"rimraf": "2.6.2",
-		"sort-package-json": "1.17.1",
+		"sort-package-json": "1.22.1",
 		"ts-node": "7.0.1",
 		"tslib": "1.9.3",
 		"tslint": "5.12.0",
