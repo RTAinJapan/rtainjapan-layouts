@@ -1,4 +1,4 @@
-FROM node:10.14.0 AS build
+FROM node:10.16.0 AS build
 
 ARG TYPEKIT_ID
 
@@ -19,7 +19,7 @@ RUN yarn csstypes
 RUN NODE_ENV=production yarn webpack
 
 
-FROM node:10.14.0-alpine
+FROM node:10.16.0-alpine
 
 ENV NODE_ENV=production
 
