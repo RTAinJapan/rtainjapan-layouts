@@ -45,7 +45,7 @@
 		"@types/webpack-node-externals": "1.6.3",
 		"@types/write-json-file": "2.2.1",
 		"awesome-typescript-loader": "5.2.1",
-		"clean-webpack-plugin": "1.0.0",
+		"clean-webpack-plugin": "1.0.1",
 		"css-loader": "2.0.2",
 		"downshift": "3.1.8",
 		"file-loader": "3.0.1",
