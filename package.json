@@ -21,7 +21,7 @@
 		"bower": "1.8.8",
 		"dependency-cruiser": "4.27.1",
 		"husky": "3.0.0",
-		"lint-staged": "8.2.1",
+		"lint-staged": "9.2.0",
 		"prettier": "1.18.2",
 		"rimraf": "2.6.3",
 		"sort-package-json": "1.22.1",
