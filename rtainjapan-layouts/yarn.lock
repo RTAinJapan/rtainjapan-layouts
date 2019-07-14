@@ -273,10 +273,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-highlight-words@0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@types/react-highlight-words/-/react-highlight-words-0.12.0.tgz#1193945cb51e222d8042631223f8a9c6c126ff18"
-  integrity sha512-cDKke9s/kpx5FvBYwxgLjHnVjbSKrK1N2MB7Fs8IHAqjnLMzkhC6K8CzBboP0vN7oSnWbThipHluJIR3dMpakg==
+"@types/react-highlight-words@0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@types/react-highlight-words/-/react-highlight-words-0.16.0.tgz#bcd67e9724fb5f070c955732f604068de5cbe30b"
+  integrity sha512-bSVlhM5OXLO67UZD/orsoT1lS5p7w8ffoDis3TtU1mqmXW7epHHt4kB7QmmZzwXjgzRm++yOo6Xpp7PhRFBpXA==
   dependencies:
     "@types/react" "*"
 
@@ -6305,10 +6305,10 @@ react-event-listener@^0.6.2:
     prop-types "^15.6.0"
     warning "^4.0.1"
 
-react-highlight-words@0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/react-highlight-words/-/react-highlight-words-0.14.0.tgz#a1a40ff0a49ce78e7feb375a4e0a5fd1ca9c9609"
-  integrity sha512-DNp1zAIiNqs1nunFv5K67ca0KVSKihbmpZLNwqQj61yMK6zf8YHoGrpLlEt7WEqj1227FOm41FuXiv9KZgcwdA==
+react-highlight-words@0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/react-highlight-words/-/react-highlight-words-0.16.0.tgz#4b4b9824e3d2b98789d3e3b3aedb5e961ae1b7cf"
+  integrity sha512-q34TwCSJOL+5pVDv6LUj3amaoyXdNDwd7zRqVAvceOrO9g1haWLAglK6WkGLMNUa3PFN8EgGedLg/k8Gpndxqg==
   dependencies:
     highlight-words-core "^1.2.0"
     memoize-one "^4.0.0"
