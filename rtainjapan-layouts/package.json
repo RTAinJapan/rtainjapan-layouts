@@ -24,8 +24,8 @@
 		"write-json-file": "3.0.2"
 	},
 	"devDependencies": {
-		"@material-ui/core": "3.7.1",
-		"@material-ui/icons": "3.0.1",
+		"@material-ui/core": "3.9.3",
+		"@material-ui/icons": "3.0.2",
 		"@types/clean-webpack-plugin": "0.1.2",
 		"@types/globby": "8.0.0",
 		"@types/html-webpack-plugin": "3.2.1",
