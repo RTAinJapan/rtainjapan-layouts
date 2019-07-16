@@ -52,7 +52,7 @@
 		"globby": "10.0.1",
 		"html-webpack-plugin": "4.0.0-beta.7",
 		"jest": "24.8.0",
-		"mini-css-extract-plugin": "0.7.0",
+		"mini-css-extract-plugin": "0.8.0",
 		"modern-normalize": "0.5.0",
 		"node-sass": "4.12.0",
 		"npm-run-all": "4.1.5",
