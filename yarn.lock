@@ -418,10 +418,10 @@ agentkeepalive@^3.4.1:
   dependencies:
     humanize-ms "^1.2.1"
 
-ajv@6.10.1:
-  version "6.10.1"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.10.1.tgz#ebf8d3af22552df9dd049bfbe50cc2390e823593"
-  integrity sha512-w1YQaVGNC6t2UCPjEawK/vo/dG8OOrVtUmhBT1uJJYxbl5kU2Tj3v6LGqBcsysN1yhuCStJCCA3GqdvKY8sqXQ==
+ajv@6.10.2:
+  version "6.10.2"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.10.2.tgz#d3cea04d6b017b2894ad69040fec8b623eb4bd52"
+  integrity sha512-TXtUUEYHuaTEbLZWIKUr5pmBuhDLy+8KYtPYdcV8qC+pOZL+NKqYwvWSRrVXHn+ZmRRAu8vJTAznH7Oag6RVRw==
   dependencies:
     fast-deep-equal "^2.0.1"
     fast-json-stable-stringify "^2.0.0"
@@ -1299,16 +1299,16 @@ depd@~2.0.0:
   resolved "https://registry.yarnpkg.com/depd/-/depd-2.0.0.tgz#b696163cc757560d09cf22cc8fad1571b79e76df"
   integrity sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
 
-dependency-cruiser@4.27.1:
-  version "4.27.1"
-  resolved "https://registry.yarnpkg.com/dependency-cruiser/-/dependency-cruiser-4.27.1.tgz#0c0fee7f58bd966a245ac31d4034c6f997938365"
-  integrity sha512-f+rVb9T6yj8juQOr/zLbBVk8Ivkp3rIW0fq8bLBL08FFnwH4MTtAdWpFBWIC2NX5ROotT+LaXSpOj3rboenQiw==
+dependency-cruiser@4.27.2:
+  version "4.27.2"
+  resolved "https://registry.yarnpkg.com/dependency-cruiser/-/dependency-cruiser-4.27.2.tgz#543c6437b7e4d5cd7d949e66f5aa0fd335c19223"
+  integrity sha512-bqDoG2rWxyqb5sCn82aLjLI1oWSgGXPB5ZYJbep7yGuG5GXx5zKceTxisVik3ditwXgQO+LtwD9nHy0pvDR3eg==
   dependencies:
     acorn "6.2.0"
     acorn-dynamic-import "4.0.0"
     acorn-loose "6.1.0"
     acorn-walk "6.2.0"
-    ajv "6.10.1"
+    ajv "6.10.2"
     chalk "2.4.2"
     commander "2.20.0"
     enhanced-resolve "4.1.0"
