@@ -13,7 +13,7 @@
 		}
 	},
 	"dependencies": {
-		"nodecg": "1.4.0"
+		"nodecg": "1.4.1"
 	},
 	"devDependencies": {
 		"@hoishin/tslint-config": "2.0.3",

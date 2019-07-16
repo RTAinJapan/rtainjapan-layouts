@@ -3198,10 +3198,10 @@ node-pre-gyp@^0.12.0:
     semver "^5.3.0"
     tar "^4"
 
-nodecg@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/nodecg/-/nodecg-1.4.0.tgz#d33f9a1687fac26007c8c348b8bf484d58fecb1c"
-  integrity sha512-2QDkdzuzVvvIvWvyhjtVpM5CzxtHN0tvqN5XK6VN5fVnQiavVMHXtWIrGExlm9MEBqbWdO05ibPU3dg26eSZBQ==
+nodecg@1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/nodecg/-/nodecg-1.4.1.tgz#528bea86bad555833609ee9433d8a342a0bdd0f0"
+  integrity sha512-AhXeHQWhyimw6mEFZXgdKuMY+Gju4LdzbJQ0ZwDpV7VvRywalXhPNwIUTxbBlRi5qWtUmvID0dRJlb0TpIKVNA==
   dependencies:
     "@babel/core" "^7.4.3"
     "@types/express" "^4.16.1"
