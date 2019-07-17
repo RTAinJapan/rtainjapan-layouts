@@ -69,7 +69,7 @@
 		"typescript": "3.5.3",
 		"typescript-json-schema": "0.38.3",
 		"uuid": "3.3.2",
-		"webpack": "4.35.3",
+		"webpack": "4.36.1",
 		"webpack-bundle-analyzer": "3.3.2",
 		"webpack-cli": "3.3.6",
 		"webpack-node-externals": "1.7.2"
