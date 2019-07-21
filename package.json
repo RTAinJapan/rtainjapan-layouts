@@ -19,7 +19,7 @@
 		"@hoishin/tslint-config": "2.0.3",
 		"@types/rimraf": "2.0.2",
 		"bower": "1.8.8",
-		"dependency-cruiser": "4.27.2",
+		"dependency-cruiser": "4.27.3",
 		"husky": "3.0.1",
 		"lint-staged": "9.2.0",
 		"prettier": "1.18.2",
