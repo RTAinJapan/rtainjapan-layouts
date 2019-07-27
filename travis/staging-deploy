@@ -1,3 +1,0 @@
-#!/bin/bash
-
-ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "cd rtainjapan-layouts-staging && docker-compose pull && docker-compose up -d --force-recreate"
