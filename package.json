@@ -12,40 +12,40 @@
 			"pre-commit": "depcruise rtainjapan-layouts/src && lint-staged"
 		}
 	},
-	"dependencies": {
-		"nodecg": "1.4.1"
-	},
-	"devDependencies": {
-		"@hoishin/tslint-config": "2.0.3",
-		"@types/rimraf": "2.0.2",
-		"bower": "1.8.8",
-		"dependency-cruiser": "5.0.0",
-		"husky": "3.0.1",
-		"lint-staged": "9.2.1",
-		"prettier": "1.18.2",
-		"rimraf": "2.6.3",
-		"sort-package-json": "1.22.1",
-		"ts-node": "8.3.0",
-		"tslib": "1.10.0",
-		"tslint": "5.18.0",
-		"tslint-config-prettier": "1.18.0",
-		"typescript": "3.5.3"
-	},
-	"engines": {
-		"node": "^10.14.0"
-	},
 	"lint-staged": {
-		"*.{ts,tsx}": [
-			"tslint -p . -t stylish --fix",
+		"**/package.json": [
+			"sort-package-json",
 			"git add"
 		],
 		"*.{ts,tsx,json,html,yml,css,scss,md}": [
 			"prettier --write",
 			"git add"
 		],
-		"**/package.json": [
-			"sort-package-json",
+		"*.{ts,tsx}": [
+			"tslint -p . -t stylish --fix",
 			"git add"
 		]
+	},
+	"dependencies": {
+		"nodecg": "^1.4.1"
+	},
+	"devDependencies": {
+		"@hoishin/tslint-config": "^2.0.3",
+		"@types/rimraf": "^2.0.2",
+		"bower": "^1.8.8",
+		"dependency-cruiser": "^5.0.0",
+		"husky": "^3.0.1",
+		"lint-staged": "^9.2.1",
+		"prettier": "^1.18.2",
+		"rimraf": "^2.6.3",
+		"sort-package-json": "^1.22.1",
+		"ts-node": "^8.3.0",
+		"tslib": "^1.10.0",
+		"tslint": "^5.18.0",
+		"tslint-config-prettier": "^1.18.0",
+		"typescript": "^3.5.3"
+	},
+	"engines": {
+		"node": "^10.14.0"
 	}
 }
