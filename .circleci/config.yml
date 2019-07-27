@@ -1,12 +1,9 @@
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/node:10
-    steps:
-      - checkout
-      - run: yarn install --frozen-lockfile
-      - run: |
-          npx ts-node scripts/ts-to-schema.ts
-          yarn csstypes
-          npx webpack
+    build:
+        docker:
+            - image: circleci/node:10
+        steps:
+            - checkout
+            - run: yarn install --frozen-lockfile
+            - run: npx webpack
