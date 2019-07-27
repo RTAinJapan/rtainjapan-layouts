@@ -1,18 +1,10 @@
-cfg/*
-!cfg/.gitkeep
-db/*
-!db/.gitkeep
+cfg
+db
 
-/rtainjapan-layouts/dashboard
-/rtainjapan-layouts/graphics
-/rtainjapan-layouts/extension
-/rtainjapan-layouts/schemas
-/rtainjapan-layouts/configschema.json
-
-.awcache
-.vscode
-*.css.d.ts
-*.scss.d.ts
+/dashboard
+/graphics
+/extension
+/bundle-analyzer
 
 # Logs
 logs
@@ -20,6 +12,10 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Runtime data
 pids
@@ -32,6 +28,7 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+*.lcov
 
 # nyc test coverage
 .nyc_output
@@ -55,6 +52,9 @@ jspm_packages/
 # TypeScript v1 declaration files
 typings/
 
+# TypeScript cache
+*.tsbuildinfo
+
 # Optional npm cache directory
 .npm
 
@@ -72,6 +72,7 @@ typings/
 
 # dotenv environment variables file
 .env
+.env.test
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -91,5 +92,5 @@ typings/
 # FuseBox cache
 .fusebox/
 
-#DynamoDB Local files
+# DynamoDB Local files
 .dynamodb/

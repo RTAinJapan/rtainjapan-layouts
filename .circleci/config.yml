@@ -6,12 +6,7 @@ jobs:
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run:
-          working_directory: rtainjapan-layouts
-          command: yarn install --frozen-lockfile
-      - run:
-          working_directory: rtainjapan-layouts
-          command: |
-            npx ts-node scripts/ts-to-schema.ts
-            yarn csstypes
-            npx webpack
+      - run: |
+          npx ts-node scripts/ts-to-schema.ts
+          yarn csstypes
+          npx webpack

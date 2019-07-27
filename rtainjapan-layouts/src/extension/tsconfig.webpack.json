@@ -1,9 +1,0 @@
-{
-	"extends": "./tsconfig",
-	"compilerOptions": {
-		"noEmit": false,
-		"sourceMap": true,
-		"skipLibCheck": true
-	},
-	"include": ["index.ts", "../shims.d.ts"]
-}

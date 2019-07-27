@@ -1,5 +1,4 @@
-import {CheckerPlugin} from 'awesome-typescript-loader';
-import CleanPlugin from 'clean-webpack-plugin';
+import merge from 'webpack-merge';
 import globby from 'globby';
 import HtmlPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
@@ -9,13 +8,12 @@ import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 
 const isProduction = process.env.NODE_ENV === 'production';
-const useAnalyzer = process.env.USE_ANALYZER === 'true';
 
-const commonConfig: Partial<webpack.Configuration> = {
+const base: webpack.Configuration = {
 	mode: isProduction ? 'production' : 'development',
-	devtool: isProduction ? 'source-map' : 'cheap-source-map',
+	devtool: 'cheap-source-map',
 	resolve: {
-		extensions: ['.js', '.ts', '.tsx'],
+		extensions: ['.js', '.ts', '.tsx', '.json'],
 	},
 };
 
@@ -26,9 +24,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 		entry[path.basename(file, '.tsx')] = file;
 	}
 
-	return {
-		...commonConfig,
-		name,
+	return merge(base, {
 		entry,
 		output: {
 			path: path.resolve(__dirname, name),
@@ -38,43 +34,31 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 			rules: [
 				{
 					test: /\.tsx?$/,
-					loader: 'awesome-typescript-loader',
-					options: {
-						useCache: true,
-						configFileName: `./src/${name}/tsconfig.webpack.json`,
-					},
+					loader: 'ts-loader',
+					options: {transpileOnly: true},
 				},
 				{
 					test: /\.(png|woff2?)$/,
 					loader: 'file-loader',
-					options: {
-						name: '[name]__[hash].[ext]',
-					},
+					options: {name: '[name].[ext]'},
 				},
 				{
-					test: /\.s?css$/,
+					test: /\.css$/,
 					loaders: [
-						isProduction
-							? MiniCssExtractPlugin.loader
-							: 'style-loader',
+						MiniCssExtractPlugin.loader,
 						{
 							loader: 'css-loader',
 							options: {
 								modules: true,
-								localIdentName: '[local]__[hash:5]',
+								localsConvention: 'camelCase',
 								sourceMap: true,
-								camelCase: true,
-								importLoaders: 1,
 							},
 						},
-						'sass-loader',
 					],
 				},
 			],
 		},
 		plugins: [
-			new CleanPlugin([path.resolve(__dirname, name)]),
-			new CheckerPlugin(),
 			...Object.keys(entry).map(
 				(entryName) =>
 					new HtmlPlugin({
@@ -86,12 +70,16 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 					}),
 			),
 			new MiniCssExtractPlugin({
-				filename: '[name]-[hash].css',
-				chunkFilename: '[id]-[hash].css',
+				filename: '[name].css',
+				chunkFilename: '[id].css',
 			}),
 			new BundleAnalyzerPlugin({
-				analyzerMode:
-					isProduction || !useAnalyzer ? 'disabled' : 'static',
+				openAnalyzer: false,
+				analyzerMode: 'static',
+				reportFilename: path.resolve(
+					__dirname,
+					`bundle-analyzer/${name}.html`,
+				),
 			}),
 		],
 		optimization: {
@@ -99,17 +87,12 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 				chunks: 'all',
 			},
 		},
-	};
+	});
 };
 
-const extensionConfig: webpack.Configuration = {
-	...commonConfig,
-	name: 'extension',
+const extensionConfig = merge(base, {
 	target: 'node',
-	node: false,
-	entry: {
-		index: './src/extension/index.ts',
-	},
+	entry: path.resolve(__dirname, 'src/extension/index.ts'),
 	output: {
 		path: path.resolve(__dirname, 'extension'),
 		filename: 'index.js',
@@ -119,23 +102,18 @@ const extensionConfig: webpack.Configuration = {
 		rules: [
 			{
 				test: /\.ts$/,
-				loader: 'awesome-typescript-loader',
-				options: {
-					useCache: true,
-					configFileName: './src/extension/tsconfig.webpack.json',
-				},
+				loader: 'ts-loader',
+				options: {transpileOnly: true},
 			},
 		],
 	},
 	externals: [nodeExternals()],
-	plugins: [
-		new CleanPlugin([path.resolve(__dirname, 'extension')]),
-		new CheckerPlugin(),
-	],
-};
+});
 
-export default [
+const config: webpack.Configuration[] = [
 	makeBrowserConfig('dashboard'),
 	makeBrowserConfig('graphics'),
 	extensionConfig,
 ];
+
+export default config

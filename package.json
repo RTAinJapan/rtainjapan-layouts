@@ -1,51 +1,216 @@
 {
+	"name": "rtainjapan-layouts",
+	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"dev": "yarn --cwd rtainjapan-layouts dev",
+		"clean": "del-cli bundle-analyzer dashboard extension graphics",
+		"csstypes": "tcm -c -p \"src/**/*.{css,scss}\"",
+		"dev": "run-p dev:*",
+		"dev:csstypes": "yarn csstypes -w",
+		"dev:webpack": "webpack -w",
 		"format": "prettier '**/*.{ts,tsx,json,html,yml,css,scss,md}' --write",
-		"postinstall": "ts-node -T scripts/postinstall.ts",
-		"lint": "tslint -p . -t stylish",
-		"start": "node node_modules/nodecg"
+		"postinstall": "include-nodecg postinstall",
+		"start": "include-nodecg start"
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "depcruise rtainjapan-layouts/src && lint-staged"
+			"pre-commit": "lint-staged"
 		}
 	},
 	"lint-staged": {
-		"**/package.json": [
-			"sort-package-json",
-			"git add"
-		],
 		"*.{ts,tsx,json,html,yml,css,scss,md}": [
 			"prettier --write",
 			"git add"
 		],
-		"*.{ts,tsx}": [
-			"tslint -p . -t stylish --fix",
+		"package.json": [
+			"sort-package-json",
 			"git add"
 		]
 	},
 	"dependencies": {
-		"nodecg": "^1.4.1"
+		"axios": "^0.19.0",
+		"date-fns": "^1.30.1",
+		"delay": "^4.3.0",
+		"google-spreadsheet": "^2.0.7",
+		"googleapis": "^41.0.1",
+		"include-nodecg": "^0.0.1-5",
+		"load-json-file": "^6.2.0",
+		"lodash": "^4.17.15",
+		"nodecg": "^1.4.1",
+		"oauth-1.0a": "^2.2.6",
+		"source-map-support": "^0.5.12",
+		"tslib": "^1.10.0",
+		"write-json-file": "^4.1.1"
 	},
 	"devDependencies": {
-		"@hoishin/tslint-config": "^2.0.3",
+		"@material-ui/core": "^4.2.1",
+		"@material-ui/icons": "^4.2.1",
+		"@types/globby": "^8.0.0",
+		"@types/html-webpack-plugin": "^3.2.1",
+		"@types/load-json-file": "^2.0.7",
+		"@types/lodash": "^4.14.136",
+		"@types/mini-css-extract-plugin": "^0.8.0",
+		"@types/node": "^10.14.13",
+		"@types/react": "^16.8.23",
+		"@types/react-dom": "^16.8.5",
+		"@types/react-highlight-words": "^0.16.0",
 		"@types/rimraf": "^2.0.2",
-		"bower": "^1.8.8",
-		"dependency-cruiser": "^5.0.0",
+		"@types/source-map-support": "^0.5.0",
+		"@types/styled-components": "^4.1.18",
+		"@types/uuid": "^3.4.5",
+		"@types/webpack": "^4.32.1",
+		"@types/webpack-bundle-analyzer": "^2.13.2",
+		"@types/webpack-merge": "^4.1.5",
+		"@types/webpack-node-externals": "^1.6.3",
+		"@types/write-json-file": "^2.2.1",
+		"css-loader": "^3.1.0",
+		"del-cli": "^2.0.0",
+		"downshift": "^3.2.10",
+		"file-loader": "^4.1.0",
+		"globby": "^10.0.1",
+		"html-webpack-plugin": "^4.0.0-beta.8",
 		"husky": "^3.0.1",
 		"lint-staged": "^9.2.1",
+		"mini-css-extract-plugin": "^0.8.0",
+		"modern-normalize": "^0.5.0",
+		"npm-run-all": "^4.1.5",
 		"prettier": "^1.18.2",
+		"react": "^16.8.6",
+		"react-dom": "^16.8.6",
+		"react-highlight-words": "^0.16.0",
 		"rimraf": "^2.6.3",
 		"sort-package-json": "^1.22.1",
+		"style-loader": "^0.23.1",
+		"styled-components": "^4.3.2",
+		"ts-loader": "^6.0.4",
 		"ts-node": "^8.3.0",
 		"tslib": "^1.10.0",
-		"tslint": "^5.18.0",
-		"tslint-config-prettier": "^1.18.0",
-		"typescript": "^3.5.3"
+		"typescript": "^3.5.3",
+		"uuid": "^3.3.2",
+		"webpack": "^4.38.0",
+		"webpack-bundle-analyzer": "^3.3.2",
+		"webpack-cli": "^3.3.6",
+		"webpack-merge": "^4.2.1",
+		"webpack-node-externals": "^1.7.2"
 	},
-	"engines": {
-		"node": "^10.14.0"
+	"nodecg": {
+		"compatibleRange": "^1.0.0",
+		"dashboardPanels": [
+			{
+				"name": "stream",
+				"title": "配信担当ダッシュボード",
+				"file": "tech.html",
+				"headerColor": "#00BEBE",
+				"fullbleed": true
+			},
+			{
+				"name": "twitter-account",
+				"title": "Twitterアカウント",
+				"file": "twitter-account.html",
+				"width": 3,
+				"headerColor": "#00BEBE",
+				"workspace": "Misc"
+			},
+			{
+				"name": "spotify-auth",
+				"title": "Spotifyアカウント",
+				"file": "spotify-auth.html",
+				"width": 3,
+				"headerColor": "#00BEBE",
+				"workspace": "Misc"
+			},
+			{
+				"name": "edit-tourny",
+				"title": "走者情報入れ替え",
+				"file": "edit-tourny.html",
+				"width": 8,
+				"headerColor": "#00BEBE",
+				"workspace": "Special"
+			},
+			{
+				"name": "current-runners",
+				"title": "現在のゲームの走者",
+				"file": "current-runners.html",
+				"width": 2,
+				"headerColor": "#00BEBE",
+				"workspace": "Special"
+			}
+		],
+		"graphics": [
+			{
+				"file": "break.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "ds1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "gb1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "hd1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "hd2.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "sd1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "sd2.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "3ds1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "ds1-flat.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "gba1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "gba2.html",
+				"width": 1920,
+				"height": 1080
+			}
+		],
+		"assetCategories": [
+			{
+				"name": "sponsorLogos",
+				"title": "スポンサーロゴ",
+				"allowedTypes": [
+					"png"
+				]
+			}
+		],
+		"mount": [
+			{
+				"directory": "twitter-callback",
+				"endpoint": "twitter-callback"
+			},
+			{
+				"directory": "spotify-callback",
+				"endpoint": "spotify-callback"
+			}
+		]
 	}
 }
