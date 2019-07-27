@@ -37,7 +37,7 @@ export const twitchTitleUpdater = (nodecg: NodeCG) => {
 	console.log('TODO: Integrate Twitch login for bundle itself');
 	return;
 
-	const loginLib = require('../../lib/login'); // tslint:disable-line no-require-imports
+	const loginLib = require('../../lib/login');
 	loginLib.on('login', (session: any) => {
 		const user = session.passport.user;
 		if (
