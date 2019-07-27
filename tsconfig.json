@@ -1,15 +1,8 @@
 {
+	"extends": "@hoishin/tsconfig",
 	"compilerOptions": {
-		"strict": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": true,
-
-		"target": "es2017",
+		"target": "es2018",
 		"lib": ["esnext"],
-		"esModuleInterop": true,
-		"moduleResolution": "node",
 		"importHelpers": true
 	}
 }

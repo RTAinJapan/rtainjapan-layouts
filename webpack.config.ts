@@ -34,8 +34,10 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 			rules: [
 				{
 					test: /\.tsx?$/,
-					loader: 'ts-loader',
-					options: {transpileOnly: true},
+					loaders: [
+						'babel-loader',
+						{loader: 'ts-loader', options: {transpileOnly: true}},
+					],
 				},
 				{
 					test: /\.(png|woff2?)$/,
@@ -116,4 +118,4 @@ const config: webpack.Configuration[] = [
 	extensionConfig,
 ];
 
-export default config
+export default config;
