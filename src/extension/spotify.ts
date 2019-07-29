@@ -1,10 +1,9 @@
 import axios from 'axios';
 import loadJson from 'load-json-file';
-import {NodeCG} from 'nodecg/types/server';
 import path from 'path';
 import writeJson from 'write-json-file';
-import BundleConfig from '../bundle-config';
-import {ReplicantName as R, Spotify} from '../replicants';
+import {NodeCG} from './nodecg';
+import {URLSearchParams, URL} from 'url';
 
 const defaultWaitMs = 30 * 1000;
 const bufferMs = 1000;
@@ -28,8 +27,12 @@ const sumArtists = (artists: Array<{name: string}>) => {
 };
 
 export const spotify = async (nodecg: NodeCG) => {
-	const bundleCfg = nodecg.bundleConfig as BundleConfig;
-	const spotifyRep = nodecg.Replicant<Spotify>(R.Spotify, {defaultValue: {}});
+	const spotifyConfig = nodecg.bundleConfig.spotify;
+	if (!spotifyConfig) {
+		return;
+	}
+
+	const spotifyRep = nodecg.Replicant('spotify', {defaultValue: {}});
 
 	// prettier-ignore
 	const redirectUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/spotify-callback/index.html`;
@@ -56,7 +59,9 @@ export const spotify = async (nodecg: NodeCG) => {
 				headers: {Authorization: `Bearer ${token}`},
 			});
 			if (res.status === 204) {
-				spotifyRep.value.currentTrack = undefined;
+				if (spotifyRep.value) {
+					spotifyRep.value.currentTrack = undefined;
+				}
 				refreshTimer(setTimeout(getCurrentTrack, defaultWaitMs));
 				return;
 			}
@@ -106,8 +111,7 @@ export const spotify = async (nodecg: NodeCG) => {
 				params.set('code', payload.code);
 				params.set('redirect_uri', redirectUrl);
 				const authHeader = Buffer.from(
-					// prettier-ignore
-					`${bundleCfg.spotify.clientId}:${bundleCfg.spotify.clientSecret}`,
+					`${spotifyConfig.clientId}:${spotifyConfig.clientSecret}`,
 				).toString('base64');
 				const headers = {
 					Authorization: `Basic ${authHeader}`,

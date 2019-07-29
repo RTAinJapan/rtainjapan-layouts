@@ -1,23 +1,15 @@
-import {NodeCG} from 'nodecg/types/server';
-import {
-	ChecklistCompleted,
-	CurrentRun,
-	ReplicantName as R,
-	Timer,
-	TimerState,
-} from '../replicants';
-import {increment, newTimer, parseSeconds, setSeconds} from '../shared/timer';
+import {increment, newTimer, parseSeconds, setSeconds} from '../nodecg/timer';
+import {TimerState} from '../nodecg/replicants';
+import {NodeCG} from './nodecg';
 
 const TRY_TICK_INTERVAL = 10;
 
 const getDefaultTimer = () => newTimer(0);
 
 export const timekeeping = (nodecg: NodeCG) => {
-	const checklistCompletedRep = nodecg.Replicant<ChecklistCompleted>(
-		R.ChecklistCompleted,
-	);
-	const currentRunRep = nodecg.Replicant<CurrentRun>(R.CurrentRun);
-	const timerRep = nodecg.Replicant<Timer>(R.Timer, {
+	const checklistCompletedRep = nodecg.Replicant('checklist-completed');
+	const currentRunRep = nodecg.Replicant('current-run');
+	const timerRep = nodecg.Replicant('timer', {
 		defaultValue: getDefaultTimer(),
 	});
 
@@ -38,6 +30,9 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * and can be easily extended to millisecond timer.
 	 */
 	const tryTick = () => {
+		if (!timerRep.value) {
+			return;
+		}
 		if (Date.now() - lastIncrement > 1000) {
 			lastIncrement += 1000;
 			increment(timerRep.value);
@@ -49,6 +44,9 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * @param force - Forces the timer to start again, even if already running.
 	 */
 	const start = (force = false) => {
+		if (!timerRep.value) {
+			return;
+		}
 		// Don't start if checklist is not completed
 		if (!checklistCompletedRep.value) {
 			return;
@@ -69,6 +67,9 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * Stops the timer.
 	 */
 	const stop = () => {
+		if (!timerRep.value) {
+			return;
+		}
 		clearInterval(tickInterval);
 		timerRep.value.timerState = TimerState.Stopped;
 	};
@@ -77,6 +78,9 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * Stops and resets the timer, and clears the timer and results.
 	 */
 	const reset = () => {
+		if (!timerRep.value) {
+			return;
+		}
 		stop();
 		setSeconds(timerRep.value, 0);
 		timerRep.value.results = [];
@@ -86,6 +90,9 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * Re-calculates the podium place for all runners.
 	 */
 	const recalcPlaces = () => {
+		if (!timerRep.value || !currentRunRep.value) {
+			return;
+		}
 		const finishedResults = timerRep.value.results
 			.filter((result) => {
 				if (result) {
@@ -114,7 +121,8 @@ export const timekeeping = (nodecg: NodeCG) => {
 			return;
 		}
 		const allRunnersFinished = currentRunRep.value.runners.every(
-			(_, index) => Boolean(timerRep.value.results[index]),
+			(_, index) =>
+				Boolean(timerRep.value && timerRep.value.results[index]),
 		);
 		if (allRunnersFinished) {
 			stop();
@@ -128,6 +136,9 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * @param data.forfeit - Whether or not the runner forfeit.
 	 */
 	const completeRunner = (data: {index: number; forfeit: boolean}) => {
+		if (!timerRep.value) {
+			return;
+		}
 		if (!timerRep.value.results[data.index]) {
 			timerRep.value.results[data.index] = newTimer(timerRep.value.raw);
 		}
@@ -143,6 +154,9 @@ export const timekeeping = (nodecg: NodeCG) => {
 	 * @param index - The runner to modify.
 	 */
 	const resumeRunner = (index: number) => {
+		if (!timerRep.value) {
+			return;
+		}
 		timerRep.value.results[index] = null;
 		recalcPlaces();
 		if (timerRep.value.timerState !== TimerState.Finished) {
@@ -167,6 +181,9 @@ export const timekeeping = (nodecg: NodeCG) => {
 		index: number | 'master';
 		newTime: string;
 	}) => {
+		if (!timerRep.value || !currentRunRep.value) {
+			return;
+		}
 		if (!newTime) {
 			return;
 		}
@@ -196,7 +213,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 
 	// If the timer was running when NodeCG was shut down last time,
 	// resume the timer according to how long it has been since the shutdown time.
-	if (timerRep.value.timerState === TimerState.Running) {
+	if (timerRep.value && timerRep.value.timerState === TimerState.Running) {
 		const missedSeconds = Math.round(
 			(Date.now() - timerRep.value.timestamp) / 1000,
 		);

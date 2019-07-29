@@ -2,8 +2,8 @@
 	"extends": "../../tsconfig",
 	"compilerOptions": {
 		"noEmit": true,
-
+		"types": ["node"],
 		"module": "commonjs"
 	},
-	"include": ["**/*.ts", "../shims.d.ts"]
+	"include": ["**/*.ts", "../nodecg/**/*.ts"]
 }

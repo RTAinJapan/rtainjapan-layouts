@@ -1,0 +1,10 @@
+{
+	"extends": "../../tsconfig",
+	"compilerOptions": {
+		"module": "esnext",
+		"lib": ["esnext", "dom"],
+		"jsx": "react",
+		"noEmit": true
+	},
+	"include": ["**/*.ts", "**/*.tsx", "../nodecg/**/*.ts"]
+}

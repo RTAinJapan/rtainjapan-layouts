@@ -1,0 +1,7 @@
+@import '~modern-normalize/modern-normalize.css';
+@import '../../fonts/migmix-2p/index.css';
+
+body {
+	font-family: 'tbudgothic-std';
+	font-weight: 400;
+}

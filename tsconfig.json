@@ -1,8 +1,9 @@
 {
 	"extends": "@hoishin/tsconfig",
 	"compilerOptions": {
-		"target": "es2018",
+		"target": "esnext",
 		"lib": ["esnext"],
-		"importHelpers": true
+		"types": [],
+		"sourceMap": true
 	}
 }

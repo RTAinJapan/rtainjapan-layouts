@@ -3,14 +3,16 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
+		"build": "webpack",
 		"clean": "del-cli bundle-analyzer dashboard extension graphics",
-		"csstypes": "tcm -c -p \"src/**/*.{css,scss}\"",
 		"dev": "run-p dev:*",
-		"dev:csstypes": "yarn csstypes -w",
+		"dev:types": "yarn test -w --preserveWatchOutput",
 		"dev:webpack": "webpack -w",
 		"format": "prettier '**/*.{ts,tsx,json,html,yml,css,scss,md}' --write",
 		"postinstall": "include-nodecg postinstall",
-		"start": "include-nodecg start"
+		"schema-types": "nodecg schema-types -o src/nodecg/generated",
+		"start": "include-nodecg start",
+		"test": "tsc -b src/browser src/extension"
 	},
 	"husky": {
 		"hooks": {
@@ -83,6 +85,7 @@
 		"lint-staged": "^9.2.1",
 		"mini-css-extract-plugin": "^0.8.0",
 		"modern-normalize": "^0.5.0",
+		"nodecg-cli": "^6.0.3",
 		"npm-run-all": "^4.1.5",
 		"prettier": "^1.18.2",
 		"react": "^16.8.6",
@@ -94,6 +97,7 @@
 		"styled-components": "^4.3.2",
 		"ts-loader": "^6.0.4",
 		"ts-node": "^8.3.0",
+		"ts-nodecg": "^0.3.0",
 		"tslib": "^1.10.0",
 		"typescript": "^3.5.3",
 		"uuid": "^3.3.2",

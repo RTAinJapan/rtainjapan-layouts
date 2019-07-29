@@ -1,0 +1,63 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"twitter": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": [
+				"targetWords",
+				"maxTweets",
+				"consumerKey",
+				"consumerSecret",
+				"accessToken",
+				"accessTokenSecret"
+			],
+			"properties": {
+				"targetWords": {
+					"type": "array",
+					"items": {"type": "string"}
+				},
+				"maxTweets": {
+					"type": "number",
+					"minimum": 0,
+					"multipleOf": 1,
+					"default": 100
+				},
+				"consumerKey": {
+					"type": "string"
+				},
+				"consumerSecret": {
+					"type": "string"
+				},
+				"accessToken": {
+					"type": "string"
+				},
+				"accessTokenSecret": {
+					"type": "string"
+				}
+			}
+		},
+		"spotify": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["clientId", "clientSecret"],
+			"properties": {
+				"clientId": {"type": "string"},
+				"clientSecret": {"type": "string"}
+			}
+		},
+		"googleApi": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["spreadsheetId", "clientEmail", "privateKey"],
+			"properties": {
+				"spreadsheetId": {"type": "string"},
+				"clientEmail": {"type": "string"},
+				"privateKey": {"type": "string"}
+			}
+		}
+	}
+}

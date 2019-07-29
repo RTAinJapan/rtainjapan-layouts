@@ -3,13 +3,12 @@ import crypto from 'crypto';
 import delay from 'delay';
 import {IncomingMessage} from 'http';
 import loadJsonFile from 'load-json-file';
-import {NodeCG} from 'nodecg/types/server';
 import OAuth from 'oauth-1.0a';
 import path from 'path';
 import {URLSearchParams} from 'url';
 import writeJsonFile from 'write-json-file';
-import BundleConfig from '../bundle-config';
-import {ReplicantName as R, Tweets, Twitter} from '../replicants';
+import {NodeCG} from './nodecg';
+import {URL} from 'url';
 
 /**
  * Twitter access token stored in JSON file
@@ -52,17 +51,21 @@ let requestToken = {
 let twitterStream: IncomingMessage | null = null;
 
 export const twitter = async (nodecg: NodeCG) => {
-	// prettier-ignore
+	const twitterConfig = nodecg.bundleConfig.twitter;
+	if (!twitterConfig) {
+		nodecg.log.warn('Twitter config is empty');
+		return;
+	}
+
 	const callbackUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/twitter-callback/index.html`;
 
-	const twitterRep = nodecg.Replicant<Twitter>(R.Twitter);
-	const tweetsRep = nodecg.Replicant<Tweets>(R.Tweets, {defaultValue: []});
-	const bundleConfig: BundleConfig = nodecg.bundleConfig;
+	const twitterRep = nodecg.Replicant('twitter');
+	const tweetsRep = nodecg.Replicant('tweets', {defaultValue: []});
 
 	const oauth = new OAuth({
 		consumer: {
-			key: bundleConfig.twitter.consumerKey,
-			secret: bundleConfig.twitter.consumerSecret,
+			key: twitterConfig.consumerKey,
+			secret: twitterConfig.consumerSecret,
 		},
 		signature_method: 'HMAC-SHA1',
 		hash_function: (baseString, key) => {
@@ -75,6 +78,9 @@ export const twitter = async (nodecg: NodeCG) => {
 	});
 
 	const deleteTweetById = (id: string) => {
+		if (!tweetsRep.value) {
+			return;
+		}
 		const selectedTweetIndex = tweetsRep.value.findIndex(
 			(t) => t.id === id,
 		);
@@ -153,7 +159,7 @@ export const twitter = async (nodecg: NodeCG) => {
 				return;
 			}
 			const data = {
-				track: nodecg.bundleConfig.twitter.targetWords.join(','),
+				track: twitterConfig.targetWords.join(','),
 			};
 			const oauthData = oauth.authorize(
 				{
@@ -219,6 +225,9 @@ export const twitter = async (nodecg: NodeCG) => {
 			if (!data || typeof data !== 'string') {
 				return;
 			}
+			if (!tweetsRep.value) {
+				return;
+			}
 			try {
 				// Try to parse the string
 				store += data;
@@ -279,8 +288,7 @@ export const twitter = async (nodecg: NodeCG) => {
 
 		try {
 			requestToken = await getRequestToken();
-			// prettier-ignore
-			const redirectUrl = `https://api.twitter.com/oauth/authenticate?oauth_token=${requestToken.token}`
+			const redirectUrl = `https://api.twitter.com/oauth/authenticate?oauth_token=${requestToken.token}`;
 			cb(null, redirectUrl);
 		} catch (err) {
 			nodecg.log.error('Failed to get Twitter oauth token');
@@ -289,31 +297,37 @@ export const twitter = async (nodecg: NodeCG) => {
 		}
 	});
 
-	nodecg.listenFor(
-		'twitter:loginSuccess',
-		async (data: {oauthToken: string; oauthVerifier: string}) => {
-			if (data.oauthToken !== requestToken.token) {
-				return;
-			}
+	nodecg.listenFor('twitter:loginSuccess', async (data) => {
+		if (data.oauthToken !== requestToken.token) {
+			return;
+		}
+		if (!data.oauthVerifier) {
+			return;
+		}
 
-			try {
-				const accessToken = await getAccessToken(data.oauthVerifier);
-				await saveAccessToken(accessToken);
-				twitterRep.value = {userObject: await verifyCredentials()};
-			} catch (err) {
-				nodecg.log.error('Failed to authenticate user');
-				nodecg.log.error(err);
-			}
-		},
-	);
+		try {
+			const accessToken = await getAccessToken(data.oauthVerifier);
+			await saveAccessToken(accessToken);
+			twitterRep.value = {userObject: await verifyCredentials()};
+		} catch (err) {
+			nodecg.log.error('Failed to authenticate user');
+			nodecg.log.error(err);
+		}
+	});
 
 	nodecg.listenFor('twitter:logout', async () => {
+		if (!twitterRep.value) {
+			return;
+		}
 		twitterRep.value.userObject = undefined;
 		await saveAccessToken({token: '', secret: ''});
 	});
 
 	nodecg.listenFor('selectTweet', (id: string) => {
-		nodecg.sendMessage('showTweet', deleteTweetById(id));
+		const deletedTweet = deleteTweetById(id);
+		if (deletedTweet) {
+			nodecg.sendMessage('showTweet', deletedTweet);
+		}
 	});
 
 	nodecg.listenFor('discardTweet', deleteTweetById);
@@ -339,12 +353,11 @@ export const twitter = async (nodecg: NodeCG) => {
 	});
 
 	tweetsRep.on('change', (newVal) => {
-		if (newVal.length <= bundleConfig.twitter.maxTweets) {
+		if (newVal.length <= twitterConfig.maxTweets) {
 			return;
 		}
-		tweetsRep.value = tweetsRep.value.slice(
-			0,
-			bundleConfig.twitter.maxTweets - 10,
-		);
+		tweetsRep.value =
+			tweetsRep.value &&
+			tweetsRep.value.slice(0, twitterConfig.maxTweets - 10);
 	});
 };

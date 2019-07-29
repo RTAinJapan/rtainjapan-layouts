@@ -19,7 +19,7 @@ const base: webpack.Configuration = {
 
 const makeBrowserConfig = (name: string): webpack.Configuration => {
 	const entry: webpack.Entry = {};
-	const files = globby.sync(`./src/${name}/views/*.tsx`);
+	const files = globby.sync(`./src/browser/${name}/views/*.tsx`);
 	for (const file of files) {
 		entry[path.basename(file, '.tsx')] = file;
 	}
@@ -87,6 +87,11 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 		optimization: {
 			splitChunks: {
 				chunks: 'all',
+				cacheGroups: {
+					common: {minChunks: files.length},
+					vendors: false,
+					default: false,
+				},
 			},
 		},
 	});

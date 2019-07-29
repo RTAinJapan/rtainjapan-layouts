@@ -1,15 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
-import {NodeCG} from 'nodecg/types/server';
-import BundleConfig from '../bundle-config';
-import {
-	Checklist,
-	CurrentRun,
-	NextRun,
-	ReplicantName as R,
-	Run,
-	Schedule,
-} from '../replicants';
 import {getAuth, getData} from './util/spreadsheet';
+import {Run} from '../nodecg/replicants';
+import {NodeCG} from './nodecg';
 
 const getDefaultRun = (): Run => ({
 	category: '',
@@ -31,34 +23,43 @@ const hmsToMs = (hms: string) => {
 };
 
 export default async (nodecg: NodeCG) => {
-	const bundleConfig: BundleConfig = nodecg.bundleConfig;
-	const scheduleRep = nodecg.Replicant<Schedule>(R.Schedule, {
+	const googleApiConfig = nodecg.bundleConfig.googleApi;
+	if (!googleApiConfig) {
+		return;
+	}
+
+	const scheduleRep = nodecg.Replicant('schedule', {
 		defaultValue: [],
 	});
-	const currentRunRep = nodecg.Replicant<CurrentRun>(R.CurrentRun, {
+	const currentRunRep = nodecg.Replicant('current-run', {
 		defaultValue: getDefaultRun(),
 	});
-	const nextRunRep = nodecg.Replicant<NextRun>(R.NextRun, {
+	const nextRunRep = nodecg.Replicant('next-run', {
 		defaultValue: getDefaultRun(),
 	});
-	const checklistRep = nodecg.Replicant<Checklist>(R.Checklist);
+	const checklistRep = nodecg.Replicant('checklist');
 
 	const googleApiAuth = await getAuth(
-		bundleConfig.googleApi.clientEmail,
-		bundleConfig.googleApi.privateKey,
+		googleApiConfig.clientEmail,
+		googleApiConfig.privateKey,
 	);
 
 	const getGamesData = async () =>
-		getData(bundleConfig.googleApi.spreadsheetId, googleApiAuth);
+		getData(googleApiConfig.spreadsheetId, googleApiAuth);
 
 	const resetChecklist = () => {
-		checklistRep.value = checklistRep.value.map((item) => ({
-			...item,
-			complete: false,
-		}));
+		if (checklistRep.value) {
+			checklistRep.value = checklistRep.value.map((item) => ({
+				...item,
+				complete: false,
+			}));
+		}
 	};
 
 	const updateCurrentRun = (index: number) => {
+		if (!scheduleRep.value) {
+			return;
+		}
 		resetChecklist();
 		const newCurrentRun = scheduleRep.value[index];
 		if (!newCurrentRun) {
@@ -69,6 +70,9 @@ export default async (nodecg: NodeCG) => {
 	};
 
 	const seekToNextRun = () => {
+		if (!currentRunRep.value || !scheduleRep.value) {
+			return;
+		}
 		const currentIndex = currentRunRep.value.index;
 		if (currentIndex === undefined || currentIndex < 0) {
 			updateCurrentRun(0);
@@ -83,6 +87,9 @@ export default async (nodecg: NodeCG) => {
 	};
 
 	const seekToPreviousRun = () => {
+		if (!currentRunRep.value || !scheduleRep.value) {
+			return;
+		}
 		const currentIndex = currentRunRep.value.index;
 		if (currentIndex === undefined || currentIndex < 0) {
 			updateCurrentRun(0);
@@ -99,25 +106,29 @@ export default async (nodecg: NodeCG) => {
 	nodecg.listenFor('nextRun', (_, cb) => {
 		seekToNextRun();
 		if (cb && !cb.handled) {
-			cb();
+			cb(null);
 		}
 	});
 
 	nodecg.listenFor('previousRun', (_, cb) => {
 		seekToPreviousRun();
 		if (cb && !cb.handled) {
-			cb();
+			cb(null);
 		}
 	});
 
 	nodecg.listenFor('setCurrentRunByIndex', (index, cb) => {
 		updateCurrentRun(index);
 		if (cb && !cb.handled) {
-			cb();
+			cb(null);
 		}
 	});
 
 	nodecg.listenFor('modifyRun', (data, cb) => {
+		if (!currentRunRep.value || !nextRunRep.value) {
+			return;
+		}
+
 		let msg: string | null = null;
 
 		try {
