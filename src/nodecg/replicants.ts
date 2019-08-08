@@ -1,4 +1,35 @@
-export interface Runner {
+export interface Spreadsheet {
+	runs: {
+		id: string;
+		title: string;
+		['title english']: string;
+		platform?: string;
+		category?: string;
+		runDuration: string;
+		setupDuration: string;
+		runner1: string;
+		runner2: string;
+		runner3: string;
+		commentator1: string;
+		commentator2: string;
+	}[];
+	runners: {
+		id: string;
+		name: string;
+		twitter?: string;
+		nico?: string;
+		twitch?: string;
+	}[];
+	commentators: {
+		id: string;
+		name: string;
+		twitter?: string;
+		nico?: string;
+		twitch?: string;
+	}[];
+}
+
+export interface Participant {
 	name: string;
 	twitch?: string;
 	nico?: string;
@@ -13,8 +44,8 @@ export interface Run {
 	category?: string;
 	platform?: string;
 	duration: string;
-	runners: Runner[];
-	commentators: Runner[];
+	runners: Participant[];
+	commentators: Participant[];
 }
 
 export enum TimerState {
@@ -27,8 +58,6 @@ export type Checklist = Array<{
 	name: string;
 	complete: boolean;
 }>;
-
-export type ChecklistCompleted = boolean;
 
 export type CurrentRun = Run;
 
@@ -75,7 +104,6 @@ export interface Spotify {
 
 export type ReplicantMap = {
 	checklist: Checklist;
-	'checklist-completed': ChecklistCompleted;
 	'current-run': CurrentRun;
 	'next-run': NextRun;
 	schedule: Schedule;
@@ -85,4 +113,5 @@ export type ReplicantMap = {
 	spotify: Spotify;
 	'twitch-access-token': string;
 	'twitch-chennel-id': string;
+	spreadsheet: Spreadsheet;
 };

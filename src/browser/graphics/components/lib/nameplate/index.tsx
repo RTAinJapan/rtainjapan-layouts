@@ -1,7 +1,7 @@
 import delay from 'delay';
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {CurrentRun, Runner, Timer} from '../../../../../nodecg/replicants';
+import {CurrentRun, Participant, Timer} from '../../../../../nodecg/replicants';
 import nicoIcon from '../../../images/icon/nico.png';
 import twitchIcon from '../../../images/icon/twitch.png';
 import twitterIcon from '../../../images/icon/twitter.png';
@@ -34,7 +34,7 @@ const socialIcon = (socialType: SocialType) => {
 	}
 };
 
-const calcSocialInfo = (runner: NonNullable<Runner>) => {
+const calcSocialInfo = (runner: NonNullable<Participant>) => {
 	const allSocialInfo = [
 		{type: SocialType.Twitch, info: runner.twitch},
 		{type: SocialType.Nico, info: runner.nico},
@@ -109,7 +109,7 @@ interface Props {
 }
 
 interface State {
-	runner?: Runner;
+	runner?: Participant;
 	hideLabel: boolean;
 	fontSizeMultiplier: number;
 	showingSocialIndex: number;
@@ -126,7 +126,9 @@ export abstract class Nameplate extends React.Component<Props, State> {
 
 	public socialRotateIntervalTimer?: number;
 
-	protected abstract readonly calcNewRunner: (newVal: CurrentRun) => Runner;
+	protected abstract readonly calcNewRunner: (
+		newVal: CurrentRun,
+	) => Participant;
 
 	protected abstract readonly labelIcon: any;
 

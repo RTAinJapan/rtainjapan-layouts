@@ -10,6 +10,8 @@ import writeJsonFile from 'write-json-file';
 import {NodeCG} from './nodecg';
 import {URL} from 'url';
 
+const MAX_TWEETS = 100;
+
 /**
  * Twitter access token stored in JSON file
  */
@@ -353,11 +355,10 @@ export const twitter = async (nodecg: NodeCG) => {
 	});
 
 	tweetsRep.on('change', (newVal) => {
-		if (newVal.length <= twitterConfig.maxTweets) {
+		if (newVal.length <= MAX_TWEETS) {
 			return;
 		}
 		tweetsRep.value =
-			tweetsRep.value &&
-			tweetsRep.value.slice(0, twitterConfig.maxTweets - 10);
+			tweetsRep.value && tweetsRep.value.slice(0, MAX_TWEETS - 10);
 	});
 };

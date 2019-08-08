@@ -5,7 +5,7 @@ import TypoGraphy from '@material-ui/core/Typography';
 import max from 'lodash/max';
 import React from 'react';
 import styled from 'styled-components';
-import {CurrentRun, Runner} from '../../../../nodecg/replicants';
+import {CurrentRun, Participant} from '../../../../nodecg/replicants';
 
 const Container = styled.div`
 	position: absolute;
@@ -67,7 +67,7 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 						}}
 					/>
 					{Array.from({length: 4}, (_, index) => {
-						const runner: Runner = runners[index] || {};
+						const runner: Participant = runners[index] || {};
 						return (
 							<div key={index}>
 								<TextField
@@ -118,7 +118,7 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 						);
 					})}
 					{new Array(4).fill(null).map((_, index) => {
-						const commentator: Runner = {
+						const commentator: Participant = {
 							name: '',
 							...commentators[index],
 						};
@@ -184,10 +184,10 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 		this.setState(this.props.defaultValue);
 	};
 
-	private readonly updateRunnerInfo = <T extends keyof Runner>(
+	private readonly updateRunnerInfo = <T extends keyof Participant>(
 		updatingIndex: number,
 		key: T,
-		value: Runner[T],
+		value: Participant[T],
 	) => {
 		this.setState((state) => {
 			if (!state.runners) {
@@ -195,7 +195,7 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 			}
 			const oldRunner = state.runners[updatingIndex];
 			const newRunner = {...oldRunner, [key]: value};
-			const newRunners: Runner[] = [];
+			const newRunners: Participant[] = [];
 			const iterateLength =
 				(max([updatingIndex, state.runners.length - 1]) || 0) + 1;
 			for (let i = 0; i < iterateLength; i++) {
@@ -209,10 +209,10 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 		});
 	};
 
-	private readonly updateCommentatorInfo = <T extends keyof Runner>(
+	private readonly updateCommentatorInfo = <T extends keyof Participant>(
 		updatingIndex: number,
 		key: T,
-		value: Runner[T],
+		value: Participant[T],
 	) => {
 		this.setState((state) => {
 			if (!state.commentators) {
@@ -220,7 +220,7 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 			}
 			const oldOne = state.commentators[updatingIndex] || {};
 			const newOne = {...oldOne, [key]: value};
-			const newOnes: Runner[] = [];
+			const newOnes: Participant[] = [];
 			const iterateLength =
 				(max([updatingIndex, state.commentators.length - 1]) || 0) + 1;
 			for (let i = 0; i < iterateLength; i++) {

@@ -7,7 +7,7 @@ const TRY_TICK_INTERVAL = 10;
 const getDefaultTimer = () => newTimer(0);
 
 export const timekeeping = (nodecg: NodeCG) => {
-	const checklistCompletedRep = nodecg.Replicant('checklist-completed');
+	const checklistRep = nodecg.Replicant('checklist');
 	const currentRunRep = nodecg.Replicant('current-run');
 	const timerRep = nodecg.Replicant('timer', {
 		defaultValue: getDefaultTimer(),
@@ -48,7 +48,10 @@ export const timekeeping = (nodecg: NodeCG) => {
 			return;
 		}
 		// Don't start if checklist is not completed
-		if (!checklistCompletedRep.value) {
+		if (
+			!checklistRep.value ||
+			checklistRep.value.some((item) => !item.complete)
+		) {
 			return;
 		}
 

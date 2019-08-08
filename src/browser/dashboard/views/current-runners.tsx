@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Runner} from '../../../nodecg/replicants';
+import {Participant} from '../../../nodecg/replicants';
 
 interface State {
-	runners: Runner[];
+	runners: Participant[];
 }
 class App extends React.Component<{}, State> {
 	private readonly currentRunRep = nodecg.Replicant('current-run');

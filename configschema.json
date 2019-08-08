@@ -9,7 +9,6 @@
 			"additionalProperties": false,
 			"required": [
 				"targetWords",
-				"maxTweets",
 				"consumerKey",
 				"consumerSecret",
 				"accessToken",
@@ -20,24 +19,10 @@
 					"type": "array",
 					"items": {"type": "string"}
 				},
-				"maxTweets": {
-					"type": "number",
-					"minimum": 0,
-					"multipleOf": 1,
-					"default": 100
-				},
-				"consumerKey": {
-					"type": "string"
-				},
-				"consumerSecret": {
-					"type": "string"
-				},
-				"accessToken": {
-					"type": "string"
-				},
-				"accessTokenSecret": {
-					"type": "string"
-				}
+				"consumerKey": {"type": "string"},
+				"consumerSecret": {"type": "string"},
+				"accessToken": {"type": "string"},
+				"accessTokenSecret": {"type": "string"}
 			}
 		},
 		"spotify": {
@@ -49,15 +34,7 @@
 				"clientSecret": {"type": "string"}
 			}
 		},
-		"googleApi": {
-			"type": "object",
-			"additionalProperties": false,
-			"required": ["spreadsheetId", "clientEmail", "privateKey"],
-			"properties": {
-				"spreadsheetId": {"type": "string"},
-				"clientEmail": {"type": "string"},
-				"privateKey": {"type": "string"}
-			}
-		}
+		"spreadsheetId": {"type": "string"},
+		"googleApiKey": {"type": "string"}
 	}
 }

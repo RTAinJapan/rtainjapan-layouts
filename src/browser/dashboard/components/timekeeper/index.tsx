@@ -10,10 +10,10 @@ import React from 'react';
 import styled from 'styled-components';
 import uuidv4 from 'uuid/v4';
 import {
-	ChecklistCompleted,
 	CurrentRun,
 	Timer,
 	TimerState,
+	Checklist,
 } from '../../../../nodecg/replicants';
 import {newTimer} from '../../../../nodecg/timer';
 import {BorderedBox} from '../lib/bordered-box';
@@ -21,7 +21,7 @@ import {ColoredButton} from '../lib/colored-button';
 import {EditTimeModal} from './edit';
 import {Runner} from './runner';
 
-const checklistCompletedRep = nodecg.Replicant('checklist-completed');
+const checklistRep = nodecg.Replicant('checklist');
 const currentRunRep = nodecg.Replicant('current-run');
 const timerRep = nodecg.Replicant('timer');
 
@@ -172,16 +172,13 @@ export class Timekeeper extends React.Component<{}, State> {
 	public componentDidMount() {
 		timerRep.on('change', this.stopwatchRepChangeHandler);
 		currentRunRep.on('change', this.currentRunChangeHandler);
-		checklistCompletedRep.on('change', this.checklistCompleteChangeHandler);
+		checklistRep.on('change', this.checklistChangeHandler);
 	}
 
 	public componentWillUnmount() {
 		timerRep.removeListener('change', this.stopwatchRepChangeHandler);
 		currentRunRep.removeListener('change', this.currentRunChangeHandler);
-		checklistCompletedRep.removeListener(
-			'change',
-			this.checklistCompleteChangeHandler,
-		);
+		checklistRep.removeListener('change', this.checklistChangeHandler);
 	}
 
 	private readonly closeModal = (value?: string) => {
@@ -206,14 +203,9 @@ export class Timekeeper extends React.Component<{}, State> {
 		});
 	};
 
-	private readonly checklistCompleteChangeHandler = (
-		newVal: ChecklistCompleted,
-	) => {
-		if (newVal === this.state.checklistComplete) {
-			return;
-		}
+	private readonly checklistChangeHandler = (newVal: Checklist) => {
 		this.setState({
-			checklistComplete: newVal,
+			checklistComplete: newVal.every((item) => item.complete),
 		});
 	};
 

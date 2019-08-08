@@ -1,51 +1,53 @@
+import {zipObject} from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
-import {getAuth, getData} from './util/spreadsheet';
-import {Run} from '../nodecg/replicants';
 import {NodeCG} from './nodecg';
-
-const getDefaultRun = (): Run => ({
-	category: '',
-	duration: '0:10:00',
-	index: 0,
-	pk: 0,
-	platform: '',
-	scheduled: 0,
-	title: '',
-	runners: [],
-	commentators: [],
-});
-
-const hmsToMs = (hms: string) => {
-	const [h, m, s] = hms.split(':');
-	return (
-		((parseInt(h, 10) * 60 + parseInt(m, 10)) * 60 + parseInt(s, 10)) * 1000
-	);
-};
+import {google} from 'googleapis';
+import {Participant, Schedule} from '../nodecg/replicants';
 
 export default async (nodecg: NodeCG) => {
-	const googleApiConfig = nodecg.bundleConfig.googleApi;
-	if (!googleApiConfig) {
+	const logger = new nodecg.Logger('schedule');
+
+	const {googleApiKey, spreadsheetId} = nodecg.bundleConfig;
+	if (!spreadsheetId) {
+		logger.warn('Spreadsheet ID is empty.');
+		return;
+	}
+	if (!googleApiKey) {
+		logger.warn('Google API Key is empty.');
 		return;
 	}
 
-	const scheduleRep = nodecg.Replicant('schedule', {
-		defaultValue: [],
-	});
-	const currentRunRep = nodecg.Replicant('current-run', {
-		defaultValue: getDefaultRun(),
-	});
-	const nextRunRep = nodecg.Replicant('next-run', {
-		defaultValue: getDefaultRun(),
-	});
+	const scheduleRep = nodecg.Replicant('schedule');
+	const currentRunRep = nodecg.Replicant('current-run');
+	const nextRunRep = nodecg.Replicant('next-run');
 	const checklistRep = nodecg.Replicant('checklist');
+	const spreadsheetRep = nodecg.Replicant('spreadsheet');
 
-	const googleApiAuth = await getAuth(
-		googleApiConfig.clientEmail,
-		googleApiConfig.privateKey,
-	);
+	const sheetsApi = google.sheets({version: 'v4', auth: googleApiKey});
 
-	const getGamesData = async () =>
-		getData(googleApiConfig.spreadsheetId, googleApiAuth);
+	const fetchSpreadsheet = async () => {
+		const res = await sheetsApi.spreadsheets.values.batchGet({
+			spreadsheetId,
+			ranges: ['ゲーム', '走者', '解説'],
+		});
+		const sheetValues = res.data.valueRanges;
+		if (!sheetValues) {
+			logger.error("Couldn't get values from spreadsheet");
+			return;
+		}
+		const labelledValues = sheetValues.map((sheet) => {
+			if (!sheet.values) {
+				return;
+			}
+			const [labels, ...contents] = sheet.values;
+			return contents.map((content) => zipObject(labels, content));
+		});
+		spreadsheetRep.value = {
+			runs: labelledValues[0],
+			runners: labelledValues[1],
+			commentators: labelledValues[2],
+		} as any;
+	};
 
 	const resetChecklist = () => {
 		if (checklistRep.value) {
@@ -167,28 +169,61 @@ export default async (nodecg: NodeCG) => {
 		}
 	});
 
-	const update = async () => {
+	setInterval(fetchSpreadsheet, 10 * 1000);
+
+	spreadsheetRep.on('change', (spreadsheet) => {
 		try {
-			const fetchedData = await getGamesData();
-			let startTime = new Date('2018-12-27T12:00:00+0900').getTime();
-			scheduleRep.value = fetchedData.map((game, index) => {
-				const scheduleGame = {
-					...game,
-					duration: game.runDuration,
-					pk: index,
+			const {runs, runners, commentators} = spreadsheet;
+			const schedule: Schedule = runs.map((run, index) => {
+				const runnersData: Participant[] = [];
+				for (const runnerId of [
+					run.runner1,
+					run.runner2,
+					run.runner3,
+				]) {
+					const runner = runners.find((r) => r.id === runnerId);
+					if (runner) {
+						runnersData.push({
+							name: runner.name,
+							twitch: runner.twitch,
+							nico: runner.nico,
+							twitter: runner.twitter,
+						});
+					}
+				}
+				const commentatorData: Participant[] = [];
+				for (const commentatorId of [
+					run.commentator1,
+					run.commentator2,
+				]) {
+					const commentator = commentators.find(
+						(r) => r.id === commentatorId,
+					);
+					if (commentator) {
+						commentatorData.push({
+							name: commentator.name,
+							twitch: commentator.twitch,
+							nico: commentator.nico,
+							twitter: commentator.twitter,
+						});
+					}
+				}
+				return {
+					pk: Number(run.id),
 					index,
-					scheduled: startTime,
-					commentators: [],
+					scheduled: new Date().getTime(),
+					title: run.title,
+					category: run.category,
+					platform: run.platform,
+					duration: run.runDuration,
+					runners: runnersData,
+					commentators: commentatorData,
 				};
-				startTime += hmsToMs(game.runDuration);
-				startTime += hmsToMs(game.setupDuration);
-				return scheduleGame;
 			});
+			scheduleRep.value = schedule;
 		} catch (err) {
 			nodecg.log.error('Error while fetching schedule from spreadsheet');
 			nodecg.log.error(err);
 		}
-	};
-	update();
-	setInterval(update, 60 * 1000);
+	});
 };

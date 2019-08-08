@@ -11,7 +11,7 @@
 		"format": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --write",
 		"postinstall": "include-nodecg postinstall",
 		"prod": "cross-env NODE_ENV=production run-s clean build",
-		"schema-types": "nodecg schema-types -o src/nodecg/generated",
+		"schema-types": "del-cli src/nodecg/generated && nodecg schema-types -o src/nodecg/generated",
 		"start": "include-nodecg start",
 		"test": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --list-different && yarn typecheck",
 		"typecheck": "tsc -b src/browser src/extension"
@@ -90,7 +90,7 @@
 		"lint-staged": "^9.2.1",
 		"mini-css-extract-plugin": "^0.8.0",
 		"modern-normalize": "^0.5.0",
-		"nodecg-cli": "^6.1.0",
+		"nodecg-cli": "~6.0.3",
 		"npm-run-all": "^4.1.5",
 		"prettier": "^1.18.2",
 		"react": "^16.8.6",

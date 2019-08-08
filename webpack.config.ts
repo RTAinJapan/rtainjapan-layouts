@@ -38,7 +38,16 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 					test: /\.tsx?$/,
 					loaders: [
 						'babel-loader',
-						{loader: 'ts-loader', options: {transpileOnly: true}},
+						{
+							loader: 'ts-loader',
+							options: {
+								transpileOnly: true,
+								configFile: path.resolve(
+									__dirname,
+									'src/browser/tsconfig.json',
+								),
+							},
+						},
 					],
 				},
 				{
@@ -112,7 +121,13 @@ const extensionConfig = merge(base, {
 			{
 				test: /\.ts$/,
 				loader: 'ts-loader',
-				options: {transpileOnly: true},
+				options: {
+					transpileOnly: true,
+					configFile: path.resolve(
+						__dirname,
+						'src/extension/tsconfig.json',
+					),
+				},
 			},
 		],
 	},

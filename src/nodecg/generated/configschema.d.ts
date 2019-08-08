@@ -8,7 +8,6 @@
 export interface Configschema {
 	twitter?: {
 		targetWords: string[];
-		maxTweets: number;
 		consumerKey: string;
 		consumerSecret: string;
 		accessToken: string;
@@ -18,9 +17,6 @@ export interface Configschema {
 		clientId: string;
 		clientSecret: string;
 	};
-	googleApi?: {
-		spreadsheetId: string;
-		clientEmail: string;
-		privateKey: string;
-	};
+	spreadsheetId?: string;
+	googleApiKey?: string;
 }
