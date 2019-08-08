@@ -1,3 +1,4 @@
+import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
 import merge from 'webpack-merge';
 import globby from 'globby';
 import HtmlPlugin from 'html-webpack-plugin';
@@ -15,6 +16,7 @@ const base: webpack.Configuration = {
 	resolve: {
 		extensions: ['.js', '.ts', '.tsx', '.json'],
 	},
+	plugins: isProduction ? [] : [new HardSourceWebpackPlugin()],
 };
 
 const makeBrowserConfig = (name: string): webpack.Configuration => {
