@@ -1,8 +1,7 @@
-import {zipObject} from 'lodash';
-import cloneDeep from 'lodash/cloneDeep';
+import {zipObject, cloneDeep, isEqual} from 'lodash';
 import {NodeCG} from './nodecg';
 import {google} from 'googleapis';
-import {Participant, Schedule} from '../nodecg/replicants';
+import {Participant, Schedule, Spreadsheet} from '../nodecg/replicants';
 
 export default async (nodecg: NodeCG) => {
 	const logger = new nodecg.Logger('schedule');
@@ -17,11 +16,13 @@ export default async (nodecg: NodeCG) => {
 		return;
 	}
 
-	const scheduleRep = nodecg.Replicant('schedule');
-	const currentRunRep = nodecg.Replicant('current-run');
-	const nextRunRep = nodecg.Replicant('next-run');
-	const checklistRep = nodecg.Replicant('checklist');
-	const spreadsheetRep = nodecg.Replicant('spreadsheet');
+	const scheduleRep = nodecg.Replicant('schedule', {defaultValue: []});
+	const currentRunRep = nodecg.Replicant('current-run', {defaultValue: null});
+	const nextRunRep = nodecg.Replicant('next-run', {defaultValue: null});
+	const checklistRep = nodecg.Replicant('checklist', {defaultValue: []});
+	const spreadsheetRep = nodecg.Replicant('spreadsheet', {
+		defaultValue: {runs: [], runners: [], commentators: []},
+	});
 
 	const sheetsApi = google.sheets({version: 'v4', auth: googleApiKey});
 
@@ -42,11 +43,15 @@ export default async (nodecg: NodeCG) => {
 			const [labels, ...contents] = sheet.values;
 			return contents.map((content) => zipObject(labels, content));
 		});
-		spreadsheetRep.value = {
+		const newSpreadsheet = {
 			runs: labelledValues[0],
 			runners: labelledValues[1],
 			commentators: labelledValues[2],
-		} as any;
+		};
+		if (isEqual(spreadsheetRep.value, newSpreadsheet)) {
+			return;
+		}
+		spreadsheetRep.value = newSpreadsheet as Spreadsheet;
 	};
 
 	const resetChecklist = () => {
@@ -169,6 +174,7 @@ export default async (nodecg: NodeCG) => {
 		}
 	});
 
+	fetchSpreadsheet();
 	setInterval(fetchSpreadsheet, 10 * 1000);
 
 	spreadsheetRep.on('change', (spreadsheet) => {

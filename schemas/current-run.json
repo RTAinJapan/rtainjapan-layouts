@@ -1,0 +1,6 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"oneOf": [{"type": "null"}, {"$ref": "lib/run.json"}],
+	"default": null
+}

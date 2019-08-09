@@ -45,6 +45,9 @@ export class Twitter extends React.Component<{}, State> {
 
 	componentDidMount() {
 		this.tweetsRep.on('change', (newVal: Tweets) => {
+			if (!newVal) {
+				return;
+			}
 			this.setState({tweets: newVal});
 		});
 	}

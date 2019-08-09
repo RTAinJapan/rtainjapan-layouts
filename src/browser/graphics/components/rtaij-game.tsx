@@ -19,6 +19,9 @@ export class RtaijGame extends BaseInfo {
 	}
 
 	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
+		if (!newVal) {
+			return;
+		}
 		this.setState({
 			primaryInfo: newVal.title || '',
 			secondaryInfo: miscText(newVal),
@@ -27,6 +30,9 @@ export class RtaijGame extends BaseInfo {
 }
 
 function miscText(newVal: CurrentRun) {
+	if (!newVal) {
+		return '';
+	}
 	const {platform} = newVal;
 	return newVal.category + (platform ? ` - ${platform}` : '');
 }

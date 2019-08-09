@@ -17,6 +17,9 @@ class App extends React.Component<{}, State> {
 
 	componentDidMount() {
 		this.spotifyRep.on('change', (newVal) => {
+			if (!newVal) {
+				return;
+			}
 			if (!newVal.currentTrack) {
 				return;
 			}

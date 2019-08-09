@@ -157,6 +157,9 @@ class Break extends React.Component<{}, State> {
 	};
 
 	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
+		if (!newVal) {
+			return;
+		}
 		this.setState({currentRunIndex: newVal.index || 0});
 	};
 }

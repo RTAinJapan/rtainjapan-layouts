@@ -9,12 +9,7 @@ import Refresh from '@material-ui/icons/Refresh';
 import React from 'react';
 import styled from 'styled-components';
 import uuidv4 from 'uuid/v4';
-import {
-	CurrentRun,
-	Timer,
-	TimerState,
-	Checklist,
-} from '../../../../nodecg/replicants';
+import {CurrentRun, Timer, Checklist} from '../../../../nodecg/replicants';
 import {newTimer} from '../../../../nodecg/timer';
 import {BorderedBox} from '../lib/bordered-box';
 import {ColoredButton} from '../lib/colored-button';
@@ -91,12 +86,10 @@ export class Timekeeper extends React.Component<{}, State> {
 
 		// Disable start if checklist is not completed or timer is not stopped state
 		const shouldDisableStart =
-			!state.checklistComplete ||
-			state.timer.timerState !== TimerState.Stopped;
+			!state.checklistComplete || state.timer.timerState !== 'Stopped';
 
 		// Disable pause if timer is not running
-		const shouldDisablePause =
-			state.timer.timerState !== TimerState.Running;
+		const shouldDisablePause = state.timer.timerState !== 'Running';
 
 		return (
 			<Container>
@@ -193,6 +186,9 @@ export class Timekeeper extends React.Component<{}, State> {
 	};
 
 	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
+		if (!newVal) {
+			return;
+		}
 		const newRunners = newVal.runners;
 		this.setState({
 			runners: Array.from({length: 4}, (_, index) => {

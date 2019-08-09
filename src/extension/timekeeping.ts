@@ -1,5 +1,4 @@
 import {increment, newTimer, parseSeconds, setSeconds} from '../nodecg/timer';
-import {TimerState} from '../nodecg/replicants';
 import {NodeCG} from './nodecg';
 
 const TRY_TICK_INTERVAL = 10;
@@ -7,8 +6,8 @@ const TRY_TICK_INTERVAL = 10;
 const getDefaultTimer = () => newTimer(0);
 
 export const timekeeping = (nodecg: NodeCG) => {
-	const checklistRep = nodecg.Replicant('checklist');
-	const currentRunRep = nodecg.Replicant('current-run');
+	const checklistRep = nodecg.Replicant('checklist', {defaultValue: []});
+	const currentRunRep = nodecg.Replicant('current-run', {defaultValue: null});
 	const timerRep = nodecg.Replicant('timer', {
 		defaultValue: getDefaultTimer(),
 	});
@@ -56,12 +55,12 @@ export const timekeeping = (nodecg: NodeCG) => {
 		}
 
 		// Don't start the time if it's already running
-		if (!force && timerRep.value.timerState === TimerState.Running) {
+		if (!force && timerRep.value.timerState === 'Running') {
 			return;
 		}
 
 		clearInterval(tickInterval);
-		timerRep.value.timerState = TimerState.Running;
+		timerRep.value.timerState = 'Running';
 		lastIncrement = Date.now();
 		tickInterval = setInterval(tryTick, TRY_TICK_INTERVAL);
 	};
@@ -74,7 +73,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 			return;
 		}
 		clearInterval(tickInterval);
-		timerRep.value.timerState = TimerState.Stopped;
+		timerRep.value.timerState = 'Stopped';
 	};
 
 	/**
@@ -129,7 +128,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 		);
 		if (allRunnersFinished) {
 			stop();
-			timerRep.value.timerState = TimerState.Finished;
+			timerRep.value.timerState = 'Finished';
 		}
 	};
 
@@ -162,7 +161,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 		}
 		timerRep.value.results[index] = null;
 		recalcPlaces();
-		if (timerRep.value.timerState !== TimerState.Finished) {
+		if (timerRep.value.timerState !== 'Finished') {
 			return;
 		}
 		const missedSeconds = Math.round(
@@ -216,7 +215,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 
 	// If the timer was running when NodeCG was shut down last time,
 	// resume the timer according to how long it has been since the shutdown time.
-	if (timerRep.value && timerRep.value.timerState === TimerState.Running) {
+	if (timerRep.value && timerRep.value.timerState === 'Running') {
 		const missedSeconds = Math.round(
 			(Date.now() - timerRep.value.timestamp) / 1000,
 		);

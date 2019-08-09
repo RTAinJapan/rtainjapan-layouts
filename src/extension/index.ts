@@ -9,7 +9,7 @@ import {NodeCG} from './nodecg';
 export = (nodecg: NodeCG) => {
 	checklist(nodecg);
 	schedule(nodecg);
+	spotify(nodecg);
 	timekeeping(nodecg);
 	twitter(nodecg);
-	spotify(nodecg);
 };

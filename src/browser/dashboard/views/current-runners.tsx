@@ -11,6 +11,9 @@ class App extends React.Component<{}, State> {
 
 	componentDidMount() {
 		this.currentRunRep.on('change', (newVal) => {
+			if (!newVal) {
+				return;
+			}
 			this.setState({runners: newVal.runners});
 		});
 	}

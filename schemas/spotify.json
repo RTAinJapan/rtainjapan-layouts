@@ -1,0 +1,17 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"currentTrack": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"name": {"type": "string"},
+				"artists": {"type": "string"}
+			},
+			"required": ["name", "artists"]
+		}
+	}
+}

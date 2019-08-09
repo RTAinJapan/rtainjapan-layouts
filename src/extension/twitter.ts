@@ -61,7 +61,7 @@ export const twitter = async (nodecg: NodeCG) => {
 
 	const callbackUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/twitter-callback/index.html`;
 
-	const twitterRep = nodecg.Replicant('twitter');
+	const twitterRep = nodecg.Replicant('twitter', {defaultValue: {}});
 	const tweetsRep = nodecg.Replicant('tweets', {defaultValue: []});
 
 	const oauth = new OAuth({

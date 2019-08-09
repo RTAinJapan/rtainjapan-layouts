@@ -82,10 +82,6 @@ export class Schedule extends React.Component<{}, State> {
 	}
 
 	public render() {
-		if (!this.state.currentRun || !this.state.nextRun) {
-			return null;
-		}
-
 		return (
 			<Container>
 				<SelectionContainer>
@@ -104,9 +100,16 @@ export class Schedule extends React.Component<{}, State> {
 					</ColoredButton>
 				</SelectionContainer>
 				<RunInfoContainer>
-					<RunInfo run={this.state.currentRun} label='現在のゲーム' />
+					{this.state.currentRun && (
+						<RunInfo
+							run={this.state.currentRun}
+							label='現在のゲーム'
+						/>
+					)}
 					<Divider />
-					<RunInfo run={this.state.nextRun} label='次のゲーム' />
+					{this.state.nextRun && (
+						<RunInfo run={this.state.nextRun} label='次のゲーム' />
+					)}
 				</RunInfoContainer>
 				<EditControls>
 					<ColoredButton
@@ -125,9 +128,9 @@ export class Schedule extends React.Component<{}, State> {
 				<EditRun
 					edit={this.state.edit}
 					defaultValue={
-						this.state.edit === 'current'
+						(this.state.edit === 'current'
 							? this.state.currentRun
-							: this.state.nextRun
+							: this.state.nextRun) || undefined
 					}
 					onFinish={this.onEditFinish}
 				/>
@@ -163,6 +166,6 @@ export class Schedule extends React.Component<{}, State> {
 	};
 
 	private readonly nextRunChangeHandler = (newVal: NextRun) => {
-		this.setState({nextRun: newVal || {}});
+		this.setState({nextRun: newVal || undefined});
 	};
 }

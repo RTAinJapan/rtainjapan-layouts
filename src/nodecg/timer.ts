@@ -1,4 +1,4 @@
-import {Timer, TimerState} from './replicants';
+import {Timer} from './replicants';
 
 /**
  * Parses a number of seconds into an HMS object.
@@ -96,7 +96,7 @@ export const decrement = (t: Timer) => {
  * @param seconds The value to set to (in seconds).
  * @returns The Timer passed in as an argument.
  */
-export const setSeconds = (t: Timer, seconds: number) => {
+export const setSeconds = (t: Omit<Timer, 'results'>, seconds: number) => {
 	const hms = secondsToHMS(seconds);
 	t.hours = hms.h;
 	t.minutes = hms.m;
@@ -130,7 +130,7 @@ export const newTimer = (seconds = 0): Timer => {
 		seconds: hms.s,
 		formatted: formatHMS(hms),
 		timestamp: Date.now(),
-		timerState: TimerState.Stopped,
+		timerState: 'Stopped',
 		results: [null, null, null, null],
 		forfeit: false,
 	};

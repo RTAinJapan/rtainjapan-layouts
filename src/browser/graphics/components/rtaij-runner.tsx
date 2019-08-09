@@ -8,5 +8,5 @@ export class RtaijRunner extends Nameplate {
 	public label = 'Runner';
 
 	public calcNewRunner = (newVal: CurrentRun) =>
-		newVal.runners && newVal.runners[this.props.index];
+		newVal && newVal.runners[this.props.index];
 }

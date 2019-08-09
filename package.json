@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"build": "webpack",
-		"clean": "del-cli bundle-analyzer dashboard extension graphics",
+		"clean": "del-cli bundle-analyzer dashboard extension graphics node_modules/.cache",
 		"dev": "run-p dev:*",
 		"dev:tsc": "yarn typecheck -w --preserveWatchOutput",
 		"dev:webpack": "webpack -w",
@@ -44,7 +44,7 @@
 		"include-nodecg": "^0.0.1-6",
 		"load-json-file": "^6.2.0",
 		"lodash": "^4.17.15",
-		"nodecg": "^1.5.0",
+		"nodecg": "~1.4.0",
 		"oauth-1.0a": "^2.2.6",
 		"source-map-support": "^0.5.13",
 		"tslib": "^1.10.0",
@@ -90,7 +90,7 @@
 		"lint-staged": "^9.2.1",
 		"mini-css-extract-plugin": "^0.8.0",
 		"modern-normalize": "^0.5.0",
-		"nodecg-cli": "~6.0.3",
+		"nodecg-cli": "^6.1.0",
 		"npm-run-all": "^4.1.5",
 		"prettier": "^1.18.2",
 		"react": "^16.8.6",
@@ -116,19 +116,11 @@
 		"compatibleRange": "^1.0.0",
 		"dashboardPanels": [
 			{
-				"name": "stream",
+				"name": "0-stream",
 				"title": "配信担当ダッシュボード",
 				"file": "tech.html",
 				"headerColor": "#00BEBE",
 				"fullbleed": true
-			},
-			{
-				"name": "twitter-account",
-				"title": "Twitterアカウント",
-				"file": "twitter-account.html",
-				"width": 3,
-				"headerColor": "#00BEBE",
-				"workspace": "Misc"
 			},
 			{
 				"name": "spotify-auth",
@@ -136,7 +128,7 @@
 				"file": "spotify-auth.html",
 				"width": 3,
 				"headerColor": "#00BEBE",
-				"workspace": "Misc"
+				"workspace": "2-misc"
 			},
 			{
 				"name": "edit-tourny",
@@ -144,7 +136,7 @@
 				"file": "edit-tourny.html",
 				"width": 8,
 				"headerColor": "#00BEBE",
-				"workspace": "Special"
+				"workspace": "1-special"
 			},
 			{
 				"name": "current-runners",
@@ -152,7 +144,7 @@
 				"file": "current-runners.html",
 				"width": 2,
 				"headerColor": "#00BEBE",
-				"workspace": "Special"
+				"workspace": "1-special"
 			}
 		],
 		"graphics": [
@@ -222,10 +214,6 @@
 			}
 		],
 		"mount": [
-			{
-				"directory": "twitter-callback",
-				"endpoint": "twitter-callback"
-			},
 			{
 				"directory": "spotify-callback",
 				"endpoint": "spotify-callback"

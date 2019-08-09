@@ -1,0 +1,25 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "array",
+	"items": {
+		"type": "object",
+		"additionalProperties": false,
+		"properties": {
+			"id": {"type": "string"},
+			"createdAt": {"type": "string"},
+			"text": {"type": "string"},
+			"user": {
+				"type": "object",
+				"additionalProperties": false,
+				"properties": {
+					"name": {"type": "string"},
+					"screenName": {"type": "string"},
+					"profileImageUrl": {"type": "string"}
+				},
+				"required": ["name", "screenName", "profileImageUrl"]
+			}
+		},
+		"required": ["id", "createdAt", "text", "user"]
+	}
+}

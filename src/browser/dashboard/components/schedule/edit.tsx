@@ -5,7 +5,7 @@ import TypoGraphy from '@material-ui/core/Typography';
 import max from 'lodash/max';
 import React from 'react';
 import styled from 'styled-components';
-import {CurrentRun, Participant} from '../../../../nodecg/replicants';
+import {Participant, Run} from '../../../../nodecg/replicants';
 
 const Container = styled.div`
 	position: absolute;
@@ -25,12 +25,15 @@ const Container = styled.div`
 
 interface Props {
 	edit: 'current' | 'next' | undefined;
-	defaultValue: CurrentRun;
+	defaultValue?: Run;
 	onFinish(): void;
 }
 
-export class EditRun extends React.Component<Props, CurrentRun> {
+export class EditRun extends React.Component<Props, Run> {
 	public render() {
+		if (!this.props.defaultValue) {
+			return null;
+		}
 		const runners = this.props.defaultValue.runners || [];
 		const commentators = this.props.defaultValue.commentators || [];
 		return (
@@ -181,7 +184,9 @@ export class EditRun extends React.Component<Props, CurrentRun> {
 	}
 
 	private readonly onRendered = () => {
-		this.setState(this.props.defaultValue);
+		if (this.props.defaultValue) {
+			this.setState(this.props.defaultValue);
+		}
 	};
 
 	private readonly updateRunnerInfo = <T extends keyof Participant>(

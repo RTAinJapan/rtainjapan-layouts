@@ -1,29 +1,29 @@
 import {BaseInfo} from './lib/base-info';
-import {TimerState, Timer, CurrentRun} from '../../../nodecg/replicants';
+import {Timer, CurrentRun} from '../../../nodecg/replicants';
 
 const currentRunRep = nodecg.Replicant('current-run');
 const timerRep = nodecg.Replicant('timer');
 
 const timerStateColorMap = {
-	[TimerState.Stopped]: '#9a9fa1',
-	[TimerState.Running]: '#ffffff',
-	[TimerState.Finished]: '#ffff52',
+	Stopped: '#9a9fa1',
+	Running: '#ffffff',
+	Finished: '#ffff52',
 };
 
 const calcColorFromTimeState = (timer: Timer) => {
-	if (timer.timerState === TimerState.Stopped) {
-		return timerStateColorMap[TimerState.Stopped];
+	if (timer.timerState === 'Stopped') {
+		return timerStateColorMap['Stopped'];
 	}
-	if (timer.timerState === TimerState.Running) {
-		return timerStateColorMap[TimerState.Running];
+	if (timer.timerState === 'Running') {
+		return timerStateColorMap['Running'];
 	}
 	const allForfeit = timer.results.every((result) =>
 		Boolean(result && result.forfeit),
 	);
 	if (allForfeit) {
-		return timerStateColorMap[TimerState.Stopped];
+		return timerStateColorMap['Stopped'];
 	}
-	return timerStateColorMap[TimerState.Finished];
+	return timerStateColorMap['Finished'];
 };
 
 export class RtaijTimer extends BaseInfo {
@@ -52,6 +52,9 @@ export class RtaijTimer extends BaseInfo {
 	};
 
 	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
+		if (!newVal) {
+			return;
+		}
 		this.setState({
 			secondaryInfo: `予定タイム ${newVal.duration || '???'}`,
 		});

@@ -9,6 +9,13 @@ import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 
 const isProduction = process.env.NODE_ENV === 'production';
+const {TYPEKIT_ID} = process.env;
+if (!TYPEKIT_ID) {
+	console.error('TYPEKIT_ID is empty');
+	if (isProduction) {
+		process.exit(1);
+	}
+}
 
 const base: webpack.Configuration = {
 	mode: isProduction ? 'production' : 'development',
@@ -17,6 +24,7 @@ const base: webpack.Configuration = {
 		extensions: ['.js', '.ts', '.tsx', '.json'],
 	},
 	plugins: isProduction ? [] : [new HardSourceWebpackPlugin()],
+	stats: 'minimal',
 };
 
 const makeBrowserConfig = (name: string): webpack.Configuration => {
@@ -79,7 +87,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 						chunks: [entryName],
 						title: entryName,
 						template: `webpack/${name}.html`,
-						typekitId: process.env.TYPEKIT_ID,
+						typekitId: TYPEKIT_ID,
 					}),
 			),
 			new MiniCssExtractPlugin({

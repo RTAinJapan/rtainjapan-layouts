@@ -1,7 +1,7 @@
 import delay from 'delay';
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {CurrentRun, Participant, Timer} from '../../../../../nodecg/replicants';
+import {CurrentRun, Timer, Participant} from '../../../../../nodecg/replicants';
 import nicoIcon from '../../../images/icon/nico.png';
 import twitchIcon from '../../../images/icon/twitch.png';
 import twitterIcon from '../../../images/icon/twitter.png';
@@ -128,7 +128,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 
 	protected abstract readonly calcNewRunner: (
 		newVal: CurrentRun,
-	) => Participant;
+	) => Participant | null;
 
 	protected abstract readonly labelIcon: any;
 
@@ -228,7 +228,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 			showingSocialIndex: 0,
 		});
 		const runner = this.calcNewRunner(newVal);
-		this.setState({runner});
+		this.setState({runner: runner || undefined});
 		if (!runner) {
 			return;
 		}

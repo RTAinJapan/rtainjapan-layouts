@@ -1,0 +1,64 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"runs": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {"type": "string"},
+					"title": {"type": "string"},
+					"title english": {"type": "string"},
+					"platform": {"type": "string"},
+					"category": {"type": "string"},
+					"runDuration": {"type": "string"},
+					"setupDuration": {"type": "string"},
+					"runner1": {"type": "string"},
+					"runner2": {"type": "string"},
+					"runner3": {"type": "string"},
+					"commentator1": {"type": "string"},
+					"commentator2": {"type": "string"}
+				},
+				"required": [
+					"id",
+					"title",
+					"title english",
+					"runDuration",
+					"setupDuration"
+				]
+			}
+		},
+		"runners": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {"type": "string"},
+					"name": {"type": "string"},
+					"twitter": {"type": "string"},
+					"nico": {"type": "string"},
+					"twitch": {"type": "string"}
+				},
+				"required": ["id", "name"]
+			}
+		},
+		"commentators": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {"type": "string"},
+					"name": {"type": "string"},
+					"twitter": {"type": "string"},
+					"nico": {"type": "string"},
+					"twitch": {"type": "string"}
+				},
+				"required": ["id", "name"]
+			}
+		}
+	},
+	"required": ["commentators", "runners", "runs"]
+}
