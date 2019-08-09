@@ -4353,14 +4353,14 @@ imurmurhash@^0.1.4:
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha1-khi5srkoojixPcT7a21XbyMUU+o=
 
-include-nodecg@^0.0.1-5:
-  version "0.0.1-5"
-  resolved "https://registry.yarnpkg.com/include-nodecg/-/include-nodecg-0.0.1-5.tgz#9d07af29c54098d0f4dc913212a0aa0a18621b90"
-  integrity sha512-qBPyEiJ7hzzWVI55726B/Q+X5UI8F8Dyxj2fAU/yP2TRFP8uTPWtf70wW+QQER8RieDFS2UwgQF4xFLB6tLSgQ==
+include-nodecg@^0.0.1-6:
+  version "0.0.1-6"
+  resolved "https://registry.yarnpkg.com/include-nodecg/-/include-nodecg-0.0.1-6.tgz#e322c6ffe758971738cbedeff926f5b99c569e87"
+  integrity sha512-vT6oPR/AraYsv6yO0gP2FWPczUzADO9ZDeLEOYUAxXr9kV8dNNFrhL4cfJ+P62qlEjze1DH9K5su/2f5NktoIg==
   dependencies:
     app-root-path "^2.2.1"
     bower "^1.8.8"
-    del "^4.1.1"
+    del "^5.0.0"
     execa "^2.0.1"
     is-docker "^2.0.0"
     is-root "^2.1.0"
