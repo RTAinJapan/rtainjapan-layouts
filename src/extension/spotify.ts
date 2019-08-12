@@ -24,18 +24,28 @@ export const spotify = async (nodecg: NodeCG) => {
 	const redirectUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/spotify-callback/index.html`;
 
 	let currentTrackTimer: NodeJS.Timer | undefined;
-	const refreshTimer = (timer: NodeJS.Timer) => {
+	const refreshCurrentTrackTimer = (timer: NodeJS.Timer) => {
 		if (currentTrackTimer) {
 			clearTimeout(currentTrackTimer);
 		}
 		currentTrackTimer = timer;
 	};
 
+	let authorizeTimer: NodeJS.Timer | undefined;
+	const refreshAuthorizeTimer = (timer: NodeJS.Timer) => {
+		if (authorizeTimer) {
+			clearTimeout(authorizeTimer);
+		}
+		authorizeTimer = timer;
+	};
+
 	const getCurrentTrack = async () => {
 		try {
 			const token = spotifyRep.value.accessToken;
 			if (!token) {
-				refreshTimer(setTimeout(getCurrentTrack, defaultWaitMs));
+				refreshCurrentTrackTimer(
+					setTimeout(getCurrentTrack, defaultWaitMs),
+				);
 				return;
 			}
 			const res = await got.get(
@@ -51,7 +61,9 @@ export const spotify = async (nodecg: NodeCG) => {
 			if (res.statusCode === 204) {
 				spotifyRep.value.currentTrack = undefined;
 				logger.info('Now playing nothing');
-				refreshTimer(setTimeout(getCurrentTrack, defaultWaitMs));
+				refreshCurrentTrackTimer(
+					setTimeout(getCurrentTrack, defaultWaitMs),
+				);
 				return;
 			}
 			const newTrack = {
@@ -62,7 +74,9 @@ export const spotify = async (nodecg: NodeCG) => {
 				logger.info(`Now playing: ${newTrack.name}`);
 				spotifyRep.value.currentTrack = newTrack;
 			}
-			refreshTimer(setTimeout(getCurrentTrack, defaultWaitMs));
+			refreshCurrentTrackTimer(
+				setTimeout(getCurrentTrack, defaultWaitMs),
+			);
 		} catch (err) {
 			logger.error('Failed to get current track:', err.stack);
 			if (
@@ -72,11 +86,13 @@ export const spotify = async (nodecg: NodeCG) => {
 				err.response.headers['Retry-After']
 			) {
 				const retryInSeconds = err.response.headers['Retry-After'];
-				refreshTimer(
+				refreshCurrentTrackTimer(
 					setTimeout(getCurrentTrack, retryInSeconds * 1000),
 				);
 			} else {
-				refreshTimer(setTimeout(getCurrentTrack, defaultWaitMs));
+				refreshCurrentTrackTimer(
+					setTimeout(getCurrentTrack, defaultWaitMs),
+				);
 			}
 		}
 	};
@@ -127,7 +143,7 @@ export const spotify = async (nodecg: NodeCG) => {
 			logger.info(
 				`Successfully refreshed token, refreshing in ${expiresIn} seconds`,
 			);
-			setTimeout(authorize, expiresIn * 1000);
+			refreshAuthorizeTimer(setTimeout(authorize, expiresIn * 1000));
 		} catch (err) {
 			logger.error('Failed to get access token', err.stack);
 		}

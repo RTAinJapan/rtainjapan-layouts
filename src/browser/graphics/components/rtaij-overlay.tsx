@@ -74,6 +74,7 @@ const LogoTaContainer = styled.div`
 
 const LogoTainjapan = styled.img`
 	transition: transform ${LOGO_TRANSFORM_DURATION_SECONDS}s;
+	will-change: transform;
 	${(props: {translated: boolean}) =>
 		props.translated &&
 		css`
