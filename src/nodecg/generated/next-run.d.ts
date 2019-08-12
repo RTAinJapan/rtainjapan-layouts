@@ -8,11 +8,12 @@
 export type NextRun = null | {
 	pk: number;
 	index: number;
-	scheduled: number;
 	title: string;
+	englishTitle: string;
 	category?: string;
 	platform?: string;
-	duration: string;
+	runDuration: string;
+	setupDuration: string;
 	runners: {
 		name: string;
 		twitch?: string;

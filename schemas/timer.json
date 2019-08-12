@@ -16,37 +16,7 @@
 		"results": {
 			"type": "array",
 			"items": {
-				"oneOf": [
-					{"type": "null"},
-					{
-						"type": "object",
-						"additionalProperties": false,
-						"properties": {
-							"raw": {"type": "number"},
-							"hours": {"type": "number"},
-							"minutes": {"type": "number"},
-							"seconds": {"type": "number"},
-							"formatted": {"type": "string"},
-							"timestamp": {"type": "number"},
-							"timerState": {
-								"enum": ["Finished", "Running", "Stopped"],
-								"type": "string"
-							},
-							"forfeit": {"type": "boolean"},
-							"place": {"type": "number"}
-						},
-						"required": [
-							"raw",
-							"hours",
-							"minutes",
-							"seconds",
-							"formatted",
-							"timestamp",
-							"timerState",
-							"forfeit"
-						]
-					}
-				]
+				"oneOf": [{"type": "null"}, {"type": "object"}]
 			}
 		},
 		"forfeit": {"type": "boolean"}

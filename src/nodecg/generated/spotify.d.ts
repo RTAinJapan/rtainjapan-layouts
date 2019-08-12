@@ -6,6 +6,9 @@
  */
 
 export interface Spotify {
+	accessToken?: string;
+	refreshToken?: string;
+	refreshAt?: number;
 	currentTrack?: {
 		name: string;
 		artists: string;

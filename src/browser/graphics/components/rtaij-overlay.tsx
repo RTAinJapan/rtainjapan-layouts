@@ -1,10 +1,34 @@
 import delay from 'delay';
 import React from 'react';
 import styled, {css} from 'styled-components';
+import sample from 'lodash/sample';
 
 import logoR from '../images/logo/index.png';
 import logoTainjapan from '../images/logo/tainjapan.png';
 import {Tweet} from './lib/tweet';
+import logoAnim0 from '../images/logo/animated-0.gif';
+import logoAnim1 from '../images/logo/animated-1.gif';
+import logoAnim2 from '../images/logo/animated-2.gif';
+import logoAnim3 from '../images/logo/animated-3.gif';
+import logoAnim4 from '../images/logo/animated-4.gif';
+import logoAnim5 from '../images/logo/animated-5.gif';
+import logoAnim6 from '../images/logo/animated-6.gif';
+import logoAnim7 from '../images/logo/animated-7.gif';
+import logoAnim8 from '../images/logo/animated-8.gif';
+import logoAnim9 from '../images/logo/animated-9.gif';
+
+const logoList = [
+	logoAnim0,
+	logoAnim1,
+	logoAnim2,
+	logoAnim3,
+	logoAnim4,
+	logoAnim5,
+	logoAnim6,
+	logoAnim7,
+	logoAnim8,
+	logoAnim9,
+];
 
 const LOGO_TRANSFORM_DURATION_SECONDS = 1;
 
@@ -92,17 +116,13 @@ export class RtaijOverlay extends React.Component<Props, State> {
 	public state = {logoR, logoRestTransformed: false};
 
 	private readonly logoRInterval = setInterval(async () => {
-		// const gifs = await import('../images/logo/*.gif');
-		// const randomGif: string | undefined = sample(
-		// 	Object.values(gifs.default)
-		// );
-		// if (!randomGif) {
-		// 	return;
-		// }
-		// this.setState({logoR: randomGif});
-		// await delay(5000);
-		// this.setState({logoR});
-		console.log('change logo');
+		const randomGif = sample(logoList);
+		if (!randomGif) {
+			return;
+		}
+		this.setState({logoR: randomGif});
+		await delay(5000);
+		this.setState({logoR});
 	}, 77 * 1000);
 
 	public render() {

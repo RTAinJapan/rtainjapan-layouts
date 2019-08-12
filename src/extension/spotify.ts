@@ -1,47 +1,28 @@
-import axios from 'axios';
-import loadJson from 'load-json-file';
-import path from 'path';
-import writeJson from 'write-json-file';
+import {isEqual} from 'lodash';
+import got from 'got';
 import {NodeCG} from './nodecg';
-import {URLSearchParams, URL} from 'url';
 
-const defaultWaitMs = 30 * 1000;
-const bufferMs = 1000;
-
-const accessTokenPath = path.resolve(__dirname, 'db/spotify-access-token.json');
-const writeAccessToken = async (token: string) => {
-	await writeJson(accessTokenPath, token);
-};
-const loadAccessToken = async () => {
-	const accessToken = await loadJson(accessTokenPath);
-	if (typeof accessToken !== 'string') {
-		throw new Error(
-			`Invalid type of Spotify access token from DB: ${typeof accessToken}`,
-		);
-	}
-	return accessToken;
-};
+const defaultWaitMs = 5 * 1000;
 
 const sumArtists = (artists: Array<{name: string}>) => {
 	return artists.map((artist) => artist.name).join(', ');
 };
 
+const base64Encode = (str: string) => {
+	return Buffer.from(str).toString('base64');
+};
+
 export const spotify = async (nodecg: NodeCG) => {
+	const logger = new nodecg.Logger('spotify');
 	const spotifyConfig = nodecg.bundleConfig.spotify;
 	if (!spotifyConfig) {
+		logger.warn('Spotify config is empty');
 		return;
 	}
 
 	const spotifyRep = nodecg.Replicant('spotify', {defaultValue: {}});
-
-	// prettier-ignore
 	const redirectUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/spotify-callback/index.html`;
 
-	const currentTrackUrl = new URL(
-		'v1/me/player/currently-playing',
-		'https://api.spotify.com',
-	);
-	currentTrackUrl.searchParams.set('market', 'from_token');
 	let currentTrackTimer: NodeJS.Timer | undefined;
 	const refreshTimer = (timer: NodeJS.Timer) => {
 		if (currentTrackTimer) {
@@ -49,40 +30,106 @@ export const spotify = async (nodecg: NodeCG) => {
 		}
 		currentTrackTimer = timer;
 	};
+
 	const getCurrentTrack = async () => {
-		const token = await loadAccessToken();
-		if (!token) {
-			return;
-		}
 		try {
-			const res = await axios.get(currentTrackUrl.href, {
-				headers: {Authorization: `Bearer ${token}`},
-			});
-			if (res.status === 204) {
-				if (spotifyRep.value) {
-					spotifyRep.value.currentTrack = undefined;
-				}
+			const token = spotifyRep.value.accessToken;
+			if (!token) {
 				refreshTimer(setTimeout(getCurrentTrack, defaultWaitMs));
 				return;
 			}
-			const name = res.data.item.name;
-			const artists = sumArtists(res.data.item.artists);
-			spotifyRep.value = {currentTrack: {name, artists}};
-			const remainMs = res.data.item.duration_ms - res.data.progress_ms;
-			refreshTimer(setTimeout(getCurrentTrack, remainMs + bufferMs));
+			const res = await got.get(
+				'https://api.spotify.com/v1/me/player/currently-playing',
+				{
+					json: true,
+					query: {
+						market: 'from_token',
+					},
+					headers: {Authorization: `Bearer ${token}`},
+				},
+			);
+			if (res.statusCode === 204) {
+				spotifyRep.value.currentTrack = undefined;
+				logger.info('Now playing nothing');
+				refreshTimer(setTimeout(getCurrentTrack, defaultWaitMs));
+				return;
+			}
+			const newTrack = {
+				name: res.body.item.name,
+				artists: sumArtists(res.body.item.artists),
+			};
+			if (!isEqual(newTrack, spotifyRep.value.currentTrack)) {
+				logger.info(`Now playing: ${newTrack.name}`);
+				spotifyRep.value.currentTrack = newTrack;
+			}
+			refreshTimer(setTimeout(getCurrentTrack, defaultWaitMs));
 		} catch (err) {
-			nodecg.log.error(err);
+			logger.error('Failed to get current track:', err.stack);
 			if (
 				err.response &&
 				err.response.status === 429 &&
 				err.response.headers &&
 				err.response.headers['Retry-After']
 			) {
-				const waitMs = err.response.headers['Retry-After'];
-				refreshTimer(setTimeout(getCurrentTrack, waitMs));
+				const retryInSeconds = err.response.headers['Retry-After'];
+				refreshTimer(
+					setTimeout(getCurrentTrack, retryInSeconds * 1000),
+				);
 			} else {
 				refreshTimer(setTimeout(getCurrentTrack, defaultWaitMs));
 			}
+		}
+	};
+
+	const authorize = async (code?: string) => {
+		try {
+			if (!code && !spotifyRep.value.refreshToken) {
+				logger.error(
+					'Tried to authorize, but both code and refreshToken are empty',
+				);
+				return;
+			}
+			const authHeader = base64Encode(
+				`${spotifyConfig.clientId}:${spotifyConfig.clientSecret}`,
+			);
+			const headers = {
+				Authorization: `Basic ${authHeader}`,
+				'Content-Type': 'application/x-www-form-urlencoded',
+			};
+			const body = code
+				? {
+						grant_type: 'authorization_code',
+						code,
+						redirect_uri: redirectUrl,
+				  }
+				: {
+						grant_type: 'refresh_token',
+						refresh_token: spotifyRep.value.refreshToken,
+				  };
+			const res = await got.post(
+				'https://accounts.spotify.com/api/token',
+				{form: true, body, headers},
+			);
+			const {
+				access_token: accessToken,
+				expires_in: expiresIn,
+				refresh_token: refreshToken,
+			} = JSON.parse(res.body);
+			if (accessToken) {
+				spotifyRep.value.accessToken = accessToken;
+			}
+			if (refreshToken) {
+				spotifyRep.value.refreshToken = refreshToken;
+			}
+			if (expiresIn) {
+				spotifyRep.value.refreshAt = Date.now() + expiresIn * 1000;
+			}
+			logger.info(
+				`Successfully refreshed token, refreshing in ${expiresIn} seconds`,
+			);
+			setTimeout(authorize, expiresIn * 1000);
+		} catch (err) {
+			logger.error('Failed to get access token', err.stack);
 		}
 	};
 
@@ -92,55 +139,21 @@ export const spotify = async (nodecg: NodeCG) => {
 		}
 	});
 
-	nodecg.listenFor(
-		'spotify:authenticated',
-		async (payload: {code: string | null}) => {
-			if (!payload.code) {
-				nodecg.log.error(
-					'User authenticated through Spotify, but missing code',
-				);
-				return;
-			}
-			try {
-				const tokenReqUrl = new URL(
-					'api/token',
-					'https://accounts.spotify.com',
-				);
-				const params = new URLSearchParams();
-				params.set('grant_type', 'authorization_code');
-				params.set('code', payload.code);
-				params.set('redirect_uri', redirectUrl);
-				const authHeader = Buffer.from(
-					`${spotifyConfig.clientId}:${spotifyConfig.clientSecret}`,
-				).toString('base64');
-				const headers = {
-					Authorization: `Basic ${authHeader}`,
-					'Content-Type': 'application/x-www-form-urlencoded',
-				};
-				const res = await axios.post(tokenReqUrl.href, params, {
-					headers,
-				});
-				const accessToken: unknown = res.data.access_token;
-				if (typeof accessToken !== 'string') {
-					nodecg.log.error('Access token from Spotify is not string');
-					return;
-				}
-				await writeAccessToken(accessToken);
-				// TODO: refresh
-				await getCurrentTrack();
-			} catch (err) {
-				nodecg.log.error(
-					`Error duing token request for Spotify: ${err.stack}`,
-				);
-			}
-		},
-	);
+	nodecg.listenFor('spotify:authenticated', async (payload) => {
+		if (!payload.code) {
+			logger.error(
+				'User authenticated through Spotify, but missing code',
+			);
+			return;
+		}
+		authorize(payload.code);
+	});
 
-	// Try to load token and create one if there is none
-	try {
-		await loadAccessToken();
-		getCurrentTrack();
-	} catch (_) {
-		await writeAccessToken('');
+	if (spotifyRep.value.refreshAt) {
+		const refreshInMs = spotifyRep.value.refreshAt - Date.now();
+		logger.info(`Refreshing token in ${Math.ceil(refreshInMs / 1000)}`);
+		setTimeout(authorize, refreshInMs);
 	}
+
+	getCurrentTrack();
 };

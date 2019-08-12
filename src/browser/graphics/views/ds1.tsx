@@ -10,20 +10,25 @@ import {RtaijGame} from '../components/rtaij-game';
 import {RtaijOverlay} from '../components/rtaij-overlay';
 import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
-import background from '../images/background.png';
+import {background} from '../images/background';
+
+const {onsite, hasSponsor} = nodecg.bundleConfig;
 
 const StyledContainer = styled(Container)`
 	background-image: url(${background});
 	clip-path: polygon(
 		0px 0px,
-		15px 0px,
-		15px 705px,
-		15px 1065px,
-		495px 1065px,
-		495px 705px,
-		15px 705px,
-		15px 0px,
-		202px 0px,
+		${onsite &&
+				`
+			15px 0px,
+			15px 705px,
+			15px 1065px,
+			495px 1065px,
+			495px 705px,
+			15px 705px,
+			15px 0px,
+		`}
+			202px 0px,
 		202px 240px,
 		202px 690px,
 		802px 690px,
@@ -53,14 +58,14 @@ const bottomStyle = css`
 
 const GameContainer = styled.div`
 	${bottomStyle};
-	left: 495px;
-	width: 780px;
+	left: ${onsite ? 495 : 0}px;
+	right: 645px;
 `;
 
 const TimerContainer = styled.div`
 	${bottomStyle};
-	right: 210px;
-	width: 432px;
+	left: 1278px;
+	right: ${hasSponsor ? 210 : 0}px;
 `;
 
 const infoHeights = {
@@ -70,8 +75,8 @@ const infoHeights = {
 
 const runnerStyle = css`
 	position: absolute;
-	left: ${15 + 480}px;
-	right: 15px;
+	left: ${onsite ? 15 + 480 : 202}px;
+	right: ${onsite ? 15 : 202}px;
 	width: auto;
 	height: 60px;
 `;

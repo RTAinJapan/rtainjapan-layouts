@@ -18,30 +18,27 @@ const StyledContainer = styled(Container)`
 	background-image: url(${background});
 	clip-path: polygon(
 		0px 0px,
-		${onsite &&
-				`
 		15px 0px,
-		15px 705px,
-		15px 1065px,
-		495px 1065px,
-		495px 705px,
-		15px 705px,
+		15px 225px,
+		15px 690px,
+		635px 690px,
+		635px 225px,
+		15px 225px,
 		15px 0px,
-		`}
-			90px 0px,
-		90px 240px,
-		90px 690px,
-		690px 690px,
-		690px 240px,
-		90px 240px,
-		90px 0px,
-		705px 0px,
-		705px 15px,
-		705px 690px,
-		1830px 690px,
-		1830px 15px,
-		705px 15px,
-		705px 0px,
+		650px 0px,
+		650px 225px,
+		650px 690px,
+		1270px 690px,
+		1270px 225px,
+		650px 225px,
+		650px 0px,
+		1285px 0px,
+		1285px 225px,
+		1285px 690px,
+		1905px 690px,
+		1905px 225px,
+		1285px 225px,
+		1285px 0px,
 		1920px 0px,
 		1920px 1080px,
 		0px 1080px,
@@ -52,7 +49,7 @@ const StyledContainer = styled(Container)`
 const bottomStyle = css`
 	position: absolute;
 	z-index: 10;
-	height: 225px;
+	height: 240px;
 	bottom: 0;
 `;
 
@@ -75,18 +72,19 @@ const infoHeights = {
 
 const runnerStyle = css`
 	position: absolute;
-	left: ${onsite ? 15 + 480 : 90}px;
-	right: ${onsite ? 15 : 90}px;
 	height: 60px;
 `;
 const Runner = styled.div`
 	${runnerStyle};
-	top: ${15 + 675 + 15}px;
+	top: ${150 + 75 + 465}px;
+	width: 620px;
 `;
 
 const CommentatorContainer = styled.div`
 	${runnerStyle};
-	top: ${15 + 675 + 15 + 60 + 15}px;
+	top: ${150 + 75 + 465 + 60 + 15}px;
+	left: 15px;
+	right: 15px;
 `;
 
 const StyledRuler = styled(Ruler)`
@@ -99,8 +97,29 @@ const StyledRuler = styled(Ruler)`
 
 const App = () => (
 	<StyledContainer>
-		<Runner>
-			<RtaijRunner index={0} showFinishTime gradientBackground />
+		<Runner style={{left: '15px'}}>
+			<RtaijRunner
+				index={0}
+				hideLabel
+				showFinishTime
+				gradientBackground
+			/>
+		</Runner>
+		<Runner style={{left: `${15 + 620 + 15}px`}}>
+			<RtaijRunner
+				index={1}
+				hideLabel
+				showFinishTime
+				gradientBackground
+			/>
+		</Runner>
+		<Runner style={{right: '15px'}}>
+			<RtaijRunner
+				index={2}
+				hideLabel
+				showFinishTime
+				gradientBackground
+			/>
 		</Runner>
 		<CommentatorContainer>
 			<RtaijCommentator index={0} gradientBackground />
@@ -112,11 +131,8 @@ const App = () => (
 		<TimerContainer>
 			<RtaijTimer {...infoHeights} />
 		</TimerContainer>
-		<RtaijOverlay
-			TweetProps={{widthPx: 540, hideLogo: true}}
-			bottomHeightPx={225}
-		/>
+		<RtaijOverlay TweetProps={{rowDirection: true}} bottomHeightPx={240} />
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('3ds1'));
+ReactDom.render(<App />, document.getElementById('sd3'));

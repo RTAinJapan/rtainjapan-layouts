@@ -5,6 +5,7 @@ import {spotify} from './spotify';
 import {timekeeping} from './timekeeping';
 import {twitter} from './twitter';
 import {NodeCG} from './nodecg';
+import {twitch} from './twitch';
 
 export = (nodecg: NodeCG) => {
 	checklist(nodecg);
@@ -12,4 +13,5 @@ export = (nodecg: NodeCG) => {
 	spotify(nodecg);
 	timekeeping(nodecg);
 	twitter(nodecg);
+	twitch(nodecg);
 };

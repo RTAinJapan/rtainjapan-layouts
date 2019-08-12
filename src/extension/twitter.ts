@@ -1,82 +1,118 @@
-import axios, {AxiosError} from 'axios';
-import crypto from 'crypto';
-import delay from 'delay';
-import {IncomingMessage} from 'http';
-import loadJsonFile from 'load-json-file';
-import OAuth from 'oauth-1.0a';
-import path from 'path';
-import {URLSearchParams} from 'url';
-import writeJsonFile from 'write-json-file';
+import tweetSample from './sample-json/raw-tweet.json';
+import {throttle} from 'lodash';
+import Twit from 'twit';
 import {NodeCG} from './nodecg';
-import {URL} from 'url';
+import {Tweet} from '../nodecg/replicants';
 
 const MAX_TWEETS = 100;
 
-/**
- * Twitter access token stored in JSON file
- */
-interface Token {
-	token: string;
-	secret: string;
-}
-const isToken = (data: any): data is Token => {
-	return (
-		data &&
-		typeof data.token === 'string' &&
-		typeof data.secret === 'string'
-	);
-};
-
-const accessTokenPath = path.resolve(__dirname, 'db/twitter-access-token.json');
-const loadAccessToken = async () => {
-	const accessToken = await loadJsonFile(accessTokenPath);
-	if (!isToken(accessToken)) {
-		throw new Error('Invalid Twitter access token loaded from DB');
-	}
-	return accessToken;
-};
-const saveAccessToken = async ({token, secret}: Token) => {
-	await writeJsonFile(accessTokenPath, {token, secret});
-};
-
-/**
- * Twitter request token stored in memory
- */
-let requestToken = {
-	token: '',
-	secret: '',
-};
-
-/**
- * Twitter stream API interface
- */
-let twitterStream: IncomingMessage | null = null;
-
 export const twitter = async (nodecg: NodeCG) => {
+	const logger = new nodecg.Logger('twitter');
+	const streamLogger = new nodecg.Logger('twitter:stream');
+
 	const twitterConfig = nodecg.bundleConfig.twitter;
 	if (!twitterConfig) {
-		nodecg.log.warn('Twitter config is empty');
+		logger.warn('Twitter config is empty');
+		return;
+	}
+	if (twitterConfig.targetWords.length === 0) {
+		logger.warn('Twitter tracking words are empty');
 		return;
 	}
 
-	const callbackUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/twitter-callback/index.html`;
-
-	const twitterRep = nodecg.Replicant('twitter', {defaultValue: {}});
 	const tweetsRep = nodecg.Replicant('tweets', {defaultValue: []});
+	const addTweet = (newTweet: Tweet) => {
+		if (
+			tweetsRep.value &&
+			!tweetsRep.value.some((tweet) => tweet.id === newTweet.id)
+		) {
+			tweetsRep.value = [
+				newTweet,
+				...tweetsRep.value.slice(0, MAX_TWEETS - 1),
+			];
+		} else {
+			tweetsRep.value = [newTweet];
+		}
+	};
+	const twit = new Twit({
+		consumer_key: twitterConfig.consumerKey,
+		consumer_secret: twitterConfig.consumerSecret,
+		access_token: twitterConfig.accessToken,
+		access_token_secret: twitterConfig.accessTokenSecret,
+	});
 
-	const oauth = new OAuth({
-		consumer: {
-			key: twitterConfig.consumerKey,
-			secret: twitterConfig.consumerSecret,
-		},
-		signature_method: 'HMAC-SHA1',
-		hash_function: (baseString, key) => {
-			return crypto
-				.createHmac('sha1', key)
-				.update(baseString)
-				.digest('base64');
-		},
-		realm: '',
+	/**
+	 * Incoming stream from Twitter
+	 */
+	let stream: Twit.Stream | null = null;
+
+	const startStream = throttle(() => {
+		try {
+			if (stream) {
+				stream.stop();
+			}
+
+			stream = twit.stream('statuses/filter', {
+				track: twitterConfig.targetWords,
+			});
+
+			stream.on('tweet', (rawTweet: typeof tweetSample) => {
+				if (
+					rawTweet.retweeted_status ||
+					rawTweet.quoted_status ||
+					rawTweet.in_reply_to_user_id
+				) {
+					return;
+				}
+
+				const newTweet: Tweet = {
+					id: rawTweet.id_str,
+					user: {
+						profileImageUrl: rawTweet.user.profile_image_url_https,
+						name: rawTweet.user.name,
+						screenName: rawTweet.user.screen_name,
+					},
+					text: rawTweet.text
+						.replace(/&lt;/g, '<')
+						.replace(/&gt;/g, '>'),
+					createdAt: new Date(rawTweet.created_at).toISOString(),
+				};
+				addTweet(newTweet);
+			});
+			stream.on('disconnect', (msg) => {
+				streamLogger.error('disconnected', msg);
+				startStream();
+			});
+			stream.on('connect', () => {
+				streamLogger.warn('connecting');
+			});
+			stream.on('reconnect', (_req, _res, connectInterval: number) => {
+				// Twitter is having problems or we get rate limited. Reconnetion scheduled.
+				streamLogger.warn(`Reconnecting in ${connectInterval}ms`);
+			});
+			stream.on('connected', () => {
+				streamLogger.warn('connected');
+			});
+			stream.on('warning', (warnMsg) => {
+				// Stream is stalling
+				streamLogger.warn('Warning:', warnMsg);
+			});
+			stream.on(
+				'error',
+				(error: {
+					message: string;
+					statusCode: string;
+					code: string;
+					twitterReply: string;
+					allErrors: string;
+				}) => {
+					streamLogger.error(error);
+				},
+			);
+		} catch (error) {
+			streamLogger.error('Failed to start stream:', error.stack);
+			startStream();
+		}
 	});
 
 	const deleteTweetById = (id: string) => {
@@ -94,237 +130,6 @@ export const twitter = async (nodecg: NodeCG) => {
 		return tweet;
 	};
 
-	const getRequestToken = async () => {
-		const REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token';
-		const oauthData = oauth.authorize({
-			url: REQUEST_TOKEN_URL,
-			method: 'POST',
-			data: {
-				oauth_callback: callbackUrl,
-			},
-		});
-		const res = await axios.post(REQUEST_TOKEN_URL, undefined, {
-			headers: oauth.toHeader(oauthData),
-		});
-		const requestTokenParams = new URLSearchParams(res.data);
-		return {
-			token: requestTokenParams.get('oauth_token') || '',
-			secret: requestTokenParams.get('oauth_token_secret') || '',
-		};
-	};
-
-	const getAccessToken = async (oauthVerifier: string) => {
-		const ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token';
-		const data = {oauth_verifier: oauthVerifier};
-		const oauthData = oauth.authorize(
-			{
-				url: ACCESS_TOKEN_URL,
-				method: 'POST',
-				data,
-			},
-			{key: requestToken.token, secret: requestToken.token},
-		);
-		const res = await axios.post(ACCESS_TOKEN_URL, data, {
-			headers: oauth.toHeader(oauthData),
-		});
-		const accessTokenParams = new URLSearchParams(res.data);
-		return {
-			token: accessTokenParams.get('oauth_token') || '',
-			secret: accessTokenParams.get('oauth_token_secret') || '',
-		};
-	};
-
-	const verifyCredentials = async () => {
-		const VERIFY_CREDENTIALS_URL =
-			'https://api.twitter.com/1.1/account/verify_credentials.json';
-		const accessToken = await loadAccessToken();
-		const oauthData = oauth.authorize(
-			{
-				url: VERIFY_CREDENTIALS_URL,
-				method: 'GET',
-			},
-			{key: accessToken.token, secret: accessToken.secret},
-		);
-		const res = await axios.get(VERIFY_CREDENTIALS_URL, {
-			headers: oauth.toHeader(oauthData),
-		});
-		return res.data;
-	};
-
-	const startFilterStream = async () => {
-		try {
-			const STATUSES_FILTER_URL =
-				'https://stream.twitter.com/1.1/statuses/filter.json';
-			const accessToken = await loadAccessToken();
-			if (!accessToken.token || !accessToken.secret) {
-				twitterRep.value = {};
-				return;
-			}
-			const data = {
-				track: twitterConfig.targetWords.join(','),
-			};
-			const oauthData = oauth.authorize(
-				{
-					url: STATUSES_FILTER_URL,
-					method: 'POST',
-					data,
-				},
-				{key: accessToken.token, secret: accessToken.secret},
-			);
-
-			const res = await axios.post<IncomingMessage>(
-				STATUSES_FILTER_URL,
-				undefined,
-				{
-					responseType: 'stream',
-					headers: oauth.toHeader(oauthData),
-					params: data,
-				},
-			);
-			if (twitterStream) {
-				try {
-					twitterStream.destroy();
-				} catch (_) {}
-			}
-			twitterStream = res.data;
-			twitterStream.setEncoding('utf8');
-		} catch (err) {
-			const error: AxiosError = err;
-			if (error && error.response && error.response.status === 420) {
-				if (error.response.headers['x-rate-limit-reset']) {
-					const resetTime =
-						parseInt(
-							error.response.headers['x-rate-limit-reset'],
-							10,
-						) * 1000;
-					const remainTime = resetTime - Date.now();
-					if (remainTime < 0) {
-						nodecg.log.error(
-							'Twitter steam api reset time is past...',
-						);
-					}
-					nodecg.log.warn(
-						`Failed to start stream API due to rate limit. Retrying in ${Math.floor(
-							remainTime / 1000 / 60,
-						)} minute.`,
-					);
-					await delay(remainTime);
-				} else {
-					await delay(15 * 60 * 1000);
-				}
-				startFilterStream();
-			} else {
-				nodecg.log.error('Failed to start stream API');
-				nodecg.log.error(err.message);
-			}
-			return;
-		}
-
-		// Tweets are split when coming in through stream API
-		// Store the strings until it can be parsed or gets too long
-		let store = '';
-		twitterStream.on('data', async (data) => {
-			if (!data || typeof data !== 'string') {
-				return;
-			}
-			if (!tweetsRep.value) {
-				return;
-			}
-			try {
-				// Try to parse the string
-				store += data;
-				const tweetObject = JSON.parse(store);
-
-				// At this point the string could be parsed as JSON
-				// So it's safe to clear temporary string and move on
-				store = '';
-
-				// Exclude replies, quotes, retweets
-				if (
-					tweetObject.in_reply_to_user_id_str ||
-					tweetObject.quoted_status_id_str ||
-					tweetObject.retweeted_status
-				) {
-					return;
-				}
-
-				const tweetAlreadyExists = tweetsRep.value.some(
-					(t) => t.id === tweetObject.id_str,
-				);
-				if (tweetAlreadyExists) {
-					return;
-				}
-
-				// Store only necessary data
-				const tweet = {
-					id: tweetObject.id_str,
-					createdAt: new Date(tweetObject.created_at).toISOString(),
-					text: tweetObject.text,
-					user: {
-						name: tweetObject.user.name,
-						screenName: tweetObject.user.screen_name,
-						profileImageUrl: new URL(
-							tweetObject.user.profile_image_url_https,
-						).toString(),
-					},
-				};
-
-				// Insert the new tweet at the start of the list
-				tweetsRep.value.unshift(tweet);
-			} catch (err) {
-				if (err.message !== 'Unexpected end of JSON input') {
-					nodecg.log.error(err);
-					return;
-				}
-				if (store.length > 100000) {
-					store = '';
-				}
-			}
-		});
-	};
-
-	nodecg.listenFor('twitter:startLogin', async (_, cb) => {
-		if (!cb || cb.handled) {
-			return;
-		}
-
-		try {
-			requestToken = await getRequestToken();
-			const redirectUrl = `https://api.twitter.com/oauth/authenticate?oauth_token=${requestToken.token}`;
-			cb(null, redirectUrl);
-		} catch (err) {
-			nodecg.log.error('Failed to get Twitter oauth token');
-			nodecg.log.error(err);
-			cb(err);
-		}
-	});
-
-	nodecg.listenFor('twitter:loginSuccess', async (data) => {
-		if (data.oauthToken !== requestToken.token) {
-			return;
-		}
-		if (!data.oauthVerifier) {
-			return;
-		}
-
-		try {
-			const accessToken = await getAccessToken(data.oauthVerifier);
-			await saveAccessToken(accessToken);
-			twitterRep.value = {userObject: await verifyCredentials()};
-		} catch (err) {
-			nodecg.log.error('Failed to authenticate user');
-			nodecg.log.error(err);
-		}
-	});
-
-	nodecg.listenFor('twitter:logout', async () => {
-		if (!twitterRep.value) {
-			return;
-		}
-		twitterRep.value.userObject = undefined;
-		await saveAccessToken({token: '', secret: ''});
-	});
-
 	nodecg.listenFor('selectTweet', (id: string) => {
 		const deletedTweet = deleteTweetById(id);
 		if (deletedTweet) {
@@ -334,31 +139,5 @@ export const twitter = async (nodecg: NodeCG) => {
 
 	nodecg.listenFor('discardTweet', deleteTweetById);
 
-	// Try to load access token file and save one if it errors
-	try {
-		await loadAccessToken();
-	} catch (_) {
-		await saveAccessToken({token: '', secret: ''});
-	}
-
-	twitterRep.on('change', async (newVal) => {
-		if (newVal && newVal.userObject) {
-			await startFilterStream();
-			return;
-		}
-		if (twitterStream) {
-			nodecg.log.info(
-				'Twitter Replicant changed, destroying current Twitter stream',
-			);
-			twitterStream.destroy();
-		}
-	});
-
-	tweetsRep.on('change', (newVal) => {
-		if (newVal.length <= MAX_TWEETS) {
-			return;
-		}
-		tweetsRep.value =
-			tweetsRep.value && tweetsRep.value.slice(0, MAX_TWEETS - 10);
-	});
+	startStream();
 };

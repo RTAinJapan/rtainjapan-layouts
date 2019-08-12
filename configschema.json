@@ -4,6 +4,13 @@
 	"type": "object",
 	"additionalProperties": false,
 	"properties": {
+		"onsite": {"type": "boolean", "default": true},
+		"colorTheme": {
+			"type": "string",
+			"enum": ["blue", "brown"],
+			"default": "brown"
+		},
+		"hasSponsor": {"type": "boolean", "default": true},
 		"twitter": {
 			"type": "object",
 			"additionalProperties": false,

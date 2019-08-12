@@ -9,12 +9,16 @@ import {RtaijGame} from '../components/rtaij-game';
 import {RtaijOverlay} from '../components/rtaij-overlay';
 import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
-import background from '../images/background.png';
+import {background} from '../images/background';
+
+const {onsite} = nodecg.bundleConfig;
 
 const StyledContainer = styled(Container)`
 	background-image: url(${background});
 	clip-path: polygon(
 		0px 0px,
+		${onsite &&
+				`
 		90px 0px,
 		90px 687px,
 		90px 1065px,
@@ -22,7 +26,8 @@ const StyledContainer = styled(Container)`
 		762px 687px,
 		90px 687px,
 		90px 0px,
-		840px 0px,
+		`}
+			840px 0px,
 		840px 24px,
 		840px 915px,
 		1830px 915px,
@@ -52,7 +57,7 @@ const InfoContainer = styled.div`
 
 const runnerStyle = css`
 	position: absolute;
-	left: ${(60 + 448) * 1.5}px;
+	left: ${(onsite ? 60 + 448 : 10) * 1.5}px;
 	right: ${160 * 1.5}px;
 	height: 60px;
 `;

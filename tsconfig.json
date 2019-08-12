@@ -4,6 +4,7 @@
 		"target": "esnext",
 		"lib": ["esnext"],
 		"types": [],
-		"sourceMap": true
+		"sourceMap": true,
+		"resolveJsonModule": true
 	}
 }

@@ -106,6 +106,7 @@ interface Props {
 	gradientBackground?: boolean;
 	columnDirection?: boolean;
 	showFinishTime?: boolean;
+	hideLabel?: boolean;
 }
 
 interface State {
@@ -153,7 +154,11 @@ export abstract class Nameplate extends React.Component<Props, State> {
 				<Name
 					labelIcon={this.labelIcon}
 					labelText={this.label}
-					hideLabel={this.state.hideLabel}
+					hideLabel={
+						this.props.hideLabel ||
+						this.state.hideLabel ||
+						this.props.columnDirection
+					}
 					fontSizeMultiplier={this.state.fontSizeMultiplier}
 				>
 					{state.runner.name}

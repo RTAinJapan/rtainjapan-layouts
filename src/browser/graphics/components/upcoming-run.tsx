@@ -1,12 +1,14 @@
-import {differenceInHours, differenceInMinutes} from 'date-fns';
+import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
-import separator from '../images/break/separator.png';
-import {CurrentRun} from '../../../nodecg/replicants';
+import separatorBlue from '../images/break/separator-blue.png';
+import separatorBrown from '../images/break/separator-brown.png';
+import {Schedule} from '../../../nodecg/replicants';
 
+const {colorTheme} = nodecg.bundleConfig;
 const Container = styled.div`
 	font-family: 'MigMix 2P';
-	color: #60392f;
+	color: ${colorTheme === 'brown' ? '#60392f' : '#2d4273'};
 
 	height: 90px;
 	box-sizing: border-box;
@@ -19,9 +21,9 @@ const Container = styled.div`
 	flex-flow: row nowrap;
 	align-items: center;
 
-	border-left: 15px #d2997b solid;
+	border-left: 15px ${colorTheme === 'brown' ? '#d2997b' : '#a7bfff'} solid;
 	&:first-child {
-		border-left-color: #824218;
+		border-left-color: ${colorTheme === 'brown' ? '#824218' : '#4d7dff'};
 	}
 `;
 
@@ -46,27 +48,22 @@ const Time = styled(Misc)`
 	text-align: center;
 `;
 
-interface State {
-	remainingTime?: string;
-}
-
-export class UpcomingRun extends React.Component<CurrentRun, State> {
-	public state = {remainingTime: undefined};
-
-	private readonly interval = setInterval(() => {
-		this.updateRemainingTime();
-	}, 10 * 1000);
-
-	public componentDidMount() {
-		this.updateRemainingTime();
-	}
-
+export class UpcomingRun extends React.Component<{
+	upcomingRuns: Schedule;
+	index: number;
+}> {
 	public render() {
-		const {props} = this;
-		const {title, category} = props;
+		const run = this.props.upcomingRuns[this.props.index];
+		if (!run) {
+			return null;
+		}
+		const {title, category} = run;
 		const runners =
-			props.runners &&
-			`Runner: ${props.runners.map((runner) => runner.name).join(', ')}`;
+			run.runners &&
+			`Runner: ${run.runners
+				.map((runner) => runner.name)
+				.filter(Boolean)
+				.join(', ')}`;
 		const misc =
 			category && runners
 				? `${category} | ${runners}`
@@ -77,32 +74,35 @@ export class UpcomingRun extends React.Component<CurrentRun, State> {
 					<Title>{title}</Title>
 					<Misc>{misc}</Misc>
 				</InfoContainer>
-				<img src={separator} />
-				<Time>
-					あと
-					<br />
-					{this.state.remainingTime}
-				</Time>
+				<img
+					src={
+						colorTheme === 'brown' ? separatorBrown : separatorBlue
+					}
+				/>
+				<Time>{this.calcRemainingTime()}</Time>
 			</Container>
 		);
 	}
 
-	public componentWillUnmount() {
-		clearInterval(this.interval);
-	}
-
-	private updateRemainingTime() {
-		const {scheduled} = this.props;
-		if (!scheduled) {
-			return;
+	private calcRemainingTime = () => {
+		if (this.props.index === 0) {
+			return 'このあとすぐ！';
 		}
-		const startsAt = new Date(scheduled);
-		const now = new Date();
-		const hour = differenceInHours(startsAt, now);
-		const minute = differenceInMinutes(startsAt, now) % 60;
-		this.setState({
-			// prettier-ignore
-			remainingTime: `${hour < 0 ? 0 : hour}時間${minute < 0 ? 0 : minute}分`
-		});
-	}
+		let remaining = moment.duration(0);
+		for (let i = this.props.index - 1; i >= 0; i--) {
+			const run = this.props.upcomingRuns[i];
+			if (!run) {
+				continue;
+			}
+			remaining.add(moment.duration(run.runDuration));
+			remaining.add(moment.duration(run.setupDuration));
+		}
+		return (
+			<>
+				あと
+				<br />
+				{Math.floor(remaining.asHours())}時間{remaining.minutes()}分
+			</>
+		);
+	};
 }

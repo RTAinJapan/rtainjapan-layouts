@@ -14,15 +14,7 @@ export interface Timer {
 	timestamp: number;
 	timerState: 'Finished' | 'Running' | 'Stopped';
 	results: (null | {
-		raw: number;
-		hours: number;
-		minutes: number;
-		seconds: number;
-		formatted: string;
-		timestamp: number;
-		timerState: 'Finished' | 'Running' | 'Stopped';
-		forfeit: boolean;
-		place?: number;
+		[k: string]: any;
 	})[];
 	forfeit: boolean;
 	[k: string]: any;

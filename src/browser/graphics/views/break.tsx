@@ -2,45 +2,49 @@ import '../styles/common.css';
 
 import React from 'react';
 import ReactDom from 'react-dom';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 import {Container} from '../components/lib/styled';
 import {RtaijOverlay} from '../components/rtaij-overlay';
 import {UpcomingRun} from '../components/upcoming-run';
-import breakBackgroundImg from '../images/break/break-background.png';
-import notification from '../images/break/notification.png';
+import notificationIconBlue from '../images/break/notification-blue.png';
+import notificationIconBrown from '../images/break/notification-brown.png';
 import {Schedule, CurrentRun} from '../../../nodecg/replicants';
 
 const currentRunRep = nodecg.Replicant('current-run');
 const scheduleRep = nodecg.Replicant('schedule');
+const {onsite} = nodecg.bundleConfig;
+const {colorTheme} = nodecg.bundleConfig;
 
 const StyledContainer = styled(Container)`
-	background-image: url(${breakBackgroundImg});
-	clip-path: polygon(
-		0px 0px,
-		15px 0px,
-		15px 714px,
-		15px 1065px,
-		639px 1065px,
-		639px 714px,
-		15px 714px,
-		15px 0px,
-		1920px 0px,
-		1920px 1080px,
-		0px 1080px,
-		0px 0px
-	);
+	${onsite &&
+		css`
+			clip-path: polygon(
+				0px 0px,
+				15px 0px,
+				15px 714px,
+				15px 1065px,
+				639px 1065px,
+				639px 714px,
+				15px 714px,
+				15px 0px,
+				1920px 0px,
+				1920px 1080px,
+				0px 1080px,
+				0px 0px
+			);
+		`}
 `;
 
-const NotificationIcon = styled.img.attrs({src: notification})`
+const NotificationIcon = styled.img`
 	position: absolute;
-	left: ${15 + 624 + 30}px;
+	left: ${onsite ? 669 : 60}px;
 	bottom: 15px;
 `;
 
 const NotificationText = styled.div`
 	position: absolute;
-	left: ${15 + 624 + 30 + 135 + 30}px;
+	left: ${onsite ? 834 : 225}px;
 	bottom: 0px;
 	height: 150px;
 
@@ -60,7 +64,7 @@ const UpcomingTitle = styled.div`
 	left: 60px;
 	width: 180px;
 
-	background-color: #60392f;
+	background-color: ${colorTheme == 'brown' ? '#60392f' : '#4d7dff'};
 	box-shadow: 4.5px 4.5px 6px -1.5px rgba(0, 0, 0, 1);
 
 	font-family: 'MigMix 2P';
@@ -118,14 +122,24 @@ class Break extends React.Component<{}, State> {
 					isBreak
 					TweetProps={{rowDirection: true}}
 				/>
-				<NotificationIcon />
+				<NotificationIcon
+					src={
+						colorTheme === 'brown'
+							? notificationIconBrown
+							: notificationIconBlue
+					}
+				/>
 				<NotificationText>
 					準備中です、しばらくお待ち下さい
 				</NotificationText>
 				<UpcomingTitle>今後の予定</UpcomingTitle>
 				<UpcomingContainer>
-					{upcomingRuns.map((run) => (
-						<UpcomingRun key={run.pk} {...run} />
+					{upcomingRuns.map((run, index) => (
+						<UpcomingRun
+							key={run.pk}
+							index={index}
+							upcomingRuns={upcomingRuns}
+						/>
 					))}
 				</UpcomingContainer>
 				{this.state.currentTrack && (

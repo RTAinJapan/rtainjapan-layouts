@@ -56,7 +56,7 @@ export class RtaijTimer extends BaseInfo {
 			return;
 		}
 		this.setState({
-			secondaryInfo: `予定タイム ${newVal.duration || '???'}`,
+			secondaryInfo: `予定タイム ${newVal.runDuration || '???'}`,
 		});
 	};
 }

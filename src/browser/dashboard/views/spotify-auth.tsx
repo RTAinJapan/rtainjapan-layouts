@@ -58,7 +58,8 @@ class App extends React.Component<{}, State> {
 		url.searchParams.set('response_type', 'code');
 		url.searchParams.set('redirect_uri', redirectUrl);
 		url.searchParams.set('scope', 'user-read-currently-playing');
-		window.parent.location.replace(url.href);
+		url.searchParams.set('show_dialog', 'false');
+		window.parent.location.href = url.href;
 	};
 }
 

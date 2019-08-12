@@ -68,7 +68,7 @@ export class RunInfo extends React.Component<{
 				<MiscContainer>
 					<LabeledDiv>
 						<Typography variant='caption'>予定時間</Typography>
-						<div>{run.duration}</div>
+						<div>{run.runDuration}</div>
 					</LabeledDiv>
 					<LabeledDiv>
 						<Typography variant='caption'>機種</Typography>

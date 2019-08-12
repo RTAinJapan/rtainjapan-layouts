@@ -75,6 +75,7 @@ interface State {
 	primaryInfo: string;
 	secondaryInfo: string;
 	primarySize: number;
+	secondarySize: number;
 	primaryInfoColor?: string;
 }
 
@@ -83,11 +84,13 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 		primaryInfo: '',
 		secondaryInfo: '',
 		primarySize: 40 * 1.5,
+		secondarySize: 30,
 	};
 
 	public containerRef = React.createRef<HTMLDivElement>();
 
 	public primaryRef = React.createRef<HTMLDivElement>();
+	public secondaryRef = React.createRef<HTMLDivElement>();
 
 	public render() {
 		return (
@@ -107,7 +110,12 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 					{this.state.primaryInfo}
 				</PrimaryInfo>
 				<StyledRuler />
-				<SecondaryInfo>{this.state.secondaryInfo}</SecondaryInfo>
+				<SecondaryInfo
+					style={{fontSize: `${this.state.secondarySize}px`}}
+					ref={this.secondaryRef}
+				>
+					{this.state.secondaryInfo}
+				</SecondaryInfo>
 			</Container>
 		);
 	}
@@ -116,16 +124,26 @@ export abstract class BaseInfo extends React.Component<Props, State> {
 		if (prevState.primaryInfo !== this.state.primaryInfo) {
 			this.setState({primarySize: 40 * 1.5});
 		}
+		if (prevState.secondaryInfo !== this.state.secondaryInfo) {
+			this.setState({secondarySize: 30});
+		}
 		const containerRef = this.containerRef.current;
 		const primaryRef = this.primaryRef.current;
-		if (!containerRef || !primaryRef) {
+		const secondaryRef = this.secondaryRef.current;
+		if (!containerRef || !primaryRef || !secondaryRef) {
 			return;
 		}
 		const containerWidth = containerRef.clientWidth;
 		const primaryWidth = primaryRef.clientWidth;
+		const secondaryWidth = secondaryRef.clientWidth;
 		if (containerWidth - primaryWidth < 60) {
 			this.setState((state) => ({
 				primarySize: state.primarySize - 1,
+			}));
+		}
+		if (containerWidth - secondaryWidth < 60) {
+			this.setState((state) => ({
+				secondarySize: state.secondarySize - 1,
 			}));
 		}
 	}

@@ -5,6 +5,15 @@
 	"additionalProperties": false,
 	"properties": {
 		"accessToken": {"type": "string"},
-		"channelId": {"type": "string"}
+		"channelId": {"type": "string"},
+		"refresh": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["refreshToken", "refreshAt"],
+			"properties": {
+				"refreshToken": {"type": "string"},
+				"refreshAt": {"type": "number"}
+			}
+		}
 	}
 }

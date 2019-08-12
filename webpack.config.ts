@@ -24,7 +24,6 @@ const base: webpack.Configuration = {
 		extensions: ['.js', '.ts', '.tsx', '.json'],
 	},
 	plugins: isProduction ? [] : [new HardSourceWebpackPlugin()],
-	stats: 'minimal',
 };
 
 const makeBrowserConfig = (name: string): webpack.Configuration => {
@@ -59,7 +58,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 					],
 				},
 				{
-					test: /\.(png|woff2?)$/,
+					test: /\.(png|woff2?|webm|gif)$/,
 					loader: 'file-loader',
 					options: {name: '[name].[ext]'},
 				},

@@ -6,11 +6,12 @@
 	"properties": {
 		"pk": {"type": "number"},
 		"index": {"type": "number"},
-		"scheduled": {"type": "number"},
 		"title": {"type": "string"},
+		"englishTitle": {"type": "string"},
 		"category": {"type": "string"},
 		"platform": {"type": "string"},
-		"duration": {"type": "string"},
+		"runDuration": {"type": "string"},
+		"setupDuration": {"type": "string"},
 		"runners": {
 			"type": "array",
 			"items": {"$ref": "participant.json"}
@@ -23,9 +24,10 @@
 	"required": [
 		"pk",
 		"index",
-		"scheduled",
 		"title",
-		"duration",
+		"englishTitle",
+		"runDuration",
+		"setupDuration",
 		"runners",
 		"commentators"
 	]

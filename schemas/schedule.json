@@ -3,16 +3,6 @@
 
 	"type": "array",
 	"items": {
-		"$ref": "lib/run.json",
-		"additionalProperties": false,
-		"required": [
-			"pk",
-			"index",
-			"scheduled",
-			"title",
-			"duration",
-			"runners",
-			"commentators"
-		]
+		"$ref": "lib/run.json"
 	}
 }

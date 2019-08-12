@@ -45,6 +45,7 @@ const Container = styled.div`
 	display: flex;
 	transition: transform ${TWEET_TRANSITION_SECONDS}s;
 	overflow: hidden;
+	will-change: tranform;
 
 	${({maxHeightPx}: ContainerProps) =>
 		maxHeightPx &&

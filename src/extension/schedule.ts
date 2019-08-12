@@ -188,7 +188,7 @@ export default async (nodecg: NodeCG) => {
 					run.runner3,
 				]) {
 					const runner = runners.find((r) => r.id === runnerId);
-					if (runner) {
+					if (runner && runner.name) {
 						runnersData.push({
 							name: runner.name,
 							twitch: runner.twitch,
@@ -205,7 +205,7 @@ export default async (nodecg: NodeCG) => {
 					const commentator = commentators.find(
 						(r) => r.id === commentatorId,
 					);
-					if (commentator) {
+					if (commentator && commentator.name) {
 						commentatorData.push({
 							name: commentator.name,
 							twitch: commentator.twitch,
@@ -217,11 +217,12 @@ export default async (nodecg: NodeCG) => {
 				return {
 					pk: Number(run.id),
 					index,
-					scheduled: new Date().getTime(),
 					title: run.title,
+					englishTitle: run['title english'],
 					category: run.category,
 					platform: run.platform,
-					duration: run.runDuration,
+					runDuration: run.runDuration,
+					setupDuration: run.setupDuration,
 					runners: runnersData,
 					commentators: commentatorData,
 				};

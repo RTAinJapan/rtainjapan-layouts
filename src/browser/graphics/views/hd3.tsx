@@ -2,38 +2,39 @@ import '../styles/common.css';
 
 import React from 'react';
 import ReactDom from 'react-dom';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import {Container} from '../components/lib/styled';
-import {RtaijCommentator} from '../components/rtaij-commentator';
 import {RtaijGame} from '../components/rtaij-game';
 import {RtaijOverlay} from '../components/rtaij-overlay';
 import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
 
-const {onsite} = nodecg.bundleConfig;
-
 const StyledContainer = styled(Container)`
 	background-image: url(${background});
 	clip-path: polygon(
 		0px 0px,
-		${onsite &&
-				`
-		15px 0px,
-		15px 687px,
-		15px 1065px,
-		687px 1065px,
-		687px 687px,
-		15px 687px,
-		15px 0px,
-		`}
-			705px 0px,
-		705px 15px,
-		705px 915px,
-		1905px 915px,
-		1905px 15px,
-		705px 15px,
-		705px 0px,
+		96px 0px,
+		96px 547px,
+		96px 1006px,
+		912px 1006px,
+		912px 547px,
+		96px 547px,
+		96px 0px,
+		1008px 0px,
+		1008px 14px,
+		1008px 473px,
+		1824px 473px,
+		1824px 14px,
+		1008px 14px,
+		1008px 0px,
+		1008px 0px,
+		1008px 547px,
+		1008px 1006px,
+		1824px 1006px,
+		1824px 547px,
+		1008px 547px,
+		1008px 0px,
 		1920px 0px,
 		1920px 1080px,
 		0px 1080px,
@@ -44,9 +45,9 @@ const StyledContainer = styled(Container)`
 const InfoContainer = styled.div`
 	position: absolute;
 	top: 150px;
-	left: 0px;
-	height: 537px;
-	width: ${470 * 1.5}px;
+	left: 96px;
+	height: 397px;
+	width: 816px;
 
 	display: grid;
 	grid-template-rows: auto auto;
@@ -55,21 +56,10 @@ const InfoContainer = styled.div`
 	grid-gap: 20px;
 `;
 
-const participantStyle = css`
-	position: absolute;
-	left: ${(onsite ? 458 : 10) * 1.5}px;
-	right: ${160 * 1.5}px;
-	height: 60px;
-`;
-
 const RunnerContainer = styled.div`
-	${participantStyle}
-	bottom: 75px;
-`;
-
-const CommentatorContainer = styled.div`
-	${participantStyle}
-	bottom: 15px;
+	position: absolute;
+	width: 816px;
+	height: 60px;
 `;
 
 const App = () => (
@@ -78,17 +68,20 @@ const App = () => (
 			<RtaijGame gradientBackground primaryHeight={100} />
 			<RtaijTimer gradientBackground primaryHeight={100} />
 		</InfoContainer>
-		<RunnerContainer>
-			<RtaijRunner index={0} />
+		<RunnerContainer style={{top: '473px', right: '96px'}}>
+			<RtaijRunner showFinishTime index={0} gradientBackground />
 		</RunnerContainer>
-		<CommentatorContainer>
-			<RtaijCommentator index={0} />
-		</CommentatorContainer>
+		<RunnerContainer style={{bottom: '14px', left: '96px'}}>
+			<RtaijRunner showFinishTime index={1} />
+		</RunnerContainer>
+		<RunnerContainer style={{bottom: '14px', right: '96px'}}>
+			<RtaijRunner showFinishTime index={2} />
+		</RunnerContainer>
 		<RtaijOverlay
-			TweetProps={{widthPx: 360 * 1.5, hideLogo: true}}
+			TweetProps={{rowDirection: true, maxHeightPx: 150, widthPx: 540}}
 			bottomHeightPx={150}
 		/>
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('sd1'));
+ReactDom.render(<App />, document.getElementById('hd3'));

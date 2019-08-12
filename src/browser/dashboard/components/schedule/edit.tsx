@@ -63,10 +63,10 @@ export class EditRun extends React.Component<Props, Run> {
 						}}
 					/>
 					<TextField
-						defaultValue={this.props.defaultValue.duration}
+						defaultValue={this.props.defaultValue.runDuration}
 						label='予定タイム'
 						onChange={(e) => {
-							this.setState({duration: e.currentTarget.value});
+							this.setState({runDuration: e.currentTarget.value});
 						}}
 					/>
 					{Array.from({length: 4}, (_, index) => {

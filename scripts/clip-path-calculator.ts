@@ -7,9 +7,7 @@ export const makeBoxCoor = (
 	y1: number,
 	y2: number,
 ): BoxCoor => {
-	const x = [x1, x2].sort();
-	const y = [y1, y2].sort();
-	return [[x[0], y[0]], [x[0], y[1]], [x[1], y[0]], [x[1], y[1]]];
+	return [[x1, y1], [x1, y2], [x2, y1], [x2, y2]];
 };
 
 export const sortBoxCoor = (boxCoor: BoxCoor): Coor[] => {
@@ -39,3 +37,18 @@ export const outputCss = (coors: Coor[]) => {
 	const css = `clip-path: polygon(${polygon});`;
 	return css;
 };
+
+// @ts-ignore
+console.log(
+	outputCss(
+		makeCoors(
+			1920,
+			1080,
+			...[
+				[15, 15 + 620, 150 + 75, 150 + 75 + 465] as const,
+				[15 + 620 + 15, 30 + 1240, 150 + 75, 150 + 75 + 465] as const,
+				[30 + 1240 + 15, 1920 - 15, 150 + 75, 150 + 75 + 465] as const,
+			].map((a) => sortBoxCoor(makeBoxCoor(...a))),
+		),
+	),
+);

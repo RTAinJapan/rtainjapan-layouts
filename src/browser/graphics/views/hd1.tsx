@@ -10,12 +10,16 @@ import {RtaijGame} from '../components/rtaij-game';
 import {RtaijOverlay} from '../components/rtaij-overlay';
 import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
-import background from '../images/background.png';
+import {background} from '../images/background';
+
+const {onsite, hasSponsor} = nodecg.bundleConfig;
 
 const StyledContainer = styled(Container)`
 	background-image: url(${background});
 	clip-path: polygon(
 		0px 0px,
+		${onsite &&
+				`
 		15px 0px,
 		15px 741px,
 		15px 1065px,
@@ -23,7 +27,8 @@ const StyledContainer = styled(Container)`
 		447px 741px,
 		15px 741px,
 		15px 0px,
-		465px 0px,
+		`}
+			465px 0px,
 		465px 15px,
 		465px 825px,
 		1905px 825px,
@@ -63,14 +68,14 @@ const infoStyle = css`
 
 const GameContainer = styled.div`
 	${infoStyle};
-	left: 480px;
-	width: 765px;
+	left: ${onsite ? 480 : 0}px;
+	right: 645px;
 `;
 
 const TimerContainer = styled.div`
 	${infoStyle};
-	right: 240px;
-	width: 372px;
+	left: 1278px;
+	right: ${hasSponsor ? 240 : 0}px;
 `;
 
 const StyledRuler = styled(Ruler)`

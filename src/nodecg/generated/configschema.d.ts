@@ -6,6 +6,9 @@
  */
 
 export interface Configschema {
+	onsite?: boolean;
+	colorTheme?: 'blue' | 'brown';
+	hasSponsor?: boolean;
 	twitter?: {
 		targetWords: string[];
 		consumerKey: string;
