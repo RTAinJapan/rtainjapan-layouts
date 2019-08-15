@@ -55,7 +55,7 @@
 		"@material-ui/core": "^4.3.2",
 		"@material-ui/icons": "^4.2.1",
 		"@types/globby": "^8.0.0",
-		"@types/got": "^9.6.6",
+		"@types/got": "^9.6.7",
 		"@types/hard-source-webpack-plugin": "^1.0.1",
 		"@types/html-webpack-plugin": "^3.2.1",
 		"@types/load-json-file": "^2.0.7",
