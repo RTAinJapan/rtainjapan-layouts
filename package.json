@@ -105,7 +105,7 @@
 		"ts-nodecg": "^0.3.0",
 		"tslib": "^1.10.0",
 		"typescript": "^3.5.3",
-		"uuid": "^3.3.2",
+		"uuid": "^3.3.3",
 		"webpack": "^4.39.2",
 		"webpack-bundle-analyzer": "^3.4.1",
 		"webpack-cli": "^3.3.7",
