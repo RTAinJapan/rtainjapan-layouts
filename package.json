@@ -52,7 +52,7 @@
 		"@babel/preset-env": "^7.5.5",
 		"@hoishin/prettierrc": "^2.1.1",
 		"@hoishin/tsconfig": "^2.0.0",
-		"@material-ui/core": "^4.3.3",
+		"@material-ui/core": "^4.4.0",
 		"@material-ui/icons": "^4.2.1",
 		"@types/globby": "^8.0.0",
 		"@types/got": "^9.6.7",
