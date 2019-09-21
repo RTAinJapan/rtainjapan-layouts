@@ -71,7 +71,7 @@
 		"@types/twit": "^2.2.22",
 		"@types/uuid": "^3.4.5",
 		"@types/webpack": "^4.39.1",
-		"@types/webpack-bundle-analyzer": "^2.13.2",
+		"@types/webpack-bundle-analyzer": "^2.13.3",
 		"@types/webpack-merge": "^4.1.5",
 		"@types/webpack-node-externals": "^1.6.3",
 		"@types/write-json-file": "^2.2.1",
