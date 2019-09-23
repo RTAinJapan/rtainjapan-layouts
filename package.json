@@ -99,7 +99,7 @@
 		"rimraf": "^3.0.0",
 		"sort-package-json": "^1.22.1",
 		"style-loader": "^1.0.0",
-		"styled-components": "^4.3.2",
+		"styled-components": "^4.4.0",
 		"ts-loader": "^6.1.2",
 		"ts-node": "^8.4.1",
 		"ts-nodecg": "^0.3.0",
