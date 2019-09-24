@@ -106,7 +106,7 @@
 		"tslib": "^1.10.0",
 		"typescript": "^3.6.3",
 		"uuid": "^3.3.2",
-		"webpack": "^4.40.2",
+		"webpack": "^4.41.0",
 		"webpack-bundle-analyzer": "^3.5.1",
 		"webpack-cli": "^3.3.9",
 		"webpack-merge": "^4.2.2",
