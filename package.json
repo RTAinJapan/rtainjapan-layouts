@@ -62,7 +62,7 @@
 		"@types/lodash": "^4.14.141",
 		"@types/mini-css-extract-plugin": "^0.8.0",
 		"@types/node": "^10.14.19",
-		"@types/react": "^16.9.3",
+		"@types/react": "^16.9.4",
 		"@types/react-dom": "^16.9.1",
 		"@types/react-highlight-words": "^0.16.0",
 		"@types/rimraf": "^2.0.2",
