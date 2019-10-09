@@ -68,7 +68,7 @@
 		"@types/rimraf": "^2.0.2",
 		"@types/source-map-support": "^0.5.0",
 		"@types/styled-components": "^4.1.19",
-		"@types/twit": "^2.2.22",
+		"@types/twit": "^2.2.23",
 		"@types/uuid": "^3.4.5",
 		"@types/webpack": "^4.39.2",
 		"@types/webpack-bundle-analyzer": "^2.13.3",
