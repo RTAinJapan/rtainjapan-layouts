@@ -1,6 +1,11 @@
 {
-	"extends": ["config:base"],
-	"rangeStrategy": "bump",
-	"prHourlyLimit": 0,
-	"prConcurrentLimit": 0
+	"extends": [
+		"config:base",
+		":prHourlyLimitNone",
+		":prConcurrentLimitNone",
+		":maintainLockFilesWeekly",
+		":semanticCommits"
+	],
+	"rangeStrategy": "update-lockfile",
+	"postUpdateOptions": ["npmDedupe", "yarnDedupeHighest"]
 }
