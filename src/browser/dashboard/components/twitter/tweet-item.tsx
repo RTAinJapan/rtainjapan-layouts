@@ -1,7 +1,7 @@
 import IconButton from '@material-ui/core/IconButton';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import ja from 'date-fns/locale/ja';
 import React from 'react';
 import styled, {css} from 'styled-components';
@@ -149,7 +149,7 @@ export class TweetItem extends React.Component<Props, State> {
 
 	private calcTimeago() {
 		return {
-			timeago: distanceInWordsToNow(this.props.tweet.createdAt, {
+			timeago: formatDistanceToNow(new Date(this.props.tweet.createdAt), {
 				locale: ja,
 				addSuffix: true,
 			}),
