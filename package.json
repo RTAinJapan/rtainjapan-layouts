@@ -42,7 +42,7 @@
 		"include-nodecg": "^0.0.1-6",
 		"lodash": "^4.17.15",
 		"moment": "^2.24.0",
-		"nodecg": "github:nodecg/nodecg#b710314c950e5ce8b9760a7e4563270274ee88c4",
+		"nodecg": "github:nodecg/nodecg#aa257e682f28a041841e4dddf3660760d9302484",
 		"source-map-support": "^0.5.13",
 		"tslib": "^1.10.0",
 		"twit": "^2.2.11"
