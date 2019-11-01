@@ -5,6 +5,6 @@ jobs:
             - image: circleci/node:10
         steps:
             - checkout
-            - run: npm ci
-            - run: npm run test
-            - run: npm run build
+            - run: yarn install --frozen-lockfile
+            - run: yarn test
+            - run: yarn build
