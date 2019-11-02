@@ -39,10 +39,10 @@
 		"date-fns": "^2.0.0",
 		"googleapis": "^44.0.0",
 		"got": "^9.6.0",
-		"include-nodecg": "^0.0.1-6",
+		"include-nodecg": "^0.0.3",
 		"lodash": "^4.17.15",
 		"moment": "^2.24.0",
-		"nodecg": "github:nodecg/nodecg#b710314c950e5ce8b9760a7e4563270274ee88c4",
+		"nodecg": "^1.5.0",
 		"source-map-support": "^0.5.13",
 		"tslib": "^1.10.0",
 		"twit": "^2.2.11"
