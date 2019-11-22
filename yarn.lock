@@ -618,9 +618,9 @@
     semver "^5.5.0"
 
 "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.6.3":
-  version "7.7.2"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.2.tgz#111a78002a5c25fc8e3361bedc9529c696b85a6a"
-  integrity sha512-JONRbXbTXc9WQE2mAZd1p0Z3DZ/6vaQIkgYMSTP3KjRCyd7rCZCcfhCyX+YjwcKxcZ82UrxbRD358bpExNgrjw==
+  version "7.7.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.4.tgz#b23a856751e4bf099262f867767889c0e3fe175b"
+  integrity sha512-r24eVUUr0QqNZa+qrImUk8fn5SPhHq+IfYvIoIMg0do3GdK9sMdiLKP3GYVVaxpPKORgm8KRKaNTEhAjgIpLMw==
   dependencies:
     regenerator-runtime "^0.13.2"
 
@@ -3700,9 +3700,9 @@ dot-prop@^4.1.0:
     is-obj "^1.0.0"
 
 downshift@^3.3.5:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.4.1.tgz#2de8c4865181eb6762f70478ae8c15495b5df32b"
-  integrity sha512-VD0PjXpDVQH7bQd9vtRj/4KK4aS00O0SDGtKRauQ946nmP1UmmfOc6byG0Njd5wMDgRtEZiHXKYC7vXRZeI40w==
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.4.2.tgz#ba55e83df2b522e9cc391347dd5dca03042459df"
+  integrity sha512-6hzxCyl5UQdi4jAabKdcLHct04BaS0OGWDEpPrbqRFhT/X5Qu+pprU6cQquF1il8+qjtVPFRFlZ1pmSY2/QPLQ==
   dependencies:
     "@babel/runtime" "^7.4.5"
     compute-scroll-into-view "^1.0.9"
