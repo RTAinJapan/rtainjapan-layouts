@@ -1410,9 +1410,9 @@
     "@types/node" "*"
 
 "@types/node@*":
-  version "12.12.9"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.9.tgz#0b5ae05516b757cbff2e82c04500190aef986c7b"
-  integrity sha512-kV3w4KeLsRBW+O2rKhktBwENNJuqAUQHS3kf4ia2wIaF/MN6U7ANgTsx7tGremcA0Pk3Yh0Hl0iKiLPuBdIgmw==
+  version "12.12.14"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.14.tgz#1c1d6e3c75dba466e0326948d56e8bd72a1903d2"
+  integrity sha512-u/SJDyXwuihpwjXy7hOOghagLEV1KdAST6syfnOk6QZAMzZuWZqXy5aYYZbh8Jdpd4escVFP0MvftHNDb9pruA==
 
 "@types/node@^10.14.22", "@types/node@^10.14.4":
   version "10.17.5"
@@ -1597,9 +1597,9 @@
     "@types/webpack" "*"
 
 "@types/webpack-node-externals@^1.6.3":
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/@types/webpack-node-externals/-/webpack-node-externals-1.6.3.tgz#a70ecab38339ab219d0090680c98c4973a90af01"
-  integrity sha512-sIYCMSV4Z1FbxqSKKvhmEnjd1UoZnTBT0VIhoZ0iT8gck7FB1MzJ1eH+yFyOgY65WU4LJBTxj3ySMKKfzfEiCw==
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@types/webpack-node-externals/-/webpack-node-externals-1.7.0.tgz#fc70126b997d7907cd18f8dbf625d7594b5d0195"
+  integrity sha512-3EohijquPf5rtTvhAPzqbBWb6nPnUxkRxEHcggQxktyeN0/pLnwtZ9nRR6XBCG0R/5nLnGzFrUwQV+pqJPqHXQ==
   dependencies:
     "@types/webpack" "*"
 
