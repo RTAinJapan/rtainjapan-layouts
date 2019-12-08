@@ -3,7 +3,6 @@
 		"config:base",
 		":prHourlyLimitNone",
 		":prConcurrentLimitNone",
-		":maintainLockFilesWeekly",
 		":semanticCommits"
 	],
 	"rangeStrategy": "update-lockfile",
