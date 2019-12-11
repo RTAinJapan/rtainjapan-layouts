@@ -37,7 +37,7 @@
 	"prettier": "@hoishin/prettierrc",
 	"dependencies": {
 		"date-fns": "^2.0.0",
-		"googleapis": "^45.0.0",
+		"googleapis": "^46.0.0",
 		"got": "^9.6.0",
 		"include-nodecg": "^0.0.3",
 		"lodash": "^4.17.15",
