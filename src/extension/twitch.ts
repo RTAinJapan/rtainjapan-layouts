@@ -1,4 +1,5 @@
 import got from 'got';
+import appRootPath from 'app-root-path';
 import {NodeCG} from './nodecg';
 import {CurrentRun} from '../nodecg/replicants';
 
@@ -24,7 +25,9 @@ export const twitch = (nodecg: NodeCG) => {
 
 	const twitchRep = nodecg.Replicant('twitch', {defaultValue: {}});
 	const currentRunRep = nodecg.Replicant('current-run');
-	const {clientSecret} = require('nodecg/cfg/nodecg.json').login.twitch;
+	const {clientSecret} = appRootPath.require(
+		'./.nodecg/cfg/nodecg.json',
+	).login.twitch;
 
 	const refreshAccessToken = async () => {
 		try {
@@ -68,7 +71,7 @@ export const twitch = (nodecg: NodeCG) => {
 				);
 				return;
 			}
-			const newTitle = `RTA in Japan Online 2019: ${newRun.title}`;
+			const newTitle = `RTA in Japan 2019: ${newRun.title}`;
 			if (lastUpdateTitle === newTitle) {
 				return;
 			}
@@ -98,7 +101,7 @@ export const twitch = (nodecg: NodeCG) => {
 		}
 	};
 
-	const loginLib = require('nodecg/lib/login');
+	const loginLib = appRootPath.require('./.nodecg/lib/login');
 	loginLib.on('login', (session: any) => {
 		const {user} = session.passport;
 		if (user.provider !== 'twitch' || user.username !== OUR_CHANNEL) {
