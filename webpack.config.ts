@@ -23,7 +23,7 @@ const base: webpack.Configuration = {
 	resolve: {
 		extensions: ['.js', '.ts', '.tsx', '.json'],
 	},
-	plugins: isProduction ? [] : [new HardSourceWebpackPlugin()],
+	plugins: [new HardSourceWebpackPlugin()],
 };
 
 const makeBrowserConfig = (name: string): webpack.Configuration => {
@@ -117,6 +117,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 
 const extensionConfig = merge(base, {
 	target: 'node',
+	node: false,
 	entry: path.resolve(__dirname, 'src/extension/index.ts'),
 	output: {
 		path: path.resolve(__dirname, 'extension'),
