@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -u
+
+rsync -avh --delete \
+--exclude=.git \
+--exclude=.github \
+--exclude=.nodecg \
+--exclude=bundle-analyzer \
+--exclude=node_modules \
+--exclude=src \
+--exclude=webpack \
+. $1
