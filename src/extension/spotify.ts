@@ -60,7 +60,6 @@ export const spotify = async (nodecg: NodeCG) => {
 			);
 			if (res.statusCode === 204) {
 				spotifyRep.value.currentTrack = undefined;
-				logger.info('Now playing nothing');
 				refreshCurrentTrackTimer(
 					setTimeout(getCurrentTrack, defaultWaitMs),
 				);
