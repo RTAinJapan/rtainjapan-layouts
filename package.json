@@ -219,6 +219,11 @@
 				"file": "gba2.html",
 				"width": 1920,
 				"height": 1080
+			},
+			{
+				"file": "qwop.html",
+				"width": 1920,
+				"height": 1080
 			}
 		],
 		"assetCategories": [
