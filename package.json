@@ -89,7 +89,7 @@
 		"hard-source-webpack-plugin": "^0.13.1",
 		"html-webpack-plugin": "^4.0.0-beta.8",
 		"husky": "^3.0.9",
-		"lint-staged": "^9.4.2",
+		"lint-staged": "^10.0.0",
 		"mini-css-extract-plugin": "^0.8.0",
 		"modern-normalize": "^0.5.0",
 		"nodecg-cli": "^6.1.0",
