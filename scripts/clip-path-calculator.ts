@@ -7,7 +7,12 @@ export const makeBoxCoor = (
 	y1: number,
 	y2: number,
 ): BoxCoor => {
-	return [[x1, y1], [x1, y2], [x2, y1], [x2, y2]];
+	return [
+		[x1, y1],
+		[x1, y2],
+		[x2, y1],
+		[x2, y2],
+	];
 };
 
 export const sortBoxCoor = (boxCoor: BoxCoor): Coor[] => {
