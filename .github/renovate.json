@@ -3,8 +3,8 @@
 		"config:base",
 		":prHourlyLimitNone",
 		":prConcurrentLimitNone",
-		":semanticCommits"
+		":semanticCommits",
+		":dependencyDashboardApproval"
 	],
-	"rangeStrategy": "update-lockfile",
 	"postUpdateOptions": ["npmDedupe", "yarnDedupeHighest"]
 }
