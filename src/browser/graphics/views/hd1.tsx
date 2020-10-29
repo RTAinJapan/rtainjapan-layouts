@@ -75,7 +75,7 @@ const GameContainer = styled.div`
 const TimerContainer = styled.div`
 	${infoStyle};
 	left: 1278px;
-	right: ${hasSponsor ? 240 : 0}px;
+	right: ${hasSponsor ? 210 : 0}px;
 `;
 
 const StyledRuler = styled(Ruler)`

@@ -11,10 +11,11 @@
 			"type": "object",
 			"additionalProperties": false,
 			"properties": {
-				"name": {"type": "string"},
-				"artists": {"type": "string"}
+				"name": {"type": "string", "default": ""},
+				"artists": {"type": "string", "default": ""},
+				"album": {"type": "string", "default": ""}
 			},
-			"required": ["name", "artists"]
+			"required": ["name", "artists", "album"]
 		}
 	}
 }

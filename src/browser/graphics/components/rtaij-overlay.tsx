@@ -31,7 +31,7 @@ import brownLogoAnim7 from '../images/logo/brown/animated-7.gif';
 import brownLogoAnim8 from '../images/logo/brown/animated-8.gif';
 import brownLogoAnim9 from '../images/logo/brown/animated-9.gif';
 
-const {colorTheme} = nodecg.bundleConfig;
+const {colorTheme, hasSponsor} = nodecg.bundleConfig;
 
 const logos = (() => {
 	switch (colorTheme) {
@@ -87,7 +87,7 @@ const Top = styled.div`
 	height: 150px;
 	width: 100%;
 	top: 0;
-	background-color: rgba(27, 20, 8, 0.6);
+	background-color: rgba(0, 10, 60, 0.6);
 	${({theme}) =>
 		theme.isBreak &&
 		css`
@@ -99,7 +99,7 @@ const Bottom = styled.div`
 	position: absolute;
 	width: 100%;
 	bottom: 0;
-	background-color: rgba(27, 20, 8, 0.6);
+	background-color: rgba(0, 10, 60, 0.5);
 `;
 
 const LogoR = styled.img`
@@ -131,7 +131,7 @@ const Sponsor = styled.div`
 	height: 100%;
 	width: 210px;
 	border-top-left-radius: 30px;
-	background-color: white;
+	background: url(https://i.imgur.com/w10XAGC.png) white no-repeat center;
 	box-sizing: border-box;
 	padding: 15px;
 
@@ -145,7 +145,6 @@ interface State {
 	logoRestTransformed: boolean;
 }
 interface Props {
-	showSponser?: boolean;
 	isBreak?: boolean;
 	bottomHeightPx: number;
 	TweetProps?: {
@@ -185,7 +184,7 @@ export class RtaijOverlay extends React.Component<Props, State> {
 					</LogoTaContainer>
 				</Top>
 				<Bottom style={{height: `${this.props.bottomHeightPx}px`}}>
-					{this.props.showSponser && <Sponsor />}
+					{hasSponsor && <Sponsor />}
 				</Bottom>
 				<Tweet
 					{...this.props.TweetProps}

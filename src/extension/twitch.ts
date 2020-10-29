@@ -71,7 +71,7 @@ export const twitch = (nodecg: NodeCG) => {
 				);
 				return;
 			}
-			const newTitle = `RTA in Japan 2019: ${newRun.title}`;
+			const newTitle = `RTA in Japan 2020 Online: ${newRun.title}`;
 			if (lastUpdateTitle === newTitle) {
 				return;
 			}

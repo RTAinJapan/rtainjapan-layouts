@@ -42,6 +42,15 @@
 			}
 		},
 		"spreadsheetId": {"type": "string"},
-		"googleApiKey": {"type": "string"}
+		"googleApiKey": {"type": "string"},
+		"oengus": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["token", "commentatorSheet"],
+			"properties": {
+				"token": {"type": "string"},
+				"commentatorSheet": {"type": "string"}
+			}
+		}
 	}
 }

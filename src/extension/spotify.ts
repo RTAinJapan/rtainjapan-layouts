@@ -68,6 +68,7 @@ export const spotify = async (nodecg: NodeCG) => {
 			const newTrack = {
 				name: res.body.item.name,
 				artists: sumArtists(res.body.item.artists),
+				album: res.body.item.album.name,
 			};
 			if (!isEqual(newTrack, spotifyRep.value.currentTrack)) {
 				logger.info(`Now playing: ${newTrack.name}`);

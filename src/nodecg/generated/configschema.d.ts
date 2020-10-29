@@ -22,4 +22,8 @@ export interface Configschema {
 	};
 	spreadsheetId?: string;
 	googleApiKey?: string;
+	oengus?: {
+		token: string;
+		commentatorSheet: string;
+	};
 }

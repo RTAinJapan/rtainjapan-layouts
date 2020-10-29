@@ -77,12 +77,12 @@ const UpcomingTitle = styled.div`
 
 const UpcomingContainer = styled.div`
 	position: absolute;
-	top: ${150 + 50 + 45 + 48}px;
+	top: ${150 + 50 + 45 + 50}px;
 	left: 120px;
 
 	display: grid;
 	grid-auto-flow: row;
-	grid-gap: 48px;
+	grid-gap: 73px;
 	justify-items: start;
 `;
 
@@ -91,7 +91,7 @@ const CurrentTrackContainer = styled.div`
 	bottom: 165px;
 	right: 15px;
 	height: 40px;
-	background-color: rgba(27, 20, 8, 0.6);
+	background-color: rgba(0, 10, 60, 0.5);
 	font-size: 22px;
 	line-height: 22px;
 	padding: 9px 16px;
@@ -103,7 +103,7 @@ const CurrentTrackContainer = styled.div`
 interface State {
 	schedule: Schedule;
 	currentRunIndex: number;
-	currentTrack?: {name: string; artists: string};
+	currentTrack?: {name: string; artists: string; album: string};
 }
 
 class Break extends React.Component<{}, State> {
@@ -144,7 +144,7 @@ class Break extends React.Component<{}, State> {
 				</UpcomingContainer>
 				{this.state.currentTrack && (
 					<CurrentTrackContainer>
-						{`♪ ${this.state.currentTrack.name} - ${this.state.currentTrack.artists}`}
+						{`♪ ${this.state.currentTrack.name} / ${this.state.currentTrack.album} / Copyright © Nihon Falcom Corporation`}
 					</CurrentTrackContainer>
 				)}
 			</StyledContainer>
@@ -156,7 +156,12 @@ class Break extends React.Component<{}, State> {
 		currentRunRep.on('change', this.currentRunChangeHandler);
 		this.spotifyRep.on('change', (newVal) => {
 			this.setState({
-				currentTrack: {name: '', artists: '', ...newVal.currentTrack},
+				currentTrack: {
+					name: '',
+					artists: '',
+					album: '',
+					...newVal.currentTrack,
+				},
 			});
 		});
 	}

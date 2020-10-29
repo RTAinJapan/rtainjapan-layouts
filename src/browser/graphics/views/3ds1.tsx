@@ -59,12 +59,12 @@ const bottomStyle = css`
 const GameContainer = styled.div`
 	${bottomStyle};
 	left: ${onsite ? 495 : 0}px;
-	right: 645px;
+	width: 1140px;
 `;
 
 const TimerContainer = styled.div`
 	${bottomStyle};
-	left: 1278px;
+	left: 1143px;
 	right: ${hasSponsor ? 210 : 0}px;
 `;
 
@@ -91,10 +91,10 @@ const CommentatorContainer = styled.div`
 
 const StyledRuler = styled(Ruler)`
 	${bottomStyle}
-	left: ${15 + 480 + 30 + 720 + 30}px;
+	left: 1140px;
 	bottom: 15px;
 	width: 3px;
-	height: ${225 - 30}px;
+	height: 195px;
 `;
 
 const App = () => (

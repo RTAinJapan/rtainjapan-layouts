@@ -11,10 +11,14 @@ import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
 
+const {onsite, hasSponsor} = nodecg.bundleConfig;
+
 const StyledContainer = styled(Container)`
 	background-image: url(${background});
 	clip-path: polygon(
 		0px 0px,
+		${onsite &&
+				`
 		54px 0px,
 		54px 686px,
 		54px 1065px,
@@ -22,7 +26,8 @@ const StyledContainer = styled(Container)`
 		726px 686px,
 		54px 686px,
 		54px 0px,
-		741px 0px,
+		`}
+			741px 0px,
 		741px 165px,
 		741px 915px,
 		1851px 915px,
@@ -53,8 +58,8 @@ const InfoContainer = styled.div`
 const RunnerContainer = styled.div`
 	position: absolute;
 	bottom: 75px;
-	left: ${54 + 672}px;
-	right: 240px;
+	left: ${onsite ? 54 + 672 : 30}px;
+	right: ${hasSponsor ? 240 : 30}px;
 	height: 60px;
 `;
 

@@ -12,5 +12,6 @@ export interface Spotify {
 	currentTrack?: {
 		name: string;
 		artists: string;
+		album: string;
 	};
 }

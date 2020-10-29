@@ -10,12 +10,12 @@ const Container = styled.div`
 	font-family: 'MigMix 2P';
 	color: ${colorTheme === 'brown' ? '#60392f' : '#2d4273'};
 
-	height: 90px;
+	height: 87px;
 	box-sizing: border-box;
 	padding: 7.5px 22.5px 7.5px 22.5px;
 
-	background-color: #ffffff;
-	box-shadow: 4.5px 4.5px 6px -1.5px rgba(0, 0, 0, 1);
+	background-color: rgba(255, 255, 255, 0.65);
+	/* box-shadow: 4.5px 4.5px 6px -1.5px rgba(0, 0, 0, 1); */
 
 	display: flex;
 	flex-flow: row nowrap;

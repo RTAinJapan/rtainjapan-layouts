@@ -10,6 +10,9 @@ import {RtaijOverlay} from '../components/rtaij-overlay';
 import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
+import {Ruler} from '../components/lib/ruler';
+
+const {onsite, hasSponsor} = nodecg.bundleConfig;
 
 const StyledContainer = styled(Container)`
 	background-image: url(${background});
@@ -22,6 +25,8 @@ const StyledContainer = styled(Container)`
 		952px 165px,
 		97px 165px,
 		97px 0px,
+		${onsite &&
+				`
 		750px 0px,
 		750px 750px,
 		750px 1065px,
@@ -29,7 +34,8 @@ const StyledContainer = styled(Container)`
 		1170px 750px,
 		750px 750px,
 		750px 0px,
-		968px 0px,
+		`}
+			968px 0px,
 		968px 165px,
 		968px 735px,
 		1823px 735px,
@@ -53,13 +59,21 @@ const bottomStyle = css`
 const GameContainer = styled.div`
 	${bottomStyle};
 	left: 0;
-	width: 750px;
+	width: ${onsite ? 750 : 1140}px;
 `;
 
 const TimerContainer = styled.div`
 	${bottomStyle};
-	right: 210px;
-	width: 540px;
+	right: ${hasSponsor ? 210 : 0}px;
+	left: ${onsite ? 1170 : 1143}px;
+`;
+
+const StyledRuler = styled(Ruler)`
+	${bottomStyle};
+	left: 1140px;
+	bottom: 15px;
+	height: 150px;
+	width: 3px;
 `;
 
 const infoHeights = {
@@ -69,25 +83,25 @@ const infoHeights = {
 
 const runnerStyle = css`
 	position: absolute;
-	top: ${165 + 570 + 15}px;
-	width: ${30 + 690 + 30 - 15}px;
+	top: 750px;
+	width: ${onsite ? 735 : 855}px;
 	height: 60px;
 `;
 
 const LeftRunner = styled.div`
 	${runnerStyle};
-	left: 15px;
+	left: ${onsite ? 15 : 97}px;
 `;
 
 const RightRunner = styled.div`
 	${runnerStyle};
-	right: 15px;
+	right: ${onsite ? 15 : 97}px;
 `;
 
 const CommentatorContainer = styled.div`
 	${runnerStyle};
-	top: ${150 + 15 + 570 + 15 + 60 + 15}px;
-	right: 15px;
+	top: 825px;
+	right: ${onsite ? 15 : 97}px;
 `;
 
 const App = () => (
@@ -104,6 +118,7 @@ const App = () => (
 		<GameContainer>
 			<RtaijGame {...infoHeights} />
 		</GameContainer>
+		{!onsite && <StyledRuler />}
 		<TimerContainer>
 			<RtaijTimer {...infoHeights} />
 		</TimerContainer>

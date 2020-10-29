@@ -10,6 +10,7 @@ import {RtaijOverlay} from '../components/rtaij-overlay';
 import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
+import {Ruler} from '../components/lib/ruler';
 
 const {onsite, hasSponsor} = nodecg.bundleConfig;
 
@@ -58,13 +59,21 @@ const bottomStyle = css`
 const GameContainer = styled.div`
 	${bottomStyle};
 	left: 0;
-	width: ${onsite ? '720px' : '50%'};
+	width: ${onsite ? '720px' : '1140px'};
 `;
 
 const TimerContainer = styled.div`
 	${bottomStyle};
 	right: ${hasSponsor ? 210 : 0}px;
-	left: ${onsite ? '1200px' : '50%'};
+	left: ${onsite ? '1200px' : '1140px'};
+`;
+
+const StyledRuler = styled(Ruler)`
+	${bottomStyle};
+	left: 1140px;
+	width: 3px;
+	height: 150px;
+	bottom: 15px;
 `;
 
 const infoHeights = {
@@ -108,6 +117,7 @@ const App = () => (
 		<GameContainer>
 			<RtaijGame {...infoHeights} />
 		</GameContainer>
+		<StyledRuler></StyledRuler>
 		<TimerContainer>
 			<RtaijTimer {...infoHeights} />
 		</TimerContainer>

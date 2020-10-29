@@ -60,7 +60,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 				{
 					test: /\.(png|woff2?|webm|gif)$/,
 					loader: 'file-loader',
-					options: {name: '[name].[ext]'},
+					options: {name: '[name].[hash].[ext]'},
 				},
 				{
 					test: /\.css$/,

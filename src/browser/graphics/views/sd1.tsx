@@ -11,7 +11,7 @@ import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
 
-const {onsite} = nodecg.bundleConfig;
+const {onsite, hasSponsor} = nodecg.bundleConfig;
 
 const StyledContainer = styled(Container)`
 	background-image: url(${background});
@@ -57,8 +57,8 @@ const InfoContainer = styled.div`
 
 const participantStyle = css`
 	position: absolute;
-	left: ${(onsite ? 458 : 10) * 1.5}px;
-	right: ${160 * 1.5}px;
+	left: ${onsite ? 687 : 30}px;
+	right: ${hasSponsor ? 240 : 30}px;
 	height: 60px;
 `;
 

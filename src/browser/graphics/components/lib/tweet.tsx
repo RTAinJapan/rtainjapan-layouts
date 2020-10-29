@@ -3,7 +3,9 @@ import React from 'react';
 import styled, {css} from 'styled-components';
 import {Tweets} from '../../../../nodecg/replicants';
 import {TweetHighlighter} from '../../../tweet-highlighter';
+import twitterBlueIcon from '../../images/icon/tweet_blue.png';
 
+const USE_PROFILE_IMAGE = false;
 const TWEET_TRANSITION_SECONDS = 2;
 const TWEET_SHOWN_DURATION_SECONDS = 10;
 
@@ -18,7 +20,10 @@ const Header = styled.div`
 const ProfilePicture = styled.img`
 	height: 30px;
 	width: 100%;
-	border-radius: 100%;
+	${USE_PROFILE_IMAGE &&
+		css`
+			border-radius: 100%;
+		`}
 `;
 
 const Content = styled.div`
@@ -193,7 +198,11 @@ export class Tweet extends React.Component<Props, State> {
 				{showingTweet && (
 					<Header>
 						<ProfilePicture
-							src={showingTweet.user.profileImageUrl}
+							src={
+								USE_PROFILE_IMAGE
+									? showingTweet.user.profileImageUrl
+									: twitterBlueIcon
+							}
 						/>
 						<div>@{showingTweet.user.screenName}</div>
 					</Header>
