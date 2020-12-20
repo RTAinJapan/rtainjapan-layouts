@@ -42,7 +42,7 @@
 		"load-json-file": "^6.2.0",
 		"lodash": "^4.17.15",
 		"moment": "^2.24.0",
-		"nodecg": "^1.6.1",
+		"nodecg": "^1.7.4",
 		"source-map-support": "^0.5.13",
 		"tslib": "^1.10.0",
 		"twit": "^2.2.11"
