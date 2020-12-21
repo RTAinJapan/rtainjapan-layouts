@@ -17,11 +17,18 @@ jobs:
             matrix:
                 node-version: ['12', '14']
                 os: [windows-latest, ubuntu-20.04]
+        env:
+            YARN_CACHE_FOLDER: ~/.yarn
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v2
               with:
                   node-version: ${{ matrix.node-version }}
+            - uses: actions/cache@v2
+              with:
+                  path: ~/.yarn
+                  key: ${{ runner.os }}-yarn-${{ github.sha }}
+                  restore-keys: ${{  runner.os }}-yarn-
             - name: Install
               run: yarn install --frozen-lockfile
             - name: Test
@@ -38,8 +45,7 @@ jobs:
               with:
                   path: /tmp/.buildx-cache
                   key: ${{ runner.os }}-buildx-${{ github.sha }}
-                  restore-keys: |
-                      ${{ runner.os }}-buildx-
+                  restore-keys: ${{ runner.os }}-buildx-
             - uses: docker/login-action@v1
               with:
                   registry: ghcr.io
