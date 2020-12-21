@@ -1,4 +1,7 @@
+.github
 .nodecg
+.vscode
+bundle-analyzer
 dashboard
 extension
 graphics
