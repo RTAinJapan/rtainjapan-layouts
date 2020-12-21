@@ -47,7 +47,6 @@ jobs:
                   path: /tmp/.buildx-cache
                   key: ${{ runner.os }}-buildx-${{ github.sha }}
                   restore-keys: ${{ runner.os }}-buildx-
-            - run: mkdir -p /tmp/.buildx-cache
             - uses: docker/login-action@v1
               with:
                   registry: ghcr.io
@@ -65,4 +64,4 @@ jobs:
                   tags: ${{ steps.docker_meta.outputs.tags }}
                   labels: ${{ steps.docker_meta.outputs.labels }}
                   cache-from: type=local,src=/tmp/.buildx-cache
-                  cache-to: type=local,src=/tmp/.buildx-cache,mode=max
+                  cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
