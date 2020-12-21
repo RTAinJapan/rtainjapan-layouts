@@ -44,7 +44,7 @@
 		"moment": "2.24.0",
 		"nodecg": "1.7.4",
 		"source-map-support": "0.5.16",
-		"tslib": "1.11.1",
+		"tslib": "1.14.1",
 		"twit": "2.2.11"
 	},
 	"devDependencies": {
@@ -103,7 +103,7 @@
 		"ts-loader": "6.2.1",
 		"ts-node": "8.6.2",
 		"ts-nodecg": "0.3.1",
-		"tslib": "1.11.1",
+		"tslib": "1.14.1",
 		"typescript": "3.8.3",
 		"uuid": "7.0.2",
 		"webpack": "4.42.1",
