@@ -1,5 +1,5 @@
-import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
-import merge from 'webpack-merge';
+import WebpackBar from 'webpackbar';
+import {merge} from 'webpack-merge';
 import globby from 'globby';
 import HtmlPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
@@ -23,7 +23,6 @@ const base: webpack.Configuration = {
 	resolve: {
 		extensions: ['.js', '.ts', '.tsx', '.json'],
 	},
-	plugins: [new HardSourceWebpackPlugin()],
 };
 
 const makeBrowserConfig = (name: string): webpack.Configuration => {
@@ -38,12 +37,13 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 		output: {
 			path: path.resolve(__dirname, name),
 			filename: '[name].js',
+			publicPath: '',
 		},
 		module: {
 			rules: [
 				{
 					test: /\.tsx?$/,
-					loaders: [
+					use: [
 						'babel-loader',
 						{
 							loader: 'ts-loader',
@@ -64,13 +64,14 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 				},
 				{
 					test: /\.css$/,
-					loaders: [
+					use: [
 						MiniCssExtractPlugin.loader,
 						{
 							loader: 'css-loader',
 							options: {
-								modules: true,
-								localsConvention: 'camelCase',
+								modules: {
+									exportLocalsConvention: 'camelCase',
+								},
 								sourceMap: true,
 							},
 						},
@@ -101,6 +102,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 					`bundle-analyzer/${name}.html`,
 				),
 			}),
+			new WebpackBar({name}),
 		],
 		optimization: {
 			splitChunks: {
@@ -140,6 +142,7 @@ const extensionConfig = merge(base, {
 		],
 	},
 	externals: [nodeExternals()],
+	plugins: [new WebpackBar({name: 'extension'})],
 });
 
 const config: webpack.Configuration[] = [

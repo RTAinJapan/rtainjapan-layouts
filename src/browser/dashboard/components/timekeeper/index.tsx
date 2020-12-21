@@ -8,7 +8,7 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import Refresh from '@material-ui/icons/Refresh';
 import React from 'react';
 import styled from 'styled-components';
-import uuidv4 from 'uuid/v4';
+import {v4 as uuidv4} from 'uuid';
 import {CurrentRun, Timer, Checklist} from '../../../../nodecg/replicants';
 import {newTimer} from '../../../../nodecg/timer';
 import {BorderedBox} from '../lib/bordered-box';
