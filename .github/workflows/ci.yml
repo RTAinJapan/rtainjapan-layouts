@@ -31,6 +31,7 @@ jobs:
               run: yarn build
 
     release:
+        needs: test
         runs-on: ubuntu-20.04
         steps:
             - uses: actions/checkout@v2
@@ -42,6 +43,7 @@ jobs:
                   GITHUB_TOKEN: ${{ github.token }}
 
     build-image:
+        needs: test
         runs-on: ubuntu-20.04
         steps:
             - uses: docker/setup-buildx-action@v1
