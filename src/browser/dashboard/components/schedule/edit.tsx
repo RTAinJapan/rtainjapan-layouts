@@ -6,6 +6,9 @@ import max from 'lodash/max';
 import React from 'react';
 import styled from 'styled-components';
 import {Participant, Run} from '../../../../nodecg/replicants';
+import Switch from '@material-ui/core/Switch';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 
 const Container = styled.div`
 	position: absolute;
@@ -29,6 +32,21 @@ interface Props {
 	onFinish(): void;
 }
 
+type Props2 = {defaultValue: boolean; onChange: Function};
+const Switch2: React.FC<Props2> = (props: Props2) => {
+	const [enable, setEnable] = React.useState(props.defaultValue);
+	return (
+		<Switch
+			color='primary'
+			checked={enable}
+			onChange={() => {
+				setEnable(!enable);
+				props.onChange();
+			}}
+		/>
+	);
+};
+
 export class EditRun extends React.Component<Props, Run> {
 	public render() {
 		if (!this.props.defaultValue) {
@@ -44,7 +62,7 @@ export class EditRun extends React.Component<Props, Run> {
 				onRendered={this.onRendered}
 			>
 				<Container>
-					<TypoGraphy variant='h1'>
+					<TypoGraphy variant='h4'>
 						{this.props.edit === 'current' ? '現在の' : '次の'}
 						ゲームを編集
 					</TypoGraphy>
@@ -69,6 +87,23 @@ export class EditRun extends React.Component<Props, Run> {
 							this.setState({runDuration: e.currentTarget.value});
 						}}
 					/>
+					<div>
+						<div className='MuiFormLabel-root'>
+							<TypoGraphy variant={'caption'}>
+								カメラ使用可否
+							</TypoGraphy>
+						</div>
+						<VideocamOffIcon />
+						<Switch2
+							defaultValue={!!this.props.defaultValue.camera}
+							onChange={() => {
+								this.setState({
+									camera: !this.state.camera,
+								});
+							}}
+						/>
+						<VideocamIcon color={'secondary'} />
+					</div>
 					{Array.from({length: 4}, (_, index) => {
 						const runner: Participant = runners[index] || {};
 						return (
@@ -117,13 +152,36 @@ export class EditRun extends React.Component<Props, Run> {
 										);
 									}}
 								/>
+								<div className='MuiFormControl-root'>
+									<div className='MuiFormLabel-root'>
+										<TypoGraphy variant={'caption'}>
+											カメラ使用可否
+										</TypoGraphy>
+									</div>
+									<div>
+										<VideocamOffIcon />
+										<Switch2
+											defaultValue={!!runner.camera}
+											onChange={() => {
+												this.updateRunnerInfo(
+													index,
+													'camera',
+													!runner.camera,
+												);
+											}}
+										/>
+										<VideocamIcon color={'secondary'} />
+									</div>
+								</div>
 							</div>
 						);
 					})}
+
+					{/* 解説 */}
 					{new Array(4).fill(null).map((_, index) => {
 						const commentator: Participant = {
 							name: '',
-							...commentators[index],
+							...(commentators[index] as Partial<Participant>),
 						};
 						return (
 							<div key={index}>
@@ -175,7 +233,9 @@ export class EditRun extends React.Component<Props, Run> {
 						);
 					})}
 					<div>
-						<Button onClick={this.updateClicked}>更新</Button>
+						<Button onClick={this.updateClicked} color={'primary'}>
+							更新
+						</Button>
 						<Button onClick={this.finish}>キャンセル</Button>
 					</div>
 				</Container>
@@ -198,8 +258,10 @@ export class EditRun extends React.Component<Props, Run> {
 			if (!state.runners) {
 				return null;
 			}
-			const oldRunner = state.runners[updatingIndex];
-			const newRunner = {...oldRunner, [key]: value};
+			// 固定値で4行表示してるので、対象のindexのoldが取得できないこともある
+			const oldRunner: Partial<typeof state.runners[0]> =
+				state.runners[updatingIndex];
+			const newRunner = {name: '', ...oldRunner, [key]: value};
 			const newRunners: Participant[] = [];
 			const iterateLength =
 				(max([updatingIndex, state.runners.length - 1]) || 0) + 1;
