@@ -41,7 +41,7 @@
 		"include-nodecg": "0.0.3",
 		"load-json-file": "6.2.0",
 		"lodash": "4.17.20",
-		"moment": "2.24.0",
+		"moment": "2.29.1",
 		"nodecg": "1.7.4",
 		"source-map-support": "0.5.16",
 		"tslib": "1.11.1",
