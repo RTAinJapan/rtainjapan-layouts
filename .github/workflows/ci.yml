@@ -42,6 +42,8 @@ jobs:
                   node-version: '14'
             - run: yarn install --frozen-lockfile
             - run: yarn prod
+              env:
+                  TYPEKIT_ID: ${{ secrets.TYPEKIT_ID }}
             - run: npx semantic-release
               env:
                   GITHUB_TOKEN: ${{ github.token }}
