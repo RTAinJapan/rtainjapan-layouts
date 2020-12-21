@@ -47,16 +47,22 @@ jobs:
                   path: /tmp/.buildx-cache
                   key: ${{ runner.os }}-buildx-${{ github.sha }}
                   restore-keys: ${{ runner.os }}-buildx-
+            - uses: crazy-max/ghaction-docker-meta@v1
+              id: docker_meta
+              with:
+                  images: |
+                      rtainjapan/rtainjapan-layouts
+                      ghcr.io/rtainjapan/rtainjapan-layouts
+                  tag-sha: true
+            - uses: docker/login-action@v1
+              with:
+                  username: hoishin
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
             - uses: docker/login-action@v1
               with:
                   registry: ghcr.io
                   username: hoishin
                   password: ${{ secrets.CR_TOKEN }}
-            - uses: crazy-max/ghaction-docker-meta@v1
-              id: docker_meta
-              with:
-                  images: ghcr.io/rtainjapan/rtainjapan-layouts
-                  tag-sha: true
             - uses: docker/build-push-action@v2
               with:
                   push: true
