@@ -51,7 +51,7 @@
 		"@babel/core": "7.12.10",
 		"@babel/preset-env": "7.12.11",
 		"@hoishin/prettierrc": "2.1.1",
-		"@hoishin/tsconfig": "2.0.0",
+		"@hoishin/tsconfig": "2.1.0",
 		"@material-ui/core": "4.9.5",
 		"@material-ui/icons": "4.9.1",
 		"@types/app-root-path": "1.2.4",

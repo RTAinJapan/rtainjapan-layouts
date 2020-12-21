@@ -855,10 +855,10 @@
   resolved "https://registry.yarnpkg.com/@hoishin/prettierrc/-/prettierrc-2.1.1.tgz#adebd54c4968842689b51f9fc1a981ba3a57adad"
   integrity sha512-E4MT/dLaRhS8zEBZwFNIOd7OB24npiizdEh0ISogQZh9Ldw4zFnWtpOt3hXt/ruKM9eG/N56mj5dF4cQW+jhsw==
 
-"@hoishin/tsconfig@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@hoishin/tsconfig/-/tsconfig-2.0.0.tgz#bbd2398ef27c0fa0ebca54b1e6e9be585a8e66fe"
-  integrity sha512-45PV1ZckyazA4sZx/KU/LWCgNLD4E8bRG6dR1kCXnyGHd+yZJLsF796XPq+1DaNVnVRvqUZ5ZSYBE6dZe31Udw==
+"@hoishin/tsconfig@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@hoishin/tsconfig/-/tsconfig-2.1.0.tgz#2846ab3bf7d7cbb3f341d59091d75b61a988cfac"
+  integrity sha512-Urb5s+AD/aNwc1rsqyx8+9j3EhBkQJK+qsYfqNR0LgkI4UJwgnWCllG8M5NtIo5K1ZPmmpb4C7/7wMQVMyEkdQ==
 
 "@material-ui/core@4.9.5":
   version "4.9.5"
