@@ -56,7 +56,7 @@
 		"@material-ui/icons": "4.9.1",
 		"@types/app-root-path": "1.2.4",
 		"@types/globby": "8.0.0",
-		"@types/got": "9.6.9",
+		"@types/got": "9.6.11",
 		"@types/hard-source-webpack-plugin": "1.0.1",
 		"@types/html-webpack-plugin": "3.2.2",
 		"@types/lodash": "4.14.165",
