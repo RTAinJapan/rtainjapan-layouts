@@ -4,7 +4,7 @@
 		":prHourlyLimitNone",
 		":prConcurrentLimitNone",
 		":semanticCommits",
-		":dependencyDashboardApproval"
+		":dependencyDashboard"
 	],
 	"postUpdateOptions": ["npmDedupe", "yarnDedupeHighest"]
 }
