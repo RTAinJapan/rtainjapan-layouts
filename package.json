@@ -91,6 +91,7 @@
 		"react-dom": "17.0.1",
 		"react-highlight-words": "0.16.0",
 		"rimraf": "3.0.2",
+		"semantic-release": "^17.3.0",
 		"sort-package-json": "1.48.0",
 		"style-loader": "2.0.0",
 		"styled-components": "5.2.1",

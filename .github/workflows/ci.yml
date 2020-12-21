@@ -30,6 +30,10 @@ jobs:
               run: yarn test
             - name: Build
               run: yarn build
+            - name: Release
+              run: npx semantic-release
+              env:
+                  GITHUB_TOKEN: ${{ github.token }}
 
     docker-image:
         runs-on: ubuntu-20.04
