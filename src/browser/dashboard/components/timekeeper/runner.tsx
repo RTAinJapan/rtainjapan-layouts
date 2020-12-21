@@ -72,9 +72,7 @@ export class Runner extends React.Component<Props, State> {
 
 	public render() {
 		return (
-			<Container index={this.props.index}>
-				{this.renderContent()}
-			</Container>
+			<Container index={this.props.index}>{this.renderContent()}</Container>
 		);
 	}
 
@@ -96,9 +94,7 @@ export class Runner extends React.Component<Props, State> {
 			<RunnerContainer>
 				<div>
 					<RunnerName>{props.runner}</RunnerName>
-					<RunnerStatus finished={!shouldShowFinish}>
-						{status}
-					</RunnerStatus>
+					<RunnerStatus finished={!shouldShowFinish}>{status}</RunnerStatus>
 				</div>
 				<ButtonContainer>
 					{shouldShowFinish && (

@@ -89,9 +89,7 @@ export class EditRun extends React.Component<Props, Run> {
 					/>
 					<div>
 						<div className='MuiFormLabel-root'>
-							<TypoGraphy variant={'caption'}>
-								カメラ使用可否
-							</TypoGraphy>
+							<TypoGraphy variant={'caption'}>カメラ使用可否</TypoGraphy>
 						</div>
 						<VideocamOffIcon />
 						<Switch2
@@ -112,11 +110,7 @@ export class EditRun extends React.Component<Props, Run> {
 									label={`走者${index} 名前`}
 									defaultValue={runner.name}
 									onChange={(e) => {
-										this.updateRunnerInfo(
-											index,
-											'name',
-											e.currentTarget.value,
-										);
+										this.updateRunnerInfo(index, 'name', e.currentTarget.value);
 									}}
 								/>
 								<TextField
@@ -134,11 +128,7 @@ export class EditRun extends React.Component<Props, Run> {
 									label={`走者${index} ニコ生`}
 									defaultValue={runner.nico}
 									onChange={(e) => {
-										this.updateRunnerInfo(
-											index,
-											'nico',
-											e.currentTarget.value,
-										);
+										this.updateRunnerInfo(index, 'nico', e.currentTarget.value);
 									}}
 								/>
 								<TextField
@@ -154,20 +144,14 @@ export class EditRun extends React.Component<Props, Run> {
 								/>
 								<div className='MuiFormControl-root'>
 									<div className='MuiFormLabel-root'>
-										<TypoGraphy variant={'caption'}>
-											カメラ使用可否
-										</TypoGraphy>
+										<TypoGraphy variant={'caption'}>カメラ使用可否</TypoGraphy>
 									</div>
 									<div>
 										<VideocamOffIcon />
 										<Switch2
 											defaultValue={!!runner.camera}
 											onChange={() => {
-												this.updateRunnerInfo(
-													index,
-													'camera',
-													!runner.camera,
-												);
+												this.updateRunnerInfo(index, 'camera', !runner.camera);
 											}}
 										/>
 										<VideocamIcon color={'secondary'} />

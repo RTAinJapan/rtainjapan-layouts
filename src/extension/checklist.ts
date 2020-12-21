@@ -25,9 +25,7 @@ export const checklist = (nodecg: NodeCG) => {
 		if (!checklistRep.value) {
 			return;
 		}
-		const item = checklistRep.value.find(
-			(item) => item.name === payload.name,
-		);
+		const item = checklistRep.value.find((item) => item.name === payload.name);
 		if (item) {
 			item.complete = payload.checked;
 		}

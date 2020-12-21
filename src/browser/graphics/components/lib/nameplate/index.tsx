@@ -179,9 +179,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 				</SocialContainer>
 
 				{this.props.showFinishTime && state.finalTime && (
-					<ChildrenContainer
-						fontSizeMultiplier={this.state.fontSizeMultiplier}
-					>
+					<ChildrenContainer fontSizeMultiplier={this.state.fontSizeMultiplier}>
 						{state.finalTime}
 					</ChildrenContainer>
 				)}

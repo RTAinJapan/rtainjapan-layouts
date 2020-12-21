@@ -24,12 +24,8 @@ class App extends React.Component<{}, State> {
 	render() {
 		return (
 			<div>
-				<div>
-					走者0: {this.state.runners[0] && this.state.runners[0].name}
-				</div>
-				<div>
-					走者1: {this.state.runners[1] && this.state.runners[1].name}
-				</div>
+				<div>走者0: {this.state.runners[0] && this.state.runners[0].name}</div>
+				<div>走者1: {this.state.runners[1] && this.state.runners[1].name}</div>
 			</div>
 		);
 	}

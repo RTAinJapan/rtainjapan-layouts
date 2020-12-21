@@ -98,28 +98,13 @@ const StyledRuler = styled(Ruler)`
 const App = () => (
 	<StyledContainer>
 		<Runner style={{left: '15px'}}>
-			<RtaijRunner
-				index={0}
-				hideLabel
-				showFinishTime
-				gradientBackground
-			/>
+			<RtaijRunner index={0} hideLabel showFinishTime gradientBackground />
 		</Runner>
 		<Runner style={{left: `${15 + 620 + 15}px`}}>
-			<RtaijRunner
-				index={1}
-				hideLabel
-				showFinishTime
-				gradientBackground
-			/>
+			<RtaijRunner index={1} hideLabel showFinishTime gradientBackground />
 		</Runner>
 		<Runner style={{right: '15px'}}>
-			<RtaijRunner
-				index={2}
-				hideLabel
-				showFinishTime
-				gradientBackground
-			/>
+			<RtaijRunner index={2} hideLabel showFinishTime gradientBackground />
 		</Runner>
 		<CommentatorContainer>
 			<RtaijCommentator index={0} gradientBackground />

@@ -247,9 +247,7 @@ const Break: React.FunctionComponent = () => {
 						: notificationIconBlue
 				}
 			/>
-			<NotificationText>
-				準備中です、しばらくお待ち下さい
-			</NotificationText>
+			<NotificationText>準備中です、しばらくお待ち下さい</NotificationText>
 			<CurrentTrackContainer>{currentTrack}</CurrentTrackContainer>
 		</Root>
 	);

@@ -66,9 +66,7 @@ export const twitch = (nodecg: NodeCG) => {
 				return;
 			}
 			if (!twitchRep.value || !twitchRep.value.accessToken) {
-				log.error(
-					'Tried to update Twitch status but missing access token',
-				);
+				log.error('Tried to update Twitch status but missing access token');
 				return;
 			}
 			const newTitle = `RTA in Japan 2020 Online: ${newRun.title}`;

@@ -97,10 +97,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 			new BundleAnalyzerPlugin({
 				openAnalyzer: false,
 				analyzerMode: 'static',
-				reportFilename: path.resolve(
-					__dirname,
-					`bundle-analyzer/${name}.html`,
-				),
+				reportFilename: path.resolve(__dirname, `bundle-analyzer/${name}.html`),
 			}),
 			new WebpackBar({name}),
 		],
@@ -133,10 +130,7 @@ const extensionConfig = merge(base, {
 				loader: 'ts-loader',
 				options: {
 					transpileOnly: true,
-					configFile: path.resolve(
-						__dirname,
-						'src/extension/tsconfig.json',
-					),
+					configFile: path.resolve(__dirname, 'src/extension/tsconfig.json'),
 				},
 			},
 		],

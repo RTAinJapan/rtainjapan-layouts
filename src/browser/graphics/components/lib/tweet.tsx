@@ -181,10 +181,7 @@ export class Tweet extends React.Component<Props, State> {
 		this.setState({shown: false});
 		await delay(TWEET_TRANSITION_SECONDS * 1000);
 		// If there is nothing to show next, do the given action
-		if (
-			this.state.tweetQueue.length === 0 &&
-			this.props.afterShowingTweet
-		) {
+		if (this.state.tweetQueue.length === 0 && this.props.afterShowingTweet) {
 			await this.props.afterShowingTweet();
 		}
 		// Unset the tweet, this immediately triggers componentDidUpdate and next loop happens
@@ -209,9 +206,7 @@ export class Tweet extends React.Component<Props, State> {
 				)}
 				{showingTweet && (
 					<Content>
-						<TweetHighlighter
-							text={showingTweet.text.replace(/\n/g, ' ')}
-						/>
+						<TweetHighlighter text={showingTweet.text.replace(/\n/g, ' ')} />
 					</Content>
 				)}
 			</Container>

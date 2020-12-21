@@ -192,8 +192,7 @@ export class Timekeeper extends React.Component<{}, State> {
 		const newRunners = newVal.runners;
 		this.setState({
 			runners: Array.from({length: 4}, (_, index) => {
-				const name =
-					newRunners && newRunners[index] && newRunners[index].name;
+				const name = newRunners && newRunners[index] && newRunners[index].name;
 				return {name, id: uuidv4()};
 			}),
 		});

@@ -43,9 +43,7 @@ export const spotify = async (nodecg: NodeCG) => {
 		try {
 			const token = spotifyRep.value.accessToken;
 			if (!token) {
-				refreshCurrentTrackTimer(
-					setTimeout(getCurrentTrack, defaultWaitMs),
-				);
+				refreshCurrentTrackTimer(setTimeout(getCurrentTrack, defaultWaitMs));
 				return;
 			}
 			const res = await got.get(
@@ -60,9 +58,7 @@ export const spotify = async (nodecg: NodeCG) => {
 			);
 			if (res.statusCode === 204) {
 				spotifyRep.value.currentTrack = undefined;
-				refreshCurrentTrackTimer(
-					setTimeout(getCurrentTrack, defaultWaitMs),
-				);
+				refreshCurrentTrackTimer(setTimeout(getCurrentTrack, defaultWaitMs));
 				return;
 			}
 			const newTrack = {
@@ -74,9 +70,7 @@ export const spotify = async (nodecg: NodeCG) => {
 				logger.info(`Now playing: ${newTrack.name}`);
 				spotifyRep.value.currentTrack = newTrack;
 			}
-			refreshCurrentTrackTimer(
-				setTimeout(getCurrentTrack, defaultWaitMs),
-			);
+			refreshCurrentTrackTimer(setTimeout(getCurrentTrack, defaultWaitMs));
 		} catch (err) {
 			logger.error('Failed to get current track:', err.stack);
 			if (
@@ -90,9 +84,7 @@ export const spotify = async (nodecg: NodeCG) => {
 					setTimeout(getCurrentTrack, retryInSeconds * 1000),
 				);
 			} else {
-				refreshCurrentTrackTimer(
-					setTimeout(getCurrentTrack, defaultWaitMs),
-				);
+				refreshCurrentTrackTimer(setTimeout(getCurrentTrack, defaultWaitMs));
 			}
 		}
 	};
@@ -122,10 +114,11 @@ export const spotify = async (nodecg: NodeCG) => {
 						grant_type: 'refresh_token',
 						refresh_token: spotifyRep.value.refreshToken,
 				  };
-			const res = await got.post(
-				'https://accounts.spotify.com/api/token',
-				{form: true, body, headers},
-			);
+			const res = await got.post('https://accounts.spotify.com/api/token', {
+				form: true,
+				body,
+				headers,
+			});
 			const {
 				access_token: accessToken,
 				expires_in: expiresIn,
@@ -157,9 +150,7 @@ export const spotify = async (nodecg: NodeCG) => {
 
 	nodecg.listenFor('spotify:authenticated', async (payload) => {
 		if (!payload.code) {
-			logger.error(
-				'User authenticated through Spotify, but missing code',
-			);
+			logger.error('User authenticated through Spotify, but missing code');
 			return;
 		}
 		authorize(payload.code);

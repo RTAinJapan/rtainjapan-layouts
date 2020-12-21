@@ -120,9 +120,7 @@ export const importFromOengus = (nodecg: NodeCG) => {
 							twitch: runner.twitchName || undefined,
 							twitter: runner.twitterName || undefined,
 							nico:
-								(answer &&
-									answer.answer &&
-									extractNicoId(answer.answer)) ||
+								(answer && answer.answer && extractNicoId(answer.answer)) ||
 								undefined,
 							camera: false, // TODO: スプレッドシートから取得する必要アリ
 						};

@@ -122,9 +122,8 @@ export const timekeeping = (nodecg: NodeCG) => {
 		if (currentRunRep.value.runners === undefined) {
 			return;
 		}
-		const allRunnersFinished = currentRunRep.value.runners.every(
-			(_, index) =>
-				Boolean(timerRep.value && timerRep.value.results[index]),
+		const allRunnersFinished = currentRunRep.value.runners.every((_, index) =>
+			Boolean(timerRep.value && timerRep.value.results[index]),
 		);
 		if (allRunnersFinished) {
 			stop();

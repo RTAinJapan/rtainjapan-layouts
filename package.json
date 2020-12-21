@@ -32,7 +32,6 @@
 	"browserslist": [
 		"last 2 chrome versions"
 	],
-	"prettier": "@hoishin/prettierrc",
 	"dependencies": {
 		"app-root-path": "3.0.0",
 		"date-fns": "2.16.1",

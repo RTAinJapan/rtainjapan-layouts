@@ -108,8 +108,6 @@ export class RunInfo extends React.Component<{
 		if (!commentators) {
 			return [];
 		}
-		return new Array(4)
-			.fill(null)
-			.map((_, index) => commentators[index] || _);
+		return new Array(4).fill(null).map((_, index) => commentators[index] || _);
 	};
 }
