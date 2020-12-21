@@ -850,10 +850,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.5.tgz#77211291c1900a700b8a78cfafda3160d76949ed"
   integrity sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==
 
-"@hoishin/prettierrc@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@hoishin/prettierrc/-/prettierrc-2.1.1.tgz#adebd54c4968842689b51f9fc1a981ba3a57adad"
-  integrity sha512-E4MT/dLaRhS8zEBZwFNIOd7OB24npiizdEh0ISogQZh9Ldw4zFnWtpOt3hXt/ruKM9eG/N56mj5dF4cQW+jhsw==
+"@hoishin/prettierrc@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@hoishin/prettierrc/-/prettierrc-2.2.0.tgz#95c51bee4da38f7387440219cdab9b69c320b33d"
+  integrity sha512-EIKKBI95fZd7g/2xUh34jbH56/sXSc69ly6rJdPzuXwbPFQHrIrkxp20ZPMBjiSeDrgS8DmphfPa9WBouR1EQA==
 
 "@hoishin/tsconfig@2.1.0":
   version "2.1.0"
