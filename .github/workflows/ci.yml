@@ -11,8 +11,8 @@ on:
             - master
 
 jobs:
-    test:
-        runs-on: ubuntu-20.04
+    test-minimum:
+        runs-on: ubuntu-latest
         env:
             YARN_CACHE_FOLDER: ~/.yarn
         steps:
@@ -20,42 +20,43 @@ jobs:
             - uses: actions/setup-node@v2
               with:
                   node-version: '14'
-            - uses: actions/cache@v2
-              with:
-                  path: ~/.yarn
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: ${{ runner.os }}-yarn-
-            - name: Install
-              run: yarn install --frozen-lockfile
-            - name: Test
-              run: yarn test
-            - name: Build
-              run: yarn build
+            - run: yarn install --frozen-lockfile
+            - run: yarn test
+            - run: yarn build
 
-    test-windows:
-        runs-on: windows-latest
+    test-matrix:
+        needs: test-minimum
+        runs-on: ${{ matrix.os }}
+        matrix:
+            node-version:
+                - '10'
+                - '12'
+                - '14'
+            os:
+                - windows-2019
+                - macos-10.15
+                - macos-11.0
+                - ubuntu-18.04
+                - ubuntu-20.04
         env:
             YARN_CACHE_FOLDER: ~/.yarn
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v2
               with:
-                  node-version: '14'
+                  node-version: ${{ matrix.node-version }}
             - uses: actions/cache@v2
               with:
                   path: ~/.yarn
                   key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
                   restore-keys: ${{ runner.os }}-yarn-
-            - name: Install
-              run: yarn install --frozen-lockfile
-            - name: Test
-              run: yarn test
-            - name: Build
-              run: yarn build
+            - run: yarn install --frozen-lockfile
+            - run: yarn test
+            - run: yarn build
 
     build-image:
-        needs: test
-        runs-on: ubuntu-20.04
+        needs: test-minimum
+        runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
             - uses: docker/setup-buildx-action@v1
