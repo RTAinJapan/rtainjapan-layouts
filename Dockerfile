@@ -20,7 +20,7 @@ COPY \
 	./
 
 ARG TYPEKIT_ID
-RUN NODE_ENV=production yarn build
+RUN yarn prod
 
 
 FROM node:14-alpine

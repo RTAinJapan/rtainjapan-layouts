@@ -41,16 +41,11 @@ jobs:
               with:
                   node-version: '14'
             - run: yarn install --frozen-lockfile
-            - run: yarn build
+            - run: yarn prod
             - run: npx semantic-release
               env:
                   GITHUB_TOKEN: ${{ github.token }}
 
-    docker-image:
-        needs: test
-        runs-on: ubuntu-20.04
-        steps:
-            - uses: actions/checkout@v2
             - uses: docker/setup-buildx-action@v1
             - uses: actions/cache@v2
               with:
