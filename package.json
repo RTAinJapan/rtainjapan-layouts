@@ -43,7 +43,7 @@
 		"lodash": "4.17.20",
 		"moment": "2.24.0",
 		"nodecg": "1.7.4",
-		"source-map-support": "0.5.16",
+		"source-map-support": "0.5.19",
 		"tslib": "1.11.1",
 		"twit": "2.2.11"
 	},
@@ -66,7 +66,7 @@
 		"@types/react-dom": "16.9.5",
 		"@types/react-highlight-words": "0.16.1",
 		"@types/rimraf": "3.0.0",
-		"@types/source-map-support": "0.5.1",
+		"@types/source-map-support": "0.5.3",
 		"@types/styled-components": "5.0.0",
 		"@types/twit": "2.2.23",
 		"@types/uuid": "3.4.8",
