@@ -73,7 +73,7 @@ export const importFromOengus = (nodecg: NodeCG) => {
 	});
 	const fetchCommentators = async () => {
 		const res = await sheetsApi.spreadsheets.values.batchGet({
-			spreadsheetId: nodecg.bundleConfig.oengus.commentatorSheet,
+			spreadsheetId: oengus.commentatorSheet,
 			ranges: ['フォームの回答 1'],
 		});
 		const sheetValues = res.data.valueRanges;
