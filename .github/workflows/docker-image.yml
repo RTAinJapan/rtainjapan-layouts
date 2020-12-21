@@ -4,10 +4,12 @@ on:
     push:
         tags:
             - '**'
+    release:
+        types:
+            - published
 
 jobs:
     build-image:
-        needs: test
         runs-on: ubuntu-20.04
         steps:
             - uses: docker/setup-buildx-action@v1
