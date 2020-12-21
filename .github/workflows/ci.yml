@@ -47,7 +47,7 @@ jobs:
                   GITHUB_TOKEN: ${{ github.token }}
 
     docker-image:
-        needs: tet
+        needs: test
         runs-on: ubuntu-20.04
         steps:
             - uses: actions/checkout@v2
