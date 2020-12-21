@@ -69,7 +69,7 @@
 		"@types/source-map-support": "0.5.1",
 		"@types/styled-components": "5.0.0",
 		"@types/twit": "2.2.23",
-		"@types/uuid": "3.4.8",
+		"@types/uuid": "3.4.9",
 		"@types/webpack": "4.41.10",
 		"@types/webpack-bundle-analyzer": "2.13.3",
 		"@types/webpack-merge": "4.1.5",
