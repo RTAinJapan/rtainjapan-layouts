@@ -78,7 +78,7 @@
 		"babel-loader": "8.0.6",
 		"babel-plugin-styled-components": "1.10.7",
 		"cross-env": "7.0.1",
-		"css-loader": "3.4.2",
+		"css-loader": "3.6.0",
 		"del-cli": "3.0.0",
 		"delay": "4.3.0",
 		"downshift": "5.0.4",
