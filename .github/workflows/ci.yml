@@ -10,11 +10,12 @@ on:
         branches:
             - master
 
+env:
+    YARN_CACHE_FOLDER: ~/.yarn
+
 jobs:
     test-minimum:
         runs-on: ubuntu-latest
-        env:
-            YARN_CACHE_FOLDER: ~/.yarn
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v2
@@ -22,7 +23,7 @@ jobs:
                   node-version: '14'
             - uses: actions/cache@v2
               with:
-                  path: ~/.yarn
+                  path: ${{ env.YARN_CACHE_FOLDER }}
                   key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
                   restore-keys: ${{ runner.os }}-yarn-
             - run: yarn install --frozen-lockfile
@@ -30,22 +31,11 @@ jobs:
             - run: yarn build
 
     test-matrix:
-        needs: test-minimum
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                node-version:
-                    - '10'
-                    - '12'
-                    - '14'
-                os:
-                    - windows-2019
-                    - macos-10.15
-                    - macos-11.0
-                    - ubuntu-18.04
-                    - ubuntu-20.04
-        env:
-            YARN_CACHE_FOLDER: ~/.yarn
+                node-version: ['12', '14']
+                os: ['windows-latest', 'macos-latest', 'ubuntu-latest']
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v2
@@ -53,7 +43,7 @@ jobs:
                   node-version: ${{ matrix.node-version }}
             - uses: actions/cache@v2
               with:
-                  path: ~/.yarn
+                  path: ${{ env.YARN_CACHE_FOLDER }}
                   key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
                   restore-keys: ${{ runner.os }}-yarn-
             - run: yarn install --frozen-lockfile
