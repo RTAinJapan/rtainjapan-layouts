@@ -51,6 +51,16 @@
 				"token": {"type": "string"},
 				"commentatorSheet": {"type": "string"}
 			}
+		},
+		"obs": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["host"],
+			"properties": {
+				"host": {"type": "string"},
+				"port": {"type": "number"},
+				"password": {"type": "string"}
+			}
 		}
 	}
 }

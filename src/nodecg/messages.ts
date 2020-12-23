@@ -28,4 +28,11 @@ export type MessageMap = {
 	modifyRun: {data: Run; error: string};
 	toggleCheckbox: {data: {name: string; checked: boolean}};
 	resetChecklist: {};
+	'obs:connect': {};
+	'obs:disconnect': {};
+	'obs:update': {};
+	'obs:enableCrop': {};
+	'obs:disableCrop': {};
+	'obs:addCropInput': {data: string};
+	'obs:removeCropInput': {data: string};
 };

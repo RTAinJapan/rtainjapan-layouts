@@ -26,4 +26,9 @@ export interface Configschema {
 		token: string;
 		commentatorSheet: string;
 	};
+	obs?: {
+		host: string;
+		port?: number;
+		password?: string;
+	};
 }
