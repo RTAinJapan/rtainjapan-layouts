@@ -1,3 +1,4 @@
+import {setTimeout} from 'timers';
 import {isEqual} from 'lodash';
 import got from 'got';
 import {NodeCG} from './nodecg';

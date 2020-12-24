@@ -1,3 +1,4 @@
+import {setInterval} from 'timers';
 import {NodeCG} from '../nodecg';
 import got from 'got';
 import sampleSchedule from './oengus-sample-schedule.json';

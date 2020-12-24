@@ -1,3 +1,4 @@
+import {setInterval} from 'timers';
 import {zipObject, isEqual} from 'lodash';
 import {NodeCG} from '../nodecg';
 import {google} from 'googleapis';
