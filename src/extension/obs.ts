@@ -21,8 +21,54 @@ export const obs = (nodecg: NodeCG) => {
 	const obsCropInputsRep = nodecg.Replicant('obs-crop-inputs', {
 		defaultValue: [],
 	});
+	const obsRemoteInputsRep = nodecg.Replicant('obs-remote-inputs', {
+		defaultValue: [
+			{input: null, viewId: ''},
+			{input: null, viewId: ''},
+			{input: null, viewId: ''},
+			{input: null, viewId: ''},
+		],
+	});
 
 	const obs = new OBSWebSocket();
+
+	const setRemoteSource = (input: string, index: number) => {
+		if (
+			!obsRemoteInputsRep.value ||
+			!(index in obsRemoteInputsRep.value) ||
+			index < 0 ||
+			index > 3
+		) {
+			return;
+		}
+
+		obsRemoteInputsRep.value[index] = {
+			input: input || null,
+			viewId: '',
+		};
+	};
+
+	const updateRemoteBrowser = (viewId: string, index: number) => {
+		if (!obsRemoteInputsRep.value || !(index in obsRemoteInputsRep.value)) {
+			return;
+		}
+
+		const sourceName = obsRemoteInputsRep.value[index].input;
+		if (sourceName === null) {
+			return;
+		}
+		const viewUri = obsConfig.remoteViewUri.replace('{id}', viewId.trim());
+		obs.send('SetSourceSettings', {
+			sourceName,
+			sourceSettings: {url: viewUri},
+		})
+			.then((_) => (obsRemoteInputsRep.value[index].viewId = viewId))
+			.catch((_) =>
+				logger.warn(
+					`Error when update settings of the source "${sourceName}".`,
+				),
+			);
+	};
 
 	const updateSources = async () => {
 		if (!obsRep.value || !obsCropInputsRep.value) {
@@ -231,6 +277,22 @@ export const obs = (nodecg: NodeCG) => {
 
 	nodecg.listenFor('obs:removeCropInput', (data, cb) => {
 		removeCropInput(data);
+
+		if (cb && !cb.handled) {
+			cb(null);
+		}
+	});
+
+	nodecg.listenFor('obs:setRemoteSource', (data, cb) => {
+		setRemoteSource(data.input, data.index);
+
+		if (cb && !cb.handled) {
+			cb(null);
+		}
+	});
+
+	nodecg.listenFor('obs:updateRemoteBrowser', (data, cb) => {
+		updateRemoteBrowser(data.viewId, data.index);
 
 		if (cb && !cb.handled) {
 			cb(null);

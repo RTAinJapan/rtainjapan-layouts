@@ -162,6 +162,14 @@
 				"width": 4,
 				"headerColor": "#00BEBE",
 				"workspace": "3-obs"
+			},
+			{
+				"name": "obs-remote-view",
+				"title": "ブラウザソース編集",
+				"file": "obs-remote-view.html",
+				"width": 4,
+				"headerColor": "#00BEBE",
+				"workspace": "3-obs"
 			}
 		],
 		"graphics": [

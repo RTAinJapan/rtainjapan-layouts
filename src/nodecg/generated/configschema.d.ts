@@ -30,5 +30,6 @@ export interface Configschema {
 		host: string;
 		port?: number;
 		password?: string;
+		remoteViewUri: string;
 	};
 }

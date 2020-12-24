@@ -55,11 +55,12 @@
 		"obs": {
 			"type": "object",
 			"additionalProperties": false,
-			"required": ["host"],
+			"required": ["host", "remoteViewUri"],
 			"properties": {
 				"host": {"type": "string"},
 				"port": {"type": "number"},
-				"password": {"type": "string"}
+				"password": {"type": "string"},
+				"remoteViewUri": {"type": "string"}
 			}
 		}
 	}
