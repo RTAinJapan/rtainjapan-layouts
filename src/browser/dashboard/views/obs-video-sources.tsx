@@ -107,31 +107,21 @@ class App extends React.Component<{}, State> {
 						<ListContainer>
 							<RowContainer>
 								<FormControl variant='outlined'>
-									<InputLabel id='scene-select-label'>
-										シーン選択
-									</InputLabel>
+									<InputLabel id='scene-select-label'>シーン選択</InputLabel>
 									<Select
 										id='scene-select'
 										labelId='scene-select-label'
 										value={this.state.findSceneIndex}
 										onChange={this.handleChangeFindScene}
 									>
-										{this.state.scenes.map(
-											(scene, index) => (
-												<MenuItem
-													value={index}
-													key={index}
-												>
-													{scene.name}
-												</MenuItem>
-											),
-										)}
+										{this.state.scenes.map((scene, index) => (
+											<MenuItem value={index} key={index}>
+												{scene.name}
+											</MenuItem>
+										))}
 									</Select>
 								</FormControl>
-								<IconButton
-									aria-label='refresh'
-									onClick={this.updateSource}
-								>
+								<IconButton aria-label='refresh' onClick={this.updateSource}>
 									<RefreshIcon />
 								</IconButton>
 							</RowContainer>
@@ -142,29 +132,24 @@ class App extends React.Component<{}, State> {
 								}}
 							>
 								{!(this.state.findSceneIndex < 0) &&
-									this.state.scenes.length >
-										this.state.findSceneIndex &&
-									this.state.scenes[
-										this.state.findSceneIndex
-									].sources.map((item) => (
-										<ListItem key={item.id}>
-											<ListItemText
-												primary={item.name}
-												secondary={item.type}
-											/>
-											<ListItemSecondaryAction>
-												<Checkbox
-													value={item.name}
-													checked={this.isSelected(
-														item.name,
-													)}
-													onChange={
-														this.handleChangeCheck
-													}
+									this.state.scenes.length > this.state.findSceneIndex &&
+									this.state.scenes[this.state.findSceneIndex].sources.map(
+										(item) => (
+											<ListItem key={item.id}>
+												<ListItemText
+													primary={item.name}
+													secondary={item.type}
 												/>
-											</ListItemSecondaryAction>
-										</ListItem>
-									))}
+												<ListItemSecondaryAction>
+													<Checkbox
+														value={item.name}
+														checked={this.isSelected(item.name)}
+														onChange={this.handleChangeCheck}
+													/>
+												</ListItemSecondaryAction>
+											</ListItem>
+										),
+									)}
 							</List>
 						</ListContainer>
 					) : (

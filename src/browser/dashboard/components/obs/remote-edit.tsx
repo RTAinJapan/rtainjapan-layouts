@@ -50,9 +50,7 @@ export class RemoteEdit extends React.Component<Props, State> {
 				}}
 			>
 				<FormControl variant='outlined'>
-					<InputLabel id='browser-select-label'>
-						ブラウザソース選択
-					</InputLabel>
+					<InputLabel id='browser-select-label'>ブラウザソース選択</InputLabel>
 					<Select
 						id='browser-select'
 						labelId='browser-select-label'

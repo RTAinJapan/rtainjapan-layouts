@@ -58,10 +58,11 @@ export const obs = (nodecg: NodeCG) => {
 			return;
 		}
 		const viewUri = obsConfig.remoteViewUri.replace('{id}', viewId.trim());
-		obs.send('SetSourceSettings', {
-			sourceName,
-			sourceSettings: {url: viewUri},
-		})
+		obs
+			.send('SetSourceSettings', {
+				sourceName,
+				sourceSettings: {url: viewUri},
+			})
 			.then((_) => (obsRemoteInputsRep.value[index].viewId = viewId))
 			.catch((_) =>
 				logger.warn(
@@ -78,14 +79,12 @@ export const obs = (nodecg: NodeCG) => {
 		obs.send('GetSceneList').then((data) => {
 			obsRep.value.scenes = data.scenes;
 			const sources = data.scenes.flatMap((scene) => scene.sources);
-			obsCropInputsRep.value = obsCropInputsRep.value.filter(
-				(cropInput) => {
-					return sources.some((source) => {
-						const sceneItem = (source as any) as SceneItem;
-						return sceneItem.name === cropInput;
-					});
-				},
-			);
+			obsCropInputsRep.value = obsCropInputsRep.value.filter((cropInput) => {
+				return sources.some((source) => {
+					const sceneItem = (source as any) as SceneItem;
+					return sceneItem.name === cropInput;
+				});
+			});
 
 			return;
 		});
@@ -98,7 +97,8 @@ export const obs = (nodecg: NodeCG) => {
 			password: obsConfig.password,
 		};
 
-		obs.connect(options)
+		obs
+			.connect(options)
 			.then(() => {
 				logger.info('Connected to OBS.');
 
@@ -163,9 +163,7 @@ export const obs = (nodecg: NodeCG) => {
 		const resetPropertiesPromise = Promise.all(
 			obsRep.value.scenes.map((scene) => {
 				return obsCropInputsRep.value.map((input) => {
-					if (
-						!scene.sources.some((source) => source.name === input)
-					) {
+					if (!scene.sources.some((source) => source.name === input)) {
 						return;
 					}
 					return obs.send('SetSceneItemProperties', {
