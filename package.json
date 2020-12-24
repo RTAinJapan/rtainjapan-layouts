@@ -42,6 +42,7 @@
 		"lodash": "4.17.20",
 		"moment": "2.29.1",
 		"nodecg": "1.7.4",
+		"obs-websocket-js": "^4.0.2",
 		"source-map-support": "0.5.19",
 		"tslib": "2.0.3",
 		"twit": "2.2.11"
@@ -138,6 +139,30 @@
 				"width": 2,
 				"headerColor": "#00BEBE",
 				"workspace": "1-special"
+			},
+			{
+				"name": "obs-connect",
+				"title": "OBS接続",
+				"file": "obs-connect.html",
+				"width": 2,
+				"headerColor": "#00BEBE",
+				"workspace": "3-obs"
+			},
+			{
+				"name": "obs-video-sources",
+				"title": "クロップ対象選択",
+				"file": "obs-video-sources.html",
+				"width": 4,
+				"headerColor": "#00BEBE",
+				"workspace": "3-obs"
+			},
+			{
+				"name": "obs-remote-view",
+				"title": "ブラウザソース編集",
+				"file": "obs-remote-view.html",
+				"width": 4,
+				"headerColor": "#00BEBE",
+				"workspace": "3-obs"
 			}
 		],
 		"graphics": [

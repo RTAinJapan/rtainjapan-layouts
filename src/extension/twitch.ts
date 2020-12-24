@@ -1,3 +1,4 @@
+import {setTimeout} from 'timers';
 import got from 'got';
 import appRootPath from 'app-root-path';
 import {NodeCG} from './nodecg';

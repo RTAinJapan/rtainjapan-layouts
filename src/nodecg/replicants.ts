@@ -7,6 +7,9 @@ import {Timer} from './generated/timer';
 import {Spotify} from './generated/spotify';
 import {Spreadsheet} from './generated/spreadsheet';
 import {Twitch} from './generated/twitch';
+import {Obs} from './generated/obs';
+import {ObsCropInputs} from './generated/obs-crop-inputs';
+import {ObsRemoteInputs} from './generated/obs-remote-inputs';
 
 type Run = NonNullable<CurrentRun>;
 type Participant = Run['runners'][number];
@@ -23,6 +26,9 @@ type ReplicantMap = {
 	timer: Timer;
 	tweets: Tweets;
 	twitch: Twitch;
+	obs: Obs;
+	'obs-crop-inputs': ObsCropInputs;
+	'obs-remote-inputs': ObsRemoteInputs;
 };
 
 export {
@@ -39,4 +45,7 @@ export {
 	Run,
 	Participant,
 	Tweet,
+	Obs,
+	ObsCropInputs,
+	ObsRemoteInputs,
 };

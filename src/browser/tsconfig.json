@@ -4,7 +4,8 @@
 		"module": "esnext",
 		"lib": ["esnext", "dom"],
 		"jsx": "react",
-		"noEmit": true
+		"noEmit": true,
+		"types": ["node"]
 	},
 	"include": ["**/*.ts", "**/*.tsx", "../nodecg/**/*.ts"]
 }
