@@ -26,10 +26,7 @@ export const twitter = async (nodecg: NodeCG) => {
 			tweetsRep.value &&
 			!tweetsRep.value.some((tweet) => tweet.id === newTweet.id)
 		) {
-			tweetsRep.value = [
-				newTweet,
-				...tweetsRep.value.slice(0, MAX_TWEETS - 1),
-			];
+			tweetsRep.value = [newTweet, ...tweetsRep.value.slice(0, MAX_TWEETS - 1)];
 		} else {
 			tweetsRep.value = [newTweet];
 		}
@@ -72,9 +69,7 @@ export const twitter = async (nodecg: NodeCG) => {
 						name: rawTweet.user.name,
 						screenName: rawTweet.user.screen_name,
 					},
-					text: rawTweet.text
-						.replace(/&lt;/g, '<')
-						.replace(/&gt;/g, '>'),
+					text: rawTweet.text.replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
 					createdAt: new Date(rawTweet.created_at).toISOString(),
 				};
 				addTweet(newTweet);
@@ -119,9 +114,7 @@ export const twitter = async (nodecg: NodeCG) => {
 		if (!tweetsRep.value) {
 			return;
 		}
-		const selectedTweetIndex = tweetsRep.value.findIndex(
-			(t) => t.id === id,
-		);
+		const selectedTweetIndex = tweetsRep.value.findIndex((t) => t.id === id);
 		if (selectedTweetIndex === -1) {
 			return undefined;
 		}

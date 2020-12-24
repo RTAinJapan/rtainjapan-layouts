@@ -129,9 +129,7 @@ class Break extends React.Component<{}, State> {
 							: notificationIconBlue
 					}
 				/>
-				<NotificationText>
-					準備中です、しばらくお待ち下さい
-				</NotificationText>
+				<NotificationText>準備中です、しばらくお待ち下さい</NotificationText>
 				<UpcomingTitle>今後の予定</UpcomingTitle>
 				<UpcomingContainer>
 					{upcomingRuns.map((run, index) => (

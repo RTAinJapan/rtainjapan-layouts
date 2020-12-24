@@ -66,9 +66,7 @@ export class Twitter extends React.Component<{}, State> {
 
 	private get twitterContentElement() {
 		if (this.state.tweets.length === 0) {
-			return (
-				<EmptyContainer>表示するツイートがありません</EmptyContainer>
-			);
+			return <EmptyContainer>表示するツイートがありません</EmptyContainer>;
 		} else {
 			return (
 				<TweetListContainer>

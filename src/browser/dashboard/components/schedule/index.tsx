@@ -92,19 +92,13 @@ export class Schedule extends React.Component<{}, State> {
 						<ArrowBack />前
 					</ColoredButton>
 					<Typeahead titles={this.state.titles} />
-					<ColoredButton
-						color={purple}
-						ButtonProps={{onClick: moveNextRun}}
-					>
+					<ColoredButton color={purple} ButtonProps={{onClick: moveNextRun}}>
 						次<ArrowForward />
 					</ColoredButton>
 				</SelectionContainer>
 				<RunInfoContainer>
 					{this.state.currentRun && (
-						<RunInfo
-							run={this.state.currentRun}
-							label='現在のゲーム'
-						/>
+						<RunInfo run={this.state.currentRun} label='現在のゲーム' />
 					)}
 					<Divider />
 					{this.state.nextRun && (
@@ -118,10 +112,7 @@ export class Schedule extends React.Component<{}, State> {
 					>
 						編集：現在のゲーム
 					</ColoredButton>
-					<ColoredButton
-						color={pink}
-						ButtonProps={{onClick: this.editNextRun}}
-					>
+					<ColoredButton color={pink} ButtonProps={{onClick: this.editNextRun}}>
 						編集：次のゲーム
 					</ColoredButton>
 				</EditControls>

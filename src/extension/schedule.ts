@@ -127,8 +127,7 @@ export default async (nodecg: NodeCG) => {
 
 	// Prevent empty current run
 	scheduleRep.on('change', (newVal) => {
-		const isCurrentRunEmpty =
-			!currentRunRep.value || !currentRunRep.value.pk;
+		const isCurrentRunEmpty = !currentRunRep.value || !currentRunRep.value.pk;
 		if (isCurrentRunEmpty) {
 			const currentRun = newVal[0];
 			if (currentRun) {

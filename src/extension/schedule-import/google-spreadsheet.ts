@@ -61,11 +61,7 @@ export const importFromSpreadsheet = async (nodecg: NodeCG) => {
 			const {runs, runners, commentators} = spreadsheet;
 			const schedule: Schedule = runs.map((run, index) => {
 				const runnersData: Participant[] = [];
-				for (const runnerId of [
-					run.runner1,
-					run.runner2,
-					run.runner3,
-				]) {
+				for (const runnerId of [run.runner1, run.runner2, run.runner3]) {
 					const runner = runners.find((r) => r.id === runnerId);
 					if (runner && runner.name) {
 						runnersData.push({
@@ -77,13 +73,8 @@ export const importFromSpreadsheet = async (nodecg: NodeCG) => {
 					}
 				}
 				const commentatorData: Participant[] = [];
-				for (const commentatorId of [
-					run.commentator1,
-					run.commentator2,
-				]) {
-					const commentator = commentators.find(
-						(r) => r.id === commentatorId,
-					);
+				for (const commentatorId of [run.commentator1, run.commentator2]) {
+					const commentator = commentators.find((r) => r.id === commentatorId);
 					if (commentator && commentator.name) {
 						commentatorData.push({
 							name: commentator.name,

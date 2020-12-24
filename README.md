@@ -10,28 +10,28 @@ It will be using [React](https://reactjs.org), [Material UI](https://material-ui
 
 ### extension
 
--   [x] Refactor to TypeScript
--   [x] Eliminate `any`
+- [x] Refactor to TypeScript
+- [x] Eliminate `any`
 
 ### dashboard
 
--   [x] Setup ~~webpack~~ ~~Parcel~~ webpack
--   [x] Port all Polymer components to React with TypeScript
--   [ ] Use Material UI API
--   [ ] Eliminate `any`
+- [x] Setup ~~webpack~~ ~~Parcel~~ webpack
+- [x] Port all Polymer components to React with TypeScript
+- [ ] Use Material UI API
+- [ ] Eliminate `any`
 
 ### graphics
 
--   [x] Setup ~~webpack~~ Parcel
--   [ ] Port all Polymer components to React with TypeScript
--   [ ] Use Material UI API
--   [ ] Eliminate `any`
+- [x] Setup ~~webpack~~ Parcel
+- [ ] Port all Polymer components to React with TypeScript
+- [ ] Use Material UI API
+- [ ] Eliminate `any`
 
 ## Credits
 
--   [NodeCG](https://github.com/nodecg/nodecg): Main framework. Made by Lange and contributors.
--   [SupportClass](https://supportclass.net/): [sgdq2017-layouts](https://github.com/gamesdonequick/sgdq2017-layouts) influenced dashboard design, architecture, etc.
--   [pppnt](https://twitter.com/pppnt): Graphics design.
+- [NodeCG](https://github.com/nodecg/nodecg): Main framework. Made by Lange and contributors.
+- [SupportClass](https://supportclass.net/): [sgdq2017-layouts](https://github.com/gamesdonequick/sgdq2017-layouts) influenced dashboard design, architecture, etc.
+- [pppnt](https://twitter.com/pppnt): Graphics design.
 
 ## License
 

@@ -7,7 +7,11 @@
 		"name": {"type": "string"},
 		"twitch": {"type": "string"},
 		"nico": {"type": "string"},
-		"twitter": {"type": "string"}
+		"twitter": {"type": "string"},
+		"camera": {
+			"type": "boolean",
+			"description": "人ごとのカメラ使用有無"
+		}
 	},
 	"required": ["name"]
 }

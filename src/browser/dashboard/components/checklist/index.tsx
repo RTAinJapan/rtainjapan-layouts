@@ -45,10 +45,7 @@ export class Checklist extends React.Component {
 		this.setState({checklist: newVal});
 	};
 
-	private readonly toggleCheckbox = (
-		e: ChangeEvent<any>,
-		checked: boolean,
-	) => {
+	private readonly toggleCheckbox = (e: ChangeEvent<any>, checked: boolean) => {
 		nodecg.sendMessage('toggleCheckbox', {
 			name: e.target.name,
 			checked,
@@ -58,9 +55,7 @@ export class Checklist extends React.Component {
 	private readonly makeChecklistElement = (checklist: ChecklistType[0]) => (
 		<FormControlLabel
 			key={checklist.name}
-			control={
-				<Checkbox checked={checklist.complete} name={checklist.name} />
-			}
+			control={<Checkbox checked={checklist.complete} name={checklist.name} />}
 			label={checklist.name}
 			onChange={this.toggleCheckbox}
 			style={{

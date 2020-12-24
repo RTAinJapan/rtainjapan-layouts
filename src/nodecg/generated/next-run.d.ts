@@ -14,16 +14,28 @@ export type NextRun = null | {
 	platform?: string;
 	runDuration: string;
 	setupDuration: string;
+	/**
+	 * ゲーム全体でのカメラ使用有無
+	 */
+	camera?: boolean;
 	runners: {
 		name: string;
 		twitch?: string;
 		nico?: string;
 		twitter?: string;
+		/**
+		 * 人ごとのカメラ使用有無
+		 */
+		camera?: boolean;
 	}[];
 	commentators: {
 		name: string;
 		twitch?: string;
 		nico?: string;
 		twitter?: string;
+		/**
+		 * 人ごとのカメラ使用有無
+		 */
+		camera?: boolean;
 	}[];
 };

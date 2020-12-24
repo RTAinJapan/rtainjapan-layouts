@@ -12,7 +12,7 @@ type SampleRunner = typeof sampleSchedule['lines'][number]['runners'][number];
 
 const fetchSchedule = async (): Promise<typeof sampleSchedule> => {
 	const res = await got.get(
-		`https://oengus.io/api/marathon/rtaijo2020/schedule`,
+		`https://oengus.io/api/marathon/rtaij2020/schedule`,
 		{json: true},
 	);
 	return res.body;
@@ -24,7 +24,7 @@ const fetchSubmissions = async (
 	answers: Array<{question: {label: string}; answer: string | null}>;
 }>> => {
 	const res = await got.get(
-		'https://oengus.io/api/marathon/rtaijo2020/submission/answers',
+		'https://oengus.io/api/marathon/rtaij2020/submission/answers',
 		{
 			json: true,
 			headers: {
@@ -73,7 +73,7 @@ export const importFromOengus = (nodecg: NodeCG) => {
 	});
 	const fetchCommentators = async () => {
 		const res = await sheetsApi.spreadsheets.values.batchGet({
-			spreadsheetId: nodecg.bundleConfig.oengus.commentatorSheet,
+			spreadsheetId: oengus.commentatorSheet,
 			ranges: ['フォームの回答 1'],
 		});
 		const sheetValues = res.data.valueRanges;
@@ -120,10 +120,9 @@ export const importFromOengus = (nodecg: NodeCG) => {
 							twitch: runner.twitchName || undefined,
 							twitter: runner.twitterName || undefined,
 							nico:
-								(answer &&
-									answer.answer &&
-									extractNicoId(answer.answer)) ||
+								(answer && answer.answer && extractNicoId(answer.answer)) ||
 								undefined,
+							camera: false, // TODO: スプレッドシートから取得する必要アリ
 						};
 					},
 				);
@@ -142,6 +141,7 @@ export const importFromOengus = (nodecg: NodeCG) => {
 					runDuration: formatDuration(run.estimate),
 					setupDuration: formatDuration(run.setupTime),
 					runners,
+					camera: true, // TODO: ゲーム全体の初期値決定方法を決める必要あり
 					commentators: commentators.map((c) => ({
 						name: c.name,
 						twitch: c.twitch,

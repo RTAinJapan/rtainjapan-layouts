@@ -12,6 +12,10 @@
 		"platform": {"type": "string"},
 		"runDuration": {"type": "string"},
 		"setupDuration": {"type": "string"},
+		"camera": {
+			"type": "boolean",
+			"description": "ゲーム全体でのカメラ使用有無"
+		},
 		"runners": {
 			"type": "array",
 			"items": {"$ref": "participant.json"}

@@ -65,20 +65,14 @@ export class UpcomingRun extends React.Component<{
 				.filter(Boolean)
 				.join(', ')}`;
 		const misc =
-			category && runners
-				? `${category} | ${runners}`
-				: category || runners;
+			category && runners ? `${category} | ${runners}` : category || runners;
 		return (
 			<Container>
 				<InfoContainer>
 					<Title>{title}</Title>
 					<Misc>{misc}</Misc>
 				</InfoContainer>
-				<img
-					src={
-						colorTheme === 'brown' ? separatorBrown : separatorBlue
-					}
-				/>
+				<img src={colorTheme === 'brown' ? separatorBrown : separatorBlue} />
 				<Time>{this.calcRemainingTime()}</Time>
 			</Container>
 		);

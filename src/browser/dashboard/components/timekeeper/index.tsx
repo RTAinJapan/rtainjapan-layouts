@@ -8,7 +8,7 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import Refresh from '@material-ui/icons/Refresh';
 import React from 'react';
 import styled from 'styled-components';
-import uuidv4 from 'uuid/v4';
+import {v4 as uuidv4} from 'uuid';
 import {CurrentRun, Timer, Checklist} from '../../../../nodecg/replicants';
 import {newTimer} from '../../../../nodecg/timer';
 import {BorderedBox} from '../lib/bordered-box';
@@ -192,8 +192,7 @@ export class Timekeeper extends React.Component<{}, State> {
 		const newRunners = newVal.runners;
 		this.setState({
 			runners: Array.from({length: 4}, (_, index) => {
-				const name =
-					newRunners && newRunners[index] && newRunners[index].name;
+				const name = newRunners && newRunners[index] && newRunners[index].name;
 				return {name, id: uuidv4()};
 			}),
 		});

@@ -97,9 +97,7 @@ export class TweetItem extends React.Component<Props, State> {
 					<TweetHeader>
 						<ProfileLink href={this.profileUrl()} target='_blank'>
 							<Name>{this.props.tweet.user.name}</Name>
-							<ScreenName>
-								@{this.props.tweet.user.screenName}
-							</ScreenName>
+							<ScreenName>@{this.props.tweet.user.screenName}</ScreenName>
 						</ProfileLink>
 						<TweetLink href={this.tweetUrl()} target='_blank'>
 							<Time dateTime={this.props.tweet.createdAt}>
