@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"build": "webpack",
+		"build": "yarn schema-types && webpack",
 		"clean": "del-cli bundle-analyzer dashboard extension graphics",
 		"dev": "run-p dev:*",
 		"dev:tsc": "yarn typecheck -w --preserveWatchOutput",
