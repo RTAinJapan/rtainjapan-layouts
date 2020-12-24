@@ -39,6 +39,5 @@ COPY package.json yarn.lock configschema.json ./
 RUN yarn install --production --frozen-lockfile
 
 EXPOSE 9090
-VOLUME [ "/app/.nodecg/cfg", "/app/.nodecg/db" ]
 
 CMD [ "yarn", "start" ]
