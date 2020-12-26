@@ -9,6 +9,7 @@ import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import nodeExternals from 'webpack-node-externals';
 
 const isProduction = process.env.NODE_ENV === 'production';
+const isWatch = Boolean(process.env.WEBPACK_WATCH);
 const {TYPEKIT_ID} = process.env;
 if (!TYPEKIT_ID) {
 	console.error('TYPEKIT_ID is empty');
@@ -18,6 +19,7 @@ if (!TYPEKIT_ID) {
 }
 
 const base: webpack.Configuration = {
+	watch: isWatch,
 	mode: isProduction ? 'production' : 'development',
 	devtool: 'cheap-source-map',
 	resolve: {
@@ -99,7 +101,7 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 				analyzerMode: 'static',
 				reportFilename: path.resolve(__dirname, `bundle-analyzer/${name}.html`),
 			}),
-			new WebpackBar({name}),
+			...(isWatch ? [] : [new WebpackBar({name})]),
 		],
 		optimization: {
 			splitChunks: {
@@ -136,7 +138,7 @@ const extensionConfig = merge(base, {
 		],
 	},
 	externals: [nodeExternals()],
-	plugins: [new WebpackBar({name: 'extension'})],
+	plugins: [...(isWatch ? [] : [new WebpackBar({name: 'extension'})])],
 });
 
 const config: webpack.Configuration[] = [
