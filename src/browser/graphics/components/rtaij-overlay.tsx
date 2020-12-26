@@ -131,7 +131,7 @@ const Sponsor = styled.div`
 	height: 100%;
 	width: 210px;
 	border-top-left-radius: 30px;
-	background: url(https://i.imgur.com/w10XAGC.png) white no-repeat center;
+	background: url('https://i.imgur.com/w10XAGC.png') white no-repeat center;
 	box-sizing: border-box;
 	padding: 15px;
 
