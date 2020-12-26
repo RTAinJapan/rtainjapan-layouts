@@ -97,7 +97,7 @@ export const obs = (nodecg: NodeCG) => {
 			password: obsConfig.password,
 		};
 
-		logger.info('Connecting to:', options);
+		logger.info(`Connecting to ${options.host}:${options.port}`);
 
 		obs
 			.connect(options)
@@ -107,7 +107,7 @@ export const obs = (nodecg: NodeCG) => {
 				updateSources();
 			})
 			.catch((err) => {
-				logger.error(err.error);
+				console.log(err);
 
 				if (!obsRep.value) {
 					return;
