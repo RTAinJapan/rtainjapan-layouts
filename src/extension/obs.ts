@@ -97,6 +97,8 @@ export const obs = (nodecg: NodeCG) => {
 			password: obsConfig.password,
 		};
 
+		logger.info('Connecting to:', options);
+
 		obs
 			.connect(options)
 			.then(() => {
