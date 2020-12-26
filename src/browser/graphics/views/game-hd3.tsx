@@ -1,7 +1,7 @@
 import '../styles/common.css';
 
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {Container} from '../components/lib/styled';
 import {RtaijGame} from '../components/rtaij-game';
@@ -84,4 +84,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

@@ -1,7 +1,7 @@
 import '../styles/common.css';
 
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {Container} from '../components/lib/styled';
 import {RtaijCommentator} from '../components/rtaij-commentator';
@@ -83,4 +83,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

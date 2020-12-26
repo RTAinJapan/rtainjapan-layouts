@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 import {ObsConnect} from '../components/obs/connect';
 
 const obsConfig = nodecg.bundleConfig.obs;
@@ -43,4 +43,4 @@ class App extends React.Component<{}, State> {
 	}
 }
 
-ReactDom.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

@@ -3,7 +3,7 @@ import 'modern-normalize/modern-normalize.css';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {Checklist} from '../components/checklist';
 import {Schedule} from '../components/schedule';
@@ -78,4 +78,4 @@ if (spotifyCallback) {
 	}
 }
 
-ReactDom.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

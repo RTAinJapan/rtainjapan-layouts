@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {CropSwitch} from '../components/obs/crop-switch';
 import RefreshIcon from '@material-ui/icons/Refresh';
@@ -185,4 +185,4 @@ class App extends React.Component<{}, State> {
 	};
 }
 
-ReactDom.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

@@ -1,7 +1,7 @@
 import '../styles/common.css';
 
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 import styled, {css} from 'styled-components';
 import {Ruler} from '../components/lib/ruler';
 import {Container} from '../components/lib/styled';
@@ -114,4 +114,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

@@ -1,7 +1,7 @@
 import '../styles/common.css';
 
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 import styled, {css} from 'styled-components';
 
 import {Container} from '../components/lib/styled';
@@ -181,4 +181,4 @@ class Break extends React.Component<{}, State> {
 	};
 }
 
-ReactDom.render(<Break />, document.getElementById('root'));
+ReactDOM.render(<Break />, document.getElementById('root'));
