@@ -91,16 +91,14 @@ export const obs = (nodecg: NodeCG) => {
 	};
 
 	const connect = () => {
-		const options = {
-			host: obsConfig.host,
-			port: obsConfig.port || 4444,
-			password: obsConfig.password,
-		};
-
-		logger.info(`Connecting to ${options.host}:${options.port}`);
+		const obsAddress = `${obsConfig.host}:${obsConfig.port}`;
+		logger.info(`Connecting to ${obsAddress}`);
 
 		obs
-			.connect(options)
+			.connect({
+				address: obsAddress,
+				password: obsConfig.password,
+			})
 			.then(() => {
 				logger.info('Connected to OBS.');
 
