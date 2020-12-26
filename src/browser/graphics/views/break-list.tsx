@@ -181,4 +181,4 @@ class Break extends React.Component<{}, State> {
 	};
 }
 
-ReactDom.render(<Break />, document.getElementById('break'));
+ReactDom.render(<Break />, document.getElementById('root'));

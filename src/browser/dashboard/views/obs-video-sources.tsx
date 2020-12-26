@@ -185,4 +185,4 @@ class App extends React.Component<{}, State> {
 	};
 }
 
-ReactDom.render(<App />, document.getElementById('obs-video-sources'));
+ReactDom.render(<App />, document.getElementById('root'));

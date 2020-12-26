@@ -78,4 +78,4 @@ if (spotifyCallback) {
 	}
 }
 
-ReactDom.render(<App />, document.getElementById('tech'));
+ReactDom.render(<App />, document.getElementById('root'));

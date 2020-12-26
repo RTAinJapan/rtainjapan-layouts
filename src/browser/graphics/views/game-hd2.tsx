@@ -125,4 +125,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('hd2'));
+ReactDom.render(<App />, document.getElementById('root'));

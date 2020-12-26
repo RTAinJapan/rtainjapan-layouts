@@ -116,4 +116,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('sd2'));
+ReactDom.render(<App />, document.getElementById('root'));

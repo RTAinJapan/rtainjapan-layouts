@@ -87,7 +87,6 @@ const makeBrowserConfig = (name: string): webpack.Configuration => {
 					new HtmlPlugin({
 						filename: `${entryName}.html`,
 						chunks: [entryName],
-						title: entryName,
 						template: `webpack/${name}.html`,
 						typekitId: TYPEKIT_ID,
 					}),

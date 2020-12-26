@@ -120,4 +120,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('ds1'));
+ReactDom.render(<App />, document.getElementById('root'));

@@ -81,4 +81,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('qwop'));
+ReactDom.render(<App />, document.getElementById('root'));

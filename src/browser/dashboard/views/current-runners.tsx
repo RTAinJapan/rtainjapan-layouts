@@ -31,4 +31,4 @@ class App extends React.Component<{}, State> {
 	}
 }
 
-ReactDOM.render(<App />, document.getElementById('current-runners'));
+ReactDom.render(<App />, document.getElementById('root'));

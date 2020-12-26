@@ -112,4 +112,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('ds1-flat'));
+ReactDom.render(<App />, document.getElementById('root'));

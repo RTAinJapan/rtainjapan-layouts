@@ -83,4 +83,4 @@ class App extends React.Component<{}, State> {
 	}
 }
 
-ReactDom.render(<App />, document.getElementById('obs-remote-view'));
+ReactDom.render(<App />, document.getElementById('root'));

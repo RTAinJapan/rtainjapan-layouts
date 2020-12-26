@@ -84,4 +84,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('hd3'));
+ReactDom.render(<App />, document.getElementById('root'));

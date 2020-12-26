@@ -189,4 +189,4 @@ class App extends React.Component<{}, State> {
 	}
 }
 
-ReactDOM.render(<App />, document.getElementById('edit-tourny'));
+ReactDom.render(<App />, document.getElementById('root'));

@@ -3,9 +3,10 @@ import OBSWebSocket from 'obs-websocket-js';
 import {SceneItem} from './obs-types/sceneItem';
 import {Filter} from './obs-types/filter';
 
-export const obs = (nodecg: NodeCG) => {
+export const obs = async (nodecg: NodeCG) => {
 	const logger = new nodecg.Logger('obs');
 	const obsConfig = nodecg.bundleConfig.obs;
+
 	if (!obsConfig) {
 		logger.warn('OBS config is empty.');
 		return;
@@ -79,29 +80,25 @@ export const obs = (nodecg: NodeCG) => {
 		});
 	};
 
-	const connect = () => {
+	const connect = async () => {
 		const obsAddress = `${obsConfig.host}:${obsConfig.port || 4444}`;
 		logger.info(`Connecting to ${obsAddress}`);
 
-		obs
-			.connect({
+		try {
+			await obs.connect({
 				address: obsAddress,
 				password: obsConfig.password,
-			})
-			.then(() => {
-				logger.info('Connected to OBS.');
-
-				updateSources();
-			})
-			.catch((err) => {
-				console.log(err);
-
-				if (!obsRep.value) {
-					return;
-				}
-
-				obsRep.value.connected = false;
 			});
+			logger.info('Connected to OBS.');
+
+			updateSources();
+		} catch (error) {
+			logger.error(error);
+
+			if (obsRep.value) {
+				obsRep.value.connected = false;
+			}
+		}
 	};
 
 	const disconnect = () => {
@@ -306,8 +303,8 @@ export const obs = (nodecg: NodeCG) => {
 		updateSources();
 	});
 
-	if (obsRep.value && obsRep.value.connected) {
-		logger.info('Connect to OBS automatically.');
-		connect();
-	}
+	logger.info('Connect to OBS automatically.');
+
+	// Automatically connect to OBS for later operations
+	await connect();
 };

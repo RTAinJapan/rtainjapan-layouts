@@ -43,4 +43,4 @@ class App extends React.Component<{}, State> {
 	}
 }
 
-ReactDom.render(<App />, document.getElementById('obs-connect'));
+ReactDom.render(<App />, document.getElementById('root'));

@@ -119,4 +119,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDom.render(<App />, document.getElementById('3ds1'));
+ReactDom.render(<App />, document.getElementById('root'));
