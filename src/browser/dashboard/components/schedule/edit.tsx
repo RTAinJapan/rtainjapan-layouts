@@ -118,47 +118,56 @@ export class EditRun extends React.Component<Props, Run> {
 					</div>
 					{Array.from({length: 4}, (_, index) => {
 						const runner: Participant = runners[index] || {};
-						const n = index + 1;
 						return (
-							<RunnerRow key={n}>
+							<RunnerRow key={index}>
 								<TextField
-									label={`走者${n} 名前`}
+									label={`走者${index + 1} 名前`}
 									defaultValue={runner.name}
 									onChange={(e) => {
-										this.updateRunnerInfo(n, 'name', e.currentTarget.value);
+										this.updateRunnerInfo(index, 'name', e.currentTarget.value);
 									}}
 								/>
 								<TextField
-									label={`走者${n} Twitch`}
+									label={`走者${index + 1} Twitch`}
 									defaultValue={runner.twitch}
 									onChange={(e) => {
-										this.updateRunnerInfo(n, 'twitch', e.currentTarget.value);
+										this.updateRunnerInfo(
+											index,
+											'twitch',
+											e.currentTarget.value,
+										);
 									}}
 								/>
 								<TextField
-									label={`走者${n} ニコ生`}
+									label={`走者${index + 1} ニコ生`}
 									defaultValue={runner.nico}
 									onChange={(e) => {
-										this.updateRunnerInfo(n, 'nico', e.currentTarget.value);
+										this.updateRunnerInfo(index, 'nico', e.currentTarget.value);
 									}}
 								/>
 								<TextField
-									label={`走者${n} Twitter`}
+									label={`走者${index + 1} Twitter`}
 									defaultValue={runner.twitter}
 									onChange={(e) => {
-										this.updateRunnerInfo(n, 'twitter', e.currentTarget.value);
+										this.updateRunnerInfo(
+											index,
+											'twitter',
+											e.currentTarget.value,
+										);
 									}}
 								/>
 								<div className='MuiFormControl-root'>
 									<div className='MuiFormLabel-root'>
-										<TypoGraphy variant={'caption'}>走者{n}カメラ</TypoGraphy>
+										<TypoGraphy variant={'caption'}>
+											走者{index + 1}カメラ
+										</TypoGraphy>
 									</div>
 									<CameraControl>
 										<VideocamOffIcon />
 										<Switch2
 											defaultValue={!!runner.camera}
 											onChange={() => {
-												this.updateRunnerInfo(n, 'camera', !runner.camera);
+												this.updateRunnerInfo(index, 'camera', !runner.camera);
 											}}
 										/>
 										<VideocamIcon color={'secondary'} />
@@ -174,48 +183,47 @@ export class EditRun extends React.Component<Props, Run> {
 							name: '',
 							...(commentators[index] as Partial<Participant>),
 						};
-						const n = index + 1;
 						return (
-							<RunnerRow key={n}>
+							<RunnerRow key={index}>
 								<TextField
-									label={`解説${n} 名前`}
+									label={`解説${index + 1} 名前`}
 									defaultValue={commentator.name}
 									onChange={(e) => {
 										this.updateCommentatorInfo(
-											n,
+											index,
 											'name',
 											e.currentTarget.value,
 										);
 									}}
 								/>
 								<TextField
-									label={`解説${n} Twitch`}
+									label={`解説${index + 1} Twitch`}
 									defaultValue={commentator.twitch}
 									onChange={(e) => {
 										this.updateCommentatorInfo(
-											n,
+											index,
 											'twitch',
 											e.currentTarget.value,
 										);
 									}}
 								/>
 								<TextField
-									label={`解説${n} ニコ生`}
+									label={`解説${index + 1} ニコ生`}
 									defaultValue={commentator.nico}
 									onChange={(e) => {
 										this.updateCommentatorInfo(
-											n,
+											index,
 											'nico',
 											e.currentTarget.value,
 										);
 									}}
 								/>
 								<TextField
-									label={`解説${n} Twitter`}
+									label={`解説${index + 1} Twitter`}
 									defaultValue={commentator.twitter}
 									onChange={(e) => {
 										this.updateCommentatorInfo(
-											n,
+											index,
 											'twitter',
 											e.currentTarget.value,
 										);

@@ -13,8 +13,7 @@ import {Schedule, CurrentRun} from '../../../nodecg/replicants';
 
 const currentRunRep = nodecg.Replicant('current-run');
 const scheduleRep = nodecg.Replicant('schedule');
-const {onsite} = nodecg.bundleConfig;
-const {colorTheme} = nodecg.bundleConfig;
+const {onsite, colorTheme} = nodecg.bundleConfig;
 
 const StyledContainer = styled(Container)`
 	${onsite &&
@@ -91,7 +90,13 @@ const CurrentTrackContainer = styled.div`
 	bottom: 165px;
 	right: 15px;
 	height: 40px;
-	background-color: rgba(0, 10, 60, 0.5);
+	${colorTheme === 'blue'
+		? css`
+				background-color: rgba(0, 10, 60, 0.5);
+		  `
+		: css`
+				background-color: rgba(27, 20, 8, 0.5);
+		  `}
 	font-size: 22px;
 	line-height: 22px;
 	padding: 9px 16px;

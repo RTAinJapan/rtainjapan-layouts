@@ -87,7 +87,13 @@ const Top = styled.div`
 	height: 150px;
 	width: 100%;
 	top: 0;
-	background-color: rgba(0, 10, 60, 0.6);
+	${colorTheme === 'blue'
+		? css`
+				background-color: rgba(0, 10, 60, 0.6);
+		  `
+		: css`
+				background-color: rgba(27, 20, 8, 0.6);
+		  `}
 	${({theme}) =>
 		theme.isBreak &&
 		css`
@@ -99,7 +105,13 @@ const Bottom = styled.div`
 	position: absolute;
 	width: 100%;
 	bottom: 0;
-	background-color: rgba(0, 10, 60, 0.5);
+	${colorTheme === 'blue'
+		? css`
+				background-color: rgba(0, 10, 60, 0.5);
+		  `
+		: css`
+				background-color: rgba(27, 20, 8, 0.5);
+		  `}
 `;
 
 const LogoR = styled.img`
@@ -127,13 +139,22 @@ const LogoTainjapan = styled.img`
 
 const Sponsor = styled.div`
 	position: absolute;
-	right: 0px;
 	height: 100%;
 	width: 210px;
-	border-top-left-radius: 30px;
 	background: url('https://i.imgur.com/w10XAGC.png') white no-repeat center;
 	box-sizing: border-box;
 	padding: 15px;
+
+	${(props: {left?: boolean}) =>
+		props.left
+			? css`
+					left: 0px;
+					border-top-right-radius: 30px;
+			  `
+			: css`
+					right: 0px;
+					border-top-left-radius: 30px;
+			  `}
 
 	display: grid;
 	justify-items: center;
@@ -154,6 +175,7 @@ interface Props {
 		hideLogo?: boolean;
 		maxHeightPx?: number;
 	};
+	sponsorLeft?: boolean;
 }
 export class RtaijOverlay extends React.Component<Props, State> {
 	public state = {
@@ -184,7 +206,7 @@ export class RtaijOverlay extends React.Component<Props, State> {
 					</LogoTaContainer>
 				</Top>
 				<Bottom style={{height: `${this.props.bottomHeightPx}px`}}>
-					{hasSponsor && <Sponsor />}
+					{hasSponsor && <Sponsor left={this.props.sponsorLeft} />}
 				</Bottom>
 				<Tweet
 					{...this.props.TweetProps}
