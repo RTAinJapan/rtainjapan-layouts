@@ -168,77 +168,77 @@
 		],
 		"graphics": [
 			{
-				"file": "break.html",
+				"file": "break-list.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "break-2.html",
+				"file": "break-frame.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "ds1.html",
+				"file": "game-ds1.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "gb1.html",
+				"file": "game-gb1.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "hd1.html",
+				"file": "game-hd1.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "hd2.html",
+				"file": "game-hd2.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "hd3.html",
+				"file": "game-hd3.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "sd1.html",
+				"file": "game-sd1.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "sd2.html",
+				"file": "game-sd2.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "sd3.html",
+				"file": "game-sd3.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "3ds1.html",
+				"file": "game-3ds1.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "ds1-flat.html",
+				"file": "game-ds1-flat.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "gba1.html",
+				"file": "game-gba1.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "gba2.html",
+				"file": "game-gba2.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
-				"file": "qwop.html",
+				"file": "game-qwop.html",
 				"width": 1920,
 				"height": 1080
 			}
