@@ -7,8 +7,8 @@ const TRY_TICK_INTERVAL = 10;
 const getDefaultTimer = () => newTimer(0);
 
 export const timekeeping = (nodecg: NodeCG) => {
-	const checklistRep = nodecg.Replicant('checklist', {defaultValue: []});
-	const currentRunRep = nodecg.Replicant('current-run', {defaultValue: null});
+	const checklistRep = nodecg.Replicant('checklist');
+	const currentRunRep = nodecg.Replicant('current-run');
 	const timerRep = nodecg.Replicant('timer', {
 		defaultValue: getDefaultTimer(),
 	});

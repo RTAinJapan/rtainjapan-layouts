@@ -11,34 +11,14 @@ export const obs = (nodecg: NodeCG) => {
 		return;
 	}
 
-	const obsRep = nodecg.Replicant('obs', {
-		defaultValue: {
-			connected: false,
-			cropEnabled: false,
-			scenes: [],
-		},
-	});
-	const obsCropInputsRep = nodecg.Replicant('obs-crop-inputs', {
-		defaultValue: [],
-	});
-	const obsRemoteInputsRep = nodecg.Replicant('obs-remote-inputs', {
-		defaultValue: [
-			{input: null, viewId: ''},
-			{input: null, viewId: ''},
-			{input: null, viewId: ''},
-			{input: null, viewId: ''},
-		],
-	});
+	const obsRep = nodecg.Replicant('obs');
+	const obsCropInputsRep = nodecg.Replicant('obs-crop-inputs');
+	const obsRemoteInputsRep = nodecg.Replicant('obs-remote-inputs');
 
 	const obs = new OBSWebSocket();
 
 	const setRemoteSource = (input: string, index: number) => {
-		if (
-			!obsRemoteInputsRep.value ||
-			!(index in obsRemoteInputsRep.value) ||
-			index < 0 ||
-			index > 3
-		) {
+		if (!obsRemoteInputsRep.value?.[index]) {
 			return;
 		}
 
@@ -49,11 +29,16 @@ export const obs = (nodecg: NodeCG) => {
 	};
 
 	const updateRemoteBrowser = (viewId: string, index: number) => {
-		if (!obsRemoteInputsRep.value || !(index in obsRemoteInputsRep.value)) {
+		const remoteInputsValue = obsRemoteInputsRep.value;
+		if (!remoteInputsValue) {
+			return;
+		}
+		const remoteInput = remoteInputsValue[index];
+		if (!remoteInput) {
 			return;
 		}
 
-		const sourceName = obsRemoteInputsRep.value[index].input;
+		const sourceName = remoteInput.input;
 		if (sourceName === null) {
 			return;
 		}
@@ -63,7 +48,7 @@ export const obs = (nodecg: NodeCG) => {
 				sourceName,
 				sourceSettings: {url: viewUri},
 			})
-			.then((_) => (obsRemoteInputsRep.value[index].viewId = viewId))
+			.then((_) => (remoteInput.viewId = viewId))
 			.catch((_) =>
 				logger.warn(
 					`Error when update settings of the source "${sourceName}".`,
@@ -72,14 +57,18 @@ export const obs = (nodecg: NodeCG) => {
 	};
 
 	const updateSources = async () => {
-		if (!obsRep.value || !obsCropInputsRep.value) {
+		const obsCropInputs = obsCropInputsRep.value;
+		if (!obsCropInputs) {
 			return;
 		}
 
 		obs.send('GetSceneList').then((data) => {
+			if (!obsRep.value) {
+				return;
+			}
 			obsRep.value.scenes = data.scenes;
 			const sources = data.scenes.flatMap((scene) => scene.sources);
-			obsCropInputsRep.value = obsCropInputsRep.value.filter((cropInput) => {
+			obsCropInputsRep.value = obsCropInputs.filter((cropInput) => {
 				return sources.some((source) => {
 					const sceneItem = (source as any) as SceneItem;
 					return sceneItem.name === cropInput;
@@ -157,12 +146,13 @@ export const obs = (nodecg: NodeCG) => {
 		) {
 			return;
 		}
+		const obsCropInputs = obsCropInputsRep.value;
 
 		await updateSources();
 
 		const resetPropertiesPromise = Promise.all(
 			obsRep.value.scenes.map((scene) => {
-				return obsCropInputsRep.value.map((input) => {
+				return obsCropInputs.map((input) => {
 					if (!scene.sources.some((source) => source.name === input)) {
 						return;
 					}

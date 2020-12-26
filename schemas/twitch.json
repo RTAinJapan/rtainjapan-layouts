@@ -15,5 +15,6 @@
 				"refreshAt": {"type": "number"}
 			}
 		}
-	}
+	},
+	"default": {}
 }

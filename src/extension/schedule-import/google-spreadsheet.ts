@@ -19,10 +19,8 @@ export const importFromSpreadsheet = async (nodecg: NodeCG) => {
 
 	logger.info('Using spreadsheet to import schedule');
 
-	const scheduleRep = nodecg.Replicant('schedule', {defaultValue: []});
-	const spreadsheetRep = nodecg.Replicant('spreadsheet', {
-		defaultValue: {runs: [], runners: [], commentators: []},
-	});
+	const scheduleRep = nodecg.Replicant('schedule');
+	const spreadsheetRep = nodecg.Replicant('spreadsheet');
 
 	const sheetsApi = google.sheets({version: 'v4', auth: googleApiKey});
 

@@ -24,7 +24,7 @@ export const twitch = (nodecg: NodeCG) => {
 		return;
 	}
 
-	const twitchRep = nodecg.Replicant('twitch', {defaultValue: {}});
+	const twitchRep = nodecg.Replicant('twitch');
 	const currentRunRep = nodecg.Replicant('current-run');
 	const {clientSecret} = appRootPath.require(
 		'./.nodecg/cfg/nodecg.json',

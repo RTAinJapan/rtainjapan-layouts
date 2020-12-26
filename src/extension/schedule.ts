@@ -13,10 +13,10 @@ export default async (nodecg: NodeCG) => {
 		importFromSpreadsheet(nodecg);
 	}
 
-	const scheduleRep = nodecg.Replicant('schedule', {defaultValue: []});
-	const currentRunRep = nodecg.Replicant('current-run', {defaultValue: null});
-	const nextRunRep = nodecg.Replicant('next-run', {defaultValue: null});
-	const checklistRep = nodecg.Replicant('checklist', {defaultValue: []});
+	const scheduleRep = nodecg.Replicant('schedule');
+	const currentRunRep = nodecg.Replicant('current-run');
+	const nextRunRep = nodecg.Replicant('next-run');
+	const checklistRep = nodecg.Replicant('checklist');
 
 	const resetChecklist = () => {
 		if (checklistRep.value) {

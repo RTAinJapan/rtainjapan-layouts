@@ -3,10 +3,8 @@ import defaultChecklist from './default/checklist';
 import {NodeCG} from './nodecg';
 
 export const checklist = (nodecg: NodeCG) => {
-	const checklistRep = nodecg.Replicant('checklist', {
-		defaultValue: defaultChecklist,
-	});
-	if (checklistRep.value) {
+	const checklistRep = nodecg.Replicant('checklist');
+	if (checklistRep.value && checklistRep.value.length > 0) {
 		const currentNameList = checklistRep.value.map((item) => item.name);
 		const defaultNameList = defaultChecklist.map((item) => item.name);
 		if (!isEqual(currentNameList, defaultNameList)) {
@@ -19,6 +17,8 @@ export const checklist = (nodecg: NodeCG) => {
 				checklistRep.value = defaultChecklist;
 			}
 		}
+	} else {
+		checklistRep.value = defaultChecklist;
 	}
 
 	const toggleCheckbox = (payload: {name: string; checked: boolean}) => {

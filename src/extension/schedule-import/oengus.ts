@@ -96,7 +96,7 @@ export const importFromOengus = (nodecg: NodeCG) => {
 
 	logger.info('Using Oengus to import schedule');
 
-	const scheduleRep = nodecg.Replicant('schedule', {defaultValue: []});
+	const scheduleRep = nodecg.Replicant('schedule');
 
 	const updateSchedule = async () => {
 		try {

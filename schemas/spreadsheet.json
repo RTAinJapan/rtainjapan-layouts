@@ -60,5 +60,6 @@
 			}
 		}
 	},
-	"required": ["commentators", "runners", "runs"]
+	"required": ["commentators", "runners", "runs"],
+	"default": {"runs": [], "runners": [], "commentators": []}
 }

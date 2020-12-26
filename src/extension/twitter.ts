@@ -20,7 +20,7 @@ export const twitter = async (nodecg: NodeCG) => {
 		return;
 	}
 
-	const tweetsRep = nodecg.Replicant('tweets', {defaultValue: []});
+	const tweetsRep = nodecg.Replicant('tweets');
 	const addTweet = (newTweet: Tweet) => {
 		if (
 			tweetsRep.value &&

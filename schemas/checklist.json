@@ -10,5 +10,6 @@
 			"complete": {"type": "boolean"}
 		},
 		"required": ["name", "complete"]
-	}
+	},
+	"default": []
 }

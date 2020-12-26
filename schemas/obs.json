@@ -3,12 +3,14 @@
 
 	"type": "object",
 	"properties": {
-		"connected": {"type": "boolean"},
-		"cropEnabled": {"type": "boolean"},
+		"connected": {"type": "boolean", "default": false},
+		"cropEnabled": {"type": "boolean", "default": false},
 		"scenes": {
 			"type": "array",
-			"items": {"$ref": "lib/obs-scene.json"}
+			"items": {"$ref": "lib/obs-scene.json"},
+			"default": []
 		}
 	},
-	"required": ["connected", "cropEnabled", "scenes"]
+	"required": ["connected", "cropEnabled", "scenes"],
+	"default": {}
 }

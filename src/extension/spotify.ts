@@ -21,7 +21,7 @@ export const spotify = async (nodecg: NodeCG) => {
 		return;
 	}
 
-	const spotifyRep = nodecg.Replicant('spotify', {defaultValue: {}});
+	const spotifyRep = nodecg.Replicant('spotify');
 	const redirectUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/spotify-callback/index.html`;
 
 	let currentTrackTimer: NodeJS.Timer | undefined;
@@ -41,6 +41,10 @@ export const spotify = async (nodecg: NodeCG) => {
 	};
 
 	const getCurrentTrack = async () => {
+		if (!spotifyRep.value) {
+			return;
+		}
+
 		try {
 			const token = spotifyRep.value.accessToken;
 			if (!token) {
@@ -91,6 +95,10 @@ export const spotify = async (nodecg: NodeCG) => {
 	};
 
 	const authorize = async (code?: string) => {
+		if (!spotifyRep.value) {
+			return;
+		}
+
 		try {
 			if (!code && !spotifyRep.value.refreshToken) {
 				logger.error(
@@ -157,7 +165,7 @@ export const spotify = async (nodecg: NodeCG) => {
 		authorize(payload.code);
 	});
 
-	if (spotifyRep.value.refreshAt) {
+	if (spotifyRep.value?.refreshAt) {
 		const refreshInMs = spotifyRep.value.refreshAt - Date.now();
 		logger.info(`Refreshing token in ${Math.ceil(refreshInMs / 1000)}`);
 		setTimeout(authorize, refreshInMs);
