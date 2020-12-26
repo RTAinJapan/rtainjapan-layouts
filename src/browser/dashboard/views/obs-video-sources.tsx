@@ -39,7 +39,7 @@ interface State {
 
 const Container = styled.div`
 	display: grid;
-	gridautoflow: row;
+	grid-auto-flow: row;
 	grid-gap: 20px;
 `;
 
@@ -52,7 +52,7 @@ const RowContainer = styled.div`
 const ListContainer = styled.div`
 	padding: 8px;
 	display: grid;
-	gridautoflow: row;
+	grid-auto-flow: row;
 	grid-gap: 20px;
 `;
 
