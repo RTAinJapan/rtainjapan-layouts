@@ -6,7 +6,7 @@
 		"build": "webpack",
 		"clean": "del-cli bundle-analyzer dashboard extension graphics",
 		"dev": "run-p dev:*",
-		"dev:schema-types": "onchange schemas configschema.json -i -- yarn schema-types",
+		"dev:schema-types": "onchange schemas configschema.json -i -- nodecg schema-types -o src/nodecg/generated",
 		"dev:tsc": "yarn typecheck -w --preserveWatchOutput",
 		"dev:webpack": "cross-env WEBPACK_WATCH=true webpack",
 		"format": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --write",
