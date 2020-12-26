@@ -80,7 +80,7 @@ export const obs = (nodecg: NodeCG) => {
 	};
 
 	const connect = () => {
-		const obsAddress = `${obsConfig.host}:${obsConfig.port}`;
+		const obsAddress = `${obsConfig.host}:${obsConfig.port || 4444}`;
 		logger.info(`Connecting to ${obsAddress}`);
 
 		obs
