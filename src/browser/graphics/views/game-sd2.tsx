@@ -10,42 +10,23 @@ import {RtaijOverlay} from '../components/rtaij-overlay';
 import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
+import {calculateClipPath} from '../clip-path-calculator';
+import {useReplicant} from '../../use-replicant';
 
-const {onsite, hasSponsor} = nodecg.bundleConfig;
+const {hasSponsor} = nodecg.bundleConfig;
 
 const StyledContainer = styled(Container)`
 	background-image: url(${background});
-	clip-path: polygon(
-		0px 0px,
-		141px 0px,
-		141px 168px,
-		141px 735px,
-		897px 735px,
-		897px 168px,
-		141px 168px,
-		141px 0px,
-		${onsite &&
-				`
-		750px 0px,
-		750px 750px,
-		750px 1065px,
-		1170px 1065px,
-		1170px 750px,
-		750px 750px,
-		750px 0px,
-		`}
-			1023px 0px,
-		1023px 168px,
-		1023px 735px,
-		1779px 735px,
-		1779px 168px,
-		1023px 168px,
-		1023px 0px,
-		1920px 0px,
-		1920px 1080px,
-		0px 1080px,
-		0px 0px
-	);
+	${(props: {camera: boolean}) => {
+		const boxes: [number, number, number, number][] = [
+			[141, 897, 168, 735],
+			[1023, 1779, 168, 735],
+		];
+		if (props.camera) {
+			boxes.push([750, 1170, 750, 1065]);
+		}
+		return calculateClipPath(boxes);
+	}}
 `;
 
 const bottomStyle = css`
@@ -58,13 +39,13 @@ const bottomStyle = css`
 const GameContainer = styled.div`
 	${bottomStyle};
 	left: 0;
-	width: ${onsite ? '750px' : '50%'};
+	width: ${(props: {camera: boolean}) => (props.camera ? '750px' : '50%')};
 `;
 
 const TimerContainer = styled.div`
 	${bottomStyle};
 	right: ${hasSponsor ? 210 : 0}px;
-	left: ${onsite ? '1170px' : '50%'};
+	left: ${(props: {camera: boolean}) => (props.camera ? '1170px' : '50%')};
 `;
 
 const infoHeights = {
@@ -75,45 +56,50 @@ const infoHeights = {
 const runnerStyle = css`
 	position: absolute;
 	top: ${(100 + 12 + 378 + 10) * 1.5}px;
-	width: ${onsite ? 735 : 756}px;
+	width: ${(props: {camera: boolean}) => (props.camera ? 735 : 756)}px;
 	height: 60px;
 `;
 const LeftRunner = styled.div`
 	${runnerStyle};
-	left: ${onsite ? 15 : 141}px;
+	left: ${(props: {camera: boolean}) => (props.camera ? 15 : 141)}px;
 `;
 
 const RightRunner = styled.div`
 	${runnerStyle};
-	right: ${onsite ? 15 : 141}px;
+	right: ${(props: {camera: boolean}) => (props.camera ? 15 : 141)}px;
 `;
 
 const CommentatorContainer = styled.div`
 	${runnerStyle};
 	top: ${(100 + 12 + 378 + 10 + 40 + 10) * 1.5}px;
-	right: ${onsite ? 15 : 141}px;
-	width: ${onsite ? 735 : 756}px;
+	right: ${(props: {camera: boolean}) => (props.camera ? 15 : 141)}px;
+	width: ${(props: {camera: boolean}) => (props.camera ? 735 : 756)}px;
 `;
 
-const App = () => (
-	<StyledContainer>
-		<LeftRunner>
-			<RtaijRunner index={0} showFinishTime gradientBackground />
-		</LeftRunner>
-		<RightRunner>
-			<RtaijRunner index={1} showFinishTime gradientBackground />
-		</RightRunner>
-		<CommentatorContainer>
-			<RtaijCommentator index={0} gradientBackground />
-		</CommentatorContainer>
-		<GameContainer>
-			<RtaijGame {...infoHeights} />
-		</GameContainer>
-		<TimerContainer>
-			<RtaijTimer {...infoHeights} />
-		</TimerContainer>
-		<RtaijOverlay TweetProps={{rowDirection: true}} bottomHeightPx={180} />
-	</StyledContainer>
-);
+const currentRunRep = nodecg.Replicant('current-run');
+const App = () => {
+	const [currentRun] = useReplicant(currentRunRep);
+	const camera = Boolean(currentRun?.camera);
+	return (
+		<StyledContainer camera={camera}>
+			<LeftRunner camera={camera}>
+				<RtaijRunner index={0} showFinishTime gradientBackground />
+			</LeftRunner>
+			<RightRunner camera={camera}>
+				<RtaijRunner index={1} showFinishTime gradientBackground />
+			</RightRunner>
+			<CommentatorContainer camera={camera}>
+				<RtaijCommentator index={0} gradientBackground />
+			</CommentatorContainer>
+			<GameContainer camera={camera}>
+				<RtaijGame {...infoHeights} />
+			</GameContainer>
+			<TimerContainer camera={camera}>
+				<RtaijTimer {...infoHeights} />
+			</TimerContainer>
+			<RtaijOverlay TweetProps={{rowDirection: true}} bottomHeightPx={180} />
+		</StyledContainer>
+	);
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));
