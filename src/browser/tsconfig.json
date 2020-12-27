@@ -2,6 +2,7 @@
 	"extends": "../../tsconfig",
 	"compilerOptions": {
 		"module": "esnext",
+		"target": "ES2018",
 		"lib": ["esnext", "dom"],
 		"jsx": "react",
 		"noEmit": true,
