@@ -1,5 +1,5 @@
 import delay from 'delay';
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled, {css} from 'styled-components';
 import sample from 'lodash/sample';
 
@@ -30,9 +30,8 @@ import brownLogoAnim6 from '../images/logo/brown/animated-6.gif';
 import brownLogoAnim7 from '../images/logo/brown/animated-7.gif';
 import brownLogoAnim8 from '../images/logo/brown/animated-8.gif';
 import brownLogoAnim9 from '../images/logo/brown/animated-9.gif';
-import {Configschema} from '../../../nodecg/generated/configschema';
 
-const {colorTheme, hasSponsor, sponsor} = nodecg.bundleConfig;
+const {colorTheme, hasSponsor, sponsor = []} = nodecg.bundleConfig;
 
 const logos = (() => {
 	switch (colorTheme) {
@@ -139,7 +138,6 @@ const LogoTainjapan = styled.img`
 `;
 
 type SponsporProps = {
-	opacity: number;
 	left?: boolean;
 };
 const Sponsor = styled.div`
@@ -149,14 +147,6 @@ const Sponsor = styled.div`
 	background: white no-repeat center;
 	box-sizing: border-box;
 	padding: 15px;
-
-	${(props: SponsporProps) => css`
-		& > img,
-		& > video {
-			opacity: ${props.opacity};
-			transition: opacity 1s;
-		}
-	`}
 
 	${(props: SponsporProps) =>
 		props.left
@@ -176,13 +166,19 @@ const Sponsor = styled.div`
 	align-content: center;
 `;
 
-interface State {
-	logoR: string;
-	logoRestTransformed: boolean;
-	currentSponsorLogoIndex: number;
-	sponsorLogo: NonNullable<Configschema['sponsor']>[number] | null;
-	sponsorOpacity: number;
-}
+const sponsorLogoStyle = css`
+	grid-row: 1 / 2;
+	grid-column: 1 / 2;
+	opacity: 0;
+	transition: opacity 0.8s;
+`;
+const SponsorImage = styled.img`
+	${sponsorLogoStyle}
+`;
+const SponsorVideo = styled.video`
+	${sponsorLogoStyle}
+`;
+
 interface Props {
 	isBreak?: boolean;
 	bottomHeightPx: number;
@@ -195,109 +191,132 @@ interface Props {
 	};
 	sponsorLeft?: boolean;
 }
-export class RtaijOverlay extends React.Component<Props, State> {
-	public state: State = {
-		logoR: logos.logoR,
-		logoRestTransformed: false,
-		currentSponsorLogoIndex: 0,
-		sponsorLogo: sponsor?.[0] || null,
-		sponsorOpacity: 1,
-	};
 
-	private readonly logoRInterval = setInterval(async () => {
-		const randomGif = sample(logos.logoAnim);
-		if (!randomGif) {
-			return;
+const useSponsorLogo = (currentlyShowingLogoIndex: number) => {
+	const videoRef = useRef<HTMLVideoElement>(null);
+	const [readyElements, setReadyElements] = useState(0);
+	console.log(readyElements);
+
+	const elements = sponsor.map(({url, type}, index) => {
+		const shouldShow = currentlyShowingLogoIndex % sponsor.length === index;
+
+		switch (type) {
+			case 'image': {
+				return (
+					<SponsorImage
+						key={url}
+						src={url}
+						style={{
+							opacity: readyElements >= sponsor.length && shouldShow ? 1 : 0,
+						}}
+						onLoad={() => {
+							setReadyElements((value) => value + 1);
+						}}
+					></SponsorImage>
+				);
+			}
+			case 'video': {
+				return (
+					<SponsorVideo
+						width={210 * 1.5}
+						height={150 * 1.5}
+						key={url}
+						src={url}
+						style={{
+							opacity: readyElements >= sponsor.length && shouldShow ? 1 : 0,
+						}}
+						ref={videoRef}
+						autoPlay={false}
+						preload='auto'
+						controls={false}
+						loop={false}
+						onCanPlayThrough={() => {
+							setReadyElements((value) => value + 1);
+						}}
+					></SponsorVideo>
+				);
+			}
 		}
-		this.setState({logoR: randomGif});
-		await delay(5000);
-		this.setState({logoR: logos.logoR});
-	}, 77 * 1000);
+	});
 
-	private readonly sponsorInterval = setInterval(async () => {
-		if (!sponsor) {
-			return;
+	return {elements, videoRef};
+};
+
+export const RtaijOverlay: React.FunctionComponent<Props> = (props) => {
+	const [logoR, setLogoR] = useState(logos.logoR);
+	const [logoRestTransformed, setLogoRestTransformed] = useState(false);
+	const [currentSponsorLogoIndex, setCurrentSponsorLogoIndex] = useState(0);
+	const {elements: sponsorElements, videoRef} = useSponsorLogo(
+		currentSponsorLogoIndex,
+	);
+
+	useEffect(() => {
+		const interval = setInterval(async () => {
+			const randomGif = sample(logos.logoAnim);
+			if (!randomGif) {
+				return;
+			}
+			setLogoR(randomGif);
+			await delay(5000);
+			setLogoR(logos.logoR);
+		}, 77 * 1000);
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
+
+	useEffect(() => {
+		const interval = setInterval(async () => {
+			if (!sponsor) {
+				return;
+			}
+			setCurrentSponsorLogoIndex((value) => value + 1);
+			await delay(1000);
+			if (videoRef.current) {
+				videoRef.current.currentTime = 0;
+				videoRef.current.play();
+			}
+		}, 12 * 1000);
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
+
+	const beforeShowingTweet = async () => {
+		if (props.TweetProps?.hideLogo) {
+			setLogoRestTransformed(true);
+			await delay(LOGO_TRANSFORM_DURATION_SECONDS * 1000);
 		}
-		this.setState({sponsorOpacity: 0});
-		await delay(1.5 * 1000);
-		const logo =
-			sponsor[(this.state.currentSponsorLogoIndex + 1) % sponsor.length];
-		this.setState((state) => ({
-			sponsorLogo: logo,
-			sponsorOpacity: 1,
-			currentSponsorLogoIndex: state.currentSponsorLogoIndex + 1,
-		}));
-	}, 12 * 1000);
-
-	public render() {
-		const sponsorLogo = this.state.sponsorLogo;
-
-		const logoComponent =
-			sponsorLogo &&
-			(sponsorLogo.type === 'image' ? (
-				<img src={sponsorLogo.url}></img>
-			) : (
-				<video
-					width={180}
-					height={120}
-					muted
-					autoPlay
-					controls={false}
-					src={sponsorLogo.url}
-					style={{overflow: 'hidden'}}
-				></video>
-			));
-
-		return (
-			<Container>
-				<Top theme={{isBreak: this.props.isBreak}}>
-					<LogoR src={this.state.logoR} />
-					<LogoTaContainer>
-						<LogoTainjapan
-							translated={this.state.logoRestTransformed}
-							src={logos.logoTainjapan}
-						/>
-					</LogoTaContainer>
-				</Top>
-				<Bottom style={{height: `${this.props.bottomHeightPx}px`}}>
-					{hasSponsor && sponsor && (
-						<Sponsor
-							opacity={this.state.sponsorOpacity}
-							left={this.props.sponsorLeft}
-						>
-							{logoComponent}
-						</Sponsor>
-					)}
-				</Bottom>
-				<Tweet
-					{...this.props.TweetProps}
-					beforeShowingTweet={
-						this.props.TweetProps && this.props.TweetProps.hideLogo
-							? this.beforeShowingTweet
-							: undefined
-					}
-					afterShowingTweet={
-						this.props.TweetProps && this.props.TweetProps.hideLogo
-							? this.afterShowingTweet
-							: undefined
-					}
-				/>
-			</Container>
-		);
-	}
-
-	public componentWillUnmount() {
-		clearInterval(this.logoRInterval);
-		clearInterval(this.sponsorInterval);
-	}
-
-	private readonly beforeShowingTweet = async () => {
-		this.setState({logoRestTransformed: true});
-		await delay(LOGO_TRANSFORM_DURATION_SECONDS * 1000);
 	};
 
-	private readonly afterShowingTweet = async () => {
-		this.setState({logoRestTransformed: false});
-		await delay(LOGO_TRANSFORM_DURATION_SECONDS * 1000);
+	const afterShowingTweet = async () => {
+		if (props.TweetProps?.hideLogo) {
+			setLogoRestTransformed(false);
+			await delay(LOGO_TRANSFORM_DURATION_SECONDS * 1000);
+		}
 	};
-}
+
+	return (
+		<Container>
+			<Top theme={{isBreak: props.isBreak}}>
+				<LogoR src={logoR} />
+				<LogoTaContainer>
+					<LogoTainjapan
+						translated={logoRestTransformed}
+						src={logos.logoTainjapan}
+					/>
+				</LogoTaContainer>
+			</Top>
+			<Bottom style={{height: `${props.bottomHeightPx}px`}}>
+				{hasSponsor && sponsor && (
+					<Sponsor left={props.sponsorLeft}>{sponsorElements}</Sponsor>
+				)}
+			</Bottom>
+			<Tweet
+				{...props.TweetProps}
+				beforeShowingTweet={beforeShowingTweet}
+				afterShowingTweet={afterShowingTweet}
+			/>
+		</Container>
+	);
+};

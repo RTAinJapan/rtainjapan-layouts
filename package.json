@@ -258,7 +258,8 @@
 				"name": "sponsorLogos",
 				"title": "スポンサーロゴ",
 				"allowedTypes": [
-					"png"
+					"png",
+					"mov"
 				]
 			}
 		],
