@@ -10,35 +10,20 @@ import {RtaijOverlay} from '../components/rtaij-overlay';
 import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
+import {useReplicant} from '../../use-replicant';
+import {calculateClipPath} from '../clip-path-calculator';
 
-const {onsite, hasSponsor} = nodecg.bundleConfig;
+const {hasSponsor} = nodecg.bundleConfig;
 
 const StyledContainer = styled(Container)`
 	background-image: url(${background});
-	clip-path: polygon(
-		0px 0px,
-		${onsite &&
-				`
-		15px 0px,
-		15px 687px,
-		15px 1065px,
-		687px 1065px,
-		687px 687px,
-		15px 687px,
-		15px 0px,
-		`}
-			705px 0px,
-		705px 15px,
-		705px 915px,
-		1905px 915px,
-		1905px 15px,
-		705px 15px,
-		705px 0px,
-		1920px 0px,
-		1920px 1080px,
-		0px 1080px,
-		0px 0px
-	);
+	${(props: {camera: boolean}) => {
+		const boxes: [number, number, number, number][] = [[705, 1905, 15, 915]];
+		if (props.camera) {
+			boxes.push([15, 687, 687, 1065]);
+		}
+		return calculateClipPath(boxes);
+	}}
 `;
 
 const InfoContainer = styled.div`
@@ -57,7 +42,7 @@ const InfoContainer = styled.div`
 
 const participantStyle = css`
 	position: absolute;
-	left: ${onsite ? 687 : 30}px;
+	left: ${(props: {camera: boolean}) => (props.camera ? 687 : 30)}px;
 	right: ${hasSponsor ? 240 : 30}px;
 	height: 60px;
 `;
@@ -72,23 +57,28 @@ const CommentatorContainer = styled.div`
 	bottom: 15px;
 `;
 
-const App = () => (
-	<StyledContainer>
-		<InfoContainer>
-			<RtaijGame gradientBackground primaryHeight={100} />
-			<RtaijTimer gradientBackground primaryHeight={100} />
-		</InfoContainer>
-		<RunnerContainer>
-			<RtaijRunner index={0} />
-		</RunnerContainer>
-		<CommentatorContainer>
-			<RtaijCommentator index={0} />
-		</CommentatorContainer>
-		<RtaijOverlay
-			TweetProps={{widthPx: 360 * 1.5, hideLogo: true}}
-			bottomHeightPx={150}
-		/>
-	</StyledContainer>
-);
+const currentRunRep = nodecg.Replicant('current-run');
+const App: React.FunctionComponent = () => {
+	const [currentRun] = useReplicant(currentRunRep);
+
+	return (
+		<StyledContainer camera={Boolean(currentRun?.camera)}>
+			<InfoContainer>
+				<RtaijGame gradientBackground primaryHeight={100} />
+				<RtaijTimer gradientBackground primaryHeight={100} />
+			</InfoContainer>
+			<RunnerContainer camera={Boolean(currentRun?.camera)}>
+				<RtaijRunner index={0} />
+			</RunnerContainer>
+			<CommentatorContainer camera={Boolean(currentRun?.camera)}>
+				<RtaijCommentator index={0} />
+			</CommentatorContainer>
+			<RtaijOverlay
+				TweetProps={{widthPx: 360 * 1.5, hideLogo: true}}
+				bottomHeightPx={150}
+			/>
+		</StyledContainer>
+	);
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));
