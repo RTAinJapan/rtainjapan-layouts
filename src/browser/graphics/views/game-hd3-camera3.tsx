@@ -1,6 +1,6 @@
 import '../styles/common.css';
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {Container} from '../components/lib/styled';
@@ -11,37 +11,18 @@ import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
 import {CameraPlaceholder} from '../components/camera-placeholder';
 import {RtaijCommentator} from '../components/rtaij-commentator';
+import {useReplicant} from '../../use-replicant';
+import {calculateClipPath} from '../clip-path-calculator';
 
 const StyledContainer = styled(Container)`
 	background-image: url(${background});
-	clip-path: polygon(
-		0px 0px,
-		370px 0px,
-		370px 545px,
-		370px 977px,
-		1130px 977px,
-		1130px 545px,
-		370px 545px,
-		370px 0px,
-		1145px 0px,
-		1145px 13px,
-		1145px 445px,
-		1905px 445px,
-		1905px 13px,
-		1145px 13px,
-		1145px 0px,
-		1145px 0px,
-		1145px 545px,
-		1145px 977px,
-		1905px 977px,
-		1905px 545px,
-		1145px 545px,
-		1145px 0px,
-		1920px 0px,
-		1920px 1080px,
-		0px 1080px,
-		0px 0px
-	);
+	${(props: {additionalBoxes: Array<[number, number, number, number]>}) =>
+		calculateClipPath([
+			[1920 - 15 - 760, 1920 - 15, 13, 13 + 432],
+			[370, 370 + 760, 150 + 395, 150 + 395 + 432],
+			[1920 - 15 - 760, 1920 - 15, 150 + 395, 150 + 395 + 432],
+			...props.additionalBoxes,
+		])}
 `;
 
 const InfoContainer = styled.div`
@@ -70,55 +51,90 @@ const StyledCameraPlaceholder = styled(CameraPlaceholder)`
 	height: 90px;
 `;
 
-const App = () => (
-	<StyledContainer>
-		<InfoContainer>
-			<RtaijGame gradientBackground primaryHeight={100} />
-			<RtaijTimer gradientBackground primaryHeight={100} />
-		</InfoContainer>
-		<RunnerContainer style={{top: `${13 + 432}px`, right: `${160 + 15}px`}}>
-			<RtaijRunner columnDirection index={0} gradientBackground />
-		</RunnerContainer>
-		<StyledCameraPlaceholder
-			style={{top: `${13 + 432}px`, right: '15px'}}
-		></StyledCameraPlaceholder>
-		<RunnerContainer style={{bottom: '13px', left: `${15 + 340 + 15}px`}}>
-			<RtaijRunner columnDirection index={1} />
-		</RunnerContainer>
-		<StyledCameraPlaceholder
-			style={{bottom: '13px', right: `${15 + 760 + 15}px`}}
-		></StyledCameraPlaceholder>
-		<RunnerContainer style={{bottom: '13px', right: `${160 + 15}px`}}>
-			<RtaijRunner columnDirection index={2} />
-		</RunnerContainer>
-		<StyledCameraPlaceholder
-			style={{bottom: '13px', right: '15px'}}
-		></StyledCameraPlaceholder>
-		<div
-			style={{
-				position: 'absolute',
-				left: '15px',
-				bottom: `${150 + 15}px`,
-				height: '90px',
-				width: '340px',
-			}}
-		>
-			<RtaijCommentator
-				index={0}
-				columnDirection
-				gradientBackground
-			></RtaijCommentator>
-		</div>
-		<RtaijOverlay
-			TweetProps={{
-				maxHeightPx: 615,
-				widthPx: 355,
-				leftAttached: true,
-			}}
-			bottomHeightPx={150}
-			sponsorLeft
-		/>
-	</StyledContainer>
-);
+const currentRunRep = nodecg.Replicant('current-run');
+const App: React.FunctionComponent = () => {
+	const [currentRun] = useReplicant(currentRunRep);
+	const [additionalBoxes, setAdditionalBoxes] = useState<
+		Array<[number, number, number, number]>
+	>([]);
+
+	useEffect(() => {
+		if (!currentRun) {
+			return;
+		}
+		const cameraHoles: Array<[number, number, number, number]> = [];
+		if (currentRun.runners[0].camera) {
+			cameraHoles.push([1920 - 15 - 160, 1920 - 15, 13 + 432, 13 + 432 + 90]);
+		}
+		if (currentRun.runners[1].camera) {
+			cameraHoles.push([
+				1920 - 15 - 760 - 15 - 160,
+				1920 - 15 - 760 - 15,
+				150 + 395 + 432,
+				1080 - 13,
+			]);
+		}
+		if (currentRun.runners[2].camera) {
+			cameraHoles.push([
+				1920 - 15 - 160,
+				1920 - 15,
+				150 + 395 + 432,
+				1080 - 13,
+			]);
+		}
+		setAdditionalBoxes(cameraHoles);
+	}, [currentRun]);
+
+	return (
+		<StyledContainer additionalBoxes={additionalBoxes}>
+			<InfoContainer>
+				<RtaijGame gradientBackground primaryHeight={100} />
+				<RtaijTimer gradientBackground primaryHeight={100} />
+			</InfoContainer>
+			<RunnerContainer style={{top: `${13 + 432}px`, right: `${160 + 15}px`}}>
+				<RtaijRunner columnDirection index={0} gradientBackground />
+			</RunnerContainer>
+			<StyledCameraPlaceholder
+				style={{top: `${13 + 432}px`, right: '15px'}}
+			></StyledCameraPlaceholder>
+			<RunnerContainer style={{bottom: '13px', left: `${15 + 340 + 15}px`}}>
+				<RtaijRunner columnDirection index={1} />
+			</RunnerContainer>
+			<StyledCameraPlaceholder
+				style={{bottom: '13px', right: `${15 + 760 + 15}px`}}
+			></StyledCameraPlaceholder>
+			<RunnerContainer style={{bottom: '13px', right: `${160 + 15}px`}}>
+				<RtaijRunner columnDirection index={2} />
+			</RunnerContainer>
+			<StyledCameraPlaceholder
+				style={{bottom: '13px', right: '15px'}}
+			></StyledCameraPlaceholder>
+			<div
+				style={{
+					position: 'absolute',
+					left: '15px',
+					bottom: `${150 + 15}px`,
+					height: '90px',
+					width: '340px',
+				}}
+			>
+				<RtaijCommentator
+					index={0}
+					columnDirection
+					gradientBackground
+				></RtaijCommentator>
+			</div>
+			<RtaijOverlay
+				TweetProps={{
+					maxHeightPx: 615,
+					widthPx: 355,
+					leftAttached: true,
+				}}
+				bottomHeightPx={150}
+				sponsorLeft
+			/>
+		</StyledContainer>
+	);
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));

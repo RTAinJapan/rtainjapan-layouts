@@ -9,6 +9,10 @@ export interface Configschema {
 	onsite?: boolean;
 	colorTheme?: 'blue' | 'brown';
 	hasSponsor?: boolean;
+	sponsor?: {
+		url: string;
+		type: 'image' | 'video';
+	}[];
 	twitter?: {
 		targetWords: string[];
 		consumerKey: string;

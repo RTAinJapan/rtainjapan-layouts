@@ -11,6 +11,18 @@
 			"default": "brown"
 		},
 		"hasSponsor": {"type": "boolean", "default": true},
+		"sponsor": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["url", "type"],
+				"properties": {
+					"url": {"type": "string"},
+					"type": {"type": "string", "enum": ["image", "video"]}
+				}
+			}
+		},
 		"twitter": {
 			"type": "object",
 			"additionalProperties": false,
