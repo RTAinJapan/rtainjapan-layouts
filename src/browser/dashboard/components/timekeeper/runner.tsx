@@ -5,7 +5,7 @@ import Cancel from '@material-ui/icons/Cancel';
 import Edit from '@material-ui/icons/Edit';
 import Flag from '@material-ui/icons/Flag';
 import Undo from '@material-ui/icons/Undo';
-import React from 'react';
+import React, {useState} from 'react';
 import styled, {css} from 'styled-components';
 import {Timer} from '../../../../nodecg/replicants';
 import {ColoredButton} from '../lib/colored-button';
@@ -56,10 +56,6 @@ const EmptySlot = styled.div`
 	text-align: center;
 `;
 
-interface State {
-	isModalOpened: boolean;
-}
-
 interface Props {
 	runner: string | undefined;
 	checklistCompleted: boolean;
@@ -67,30 +63,27 @@ interface Props {
 	index: number;
 }
 
-export class Runner extends React.Component<Props, State> {
-	public state: State = {isModalOpened: false};
+export const Runner: React.FunctionComponent<Props> = (props) => {
+	const [isModalOpened, setIsModalOpened] = useState(false);
 
-	public render() {
+	if (!props.runner) {
 		return (
-			<Container index={this.props.index}>{this.renderContent()}</Container>
+			<Container index={props.index}>
+				<EmptySlot>― EMPTY SLOT ―</EmptySlot>
+			</Container>
 		);
 	}
 
-	private renderContent() {
-		const {props} = this;
-		if (!props.runner) {
-			return <EmptySlot>― EMPTY SLOT ―</EmptySlot>;
-		}
+	const result = props.timer.results[props.index];
+	const shouldShowResume = Boolean(result);
+	const shouldDisableEdit = !shouldShowResume;
+	const shouldShowFinish = Boolean(!result || result.forfeit);
+	const shouldShowForfeit = Boolean(!result || !result.forfeit);
+	const status = result ? result.formatted : 'Running';
+	const defaultEditValue = result ? result.formatted : '00:00';
 
-		const result = props.timer.results[props.index];
-		const shouldShowResume = Boolean(result);
-		const shouldDisableEdit = !shouldShowResume;
-		const shouldShowFinish = Boolean(!result || result.forfeit);
-		const shouldShowForfeit = Boolean(!result || !result.forfeit);
-		const status = result ? result.formatted : 'Running';
-		const defaultEditValue = result ? result.formatted : '00:00';
-
-		return (
+	return (
+		<Container index={props.index}>
 			<RunnerContainer>
 				<div>
 					<RunnerName>{props.runner}</RunnerName>
@@ -102,7 +95,12 @@ export class Runner extends React.Component<Props, State> {
 							color={green}
 							ButtonProps={{
 								fullWidth: true,
-								onClick: this.completeRunner,
+								onClick: () => {
+									nodecg.sendMessage('completeRunner', {
+										index: props.index,
+										forfeit: false,
+									});
+								},
 							}}
 						>
 							<Flag />
@@ -114,7 +112,9 @@ export class Runner extends React.Component<Props, State> {
 							color={green}
 							ButtonProps={{
 								fullWidth: true,
-								onClick: this.resumeRunner,
+								onClick: () => {
+									nodecg.sendMessage('resumeRunner', props.index);
+								},
 							}}
 						>
 							<Undo />
@@ -126,7 +126,12 @@ export class Runner extends React.Component<Props, State> {
 							color={blueGrey}
 							ButtonProps={{
 								fullWidth: true,
-								onClick: this.forfeitRunner,
+								onClick: () => {
+									nodecg.sendMessage('completeRunner', {
+										index: props.index,
+										forfeit: true,
+									});
+								},
 							}}
 						>
 							<Cancel />
@@ -137,7 +142,9 @@ export class Runner extends React.Component<Props, State> {
 						color={grey}
 						ButtonProps={{
 							fullWidth: true,
-							onClick: this.startEdit,
+							onClick: () => {
+								setIsModalOpened(true);
+							},
 							disabled: shouldDisableEdit,
 						}}
 					>
@@ -147,46 +154,18 @@ export class Runner extends React.Component<Props, State> {
 				</ButtonContainer>
 				<EditTimeModal
 					defaultValue={defaultEditValue}
-					open={this.state.isModalOpened}
-					onFinish={this.onEditFinish}
+					open={isModalOpened}
+					onFinish={(value?: string) => {
+						if (value) {
+							nodecg.sendMessage('editTime', {
+								index: props.index,
+								newTime: value,
+							});
+						}
+						setIsModalOpened(false);
+					}}
 				/>
 			</RunnerContainer>
-		);
-	}
-
-	private readonly startEdit = () => {
-		this.setState({
-			isModalOpened: true,
-		});
-	};
-
-	private readonly onEditFinish = (value?: string) => {
-		if (value) {
-			nodecg.sendMessage('editTime', {
-				index: this.props.index,
-				newTime: value,
-			});
-		}
-		this.setState({
-			isModalOpened: false,
-		});
-	};
-
-	private readonly completeRunner = () => {
-		nodecg.sendMessage('completeRunner', {
-			index: this.props.index,
-			forfeit: false,
-		});
-	};
-
-	private readonly resumeRunner = () => {
-		nodecg.sendMessage('resumeRunner', this.props.index);
-	};
-
-	private readonly forfeitRunner = () => {
-		nodecg.sendMessage('completeRunner', {
-			index: this.props.index,
-			forfeit: true,
-		});
-	};
-}
+		</Container>
+	);
+};
