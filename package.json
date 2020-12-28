@@ -178,11 +178,6 @@
 				"height": 1080
 			},
 			{
-				"file": "game-ds1.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
 				"file": "game-gb1.html",
 				"width": 1920,
 				"height": 1080
@@ -228,17 +223,27 @@
 				"height": 1080
 			},
 			{
+				"file": "game-ds1.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "game-ds1-flat.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "game-ds2-camera2.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
 				"file": "game-3ds1.html",
 				"width": 1920,
 				"height": 1080
 			},
 			{
 				"file": "game-3ds2.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-ds1-flat.html",
 				"width": 1920,
 				"height": 1080
 			},
