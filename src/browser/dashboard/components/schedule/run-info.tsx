@@ -81,7 +81,7 @@ export class RunInfo extends React.Component<{
 
 	private readonly renderRunners = () =>
 		this.runners().map((runner, index) => (
-			<LabeledDiv key={runner.name}>
+			<LabeledDiv key={`runner${runner?.name}${index}`}>
 				<Typography variant='caption'>走者{index}</Typography>
 				<div>{runner && runner.name}</div>
 			</LabeledDiv>
@@ -89,7 +89,7 @@ export class RunInfo extends React.Component<{
 
 	private readonly renderCommentators = () =>
 		this.commentators().map((commentator, index) => (
-			<LabeledDiv key={commentator.name}>
+			<LabeledDiv key={`commentator${commentator?.name}${index}`}>
 				<Typography variant='caption'>解説{index}</Typography>
 				<div>{commentator && commentator.name}</div>
 			</LabeledDiv>
