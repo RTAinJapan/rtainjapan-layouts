@@ -1,52 +1,45 @@
-type Coor = [number, number];
-type BoxCoor = [Coor, Coor, Coor, Coor];
+import {css} from 'styled-components';
 
-const makeBoxCoor = (
-	x1: number,
-	x2: number,
-	y1: number,
-	y2: number,
-): BoxCoor => {
-	return [
+export type X = number;
+export type Y = number;
+export type Coordinate = [X, Y];
+export type BoxCornerCoordinates = [
+	Coordinate,
+	Coordinate,
+	Coordinate,
+	Coordinate,
+];
+export type Box = [X, X, Y, Y];
+
+const calcCorners = ([x1, x2, y1, y2]: Box) => {
+	const boxCorners: BoxCornerCoordinates = [
 		[x1, y1],
 		[x1, y2],
 		[x2, y1],
 		[x2, y2],
 	];
+	boxCorners.sort((a, b) => (a[0] === b[0] ? a[1] - b[1] : a[0] - b[0]));
+	return [
+		boxCorners[0],
+		boxCorners[1],
+		boxCorners[3],
+		boxCorners[2],
+		boxCorners[0],
+	];
 };
 
-const sortBoxCoor = (boxCoor: BoxCoor): Coor[] => {
-	boxCoor.sort((a, b) => (a[0] === b[0] ? a[1] - b[1] : a[0] - b[0]));
-	return [boxCoor[0], boxCoor[1], boxCoor[3], boxCoor[2], boxCoor[0]];
-};
-
-const makeCoors = (
-	width: number,
-	height: number,
-	...boxCoors: Coor[][]
-): Coor[] => {
-	boxCoors.sort((a, b) => a[0][0] - b[0][0]);
-	const res: Coor[] = [[0, 0]];
-	for (const boxCoor of boxCoors) {
-		const entry: Coor = [boxCoor[0][0], 0];
-		res.push(entry, ...boxCoor, entry);
+export const calculateClipPath = (boxes: Box[]) => {
+	const boxCornersList = boxes.map((box) => calcCorners(box));
+	boxCornersList.sort((a, b) => a[0][0] - b[0][0]);
+	const clipPath: Coordinate[] = [[0, 0]];
+	for (const boxCorners of boxCornersList) {
+		const entryCoordinate: Coordinate = [boxCorners[0][0], 0];
+		clipPath.push(entryCoordinate, ...boxCorners, entryCoordinate);
 	}
-	res.push([width, 0], [width, height], [0, height], [0, 0]);
-	return res;
-};
-
-const outputCss = (coors: Coor[]) => {
-	const polygon = coors
-		.map((coor) => coor.map((n) => `${n}px`).join(' '))
-		.join(', ');
-	const css = `clip-path: polygon(${polygon});`;
-	return css;
-};
-
-export const calculateClipPath = (
-	xxyy: Array<[number, number, number, number]>,
-) => {
-	return outputCss(
-		makeCoors(1920, 1080, ...xxyy.map((a) => sortBoxCoor(makeBoxCoor(...a)))),
-	);
+	clipPath.push([1920, 0], [1920, 1080], [0, 1080], [0, 0]);
+	return css`
+		clip-path: polygon(
+			${clipPath.map((coor) => coor.map((n) => `${n}px`).join(' ')).join(',')}
+		);
+	`;
 };

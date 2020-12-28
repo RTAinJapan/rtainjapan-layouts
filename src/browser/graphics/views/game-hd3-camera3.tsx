@@ -12,18 +12,13 @@ import {background} from '../images/background';
 import {CameraPlaceholder} from '../components/camera-placeholder';
 import {RtaijCommentator} from '../components/rtaij-commentator';
 import {useReplicant} from '../../use-replicant';
-import {calculateClipPath} from '../clip-path-calculator';
+import {Box} from '../clip-path-calculator';
 
-const StyledContainer = styled(Container)`
-	background-image: url(${background});
-	${(props: {additionalBoxes: Array<[number, number, number, number]>}) =>
-		calculateClipPath([
-			[1920 - 15 - 760, 1920 - 15, 13, 13 + 432],
-			[370, 370 + 760, 150 + 395, 150 + 395 + 432],
-			[1920 - 15 - 760, 1920 - 15, 150 + 395, 150 + 395 + 432],
-			...props.additionalBoxes,
-		])}
-`;
+const gameBoxes: Box[] = [
+	[1920 - 15 - 760, 1920 - 15, 13, 13 + 432],
+	[370, 370 + 760, 150 + 395, 150 + 395 + 432],
+	[1920 - 15 - 760, 1920 - 15, 150 + 395, 150 + 395 + 432],
+];
 
 const InfoContainer = styled.div`
 	position: absolute;
@@ -54,19 +49,17 @@ const StyledCameraPlaceholder = styled(CameraPlaceholder)`
 const currentRunRep = nodecg.Replicant('current-run');
 const App: React.FunctionComponent = () => {
 	const [currentRun] = useReplicant(currentRunRep);
-	const [additionalBoxes, setAdditionalBoxes] = useState<
-		Array<[number, number, number, number]>
-	>([]);
+	const [additionalBoxes, setAdditionalBoxes] = useState<Array<Box>>([]);
 
 	useEffect(() => {
 		if (!currentRun) {
 			return;
 		}
-		const cameraHoles: Array<[number, number, number, number]> = [];
-		if (currentRun.runners[0].camera) {
+		const cameraHoles: Array<Box> = [];
+		if (currentRun.runners[0]?.camera) {
 			cameraHoles.push([1920 - 15 - 160, 1920 - 15, 13 + 432, 13 + 432 + 90]);
 		}
-		if (currentRun.runners[1].camera) {
+		if (currentRun.runners[1]?.camera) {
 			cameraHoles.push([
 				1920 - 15 - 760 - 15 - 160,
 				1920 - 15 - 760 - 15,
@@ -74,7 +67,7 @@ const App: React.FunctionComponent = () => {
 				1080 - 13,
 			]);
 		}
-		if (currentRun.runners[2].camera) {
+		if (currentRun.runners[2]?.camera) {
 			cameraHoles.push([
 				1920 - 15 - 160,
 				1920 - 15,
@@ -86,7 +79,10 @@ const App: React.FunctionComponent = () => {
 	}, [currentRun]);
 
 	return (
-		<StyledContainer additionalBoxes={additionalBoxes}>
+		<Container
+			backgroundImage={background}
+			clipBoxes={[...gameBoxes, ...additionalBoxes]}
+		>
 			<InfoContainer>
 				<RtaijGame gradientBackground primaryHeight={100} />
 				<RtaijTimer gradientBackground primaryHeight={100} />
@@ -133,7 +129,7 @@ const App: React.FunctionComponent = () => {
 				bottomHeightPx={150}
 				sponsorLeft
 			/>
-		</StyledContainer>
+		</Container>
 	);
 };
 

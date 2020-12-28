@@ -10,30 +10,13 @@ import {UpcomingRun} from '../components/upcoming-run';
 import notificationIconBlue from '../images/break/notification-blue.png';
 import notificationIconBrown from '../images/break/notification-brown.png';
 import {Schedule, CurrentRun} from '../../../nodecg/replicants';
+import {Box} from '../clip-path-calculator';
 
 const currentRunRep = nodecg.Replicant('current-run');
 const scheduleRep = nodecg.Replicant('schedule');
 const {onsite, colorTheme} = nodecg.bundleConfig;
 
-const StyledContainer = styled(Container)`
-	${onsite &&
-		css`
-			clip-path: polygon(
-				0px 0px,
-				15px 0px,
-				15px 714px,
-				15px 1065px,
-				639px 1065px,
-				639px 714px,
-				15px 714px,
-				15px 0px,
-				1920px 0px,
-				1920px 1080px,
-				0px 1080px,
-				0px 0px
-			);
-		`}
-`;
+const cameraBox: Box = [15, 639, 714, 1065];
 
 const NotificationIcon = styled.img`
 	position: absolute;
@@ -121,7 +104,7 @@ class Break extends React.Component<{}, State> {
 			this.state.currentRunIndex + 3,
 		);
 		return (
-			<StyledContainer>
+			<Container backgroundImage={null} clipBoxes={onsite ? [cameraBox] : []}>
 				<RtaijOverlay
 					bottomHeightPx={150}
 					isBreak
@@ -150,7 +133,7 @@ class Break extends React.Component<{}, State> {
 						{`♪ ${this.state.currentTrack.name} / ${this.state.currentTrack.album} / Copyright © Nihon Falcom Corporation`}
 					</CurrentTrackContainer>
 				)}
-			</StyledContainer>
+			</Container>
 		);
 	}
 

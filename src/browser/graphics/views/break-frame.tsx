@@ -13,7 +13,6 @@ import notificationIconBlue from '../images/break/notification-blue.png';
 import notificationIconBrown from '../images/break/notification-brown.png';
 
 const Root = styled(Container)`
-	background-image: url(${frame});
 	font-family: 'MigMix 2P';
 `;
 
@@ -210,7 +209,7 @@ const Break: React.FunctionComponent = () => {
 	const thirdNextRun = schedule[currentRunIndex + 2];
 
 	return (
-		<Root>
+		<Root backgroundImage={frame} clipBoxes={[]}>
 			<FrameContainer>
 				<NextGame>
 					<NextGameHeader>次のゲーム</NextGameHeader>

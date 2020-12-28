@@ -13,7 +13,6 @@ import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
 
 const StyledContainer = styled(Container)`
-	background-image: url(${background});
 	clip-path: polygon(
 		0px 0px,
 		15px 0px,
@@ -93,8 +92,9 @@ const StyledRuler = styled(Ruler)`
 	height: ${225 - 30}px;
 `;
 
+// TODO: game/timer boxes are overwrapping when with camera
 const App = () => (
-	<StyledContainer>
+	<StyledContainer backgroundImage={background} clipBoxes={[]}>
 		<Runner>
 			<RtaijRunner index={0} showFinishTime gradientBackground />
 		</Runner>

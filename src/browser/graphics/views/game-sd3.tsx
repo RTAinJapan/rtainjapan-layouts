@@ -14,8 +14,8 @@ import {background} from '../images/background';
 
 const {onsite, hasSponsor} = nodecg.bundleConfig;
 
+// TODO: Use box coordinates
 const StyledContainer = styled(Container)`
-	background-image: url(${background});
 	clip-path: polygon(
 		0px 0px,
 		15px 0px,
@@ -96,7 +96,7 @@ const StyledRuler = styled(Ruler)`
 `;
 
 const App = () => (
-	<StyledContainer>
+	<StyledContainer clipBoxes={[]} backgroundImage={background}>
 		<Runner style={{left: '15px'}}>
 			<RtaijRunner index={0} hideLabel showFinishTime gradientBackground />
 		</Runner>

@@ -11,7 +11,6 @@ import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
 
 const StyledContainer = styled(Container)`
-	background-image: url(${background});
 	clip-path: polygon(
 		0px 0px,
 		96px 0px,
@@ -63,7 +62,7 @@ const RunnerContainer = styled.div`
 `;
 
 const App = () => (
-	<StyledContainer>
+	<StyledContainer clipBoxes={[]} backgroundImage={background}>
 		<InfoContainer>
 			<RtaijGame gradientBackground primaryHeight={100} />
 			<RtaijTimer gradientBackground primaryHeight={100} />

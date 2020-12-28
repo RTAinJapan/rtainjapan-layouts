@@ -10,24 +10,16 @@ import {RtaijOverlay} from '../components/rtaij-overlay';
 import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
-import {calculateClipPath} from '../clip-path-calculator';
 import {useReplicant} from '../../use-replicant';
+import {Box} from '../clip-path-calculator';
 
 const {hasSponsor} = nodecg.bundleConfig;
 
-const StyledContainer = styled(Container)`
-	background-image: url(${background});
-	${(props: {camera: boolean}) => {
-		const boxes: [number, number, number, number][] = [
-			[141, 897, 168, 735],
-			[1023, 1779, 168, 735],
-		];
-		if (props.camera) {
-			boxes.push([750, 1170, 750, 1065]);
-		}
-		return calculateClipPath(boxes);
-	}}
-`;
+const gameBoxes: Box[] = [
+	[141, 897, 168, 735],
+	[1023, 1779, 168, 735],
+];
+const cameraBoxes: Box[] = [[750, 1170, 750, 1065]];
 
 const bottomStyle = css`
 	position: absolute;
@@ -81,7 +73,10 @@ const App = () => {
 	const [currentRun] = useReplicant(currentRunRep);
 	const camera = Boolean(currentRun?.camera);
 	return (
-		<StyledContainer camera={camera}>
+		<Container
+			clipBoxes={camera ? [...gameBoxes, ...cameraBoxes] : gameBoxes}
+			backgroundImage={background}
+		>
 			<LeftRunner camera={camera}>
 				<RtaijRunner index={0} showFinishTime gradientBackground />
 			</LeftRunner>
@@ -98,7 +93,7 @@ const App = () => {
 				<RtaijTimer {...infoHeights} />
 			</TimerContainer>
 			<RtaijOverlay TweetProps={{rowDirection: true}} bottomHeightPx={180} />
-		</StyledContainer>
+		</Container>
 	);
 };
 

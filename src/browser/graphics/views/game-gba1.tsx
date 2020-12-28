@@ -10,36 +10,13 @@ import {RtaijOverlay} from '../components/rtaij-overlay';
 import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
+import {Box} from '../clip-path-calculator';
+import {useReplicant} from '../../use-replicant';
 
-const {onsite, hasSponsor} = nodecg.bundleConfig;
+const {hasSponsor} = nodecg.bundleConfig;
 
-const StyledContainer = styled(Container)`
-	background-image: url(${background});
-	clip-path: polygon(
-		0px 0px,
-		${onsite &&
-				`
-		54px 0px,
-		54px 686px,
-		54px 1065px,
-		726px 1065px,
-		726px 686px,
-		54px 686px,
-		54px 0px,
-		`}
-			741px 0px,
-		741px 165px,
-		741px 915px,
-		1851px 915px,
-		1851px 165px,
-		741px 165px,
-		741px 0px,
-		1920px 0px,
-		1920px 1080px,
-		0px 1080px,
-		0px 0px
-	);
-`;
+const gameBox: Box = [741, 1851, 165, 915];
+const cameraBox: Box = [54, 726, 686, 1065];
 
 const InfoContainer = styled.div`
 	position: absolute;
@@ -58,7 +35,7 @@ const InfoContainer = styled.div`
 const RunnerContainer = styled.div`
 	position: absolute;
 	bottom: 75px;
-	left: ${onsite ? 54 + 672 : 30}px;
+	left: ${(props: {camera: boolean}) => (props.camera ? 54 + 672 : 30)}px;
 	right: ${hasSponsor ? 240 : 30}px;
 	height: 60px;
 `;
@@ -67,20 +44,28 @@ const CommentatorContainer = styled(RunnerContainer)`
 	bottom: 15px;
 `;
 
-const App = () => (
-	<StyledContainer>
-		<InfoContainer>
-			<RtaijGame gradientBackground primaryHeight={100} />
-			<RtaijTimer gradientBackground primaryHeight={100} />
-		</InfoContainer>
-		<RunnerContainer>
-			<RtaijRunner index={0} />
-		</RunnerContainer>
-		<CommentatorContainer>
-			<RtaijCommentator index={0} />
-		</CommentatorContainer>
-		<RtaijOverlay TweetProps={{rowDirection: true}} bottomHeightPx={150} />
-	</StyledContainer>
-);
+const currentRunRep = nodecg.Replicant('current-run');
+const App = () => {
+	const [currentRun] = useReplicant(currentRunRep);
+	const camera = Boolean(currentRun?.camera);
+	return (
+		<Container
+			backgroundImage={background}
+			clipBoxes={camera ? [gameBox, cameraBox] : [gameBox]}
+		>
+			<InfoContainer>
+				<RtaijGame gradientBackground primaryHeight={100} />
+				<RtaijTimer gradientBackground primaryHeight={100} />
+			</InfoContainer>
+			<RunnerContainer camera={camera}>
+				<RtaijRunner index={0} />
+			</RunnerContainer>
+			<CommentatorContainer camera={camera}>
+				<RtaijCommentator index={0} />
+			</CommentatorContainer>
+			<RtaijOverlay TweetProps={{rowDirection: true}} bottomHeightPx={150} />
+		</Container>
+	);
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));

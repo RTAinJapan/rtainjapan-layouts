@@ -11,43 +11,16 @@ import {RtaijOverlay} from '../components/rtaij-overlay';
 import {RtaijRunner} from '../components/rtaij-runner';
 import {RtaijTimer} from '../components/rtaij-timer';
 import {background} from '../images/background';
+import {Box} from '../clip-path-calculator';
+import {useReplicant} from '../../use-replicant';
 
-const {onsite, hasSponsor} = nodecg.bundleConfig;
+const {hasSponsor} = nodecg.bundleConfig;
 
-const StyledContainer = styled(Container)`
-	background-image: url(${background});
-	clip-path: polygon(
-		0px 0px,
-		${onsite &&
-				`
-			15px 0px,
-			15px 705px,
-			15px 1065px,
-			495px 1065px,
-			495px 705px,
-			15px 705px,
-			15px 0px,
-		`}
-			202px 0px,
-		202px 240px,
-		202px 690px,
-		802px 690px,
-		802px 240px,
-		202px 240px,
-		202px 0px,
-		818px 0px,
-		818px 15px,
-		818px 690px,
-		1718px 690px,
-		1718px 15px,
-		818px 15px,
-		818px 0px,
-		1920px 0px,
-		1920px 1080px,
-		0px 1080px,
-		0px 0px
-	);
-`;
+const gameBoxes: Box[] = [
+	[202, 802, 240, 690],
+	[818, 1718, 15, 690],
+];
+const cameraBox: Box = [15, 495, 705, 1065];
 
 const bottomStyle = css`
 	position: absolute;
@@ -58,7 +31,7 @@ const bottomStyle = css`
 
 const GameContainer = styled.div`
 	${bottomStyle};
-	left: ${onsite ? 495 : 0}px;
+	left: ${(props: {camera: boolean}) => (props.camera ? 495 : 0)}px;
 	width: 1140px;
 `;
 
@@ -75,8 +48,8 @@ const infoHeights = {
 
 const runnerStyle = css`
 	position: absolute;
-	left: ${onsite ? 15 + 480 : 202}px;
-	right: ${onsite ? 15 : 202}px;
+	left: ${(props: {camera: boolean}) => (props.camera ? 15 + 480 : 202)}px;
+	right: ${(props: {camera: boolean}) => (props.camera ? 15 : 202)}px;
 	width: auto;
 	height: 60px;
 `;
@@ -98,26 +71,35 @@ const StyledRuler = styled(Ruler)`
 	height: 195px;
 `;
 
-const App = () => (
-	<StyledContainer>
-		<Runner>
-			<RtaijRunner index={0} showFinishTime gradientBackground />
-		</Runner>
-		<CommentatorContainer>
-			<RtaijCommentator index={0} gradientBackground />
-		</CommentatorContainer>
-		<GameContainer>
-			<RtaijGame {...infoHeights} />
-		</GameContainer>
-		<StyledRuler />
-		<TimerContainer>
-			<RtaijTimer {...infoHeights} />
-		</TimerContainer>
-		<RtaijOverlay
-			TweetProps={{widthPx: 652, hideLogo: true}}
-			bottomHeightPx={225}
-		/>
-	</StyledContainer>
-);
+// TODO: game/timer boxes are overwrapping when with camera
+const currentRunRep = nodecg.Replicant('current-run');
+const App = () => {
+	const [currentRun] = useReplicant(currentRunRep);
+	const camera = Boolean(currentRun?.camera);
+	return (
+		<Container
+			backgroundImage={background}
+			clipBoxes={camera ? [...gameBoxes, cameraBox] : gameBoxes}
+		>
+			<Runner camera={camera}>
+				<RtaijRunner index={0} showFinishTime gradientBackground />
+			</Runner>
+			<CommentatorContainer camera={camera}>
+				<RtaijCommentator index={0} gradientBackground />
+			</CommentatorContainer>
+			<GameContainer camera={camera}>
+				<RtaijGame {...infoHeights} />
+			</GameContainer>
+			<StyledRuler />
+			<TimerContainer>
+				<RtaijTimer {...infoHeights} />
+			</TimerContainer>
+			<RtaijOverlay
+				TweetProps={{widthPx: 652, hideLogo: true}}
+				bottomHeightPx={225}
+			/>
+		</Container>
+	);
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));

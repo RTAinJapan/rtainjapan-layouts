@@ -1,12 +1,22 @@
 import styled, {css} from 'styled-components';
+import {Box, calculateClipPath} from '../../clip-path-calculator';
 
 const {colorTheme} = nodecg.bundleConfig;
 
+interface ContainerProps {
+	backgroundImage: string | null;
+	clipBoxes: Box[];
+}
 export const Container = styled.div`
 	position: absolute;
 	overflow: hidden;
 	width: 1920px;
 	height: 1080px;
+
+	${(props: ContainerProps) => css`
+		background-image: url(${props.backgroundImage});
+	`}
+	${(props: ContainerProps) => calculateClipPath(props.clipBoxes)}
 `;
 
 export const GradientRight =
