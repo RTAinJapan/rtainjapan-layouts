@@ -149,24 +149,23 @@ export const obs = async (nodecg: NodeCG) => {
 
 		const resetPropertiesPromise = Promise.all(
 			obsRep.value.scenes.map((scene) => {
-				return obsCropInputs.map((input) => {
-					if (!scene.sources.some((source) => source.name === input)) {
-						return;
-					}
-					return obs.send('SetSceneItemProperties', {
-						'scene-name': scene.name,
-						item: {name: input},
-						crop: {
-							top: 0,
-							bottom: 0,
-							left: 0,
-							right: 0,
-						},
-						position: {},
-						bounds: {},
-						scale: {},
+				return scene.sources
+					.filter((source) => obsCropInputs.includes(source.name))
+					.map((source) => {
+						return obs.send('SetSceneItemProperties', {
+							'scene-name': scene.name,
+							item: {id: source.id},
+							crop: {
+								top: 0,
+								bottom: 0,
+								left: 0,
+								right: 0,
+							},
+							position: {},
+							bounds: {},
+							scale: {},
+						});
 					});
-				});
 			}),
 		);
 
