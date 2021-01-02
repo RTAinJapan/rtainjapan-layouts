@@ -43,7 +43,7 @@
 		"lodash": "4.17.20",
 		"moment": "2.29.1",
 		"nodecg": "1.7.4",
-		"obs-websocket-js": "^4.0.2",
+		"obs-websocket-js": "4.0.2",
 		"source-map-support": "0.5.19",
 		"tslib": "2.0.3",
 		"twit": "2.2.11"
