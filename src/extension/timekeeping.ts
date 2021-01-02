@@ -1,4 +1,4 @@
-import {setInterval} from 'timers';
+import {setInterval, clearInterval} from 'timers';
 import {increment, newTimer, parseSeconds, setSeconds} from '../nodecg/timer';
 import {NodeCG} from './nodecg';
 
