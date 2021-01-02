@@ -89,3 +89,6 @@ jobs:
       - uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+          SLACK_MESSAGE: rtainjapan/rtainjapan-layouts Docker image is ready
+          SLACK_USERNAME: GitHub
