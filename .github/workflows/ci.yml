@@ -87,6 +87,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
       - uses: rtCamp/action-slack-notify@v2
+        if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
