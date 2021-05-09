@@ -40,7 +40,7 @@
 		"got": "9.6.0",
 		"include-nodecg": "0.0.3",
 		"load-json-file": "6.2.0",
-		"lodash": "4.17.20",
+		"lodash": "4.17.21",
 		"moment": "2.29.1",
 		"nodecg": "1.7.4",
 		"obs-websocket-js": "4.0.2",
