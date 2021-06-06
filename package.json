@@ -95,7 +95,7 @@
 		"sort-package-json": "1.48.0",
 		"style-loader": "2.0.0",
 		"styled-components": "5.2.1",
-		"ts-loader": "8.0.13",
+		"ts-loader": "8.3.0",
 		"ts-node": "9.1.1",
 		"ts-nodecg": "0.3.1",
 		"typescript": "3.8.3",
