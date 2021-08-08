@@ -54,7 +54,7 @@
 		"@material-ui/icons": "4.11.2",
 		"@types/app-root-path": "1.2.4",
 		"@types/got": "9.6.11",
-		"@types/lodash": "4.14.167",
+		"@types/lodash": "4.14.172",
 		"@types/mini-css-extract-plugin": "1.2.2",
 		"@types/node": "14.14.19",
 		"@types/react": "17.0.0",
