@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-    tags:
-      - '**'
   pull_request:
     branches:
       - master
@@ -14,7 +12,7 @@ env:
   YARN_CACHE_FOLDER: ~/.yarn
 
 jobs:
-  test-minimum:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -30,28 +28,8 @@ jobs:
       - run: yarn test
       - run: yarn build
 
-  test-matrix:
-    needs: test-minimum
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node-version: ['12', '14']
-        os: ['windows-latest', 'macos-latest', 'ubuntu-latest']
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - uses: actions/cache@v2
-        with:
-          path: ${{ env.YARN_CACHE_FOLDER }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-
-      - run: yarn install --frozen-lockfile
-      - run: yarn test
-      - run: yarn build
-
   build-image:
+    if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
     needs: test-minimum
     runs-on: ubuntu-latest
     steps:
@@ -60,24 +38,24 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-buildx-
-      - uses: crazy-max/ghaction-docker-meta@v1
+          key: ${{ runner.os }}-buildx-${{ hashFiles('./Dockerfile') }}-${{ hashFiles('./src', './package.json', './yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-${{ hashFiles('./Dockerfile') }}-
+            ${{ runner.os }}-buildx-
+      - uses: crazy-max/ghaction-docker-meta@v2
         id: docker_meta
         with:
-          images: |
-            rtainjapan/rtainjapan-layouts
-            ghcr.io/rtainjapan/rtainjapan-layouts
-          tag-sha: true
-      - uses: docker/login-action@v1
-        with:
-          username: hoishin
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          images: ghcr.io/rtainjapan/rtainjapan-layouts
+          flavor: |
+            latest=true
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=,suffix=
       - uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: hoishin
-          password: ${{ secrets.CR_TOKEN }}
+          password: ${{ github.token }}
       - uses: docker/build-push-action@v2
         with:
           push: true
@@ -87,7 +65,6 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
       - uses: rtCamp/action-slack-notify@v2
-        if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
