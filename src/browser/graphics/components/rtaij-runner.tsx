@@ -1,12 +1,12 @@
-import runnerIcon from '../images/icon/runner.png';
-import {Nameplate} from './lib/nameplate';
-import {CurrentRun} from '../../../nodecg/replicants';
+import runnerIcon from "../images/icon/runner.png";
+import {Nameplate} from "./lib/nameplate";
+import {CurrentRun} from "../../../nodecg/replicants";
 
 export class RtaijRunner extends Nameplate {
 	public labelIcon = runnerIcon;
 
-	public label = 'Runner';
+	public label = "Runner";
 
 	public calcNewRunner = (newVal: CurrentRun) =>
-		newVal && newVal.runners[this.props.index];
+		newVal?.runners[this.props.index] ?? {name: "N/A"};
 }

@@ -1,14 +1,13 @@
-import '../styles/common.css';
+import "../styles/common.css";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import styled from 'styled-components';
-import {Container} from '../components/lib/styled';
-import {RtaijGame} from '../components/rtaij-game';
-import {RtaijOverlay} from '../components/rtaij-overlay';
-import {RtaijRunner} from '../components/rtaij-runner';
-import {RtaijTimer} from '../components/rtaij-timer';
-import {background} from '../images/background';
+import ReactDOM from "react-dom";
+import styled from "styled-components";
+import {Container} from "../components/lib/styled";
+import {RtaijGame} from "../components/rtaij-game";
+import {RtaijOverlay} from "../components/rtaij-overlay";
+import {RtaijRunner} from "../components/rtaij-runner";
+import {RtaijTimer} from "../components/rtaij-timer";
+import {background} from "../images/background";
 
 const StyledContainer = styled(Container)`
 	clip-path: polygon(
@@ -67,13 +66,13 @@ const App = () => (
 			<RtaijGame gradientBackground primaryHeight={100} />
 			<RtaijTimer gradientBackground primaryHeight={100} />
 		</InfoContainer>
-		<RunnerContainer style={{top: '473px', right: '96px'}}>
+		<RunnerContainer style={{top: "473px", right: "96px"}}>
 			<RtaijRunner showFinishTime index={0} gradientBackground />
 		</RunnerContainer>
-		<RunnerContainer style={{bottom: '14px', left: '96px'}}>
+		<RunnerContainer style={{bottom: "14px", left: "96px"}}>
 			<RtaijRunner showFinishTime index={1} />
 		</RunnerContainer>
-		<RunnerContainer style={{bottom: '14px', right: '96px'}}>
+		<RunnerContainer style={{bottom: "14px", right: "96px"}}>
 			<RtaijRunner showFinishTime index={2} />
 		</RunnerContainer>
 		<RtaijOverlay
@@ -83,4 +82,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

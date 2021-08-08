@@ -1,18 +1,17 @@
-import '../styles/common.css';
+import "../styles/common.css";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import styled, {css} from 'styled-components';
-import {Container} from '../components/lib/styled';
-import {RtaijCommentator} from '../components/rtaij-commentator';
-import {RtaijGame} from '../components/rtaij-game';
-import {RtaijOverlay} from '../components/rtaij-overlay';
-import {RtaijRunner} from '../components/rtaij-runner';
-import {RtaijTimer} from '../components/rtaij-timer';
-import {background} from '../images/background';
-import {Ruler} from '../components/lib/ruler';
-import {Box} from '../clip-path-calculator';
-import {useReplicant} from '../../use-replicant';
+import ReactDOM from "react-dom";
+import styled, {css} from "styled-components";
+import {Container} from "../components/lib/styled";
+import {RtaijCommentator} from "../components/rtaij-commentator";
+import {RtaijGame} from "../components/rtaij-game";
+import {RtaijOverlay} from "../components/rtaij-overlay";
+import {RtaijRunner} from "../components/rtaij-runner";
+import {RtaijTimer} from "../components/rtaij-timer";
+import {background} from "../images/background";
+import {Ruler} from "../components/lib/ruler";
+import {Box} from "../clip-path-calculator";
+import {useReplicant} from "../../use-replicant";
 
 const {hasSponsor} = nodecg.bundleConfig;
 
@@ -77,7 +76,7 @@ const CommentatorContainer = styled.div`
 	right: ${(props: {camera: boolean}) => (props.camera ? 15 : 97)}px;
 `;
 
-const currentRunRep = nodecg.Replicant('current-run');
+const currentRunRep = nodecg.Replicant("current-run");
 const App = () => {
 	const [currentRun] = useReplicant(currentRunRep);
 	const camera = Boolean(currentRun?.camera);
@@ -107,4 +106,4 @@ const App = () => {
 	);
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

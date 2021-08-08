@@ -1,19 +1,19 @@
-import '../styles/common.css';
+import "../styles/common.css";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import styled, {css} from 'styled-components';
+import React from "react";
+import ReactDOM from "react-dom";
+import styled, {css} from "styled-components";
 
-import {Container} from '../components/lib/styled';
-import {RtaijOverlay} from '../components/rtaij-overlay';
-import {UpcomingRun} from '../components/upcoming-run';
-import notificationIconBlue from '../images/break/notification-blue.png';
-import notificationIconBrown from '../images/break/notification-brown.png';
-import {Schedule, CurrentRun} from '../../../nodecg/replicants';
-import {Box} from '../clip-path-calculator';
+import {Container} from "../components/lib/styled";
+import {RtaijOverlay} from "../components/rtaij-overlay";
+import {UpcomingRun} from "../components/upcoming-run";
+import notificationIconBlue from "../images/break/notification-blue.png";
+import notificationIconBrown from "../images/break/notification-brown.png";
+import {Schedule, CurrentRun} from "../../../nodecg/replicants";
+import {Box} from "../clip-path-calculator";
 
-const currentRunRep = nodecg.Replicant('current-run');
-const scheduleRep = nodecg.Replicant('schedule');
+const currentRunRep = nodecg.Replicant("current-run");
+const scheduleRep = nodecg.Replicant("schedule");
 const {onsite, colorTheme} = nodecg.bundleConfig;
 
 const cameraBox: Box = [15, 639, 714, 1065];
@@ -31,7 +31,7 @@ const NotificationText = styled.div`
 	height: 150px;
 
 	color: #ffffff;
-	font-family: 'MigMix 2P';
+	font-family: "MigMix 2P";
 	font-weight: bold;
 	font-size: 45px;
 	line-height: 120%;
@@ -46,10 +46,10 @@ const UpcomingTitle = styled.div`
 	left: 60px;
 	width: 180px;
 
-	background-color: ${colorTheme == 'brown' ? '#60392f' : '#4d7dff'};
+	background-color: ${colorTheme == "brown" ? "#60392f" : "#4d7dff"};
 	box-shadow: 4.5px 4.5px 6px -1.5px rgba(0, 0, 0, 1);
 
-	font-family: 'MigMix 2P';
+	font-family: "MigMix 2P";
 	font-weight: bold;
 	font-size: 30px;
 	line-height: 45px;
@@ -73,7 +73,7 @@ const CurrentTrackContainer = styled.div`
 	bottom: 165px;
 	right: 15px;
 	height: 40px;
-	${colorTheme === 'blue'
+	${colorTheme === "blue"
 		? css`
 				background-color: rgba(0, 10, 60, 0.5);
 		  `
@@ -96,7 +96,7 @@ interface State {
 
 class Break extends React.Component<{}, State> {
 	public state: State = {schedule: [], currentRunIndex: 0};
-	private readonly spotifyRep = nodecg.Replicant('spotify');
+	private readonly spotifyRep = nodecg.Replicant("spotify");
 
 	public render() {
 		const upcomingRuns = this.state.schedule.slice(
@@ -112,7 +112,7 @@ class Break extends React.Component<{}, State> {
 				/>
 				<NotificationIcon
 					src={
-						colorTheme === 'brown'
+						colorTheme === "brown"
 							? notificationIconBrown
 							: notificationIconBlue
 					}
@@ -130,7 +130,7 @@ class Break extends React.Component<{}, State> {
 				</UpcomingContainer>
 				{this.state.currentTrack && (
 					<CurrentTrackContainer>
-						{`♪ ${this.state.currentTrack.name} / ${this.state.currentTrack.album} / Copyright © Nihon Falcom Corporation`}
+						{`♪ ${this.state.currentTrack.name} / ${this.state.currentTrack.album}`}
 					</CurrentTrackContainer>
 				)}
 			</Container>
@@ -138,14 +138,14 @@ class Break extends React.Component<{}, State> {
 	}
 
 	public componentDidMount() {
-		scheduleRep.on('change', this.scheduleChangeHandler);
-		currentRunRep.on('change', this.currentRunChangeHandler);
-		this.spotifyRep.on('change', (newVal) => {
+		scheduleRep.on("change", this.scheduleChangeHandler);
+		currentRunRep.on("change", this.currentRunChangeHandler);
+		this.spotifyRep.on("change", (newVal) => {
 			this.setState({
 				currentTrack: {
-					name: '',
-					artists: '',
-					album: '',
+					name: "",
+					artists: "",
+					album: "",
 					...newVal.currentTrack,
 				},
 			});
@@ -153,8 +153,8 @@ class Break extends React.Component<{}, State> {
 	}
 
 	public componentWillUnmount() {
-		scheduleRep.removeListener('change', this.scheduleChangeHandler);
-		currentRunRep.removeListener('change', this.currentRunChangeHandler);
+		scheduleRep.removeListener("change", this.scheduleChangeHandler);
+		currentRunRep.removeListener("change", this.currentRunChangeHandler);
 	}
 
 	private readonly scheduleChangeHandler = (newVal: Schedule) => {
@@ -169,4 +169,4 @@ class Break extends React.Component<{}, State> {
 	};
 }
 
-ReactDOM.render(<Break />, document.getElementById('root'));
+ReactDOM.render(<Break />, document.getElementById("root"));

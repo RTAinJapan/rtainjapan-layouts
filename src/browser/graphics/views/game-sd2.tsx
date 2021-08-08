@@ -1,17 +1,16 @@
-import '../styles/common.css';
+import "../styles/common.css";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import styled, {css} from 'styled-components';
-import {Container} from '../components/lib/styled';
-import {RtaijCommentator} from '../components/rtaij-commentator';
-import {RtaijGame} from '../components/rtaij-game';
-import {RtaijOverlay} from '../components/rtaij-overlay';
-import {RtaijRunner} from '../components/rtaij-runner';
-import {RtaijTimer} from '../components/rtaij-timer';
-import {background} from '../images/background';
-import {useReplicant} from '../../use-replicant';
-import {Box} from '../clip-path-calculator';
+import ReactDOM from "react-dom";
+import styled, {css} from "styled-components";
+import {Container} from "../components/lib/styled";
+import {RtaijCommentator} from "../components/rtaij-commentator";
+import {RtaijGame} from "../components/rtaij-game";
+import {RtaijOverlay} from "../components/rtaij-overlay";
+import {RtaijRunner} from "../components/rtaij-runner";
+import {RtaijTimer} from "../components/rtaij-timer";
+import {background} from "../images/background";
+import {useReplicant} from "../../use-replicant";
+import {Box} from "../clip-path-calculator";
 
 const {hasSponsor} = nodecg.bundleConfig;
 
@@ -31,13 +30,13 @@ const bottomStyle = css`
 const GameContainer = styled.div`
 	${bottomStyle};
 	left: 0;
-	width: ${(props: {camera: boolean}) => (props.camera ? '750px' : '50%')};
+	width: ${(props: {camera: boolean}) => (props.camera ? "750px" : "50%")};
 `;
 
 const TimerContainer = styled.div`
 	${bottomStyle};
 	right: ${hasSponsor ? 210 : 0}px;
-	left: ${(props: {camera: boolean}) => (props.camera ? '1170px' : '50%')};
+	left: ${(props: {camera: boolean}) => (props.camera ? "1170px" : "50%")};
 `;
 
 const infoHeights = {
@@ -68,7 +67,7 @@ const CommentatorContainer = styled.div`
 	width: ${(props: {camera: boolean}) => (props.camera ? 735 : 756)}px;
 `;
 
-const currentRunRep = nodecg.Replicant('current-run');
+const currentRunRep = nodecg.Replicant("current-run");
 const App = () => {
 	const [currentRun] = useReplicant(currentRunRep);
 	const camera = Boolean(currentRun?.camera);
@@ -97,4 +96,4 @@ const App = () => {
 	);
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

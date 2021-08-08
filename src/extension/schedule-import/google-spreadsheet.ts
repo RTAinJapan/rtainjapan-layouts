@@ -1,33 +1,33 @@
-import {setInterval} from 'timers';
-import {zipObject, isEqual} from 'lodash';
-import {NodeCG} from '../nodecg';
-import {google} from 'googleapis';
-import {Participant, Schedule, Spreadsheet} from '../../nodecg/replicants';
+import {setInterval} from "timers";
+import {zipObject, isEqual} from "lodash";
+import {NodeCG} from "../nodecg";
+import {google} from "googleapis";
+import {Participant, Schedule, Spreadsheet} from "../../nodecg/replicants";
 
 export const importFromSpreadsheet = async (nodecg: NodeCG) => {
-	const logger = new nodecg.Logger('schedule:spreadsheet');
+	const logger = new nodecg.Logger("schedule:spreadsheet");
 
 	const {googleApiKey, spreadsheetId} = nodecg.bundleConfig;
 	if (!spreadsheetId) {
-		logger.warn('Spreadsheet ID is empty.');
+		logger.warn("Spreadsheet ID is empty.");
 		return;
 	}
 	if (!googleApiKey) {
-		logger.warn('Google API Key is empty.');
+		logger.warn("Google API Key is empty.");
 		return;
 	}
 
-	logger.info('Using spreadsheet to import schedule');
+	logger.info("Using spreadsheet to import schedule");
 
-	const scheduleRep = nodecg.Replicant('schedule');
-	const spreadsheetRep = nodecg.Replicant('spreadsheet');
+	const scheduleRep = nodecg.Replicant("schedule");
+	const spreadsheetRep = nodecg.Replicant("spreadsheet");
 
-	const sheetsApi = google.sheets({version: 'v4', auth: googleApiKey});
+	const sheetsApi = google.sheets({version: "v4", auth: googleApiKey});
 
 	const fetchSpreadsheet = async () => {
 		const res = await sheetsApi.spreadsheets.values.batchGet({
 			spreadsheetId,
-			ranges: ['ゲーム', '走者', '解説'],
+			ranges: ["ゲーム", "走者", "解説"],
 		});
 		const sheetValues = res.data.valueRanges;
 		if (!sheetValues) {
@@ -39,6 +39,10 @@ export const importFromSpreadsheet = async (nodecg: NodeCG) => {
 				return;
 			}
 			const [labels, ...contents] = sheet.values;
+			if (!labels) {
+				logger.error("Couldn't get values from spreadsheet");
+				return;
+			}
 			return contents.map((content) => zipObject(labels, content));
 		});
 		const newSpreadsheet = {
@@ -55,7 +59,7 @@ export const importFromSpreadsheet = async (nodecg: NodeCG) => {
 	fetchSpreadsheet();
 	setInterval(fetchSpreadsheet, 10 * 1000);
 
-	spreadsheetRep.on('change', (spreadsheet) => {
+	spreadsheetRep.on("change", (spreadsheet) => {
 		try {
 			const {runs, runners, commentators} = spreadsheet;
 			const schedule: Schedule = runs.map((run, index) => {
@@ -87,7 +91,7 @@ export const importFromSpreadsheet = async (nodecg: NodeCG) => {
 					pk: Number(run.id),
 					index,
 					title: run.title,
-					englishTitle: run['title english'],
+					englishTitle: run["title english"],
 					category: run.category,
 					platform: run.platform,
 					runDuration: run.runDuration,
@@ -98,7 +102,7 @@ export const importFromSpreadsheet = async (nodecg: NodeCG) => {
 			});
 			scheduleRep.value = schedule;
 		} catch (err) {
-			nodecg.log.error('Error while fetching schedule from spreadsheet');
+			nodecg.log.error("Error while fetching schedule from spreadsheet");
 			nodecg.log.error(err);
 		}
 	});

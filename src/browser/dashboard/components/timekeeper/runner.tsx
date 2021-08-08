@@ -1,15 +1,15 @@
-import blueGrey from '@material-ui/core/colors/blueGrey';
-import green from '@material-ui/core/colors/green';
-import grey from '@material-ui/core/colors/grey';
-import Cancel from '@material-ui/icons/Cancel';
-import Edit from '@material-ui/icons/Edit';
-import Flag from '@material-ui/icons/Flag';
-import Undo from '@material-ui/icons/Undo';
-import React, {useState} from 'react';
-import styled, {css} from 'styled-components';
-import {Timer} from '../../../../nodecg/replicants';
-import {ColoredButton} from '../lib/colored-button';
-import {EditTimeModal} from './edit';
+import blueGrey from "@material-ui/core/colors/blueGrey";
+import green from "@material-ui/core/colors/green";
+import grey from "@material-ui/core/colors/grey";
+import Cancel from "@material-ui/icons/Cancel";
+import Edit from "@material-ui/icons/Edit";
+import Flag from "@material-ui/icons/Flag";
+import Undo from "@material-ui/icons/Undo";
+import React, {useState} from "react";
+import styled, {css} from "styled-components";
+import {Timer} from "../../../../nodecg/replicants";
+import {ColoredButton} from "../lib/colored-button";
+import {EditTimeModal} from "./edit";
 
 const Container = styled.div`
 	padding: 0 16px;
@@ -25,7 +25,7 @@ const Container = styled.div`
 const RunnerContainer = styled.div`
 	display: grid;
 	grid-template-columns: 1fr auto;
-	grid-template-areas: 'runner button';
+	grid-template-areas: "runner button";
 `;
 
 const RunnerName = styled.div`
@@ -77,10 +77,10 @@ export const Runner: React.FunctionComponent<Props> = (props) => {
 	const result = props.timer.results[props.index];
 	const shouldShowResume = Boolean(result);
 	const shouldDisableEdit = !shouldShowResume;
-	const shouldShowFinish = Boolean(!result || result.forfeit);
-	const shouldShowForfeit = Boolean(!result || !result.forfeit);
-	const status = result ? result.formatted : 'Running';
-	const defaultEditValue = result ? result.formatted : '00:00';
+	const shouldShowFinish = Boolean(!result || result["forfeit"]);
+	const shouldShowForfeit = Boolean(!result || !result["forfeit"]);
+	const status = result ? result["formatted"] : "Running";
+	const defaultEditValue = result ? result["formatted"] : "00:00";
 
 	return (
 		<Container index={props.index}>
@@ -96,7 +96,7 @@ export const Runner: React.FunctionComponent<Props> = (props) => {
 							ButtonProps={{
 								fullWidth: true,
 								onClick: () => {
-									nodecg.sendMessage('completeRunner', {
+									nodecg.sendMessage("completeRunner", {
 										index: props.index,
 										forfeit: false,
 									});
@@ -113,7 +113,7 @@ export const Runner: React.FunctionComponent<Props> = (props) => {
 							ButtonProps={{
 								fullWidth: true,
 								onClick: () => {
-									nodecg.sendMessage('resumeRunner', props.index);
+									nodecg.sendMessage("resumeRunner", props.index);
 								},
 							}}
 						>
@@ -127,7 +127,7 @@ export const Runner: React.FunctionComponent<Props> = (props) => {
 							ButtonProps={{
 								fullWidth: true,
 								onClick: () => {
-									nodecg.sendMessage('completeRunner', {
+									nodecg.sendMessage("completeRunner", {
 										index: props.index,
 										forfeit: true,
 									});
@@ -157,7 +157,7 @@ export const Runner: React.FunctionComponent<Props> = (props) => {
 					open={isModalOpened}
 					onFinish={(value?: string) => {
 						if (value) {
-							nodecg.sendMessage('editTime', {
+							nodecg.sendMessage("editTime", {
 								index: props.index,
 								newTime: value,
 							});

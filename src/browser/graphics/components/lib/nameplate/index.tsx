@@ -1,24 +1,24 @@
-import delay from 'delay';
-import React from 'react';
-import styled, {css} from 'styled-components';
-import {CurrentRun, Timer, Participant} from '../../../../../nodecg/replicants';
-import nicoIcon from '../../../images/icon/nico.png';
-import twitchIcon from '../../../images/icon/twitch.png';
-import twitterIcon from '../../../images/icon/twitter.png';
-import {Ruler} from '../ruler';
-import {GradientRight} from '../styled';
-import {Name} from './name';
-import {Social} from './social';
+import delay from "delay";
+import React from "react";
+import styled, {css} from "styled-components";
+import {CurrentRun, Timer, Participant} from "../../../../../nodecg/replicants";
+import nicoIcon from "../../../images/icon/nico.png";
+import twitchIcon from "../../../images/icon/twitch.png";
+import twitterIcon from "../../../images/icon/twitter.png";
+import {Ruler} from "../ruler";
+import {GradientRight} from "../styled";
+import {Name} from "./name";
+import {Social} from "./social";
 
-const currentRunRep = nodecg.Replicant('current-run');
-const timerRep = nodecg.Replicant('timer');
+const currentRunRep = nodecg.Replicant("current-run");
+const timerRep = nodecg.Replicant("timer");
 
 const SOCIAL_ROTATE_INTERVAL_SECONDS = 20;
 
 const enum SocialType {
-	Twitch = 'twitch',
-	Nico = 'nico',
-	Twitter = 'twitter',
+	Twitch = "twitch",
+	Nico = "nico",
+	Twitter = "twitter",
 }
 
 const socialIcon = (socialType: SocialType) => {
@@ -42,7 +42,7 @@ const calcSocialInfo = (runner: NonNullable<Participant>) => {
 	];
 	return allSocialInfo.filter(
 		(info): info is typeof allSocialInfo[0] & {info: string} =>
-			typeof info.info === 'string' && info.info !== '',
+			typeof info.info === "string" && info.info !== "",
 	);
 };
 
@@ -170,7 +170,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 							key={info.type}
 							columnDirection={this.props.columnDirection}
 							fontSizeMultiplier={this.state.fontSizeMultiplier}
-							icon={socialIcon(info.type) || ''}
+							icon={socialIcon(info.type) || ""}
 							show={showingSocialIndex === index}
 						>
 							{info.info}
@@ -189,13 +189,13 @@ export abstract class Nameplate extends React.Component<Props, State> {
 	}
 
 	public componentDidMount() {
-		currentRunRep.on('change', this.currentRunChanged);
-		timerRep.on('change', this.timerChanged);
+		currentRunRep.on("change", this.currentRunChanged);
+		timerRep.on("change", this.timerChanged);
 	}
 
 	public componentWillUnmount() {
-		currentRunRep.removeListener('change', this.currentRunChanged);
-		timerRep.removeListener('change', this.timerChanged);
+		currentRunRep.removeListener("change", this.currentRunChanged);
+		timerRep.removeListener("change", this.timerChanged);
 		if (this.socialRotateIntervalTimer !== undefined) {
 			clearInterval(this.socialRotateIntervalTimer);
 		}
@@ -221,7 +221,7 @@ export abstract class Nameplate extends React.Component<Props, State> {
 
 	private readonly timerChanged = (newVal: Timer) => {
 		const result = newVal.results[this.props.index];
-		this.setState({finalTime: result ? result.formatted : undefined});
+		this.setState({finalTime: result ? result["formatted"] : undefined});
 	};
 
 	private readonly currentRunChanged = (newVal: CurrentRun) => {

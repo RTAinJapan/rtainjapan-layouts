@@ -1,15 +1,14 @@
-import '../styles/common.css';
+import "../styles/common.css";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import styled, {css} from 'styled-components';
-import {Container} from '../components/lib/styled';
-import {RtaijCommentator} from '../components/rtaij-commentator';
-import {RtaijGame} from '../components/rtaij-game';
-import {RtaijOverlay} from '../components/rtaij-overlay';
-import {RtaijRunner} from '../components/rtaij-runner';
-import {RtaijTimer} from '../components/rtaij-timer';
-import {background} from '../images/background';
+import ReactDOM from "react-dom";
+import styled, {css} from "styled-components";
+import {Container} from "../components/lib/styled";
+import {RtaijCommentator} from "../components/rtaij-commentator";
+import {RtaijGame} from "../components/rtaij-game";
+import {RtaijOverlay} from "../components/rtaij-overlay";
+import {RtaijRunner} from "../components/rtaij-runner";
+import {RtaijTimer} from "../components/rtaij-timer";
+import {background} from "../images/background";
 
 const StyledContainer = styled(Container)`
 	clip-path: polygon(
@@ -81,4 +80,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

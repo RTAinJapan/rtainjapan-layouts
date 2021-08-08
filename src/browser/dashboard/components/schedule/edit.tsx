@@ -1,14 +1,14 @@
-import Button from '@material-ui/core/Button';
-import Modal from '@material-ui/core/Modal';
-import TextField from '@material-ui/core/TextField';
-import TypoGraphy from '@material-ui/core/Typography';
-import max from 'lodash/max';
-import React from 'react';
-import styled from 'styled-components';
-import {Participant, Run} from '../../../../nodecg/replicants';
-import Switch from '@material-ui/core/Switch';
-import VideocamIcon from '@material-ui/icons/Videocam';
-import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+import Button from "@material-ui/core/Button";
+import Modal from "@material-ui/core/Modal";
+import TextField from "@material-ui/core/TextField";
+import TypoGraphy from "@material-ui/core/Typography";
+import max from "lodash/max";
+import React from "react";
+import styled from "styled-components";
+import {Participant, Run} from "../../../../nodecg/replicants";
+import Switch from "@material-ui/core/Switch";
+import VideocamIcon from "@material-ui/icons/Videocam";
+import VideocamOffIcon from "@material-ui/icons/VideocamOff";
 
 const Container = styled.div`
 	position: absolute;
@@ -41,7 +41,7 @@ const CameraControl = styled.div`
 `;
 
 interface Props {
-	edit: 'current' | 'next' | undefined;
+	edit: "current" | "next" | undefined;
 	defaultValue?: Run;
 	onFinish(): void;
 }
@@ -77,7 +77,7 @@ export class EditRun extends React.Component<Props, Run> {
 			>
 				<Container>
 					<TypoGraphy variant='h4'>
-						{this.props.edit === 'current' ? '現在の' : '次の'}
+						{this.props.edit === "current" ? "現在の" : "次の"}
 						ゲームを編集
 					</TypoGraphy>
 					<TextField
@@ -103,7 +103,7 @@ export class EditRun extends React.Component<Props, Run> {
 					/>
 					<div>
 						<div className='MuiFormLabel-root'>
-							<TypoGraphy variant={'caption'}>全体カメラ使用可否</TypoGraphy>
+							<TypoGraphy variant={"caption"}>全体カメラ使用可否</TypoGraphy>
 						</div>
 						<VideocamOffIcon />
 						<Switch2
@@ -114,17 +114,17 @@ export class EditRun extends React.Component<Props, Run> {
 								});
 							}}
 						/>
-						<VideocamIcon color={'secondary'} />
+						<VideocamIcon color={"secondary"} />
 					</div>
 					{Array.from({length: 4}, (_, index) => {
-						const runner: Participant = runners[index] || {};
+						const runner: Participant = runners[index] || {name: ""};
 						return (
 							<RunnerRow key={index}>
 								<TextField
 									label={`走者${index + 1} 名前`}
 									defaultValue={runner.name}
 									onChange={(e) => {
-										this.updateRunnerInfo(index, 'name', e.currentTarget.value);
+										this.updateRunnerInfo(index, "name", e.currentTarget.value);
 									}}
 								/>
 								<TextField
@@ -133,7 +133,7 @@ export class EditRun extends React.Component<Props, Run> {
 									onChange={(e) => {
 										this.updateRunnerInfo(
 											index,
-											'twitch',
+											"twitch",
 											e.currentTarget.value,
 										);
 									}}
@@ -142,7 +142,7 @@ export class EditRun extends React.Component<Props, Run> {
 									label={`走者${index + 1} ニコ生`}
 									defaultValue={runner.nico}
 									onChange={(e) => {
-										this.updateRunnerInfo(index, 'nico', e.currentTarget.value);
+										this.updateRunnerInfo(index, "nico", e.currentTarget.value);
 									}}
 								/>
 								<TextField
@@ -151,14 +151,14 @@ export class EditRun extends React.Component<Props, Run> {
 									onChange={(e) => {
 										this.updateRunnerInfo(
 											index,
-											'twitter',
+											"twitter",
 											e.currentTarget.value,
 										);
 									}}
 								/>
 								<div className='MuiFormControl-root'>
 									<div className='MuiFormLabel-root'>
-										<TypoGraphy variant={'caption'}>
+										<TypoGraphy variant={"caption"}>
 											走者{index + 1}カメラ
 										</TypoGraphy>
 									</div>
@@ -167,10 +167,10 @@ export class EditRun extends React.Component<Props, Run> {
 										<Switch2
 											defaultValue={!!runner.camera}
 											onChange={() => {
-												this.updateRunnerInfo(index, 'camera', !runner.camera);
+												this.updateRunnerInfo(index, "camera", !runner.camera);
 											}}
 										/>
-										<VideocamIcon color={'secondary'} />
+										<VideocamIcon color={"secondary"} />
 									</CameraControl>
 								</div>
 							</RunnerRow>
@@ -180,7 +180,7 @@ export class EditRun extends React.Component<Props, Run> {
 					{/* 解説 */}
 					{new Array(4).fill(null).map((_, index) => {
 						const commentator: Participant = {
-							name: '',
+							name: "",
 							...(commentators[index] as Partial<Participant>),
 						};
 						return (
@@ -191,7 +191,7 @@ export class EditRun extends React.Component<Props, Run> {
 									onChange={(e) => {
 										this.updateCommentatorInfo(
 											index,
-											'name',
+											"name",
 											e.currentTarget.value,
 										);
 									}}
@@ -202,7 +202,7 @@ export class EditRun extends React.Component<Props, Run> {
 									onChange={(e) => {
 										this.updateCommentatorInfo(
 											index,
-											'twitch',
+											"twitch",
 											e.currentTarget.value,
 										);
 									}}
@@ -213,7 +213,7 @@ export class EditRun extends React.Component<Props, Run> {
 									onChange={(e) => {
 										this.updateCommentatorInfo(
 											index,
-											'nico',
+											"nico",
 											e.currentTarget.value,
 										);
 									}}
@@ -224,7 +224,7 @@ export class EditRun extends React.Component<Props, Run> {
 									onChange={(e) => {
 										this.updateCommentatorInfo(
 											index,
-											'twitter',
+											"twitter",
 											e.currentTarget.value,
 										);
 									}}
@@ -233,7 +233,7 @@ export class EditRun extends React.Component<Props, Run> {
 						);
 					})}
 					<div>
-						<Button onClick={this.updateClicked} color={'primary'}>
+						<Button onClick={this.updateClicked} color={"primary"}>
 							更新
 						</Button>
 						<Button onClick={this.finish}>キャンセル</Button>
@@ -259,9 +259,10 @@ export class EditRun extends React.Component<Props, Run> {
 				return null;
 			}
 			// 固定値で4行表示してるので、対象のindexのoldが取得できないこともある
-			const oldRunner: Partial<typeof state.runners[0]> =
-				state.runners[updatingIndex];
-			const newRunner = {name: '', ...oldRunner, [key]: value};
+			const oldRunner: Partial<typeof state.runners[0]> = state.runners[
+				updatingIndex
+			] || {name: ""};
+			const newRunner = {name: "", ...oldRunner, [key]: value};
 			const newRunners: Participant[] = [];
 			const iterateLength =
 				(max([updatingIndex, state.runners.length - 1]) || 0) + 1;
@@ -269,7 +270,7 @@ export class EditRun extends React.Component<Props, Run> {
 				if (i === updatingIndex) {
 					newRunners.push(newRunner);
 				} else {
-					newRunners.push(state.runners[i]);
+					newRunners.push(state.runners[i] || {name: ""});
 				}
 			}
 			return {runners: newRunners};
@@ -285,7 +286,7 @@ export class EditRun extends React.Component<Props, Run> {
 			if (!state.commentators) {
 				return null;
 			}
-			const oldOne = state.commentators[updatingIndex] || {};
+			const oldOne = state.commentators[updatingIndex] ?? {name: ""};
 			const newOne = {...oldOne, [key]: value};
 			const newOnes: Participant[] = [];
 			const iterateLength =
@@ -294,7 +295,7 @@ export class EditRun extends React.Component<Props, Run> {
 				if (i === updatingIndex) {
 					newOnes.push(newOne);
 				} else {
-					newOnes.push(state.commentators[i]);
+					newOnes.push(state.commentators[i] || {name: ""});
 				}
 			}
 			return {commentators: newOnes};
@@ -302,7 +303,7 @@ export class EditRun extends React.Component<Props, Run> {
 	};
 
 	private readonly updateClicked = async () => {
-		await nodecg.sendMessage('modifyRun', this.state);
+		await nodecg.sendMessage("modifyRun", this.state);
 		this.finish();
 	};
 

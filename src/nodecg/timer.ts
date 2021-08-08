@@ -1,4 +1,4 @@
-import {Timer} from './replicants';
+import {Timer} from "./replicants";
 
 /**
  * Parses a number of seconds into an HMS object.
@@ -19,7 +19,7 @@ export const secondsToHMS = (seconds: number) => {
  * @returns The formatted time string.
  */
 export const formatHMS = (hms: {h: number; m: number; s: number}) => {
-	let str = '';
+	let str = "";
 	if (hms.h) {
 		str += `${hms.h}:`;
 	}
@@ -36,21 +36,21 @@ export const formatHMS = (hms: {h: number; m: number; s: number}) => {
  * @returns The parsed time string represented as seconds.
  */
 export const parseSeconds = (timeString: string) => {
-	const timeParts = timeString.split(':').map(Number);
+	const timeParts = timeString.split(":").map(Number);
 	if (timeParts.length === 3) {
 		return (
-			Math.floor(timeParts[0] * 3600) +
-			Math.floor(timeParts[1] * 60) +
-			Math.floor(timeParts[2])
+			Math.floor((timeParts[0] || 0) * 3600) +
+			Math.floor((timeParts[1] || 0) * 60) +
+			Math.floor(timeParts[2] || 0)
 		);
 	}
 
 	if (timeParts.length === 2) {
-		return Math.floor(timeParts[0] * 60) + Math.floor(timeParts[1]);
+		return Math.floor((timeParts[0] || 0) * 60) + Math.floor(timeParts[1] || 0);
 	}
 
 	if (timeParts.length === 1) {
-		return Math.floor(timeParts[0]);
+		return Math.floor(timeParts[0] || 0);
 	}
 
 	throw new Error(`Unexpected format of timeString argument: ${timeString}`);
@@ -96,14 +96,14 @@ export const decrement = (t: Timer) => {
  * @param seconds The value to set to (in seconds).
  * @returns The Timer passed in as an argument.
  */
-export const setSeconds = (t: Omit<Timer, 'results'>, seconds: number) => {
+export const setSeconds = (t: Omit<Timer, "results">, seconds: number) => {
 	const hms = secondsToHMS(seconds);
-	t.hours = hms.h;
-	t.minutes = hms.m;
-	t.seconds = hms.s;
-	t.formatted = formatHMS(hms);
-	t.raw = seconds;
-	t.timestamp = Date.now();
+	t["hours"] = hms.h;
+	t["minutes"] = hms.m;
+	t["seconds"] = hms.s;
+	t["formatted"] = formatHMS(hms);
+	t["raw"] = seconds;
+	t["timestamp"] = Date.now();
 	return t;
 };
 
@@ -130,7 +130,7 @@ export const newTimer = (seconds = 0): Timer => {
 		seconds: hms.s,
 		formatted: formatHMS(hms),
 		timestamp: Date.now(),
-		timerState: 'Stopped',
+		timerState: "Stopped",
 		results: [null, null, null, null],
 		forfeit: false,
 	};

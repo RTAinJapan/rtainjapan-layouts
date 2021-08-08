@@ -1,15 +1,15 @@
-import {setInterval, clearInterval} from 'timers';
-import {increment, newTimer, parseSeconds, setSeconds} from '../nodecg/timer';
-import {NodeCG} from './nodecg';
+import {setInterval, clearInterval} from "timers";
+import {increment, newTimer, parseSeconds, setSeconds} from "../nodecg/timer";
+import {NodeCG} from "./nodecg";
 
 const TRY_TICK_INTERVAL = 10;
 
 const getDefaultTimer = () => newTimer(0);
 
 export const timekeeping = (nodecg: NodeCG) => {
-	const checklistRep = nodecg.Replicant('checklist');
-	const currentRunRep = nodecg.Replicant('current-run');
-	const timerRep = nodecg.Replicant('timer', {
+	const checklistRep = nodecg.Replicant("checklist");
+	const currentRunRep = nodecg.Replicant("current-run");
+	const timerRep = nodecg.Replicant("timer", {
 		defaultValue: getDefaultTimer(),
 	});
 
@@ -56,12 +56,12 @@ export const timekeeping = (nodecg: NodeCG) => {
 		}
 
 		// Don't start the time if it's already running
-		if (!force && timerRep.value.timerState === 'Running') {
+		if (!force && timerRep.value.timerState === "Running") {
 			return;
 		}
 
 		clearInterval(tickInterval);
-		timerRep.value.timerState = 'Running';
+		timerRep.value.timerState = "Running";
 		lastIncrement = Date.now();
 		tickInterval = setInterval(tryTick, TRY_TICK_INTERVAL);
 	};
@@ -74,7 +74,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 			return;
 		}
 		clearInterval(tickInterval);
-		timerRep.value.timerState = 'Stopped';
+		timerRep.value.timerState = "Stopped";
 	};
 
 	/**
@@ -99,8 +99,8 @@ export const timekeeping = (nodecg: NodeCG) => {
 		const finishedResults = timerRep.value.results
 			.filter((result) => {
 				if (result) {
-					result.place = 0;
-					return !result.forfeit;
+					result["place"] = 0;
+					return !result["forfeit"];
 				}
 				return false;
 			})
@@ -111,13 +111,13 @@ export const timekeeping = (nodecg: NodeCG) => {
 				if (!b) {
 					return 1;
 				}
-				return a.raw - b.raw;
+				return a["raw"] - b["raw"];
 			});
 		finishedResults.forEach((r, index) => {
 			if (!r) {
 				return;
 			}
-			r.place = index + 1;
+			r["place"] = index + 1;
 		});
 
 		if (currentRunRep.value.runners === undefined) {
@@ -128,7 +128,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 		);
 		if (allRunnersFinished) {
 			stop();
-			timerRep.value.timerState = 'Finished';
+			timerRep.value.timerState = "Finished";
 		}
 	};
 
@@ -146,7 +146,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 		}
 		const result = timerRep.value.results[data.index];
 		if (result) {
-			result.forfeit = data.forfeit;
+			result["forfeit"] = data.forfeit;
 			recalcPlaces();
 		}
 	};
@@ -161,7 +161,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 		}
 		timerRep.value.results[index] = null;
 		recalcPlaces();
-		if (timerRep.value.timerState !== 'Finished') {
+		if (timerRep.value.timerState !== "Finished") {
 			return;
 		}
 		const missedSeconds = Math.round(
@@ -180,7 +180,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 		index,
 		newTime,
 	}: {
-		index: number | 'master';
+		index: number | "master";
 		newTime: string;
 	}) => {
 		if (!timerRep.value || !currentRunRep.value) {
@@ -195,7 +195,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 			return;
 		}
 
-		if (index === 'master') {
+		if (index === "master") {
 			setSeconds(timerRep.value, newSeconds);
 			return;
 		}
@@ -215,7 +215,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 
 	// If the timer was running when NodeCG was shut down last time,
 	// resume the timer according to how long it has been since the shutdown time.
-	if (timerRep.value && timerRep.value.timerState === 'Running') {
+	if (timerRep.value && timerRep.value.timerState === "Running") {
 		const missedSeconds = Math.round(
 			(Date.now() - timerRep.value.timestamp) / 1000,
 		);
@@ -223,10 +223,10 @@ export const timekeeping = (nodecg: NodeCG) => {
 		start(true);
 	}
 
-	nodecg.listenFor('startTimer', start);
-	nodecg.listenFor('stopTimer', stop);
-	nodecg.listenFor('resetTimer', reset);
-	nodecg.listenFor('completeRunner', completeRunner);
-	nodecg.listenFor('resumeRunner', resumeRunner);
-	nodecg.listenFor('editTime', editTime);
+	nodecg.listenFor("startTimer", start);
+	nodecg.listenFor("stopTimer", stop);
+	nodecg.listenFor("resetTimer", reset);
+	nodecg.listenFor("completeRunner", completeRunner);
+	nodecg.listenFor("resumeRunner", resumeRunner);
+	nodecg.listenFor("editTime", editTime);
 };

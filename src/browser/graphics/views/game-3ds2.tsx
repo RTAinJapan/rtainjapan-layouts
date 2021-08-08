@@ -1,17 +1,16 @@
-import '../styles/common.css';
+import "../styles/common.css";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import styled, {css} from 'styled-components';
-import {Ruler} from '../components/lib/ruler';
-import {Container} from '../components/lib/styled';
-import {RtaijCommentator} from '../components/rtaij-commentator';
-import {RtaijGame} from '../components/rtaij-game';
-import {RtaijOverlay} from '../components/rtaij-overlay';
-import {RtaijRunner} from '../components/rtaij-runner';
-import {RtaijTimer} from '../components/rtaij-timer';
-import {background} from '../images/background';
-import {Box} from '../clip-path-calculator';
+import ReactDOM from "react-dom";
+import styled, {css} from "styled-components";
+import {Ruler} from "../components/lib/ruler";
+import {Container} from "../components/lib/styled";
+import {RtaijCommentator} from "../components/rtaij-commentator";
+import {RtaijGame} from "../components/rtaij-game";
+import {RtaijOverlay} from "../components/rtaij-overlay";
+import {RtaijRunner} from "../components/rtaij-runner";
+import {RtaijTimer} from "../components/rtaij-timer";
+import {background} from "../images/background";
+import {Box} from "../clip-path-calculator";
 
 const {hasSponsor} = nodecg.bundleConfig;
 
@@ -84,7 +83,7 @@ const StyledRuler = styled(Ruler)`
 
 const App = () => (
 	<Container clipBoxes={gameBoxes} backgroundImage={background}>
-		<Runner style={{left: '105px'}}>
+		<Runner style={{left: "105px"}}>
 			<RtaijRunner index={0} hideLabel gradientBackground columnDirection />
 		</Runner>
 		<Runner style={{left: `${105 + 850 + 15}px`}}>
@@ -104,4 +103,4 @@ const App = () => (
 	</Container>
 );
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

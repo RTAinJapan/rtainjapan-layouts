@@ -1,30 +1,30 @@
-import green from '@material-ui/core/colors/green';
-import grey from '@material-ui/core/colors/grey';
-import orange from '@material-ui/core/colors/orange';
-import pink from '@material-ui/core/colors/pink';
-import Edit from '@material-ui/icons/Edit';
-import Pause from '@material-ui/icons/Pause';
-import PlayArrow from '@material-ui/icons/PlayArrow';
-import Refresh from '@material-ui/icons/Refresh';
-import React from 'react';
-import styled from 'styled-components';
-import {v4 as uuidv4} from 'uuid';
-import {CurrentRun, Timer, Checklist} from '../../../../nodecg/replicants';
-import {newTimer} from '../../../../nodecg/timer';
-import {BorderedBox} from '../lib/bordered-box';
-import {ColoredButton} from '../lib/colored-button';
-import {EditTimeModal} from './edit';
-import {Runner} from './runner';
+import green from "@material-ui/core/colors/green";
+import grey from "@material-ui/core/colors/grey";
+import orange from "@material-ui/core/colors/orange";
+import pink from "@material-ui/core/colors/pink";
+import Edit from "@material-ui/icons/Edit";
+import Pause from "@material-ui/icons/Pause";
+import PlayArrow from "@material-ui/icons/PlayArrow";
+import Refresh from "@material-ui/icons/Refresh";
+import React from "react";
+import styled from "styled-components";
+import {v4 as uuidv4} from "uuid";
+import {CurrentRun, Timer, Checklist} from "../../../../nodecg/replicants";
+import {newTimer} from "../../../../nodecg/timer";
+import {BorderedBox} from "../lib/bordered-box";
+import {ColoredButton} from "../lib/colored-button";
+import {EditTimeModal} from "./edit";
+import {Runner} from "./runner";
 
-const checklistRep = nodecg.Replicant('checklist');
-const currentRunRep = nodecg.Replicant('current-run');
-const timerRep = nodecg.Replicant('timer');
+const checklistRep = nodecg.Replicant("checklist");
+const currentRunRep = nodecg.Replicant("current-run");
+const timerRep = nodecg.Replicant("timer");
 
 const Container = styled(BorderedBox)`
 	display: grid;
 	grid-template-columns: 1fr auto;
 	grid-template-rows: 105px 1fr;
-	grid-template-areas: 'timer ctrls' 'runners runners';
+	grid-template-areas: "timer ctrls" "runners runners";
 	justify-items: center;
 	align-items: center;
 `;
@@ -55,15 +55,15 @@ const RunnersContainer = styled.div`
 `;
 
 const startTimer = () => {
-	nodecg.sendMessage('startTimer', undefined);
+	nodecg.sendMessage("startTimer", undefined);
 };
 
 const stopTimer = () => {
-	nodecg.sendMessage('stopTimer');
+	nodecg.sendMessage("stopTimer");
 };
 
 const resetTimer = () => {
-	nodecg.sendMessage('resetTimer');
+	nodecg.sendMessage("resetTimer");
 };
 
 interface State {
@@ -86,10 +86,10 @@ export class Timekeeper extends React.Component<{}, State> {
 
 		// Disable start if checklist is not completed or timer is not stopped state
 		const shouldDisableStart =
-			!state.checklistComplete || state.timer.timerState !== 'Stopped';
+			!state.checklistComplete || state.timer.timerState !== "Stopped";
 
 		// Disable pause if timer is not running
-		const shouldDisablePause = state.timer.timerState !== 'Running';
+		const shouldDisablePause = state.timer.timerState !== "Running";
 
 		return (
 			<Container>
@@ -163,20 +163,20 @@ export class Timekeeper extends React.Component<{}, State> {
 	}
 
 	public componentDidMount() {
-		timerRep.on('change', this.stopwatchRepChangeHandler);
-		currentRunRep.on('change', this.currentRunChangeHandler);
-		checklistRep.on('change', this.checklistChangeHandler);
+		timerRep.on("change", this.stopwatchRepChangeHandler);
+		currentRunRep.on("change", this.currentRunChangeHandler);
+		checklistRep.on("change", this.checklistChangeHandler);
 	}
 
 	public componentWillUnmount() {
-		timerRep.removeListener('change', this.stopwatchRepChangeHandler);
-		currentRunRep.removeListener('change', this.currentRunChangeHandler);
-		checklistRep.removeListener('change', this.checklistChangeHandler);
+		timerRep.removeListener("change", this.stopwatchRepChangeHandler);
+		currentRunRep.removeListener("change", this.currentRunChangeHandler);
+		checklistRep.removeListener("change", this.checklistChangeHandler);
 	}
 
 	private readonly closeModal = (value?: string) => {
 		if (value) {
-			nodecg.sendMessage('editTime', {index: 'master', newTime: value});
+			nodecg.sendMessage("editTime", {index: "master", newTime: value});
 		}
 		this.setState({isModalOpened: false});
 	};
@@ -192,7 +192,7 @@ export class Timekeeper extends React.Component<{}, State> {
 		const newRunners = newVal.runners;
 		this.setState({
 			runners: Array.from({length: 4}, (_, index) => {
-				const name = newRunners && newRunners[index] && newRunners[index].name;
+				const name = newRunners && newRunners[index] && newRunners[index]?.name;
 				return {name, id: uuidv4()};
 			}),
 		});

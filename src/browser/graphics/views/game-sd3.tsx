@@ -1,16 +1,15 @@
-import '../styles/common.css';
+import "../styles/common.css";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import styled, {css} from 'styled-components';
-import {Ruler} from '../components/lib/ruler';
-import {Container} from '../components/lib/styled';
-import {RtaijCommentator} from '../components/rtaij-commentator';
-import {RtaijGame} from '../components/rtaij-game';
-import {RtaijOverlay} from '../components/rtaij-overlay';
-import {RtaijRunner} from '../components/rtaij-runner';
-import {RtaijTimer} from '../components/rtaij-timer';
-import {background} from '../images/background';
+import ReactDOM from "react-dom";
+import styled, {css} from "styled-components";
+import {Ruler} from "../components/lib/ruler";
+import {Container} from "../components/lib/styled";
+import {RtaijCommentator} from "../components/rtaij-commentator";
+import {RtaijGame} from "../components/rtaij-game";
+import {RtaijOverlay} from "../components/rtaij-overlay";
+import {RtaijRunner} from "../components/rtaij-runner";
+import {RtaijTimer} from "../components/rtaij-timer";
+import {background} from "../images/background";
 
 const {onsite, hasSponsor} = nodecg.bundleConfig;
 
@@ -97,13 +96,13 @@ const StyledRuler = styled(Ruler)`
 
 const App = () => (
 	<StyledContainer clipBoxes={[]} backgroundImage={background}>
-		<Runner style={{left: '15px'}}>
+		<Runner style={{left: "15px"}}>
 			<RtaijRunner index={0} hideLabel showFinishTime gradientBackground />
 		</Runner>
 		<Runner style={{left: `${15 + 620 + 15}px`}}>
 			<RtaijRunner index={1} hideLabel showFinishTime gradientBackground />
 		</Runner>
-		<Runner style={{right: '15px'}}>
+		<Runner style={{right: "15px"}}>
 			<RtaijRunner index={2} hideLabel showFinishTime gradientBackground />
 		</Runner>
 		<CommentatorContainer>
@@ -120,4 +119,4 @@ const App = () => (
 	</StyledContainer>
 );
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

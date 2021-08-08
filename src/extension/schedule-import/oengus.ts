@@ -1,15 +1,15 @@
-import {setInterval} from 'timers';
-import {NodeCG} from '../nodecg';
-import got from 'got';
-import sampleSchedule from './oengus-sample-schedule.json';
-import moment from 'moment';
-import {Participant} from '../../nodecg/replicants';
-import {google} from 'googleapis';
-import {padStart, zipObject} from 'lodash';
+import {setInterval} from "timers";
+import {NodeCG} from "../nodecg";
+import got from "got";
+import sampleSchedule from "./oengus-sample-schedule.json";
+import moment from "moment";
+import {Participant} from "../../nodecg/replicants";
+import {google} from "googleapis";
+import {padStart, zipObject} from "lodash";
 
-const englishTitles: {[x: string]: string} = require('./english-titles.json');
+const englishTitles: {[x: string]: string} = require("./english-titles.json");
 
-type SampleRunner = typeof sampleSchedule['lines'][number]['runners'][number];
+type SampleRunner = typeof sampleSchedule["lines"][number]["runners"][number];
 
 const fetchSchedule = async (): Promise<typeof sampleSchedule> => {
 	const res = await got.get(
@@ -20,12 +20,14 @@ const fetchSchedule = async (): Promise<typeof sampleSchedule> => {
 };
 const fetchSubmissions = async (
 	token: string,
-): Promise<Array<{
-	user: {id: number};
-	answers: Array<{question: {label: string}; answer: string | null}>;
-}>> => {
+): Promise<
+	Array<{
+		user: {id: number};
+		answers: Array<{question: {label: string}; answer: string | null}>;
+	}>
+> => {
 	const res = await got.get(
-		'https://oengus.io/api/marathon/rtaij2020/submission/answers',
+		"https://oengus.io/api/marathon/rtaij2020/submission/answers",
 		{
 			json: true,
 			headers: {
@@ -37,7 +39,7 @@ const fetchSubmissions = async (
 };
 
 const padZero = (num: number) => {
-	return padStart(String(num), 2, '0');
+	return padStart(String(num), 2, "0");
 };
 
 const formatDuration = (duration: string) => {
@@ -57,46 +59,49 @@ const extractNicoId = (str: string) => {
 };
 
 export const importFromOengus = (nodecg: NodeCG) => {
-	const logger = new nodecg.Logger('schedule:oengus');
+	const logger = new nodecg.Logger("schedule:oengus");
 	const {oengus, googleApiKey} = nodecg.bundleConfig;
 	if (!oengus) {
-		logger.warn('Oengus config is empty');
+		logger.warn("Oengus config is empty");
 		return;
 	}
 	if (!googleApiKey) {
-		logger.warn('Google API key config is empty');
+		logger.warn("Google API key config is empty");
 		return;
 	}
 
 	const sheetsApi = google.sheets({
-		version: 'v4',
+		version: "v4",
 		auth: googleApiKey,
 	});
 	const fetchCommentators = async () => {
 		const res = await sheetsApi.spreadsheets.values.batchGet({
 			spreadsheetId: oengus.commentatorSheet,
-			ranges: ['フォームの回答 1'],
+			ranges: ["フォームの回答 1"],
 		});
 		const sheetValues = res.data.valueRanges;
-		if (!sheetValues || !sheetValues[0] || !sheetValues[0].values) {
-			throw new Error('Could not get values from spreadsheet');
+		if (!sheetValues?.[0]?.values) {
+			throw new Error("Could not get values from spreadsheet");
 		}
 		const [labels, ...contents] = sheetValues[0].values;
+		if (!labels) {
+			throw new Error("Could not get values from spreadsheet");
+		}
 		const rawData = contents.map((content) => zipObject(labels, content));
 		return rawData.map((el) => {
 			return {
-				name: el['名前'],
-				twitter: el['Twitter ID'],
-				twitch: el['Twitch ID'],
-				nico: el['ニコニココミュニティ ID'],
-				gameCategory: el['担当ゲームカテゴリ'],
+				name: el["名前"],
+				twitter: el["Twitter ID"],
+				twitch: el["Twitch ID"],
+				nico: el["ニコニココミュニティ ID"],
+				gameCategory: el["担当ゲームカテゴリ"],
 			};
 		});
 	};
 
-	logger.info('Using Oengus to import schedule');
+	logger.info("Using Oengus to import schedule");
 
-	const scheduleRep = nodecg.Replicant('schedule');
+	const scheduleRep = nodecg.Replicant("schedule");
 
 	const updateSchedule = async () => {
 		try {
@@ -114,7 +119,7 @@ export const importFromOengus = (nodecg: NodeCG) => {
 						const answer =
 							submission &&
 							submission.answers.find((e) =>
-								e.question.label.includes('niconico'),
+								e.question.label.includes("niconico"),
 							);
 						return {
 							name: runner.usernameJapanese || runner.username,
@@ -128,7 +133,7 @@ export const importFromOengus = (nodecg: NodeCG) => {
 					},
 				);
 				const gameCategory =
-					run.gameName.trim() + ' - ' + run.categoryName.trim();
+					run.gameName.trim() + " - " + run.categoryName.trim();
 				const commentators = rawCommentators.filter(
 					(c) => c.gameCategory === gameCategory,
 				);
@@ -136,7 +141,7 @@ export const importFromOengus = (nodecg: NodeCG) => {
 					pk: run.id,
 					index,
 					title: run.gameName,
-					englishTitle: englishTitles[run.gameName] || '',
+					englishTitle: englishTitles[run.gameName] || "",
 					category: run.categoryName,
 					platform: run.console,
 					runDuration: formatDuration(run.estimate),
@@ -152,7 +157,7 @@ export const importFromOengus = (nodecg: NodeCG) => {
 				};
 			});
 		} catch (error) {
-			logger.error('Failed to fetch schedule');
+			logger.error("Failed to fetch schedule");
 			logger.error(error);
 		}
 	};

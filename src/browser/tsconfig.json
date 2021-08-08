@@ -1,12 +1,11 @@
 {
 	"extends": "../../tsconfig",
 	"compilerOptions": {
-		"module": "esnext",
 		"target": "ES2018",
-		"lib": ["esnext", "dom"],
-		"jsx": "react",
-		"noEmit": true,
-		"types": ["node"]
+		"module": "ESNext",
+		"lib": ["ESNext", "DOM"],
+		"jsx": "react-jsx",
+		"noEmit": true
 	},
 	"include": ["**/*.ts", "**/*.tsx", "../nodecg/**/*.ts"]
 }

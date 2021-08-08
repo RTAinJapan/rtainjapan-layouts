@@ -1,14 +1,14 @@
-import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
-import ChevronRight from '@material-ui/icons/ChevronRight';
+import Button from "@material-ui/core/Button";
+import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
+import TextField from "@material-ui/core/TextField";
+import ChevronRight from "@material-ui/icons/ChevronRight";
 import Downshift, {
 	ControllerStateAndHelpers,
 	GetItemPropsOptions,
-} from 'downshift';
-import React from 'react';
-import styled from 'styled-components';
+} from "downshift";
+import React from "react";
+import styled from "styled-components";
 
 const TypeaheadContainer = styled.div`
 	display: flex;
@@ -25,7 +25,7 @@ interface Props {
 }
 
 export class Typeahead extends React.Component<Props, State> {
-	public state: State = {inputText: ''};
+	public state: State = {inputText: ""};
 
 	public render() {
 		return (
@@ -44,14 +44,14 @@ export class Typeahead extends React.Component<Props, State> {
 						<div>
 							<TextField
 								fullWidth
-								InputProps={getInputProps({
-									placeholder: 'ゲーム名',
+								inputProps={getInputProps({
+									placeholder: "ゲーム名",
 								})}
 							/>
 							{isOpen && (
 								<Paper
 									style={{
-										position: 'absolute',
+										position: "absolute",
 										zIndex: 1,
 									}}
 									square
@@ -67,7 +67,7 @@ export class Typeahead extends React.Component<Props, State> {
 					)}
 				</Downshift>
 				<Button
-					style={{whiteSpace: 'nowrap', alignSelf: 'flex-end'}}
+					style={{whiteSpace: "nowrap", alignSelf: "flex-end"}}
 					size='small'
 					onClick={this.skipClicked}
 				>
@@ -84,8 +84,8 @@ export class Typeahead extends React.Component<Props, State> {
 
 	private readonly skipClicked = async () => {
 		const index = this.props.titles.indexOf(this.state.inputText);
-		await nodecg.sendMessage('setCurrentRunByIndex', index);
-		this.setState({inputText: ''});
+		await nodecg.sendMessage("setCurrentRunByIndex", index);
+		this.setState({inputText: ""});
 	};
 
 	private readonly renderSuggestion = (

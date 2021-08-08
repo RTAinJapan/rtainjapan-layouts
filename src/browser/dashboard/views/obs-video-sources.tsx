@@ -10,13 +10,13 @@ import {
 	MenuItem,
 	Paper,
 	Select,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import styled from 'styled-components';
-import {CropSwitch} from '../components/obs/crop-switch';
-import RefreshIcon from '@material-ui/icons/Refresh';
+import React from "react";
+import ReactDOM from "react-dom";
+import styled from "styled-components";
+import {CropSwitch} from "../components/obs/crop-switch";
+import RefreshIcon from "@material-ui/icons/Refresh";
 
 type SceneItem = {
 	id: number;
@@ -64,11 +64,11 @@ class App extends React.Component<{}, State> {
 		scenes: [],
 		cropSourceNames: [],
 	};
-	private readonly obsRep = nodecg.Replicant('obs');
-	private readonly obsCropInputsRep = nodecg.Replicant('obs-crop-inputs');
+	private readonly obsRep = nodecg.Replicant("obs");
+	private readonly obsCropInputsRep = nodecg.Replicant("obs-crop-inputs");
 
 	componentDidMount() {
-		this.obsRep.on('change', (newVal) => {
+		this.obsRep.on("change", (newVal) => {
 			if (!newVal) {
 				return;
 			}
@@ -81,14 +81,14 @@ class App extends React.Component<{}, State> {
 			});
 		});
 
-		this.obsCropInputsRep.on('change', (newVal) => {
+		this.obsCropInputsRep.on("change", (newVal) => {
 			this.setState({
 				cropSourceNames: newVal,
 			});
 		});
 	}
 	componentWillUnmount() {
-		this.obsRep.removeAllListeners('change');
+		this.obsRep.removeAllListeners("change");
 	}
 
 	public render() {
@@ -97,10 +97,10 @@ class App extends React.Component<{}, State> {
 				<CropSwitch cropEnabled={this.state.cropEnabled} />
 				<Paper
 					style={{
-						padding: '8px',
-						display: 'grid',
-						gridAutoFlow: 'column',
-						rowGap: '8px',
+						padding: "8px",
+						display: "grid",
+						gridAutoFlow: "column",
+						rowGap: "8px",
 					}}
 				>
 					{this.state.connected ? (
@@ -127,13 +127,13 @@ class App extends React.Component<{}, State> {
 							</RowContainer>
 							<List
 								style={{
-									height: '620px',
-									overflowY: 'auto',
+									height: "620px",
+									overflowY: "auto",
 								}}
 							>
 								{!(this.state.findSceneIndex < 0) &&
 									this.state.scenes.length > this.state.findSceneIndex &&
-									this.state.scenes[this.state.findSceneIndex].sources.map(
+									this.state.scenes[this.state.findSceneIndex]?.sources.map(
 										(item) => (
 											<ListItem key={item.id}>
 												<ListItemText
@@ -161,7 +161,7 @@ class App extends React.Component<{}, State> {
 	}
 
 	private updateSource = () => {
-		nodecg.sendMessage('obs:update');
+		nodecg.sendMessage("obs:update");
 	};
 
 	private handleChangeFindScene = (
@@ -176,8 +176,8 @@ class App extends React.Component<{}, State> {
 		event: React.ChangeEvent<HTMLInputElement>,
 	): void => {
 		event.target.checked
-			? nodecg.sendMessage('obs:addCropInput', event.target.value)
-			: nodecg.sendMessage('obs:removeCropInput', event.target.value);
+			? nodecg.sendMessage("obs:addCropInput", event.target.value)
+			: nodecg.sendMessage("obs:removeCropInput", event.target.value);
 	};
 
 	private isSelected = (name: string): boolean => {
@@ -185,4 +185,4 @@ class App extends React.Component<{}, State> {
 	};
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

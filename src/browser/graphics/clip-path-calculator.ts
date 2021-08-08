@@ -1,4 +1,4 @@
-import {css} from 'styled-components';
+import {css} from "styled-components";
 
 export type X = number;
 export type Y = number;
@@ -30,16 +30,24 @@ const calcCorners = ([x1, x2, y1, y2]: Box) => {
 
 export const calculateClipPath = (boxes: Box[]) => {
 	const boxCornersList = boxes.map((box) => calcCorners(box));
-	boxCornersList.sort((a, b) => a[0][0] - b[0][0]);
+	boxCornersList.sort((a, b) => {
+		if (!a[0]?.[0] || !b[0]?.[0]) {
+			return 0;
+		}
+		return a[0][0] - b[0][0];
+	});
 	const clipPath: Coordinate[] = [[0, 0]];
 	for (const boxCorners of boxCornersList) {
+		if (!boxCorners[0]?.[0]) {
+			throw new Error("first element of boxCorners is empty");
+		}
 		const entryCoordinate: Coordinate = [boxCorners[0][0], 0];
 		clipPath.push(entryCoordinate, ...boxCorners, entryCoordinate);
 	}
 	clipPath.push([1920, 0], [1920, 1080], [0, 1080], [0, 0]);
 	return css`
 		clip-path: polygon(
-			${clipPath.map((coor) => coor.map((n) => `${n}px`).join(' ')).join(',')}
+			${clipPath.map((coor) => coor.map((n) => `${n}px`).join(" ")).join(",")}
 		);
 	`;
 };
