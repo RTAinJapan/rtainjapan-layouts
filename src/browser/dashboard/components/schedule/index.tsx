@@ -1,23 +1,23 @@
-import pink from '@material-ui/core/colors/pink';
-import purple from '@material-ui/core/colors/purple';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import ArrowForward from '@material-ui/icons/ArrowForward';
-import React from 'react';
-import styled from 'styled-components';
+import pink from "@material-ui/core/colors/pink";
+import purple from "@material-ui/core/colors/purple";
+import ArrowBack from "@material-ui/icons/ArrowBack";
+import ArrowForward from "@material-ui/icons/ArrowForward";
+import React from "react";
+import styled from "styled-components";
 import {
 	CurrentRun,
 	NextRun,
 	Schedule as ScheduleSchema,
-} from '../../../../nodecg/replicants';
-import {BorderedBox} from '../lib/bordered-box';
-import {ColoredButton} from '../lib/colored-button';
-import {EditRun} from './edit';
-import {RunInfo} from './run-info';
-import {Typeahead} from './typeahead';
+} from "../../../../nodecg/replicants";
+import {BorderedBox} from "../lib/bordered-box";
+import {ColoredButton} from "../lib/colored-button";
+import {EditRun} from "./edit";
+import {RunInfo} from "./run-info";
+import {Typeahead} from "./typeahead";
 
-const currentRunRep = nodecg.Replicant('current-run');
-const nextRunRep = nodecg.Replicant('next-run');
-const scheduleRep = nodecg.Replicant('schedule');
+const currentRunRep = nodecg.Replicant("current-run");
+const nextRunRep = nodecg.Replicant("next-run");
+const scheduleRep = nodecg.Replicant("schedule");
 
 const Container = styled(BorderedBox)`
 	height: calc(100vh - 32px);
@@ -50,18 +50,18 @@ const EditControls = styled.div`
 `;
 
 const moveNextRun = () => {
-	nodecg.sendMessage('nextRun');
+	nodecg.sendMessage("nextRun");
 };
 
 const movePreviousRun = () => {
-	nodecg.sendMessage('previousRun');
+	nodecg.sendMessage("previousRun");
 };
 
 interface State {
 	titles: Array<string | undefined>;
 	currentRun?: CurrentRun;
 	nextRun?: NextRun;
-	edit?: 'current' | 'next';
+	edit?: "current" | "next";
 }
 
 export class Schedule extends React.Component<{}, State> {
@@ -70,15 +70,15 @@ export class Schedule extends React.Component<{}, State> {
 	};
 
 	public componentDidMount() {
-		scheduleRep.on('change', this.scheduleChangeHandler);
-		currentRunRep.on('change', this.currentRunChangeHandler);
-		nextRunRep.on('change', this.nextRunChangeHandler);
+		scheduleRep.on("change", this.scheduleChangeHandler);
+		currentRunRep.on("change", this.currentRunChangeHandler);
+		nextRunRep.on("change", this.nextRunChangeHandler);
 	}
 
 	public componentWillUnmount() {
-		scheduleRep.removeListener('change', this.scheduleChangeHandler);
-		currentRunRep.removeListener('change', this.currentRunChangeHandler);
-		nextRunRep.removeListener('change', this.nextRunChangeHandler);
+		scheduleRep.removeListener("change", this.scheduleChangeHandler);
+		currentRunRep.removeListener("change", this.currentRunChangeHandler);
+		nextRunRep.removeListener("change", this.nextRunChangeHandler);
 	}
 
 	public render() {
@@ -119,7 +119,7 @@ export class Schedule extends React.Component<{}, State> {
 				<EditRun
 					edit={this.state.edit}
 					defaultValue={
-						(this.state.edit === 'current'
+						(this.state.edit === "current"
 							? this.state.currentRun
 							: this.state.nextRun) || undefined
 					}
@@ -130,11 +130,11 @@ export class Schedule extends React.Component<{}, State> {
 	}
 
 	private readonly editCurrentRun = () => {
-		this.setState({edit: 'current'});
+		this.setState({edit: "current"});
 	};
 
 	private readonly editNextRun = () => {
-		this.setState({edit: 'next'});
+		this.setState({edit: "next"});
 	};
 
 	private readonly onEditFinish = () => {

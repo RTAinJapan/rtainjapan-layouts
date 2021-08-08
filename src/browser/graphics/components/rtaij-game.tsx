@@ -1,21 +1,21 @@
-import {CurrentRun} from '../../../nodecg/replicants';
-import {BaseInfo} from './lib/base-info';
+import {CurrentRun} from "../../../nodecg/replicants";
+import {BaseInfo} from "./lib/base-info";
 
-const currentRunRep = nodecg.Replicant('current-run');
+const currentRunRep = nodecg.Replicant("current-run");
 
 export class RtaijGame extends BaseInfo {
 	public componentDidMount() {
 		if (super.componentDidMount) {
 			super.componentDidMount();
 		}
-		currentRunRep.on('change', this.currentRunChangeHandler);
+		currentRunRep.on("change", this.currentRunChangeHandler);
 	}
 
 	public componentWillUnmount() {
 		if (super.componentWillUnmount) {
 			super.componentWillUnmount();
 		}
-		currentRunRep.removeListener('change', this.currentRunChangeHandler);
+		currentRunRep.removeListener("change", this.currentRunChangeHandler);
 	}
 
 	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
@@ -23,7 +23,7 @@ export class RtaijGame extends BaseInfo {
 			return;
 		}
 		this.setState({
-			primaryInfo: newVal.title || '',
+			primaryInfo: newVal.title || "",
 			secondaryInfo: miscText(newVal),
 		});
 	};
@@ -31,8 +31,8 @@ export class RtaijGame extends BaseInfo {
 
 function miscText(newVal: CurrentRun) {
 	if (!newVal) {
-		return '';
+		return "";
 	}
 	const {platform} = newVal;
-	return newVal.category + (platform ? ` - ${platform}` : '');
+	return newVal.category + (platform ? ` - ${platform}` : "");
 }

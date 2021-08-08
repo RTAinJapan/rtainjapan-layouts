@@ -1,9 +1,9 @@
-import {isEqual} from 'lodash';
-import defaultChecklist from './default/checklist';
-import {NodeCG} from './nodecg';
+import {isEqual} from "lodash";
+import defaultChecklist from "./default/checklist";
+import {NodeCG} from "./nodecg";
 
 export const checklist = (nodecg: NodeCG) => {
-	const checklistRep = nodecg.Replicant('checklist');
+	const checklistRep = nodecg.Replicant("checklist");
 	if (checklistRep.value && checklistRep.value.length > 0) {
 		const currentNameList = checklistRep.value.map((item) => item.name);
 		const defaultNameList = defaultChecklist.map((item) => item.name);
@@ -40,6 +40,6 @@ export const checklist = (nodecg: NodeCG) => {
 		}
 	};
 
-	nodecg.listenFor('toggleCheckbox', toggleCheckbox);
-	nodecg.listenFor('resetChecklist', resetChecklist);
+	nodecg.listenFor("toggleCheckbox", toggleCheckbox);
+	nodecg.listenFor("resetChecklist", resetChecklist);
 };

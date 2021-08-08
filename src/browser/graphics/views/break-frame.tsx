@@ -1,19 +1,19 @@
-import '../styles/common.css';
+import "../styles/common.css";
 
-import React, {useEffect, useState} from 'react';
-import ReactDOM from 'react-dom';
-import styled from 'styled-components';
-import {Container} from '../components/lib/styled';
-import frame from '../images/break-2/frame.png';
-import {useReplicant} from '../../use-replicant';
-import {Run, Spotify} from '../../../nodecg/replicants';
-import moment from 'moment';
-import {RtaijOverlay} from '../components/rtaij-overlay';
-import notificationIconBlue from '../images/break/notification-blue.png';
-import notificationIconBrown from '../images/break/notification-brown.png';
+import React, {useEffect, useState} from "react";
+import ReactDOM from "react-dom";
+import styled from "styled-components";
+import {Container} from "../components/lib/styled";
+import frame from "../images/break-2/frame.png";
+import {useReplicant} from "../../use-replicant";
+import {Run, Spotify} from "../../../nodecg/replicants";
+import moment from "moment";
+import {RtaijOverlay} from "../components/rtaij-overlay";
+import notificationIconBlue from "../images/break/notification-blue.png";
+import notificationIconBrown from "../images/break/notification-brown.png";
 
 const Root = styled(Container)`
-	font-family: 'MigMix 2P';
+	font-family: "MigMix 2P";
 `;
 
 const FrameContainer = styled.div`
@@ -98,7 +98,7 @@ const NotificationText = styled.div`
 	height: 150px;
 
 	color: #ffffff;
-	font-family: 'MigMix 2P';
+	font-family: "MigMix 2P";
 	font-weight: bold;
 	font-size: 45px;
 	line-height: 120%;
@@ -114,7 +114,7 @@ const FollowingRun: React.FunctionComponent<{
 }> = (props) => {
 	return (
 		<>
-			<FollowingGameMisc style={{textAlign: 'end'}}>
+			<FollowingGameMisc style={{textAlign: "end"}}>
 				{props.timeUntil}
 			</FollowingGameMisc>
 			<FollowingGameInfo>
@@ -143,7 +143,7 @@ const makeMiscString = (run: Run) => {
 	const concatenatedRunners = run.runners
 		.map((runner) => runner.name)
 		.filter(Boolean)
-		.join(', ');
+		.join(", ");
 	return `${run.category} | Runner: ${concatenatedRunners}`;
 };
 
@@ -157,8 +157,8 @@ const convertDurationToString = (duration: moment.Duration) => {
 };
 
 const useSpotifyCurrentTrack = () => {
-	const [currentTrack, setCurrentTrack] = useState('');
-	const spotifyRep = nodecg.Replicant('spotify');
+	const [currentTrack, setCurrentTrack] = useState("");
+	const spotifyRep = nodecg.Replicant("spotify");
 	const handler = (newVal: Spotify) => {
 		if (newVal.currentTrack) {
 			setCurrentTrack(
@@ -167,20 +167,20 @@ const useSpotifyCurrentTrack = () => {
 		}
 	};
 	useEffect(() => {
-		spotifyRep.on('change', handler);
+		spotifyRep.on("change", handler);
 		return () => {
-			spotifyRep.removeListener('change', handler);
+			spotifyRep.removeListener("change", handler);
 		};
 	}, [spotifyRep]);
 	return currentTrack;
 };
 
 const Break: React.FunctionComponent = () => {
-	const [currentRun] = useReplicant(nodecg.Replicant('current-run'));
-	const [schedule] = useReplicant(nodecg.Replicant('schedule'));
+	const [currentRun] = useReplicant(nodecg.Replicant("current-run"));
+	const [schedule] = useReplicant(nodecg.Replicant("schedule"));
 	const currentTrack = useSpotifyCurrentTrack();
-	const [secondNextTimeUntil, setSecondNextTimeUntil] = useState('');
-	const [thirdNextTimeUntil, setThirdNextTimeUntil] = useState('');
+	const [secondNextTimeUntil, setSecondNextTimeUntil] = useState("");
+	const [thirdNextTimeUntil, setThirdNextTimeUntil] = useState("");
 
 	useEffect(() => {
 		if (!currentRun || !schedule) {
@@ -192,7 +192,7 @@ const Break: React.FunctionComponent = () => {
 		setSecondNextTimeUntil(convertDurationToString(remainingTime));
 		const secondNextRun = schedule[currentRun.index + 1];
 		if (!secondNextRun) {
-			setThirdNextTimeUntil('');
+			setThirdNextTimeUntil("");
 			return;
 		}
 		remainingTime.add(moment.duration(secondNextRun.runDuration));
@@ -241,7 +241,7 @@ const Break: React.FunctionComponent = () => {
 			></RtaijOverlay>
 			<NotificationIcon
 				src={
-					nodecg.bundleConfig.colorTheme === 'brown'
+					nodecg.bundleConfig.colorTheme === "brown"
 						? notificationIconBrown
 						: notificationIconBlue
 				}
@@ -252,4 +252,4 @@ const Break: React.FunctionComponent = () => {
 	);
 };
 
-ReactDOM.render(<Break></Break>, document.getElementById('root'));
+ReactDOM.render(<Break></Break>, document.getElementById("root"));

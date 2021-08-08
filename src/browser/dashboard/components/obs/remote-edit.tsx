@@ -6,9 +6,9 @@ import {
 	Paper,
 	Select,
 	TextField,
-} from '@material-ui/core';
-import React from 'react';
-import styled from 'styled-components';
+} from "@material-ui/core";
+import React from "react";
+import styled from "styled-components";
 
 const RowContainer = styled.div`
 	display: grid;
@@ -28,7 +28,7 @@ interface State {
 }
 
 export class RemoteEdit extends React.Component<Props, State> {
-	state: State = {viewId: ''};
+	state: State = {viewId: ""};
 
 	componentDidUpdate(prevProps: Props) {
 		if (prevProps.repViewId === this.props.repViewId) {
@@ -43,10 +43,10 @@ export class RemoteEdit extends React.Component<Props, State> {
 		return (
 			<Paper
 				style={{
-					display: 'grid',
-					gridAutoFlow: 'row',
-					rowGap: '8px',
-					padding: '8px',
+					display: "grid",
+					gridAutoFlow: "row",
+					rowGap: "8px",
+					padding: "8px",
 				}}
 			>
 				<FormControl variant='outlined'>
@@ -83,7 +83,7 @@ export class RemoteEdit extends React.Component<Props, State> {
 	private handleChangeBrowser = (
 		event: React.ChangeEvent<{value: unknown}>,
 	) => {
-		nodecg.sendMessage('obs:setRemoteSource', {
+		nodecg.sendMessage("obs:setRemoteSource", {
 			input: event.target.value as string,
 			index: this.props.browserIndex,
 		});
@@ -96,7 +96,7 @@ export class RemoteEdit extends React.Component<Props, State> {
 	};
 
 	private submitViewId = () => {
-		nodecg.sendMessage('obs:updateRemoteBrowser', {
+		nodecg.sendMessage("obs:updateRemoteBrowser", {
 			viewId: this.state.viewId,
 			index: this.props.browserIndex,
 		});

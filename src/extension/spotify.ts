@@ -1,27 +1,27 @@
-import {setTimeout} from 'timers';
-import {isEqual} from 'lodash';
-import got from 'got';
-import {NodeCG} from './nodecg';
+import {setTimeout} from "timers";
+import {isEqual} from "lodash";
+import got from "got";
+import {NodeCG} from "./nodecg";
 
 const defaultWaitMs = 5 * 1000;
 
 const sumArtists = (artists: Array<{name: string}>) => {
-	return artists.map((artist) => artist.name).join(', ');
+	return artists.map((artist) => artist.name).join(", ");
 };
 
 const base64Encode = (str: string) => {
-	return Buffer.from(str).toString('base64');
+	return Buffer.from(str).toString("base64");
 };
 
 export const spotify = async (nodecg: NodeCG) => {
-	const logger = new nodecg.Logger('spotify');
+	const logger = new nodecg.Logger("spotify");
 	const spotifyConfig = nodecg.bundleConfig.spotify;
 	if (!spotifyConfig) {
-		logger.warn('Spotify config is empty');
+		logger.warn("Spotify config is empty");
 		return;
 	}
 
-	const spotifyRep = nodecg.Replicant('spotify');
+	const spotifyRep = nodecg.Replicant("spotify");
 	const redirectUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/spotify-callback/index.html`;
 
 	let currentTrackTimer: NodeJS.Timer | undefined;
@@ -52,11 +52,11 @@ export const spotify = async (nodecg: NodeCG) => {
 				return;
 			}
 			const res = await got.get(
-				'https://api.spotify.com/v1/me/player/currently-playing',
+				"https://api.spotify.com/v1/me/player/currently-playing",
 				{
 					json: true,
 					query: {
-						market: 'from_token',
+						market: "from_token",
 					},
 					headers: {Authorization: `Bearer ${token}`},
 				},
@@ -77,14 +77,14 @@ export const spotify = async (nodecg: NodeCG) => {
 			}
 			refreshCurrentTrackTimer(setTimeout(getCurrentTrack, defaultWaitMs));
 		} catch (err) {
-			logger.error('Failed to get current track:', err.stack);
+			logger.error("Failed to get current track:", err.stack);
 			if (
 				err.response &&
 				err.response.status === 429 &&
 				err.response.headers &&
-				err.response.headers['Retry-After']
+				err.response.headers["Retry-After"]
 			) {
-				const retryInSeconds = err.response.headers['Retry-After'];
+				const retryInSeconds = err.response.headers["Retry-After"];
 				refreshCurrentTrackTimer(
 					setTimeout(getCurrentTrack, retryInSeconds * 1000),
 				);
@@ -102,7 +102,7 @@ export const spotify = async (nodecg: NodeCG) => {
 		try {
 			if (!code && !spotifyRep.value.refreshToken) {
 				logger.error(
-					'Tried to authorize, but both code and refreshToken are empty',
+					"Tried to authorize, but both code and refreshToken are empty",
 				);
 				return;
 			}
@@ -111,19 +111,19 @@ export const spotify = async (nodecg: NodeCG) => {
 			);
 			const headers = {
 				Authorization: `Basic ${authHeader}`,
-				'Content-Type': 'application/x-www-form-urlencoded',
+				"Content-Type": "application/x-www-form-urlencoded",
 			};
 			const body = code
 				? {
-						grant_type: 'authorization_code',
+						grant_type: "authorization_code",
 						code,
 						redirect_uri: redirectUrl,
 				  }
 				: {
-						grant_type: 'refresh_token',
+						grant_type: "refresh_token",
 						refresh_token: spotifyRep.value.refreshToken,
 				  };
-			const res = await got.post('https://accounts.spotify.com/api/token', {
+			const res = await got.post("https://accounts.spotify.com/api/token", {
 				form: true,
 				body,
 				headers,
@@ -147,19 +147,19 @@ export const spotify = async (nodecg: NodeCG) => {
 			);
 			refreshAuthorizeTimer(setTimeout(authorize, expiresIn * 1000));
 		} catch (err) {
-			logger.error('Failed to get access token', err.stack);
+			logger.error("Failed to get access token", err.stack);
 		}
 	};
 
-	nodecg.listenFor('spotify:login', (_, cb) => {
+	nodecg.listenFor("spotify:login", (_, cb) => {
 		if (cb && !cb.handled) {
 			cb(null, redirectUrl);
 		}
 	});
 
-	nodecg.listenFor('spotify:authenticated', async (payload) => {
+	nodecg.listenFor("spotify:authenticated", async (payload) => {
 		if (!payload.code) {
-			logger.error('User authenticated through Spotify, but missing code');
+			logger.error("User authenticated through Spotify, but missing code");
 			return;
 		}
 		authorize(payload.code);

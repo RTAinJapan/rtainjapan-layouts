@@ -1,18 +1,18 @@
-import '../styles/common.css';
+import "../styles/common.css";
 
-import React, {useEffect, useState} from 'react';
-import ReactDOM from 'react-dom';
-import styled from 'styled-components';
-import {Container} from '../components/lib/styled';
-import {RtaijCommentator} from '../components/rtaij-commentator';
-import {RtaijGame} from '../components/rtaij-game';
-import {RtaijOverlay} from '../components/rtaij-overlay';
-import {RtaijRunner} from '../components/rtaij-runner';
-import {RtaijTimer} from '../components/rtaij-timer';
-import {background} from '../images/background';
-import {useReplicant} from '../../use-replicant';
-import {CameraPlaceholder} from '../components/camera-placeholder';
-import {Box} from '../clip-path-calculator';
+import React, {useEffect, useState} from "react";
+import ReactDOM from "react-dom";
+import styled from "styled-components";
+import {Container} from "../components/lib/styled";
+import {RtaijCommentator} from "../components/rtaij-commentator";
+import {RtaijGame} from "../components/rtaij-game";
+import {RtaijOverlay} from "../components/rtaij-overlay";
+import {RtaijRunner} from "../components/rtaij-runner";
+import {RtaijTimer} from "../components/rtaij-timer";
+import {background} from "../images/background";
+import {useReplicant} from "../../use-replicant";
+import {CameraPlaceholder} from "../components/camera-placeholder";
+import {Box} from "../clip-path-calculator";
 
 const gameBoxes: Box[] = [
 	[150 + 525 + 15, 150 + 525 + 15 + 600, 15, 15 + 900],
@@ -53,7 +53,7 @@ const StyledCameraPlaceholder = styled(CameraPlaceholder)`
 	height: 135px;
 `;
 
-const currentRunRep = nodecg.Replicant('current-run');
+const currentRunRep = nodecg.Replicant("current-run");
 const App: React.FunctionComponent = () => {
 	const [currentRun] = useReplicant(currentRunRep);
 	const [additionalBoxes, setAdditionalBoxes] = useState<Box[]>([]);
@@ -91,10 +91,10 @@ const App: React.FunctionComponent = () => {
 				<RtaijGame gradientBackground primaryHeight={100} />
 				<RtaijTimer gradientBackground primaryHeight={100} />
 			</InfoContainer>
-			<RunnerContainer style={{bottom: '45px', left: `${15 + 660 + 15}px`}}>
+			<RunnerContainer style={{bottom: "45px", left: `${15 + 660 + 15}px`}}>
 				<RtaijRunner index={0} columnDirection gradientBackground />
 			</RunnerContainer>
-			<RunnerContainer style={{bottom: '45px', right: `${15 + 180}px`}}>
+			<RunnerContainer style={{bottom: "45px", right: `${15 + 180}px`}}>
 				<RtaijRunner index={1} columnDirection gradientBackground />
 			</RunnerContainer>
 
@@ -117,4 +117,4 @@ const App: React.FunctionComponent = () => {
 	);
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

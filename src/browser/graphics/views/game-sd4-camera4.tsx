@@ -1,18 +1,18 @@
-import '../styles/common.css';
+import "../styles/common.css";
 
-import React, {useEffect, useState} from 'react';
-import ReactDOM from 'react-dom';
-import styled from 'styled-components';
-import {Container} from '../components/lib/styled';
-import {RtaijCommentator} from '../components/rtaij-commentator';
-import {RtaijGame} from '../components/rtaij-game';
-import {RtaijOverlay} from '../components/rtaij-overlay';
-import {RtaijRunner} from '../components/rtaij-runner';
-import {RtaijTimer} from '../components/rtaij-timer';
-import {background} from '../images/background';
-import {useReplicant} from '../../use-replicant';
-import {CameraPlaceholder} from '../components/camera-placeholder';
-import {Box} from '../clip-path-calculator';
+import React, {useEffect, useState} from "react";
+import ReactDOM from "react-dom";
+import styled from "styled-components";
+import {Container} from "../components/lib/styled";
+import {RtaijCommentator} from "../components/rtaij-commentator";
+import {RtaijGame} from "../components/rtaij-game";
+import {RtaijOverlay} from "../components/rtaij-overlay";
+import {RtaijRunner} from "../components/rtaij-runner";
+import {RtaijTimer} from "../components/rtaij-timer";
+import {background} from "../images/background";
+import {useReplicant} from "../../use-replicant";
+import {CameraPlaceholder} from "../components/camera-placeholder";
+import {Box} from "../clip-path-calculator";
 
 const gameBoxes: Box[] = [
 	[183 + 540 + 15, 183 + 540 + 15 + 576, 13, 13 + 432],
@@ -65,7 +65,7 @@ const StyledCameraPlaceholder = styled(CameraPlaceholder)`
 	height: 90px;
 `;
 
-const currentRunRep = nodecg.Replicant('current-run');
+const currentRunRep = nodecg.Replicant("current-run");
 const App: React.FunctionComponent = () => {
 	const [currentRun] = useReplicant(currentRunRep);
 	const [additionalBoxes, setAdditionalBoxes] = useState<Box[]>([]);
@@ -114,15 +114,15 @@ const App: React.FunctionComponent = () => {
 			>
 				<RtaijRunner index={0} columnDirection gradientBackground />
 			</RunnerContainer>
-			<RunnerContainer style={{top: '445px', right: `${15 + 160}px`}}>
+			<RunnerContainer style={{top: "445px", right: `${15 + 160}px`}}>
 				<RtaijRunner index={1} columnDirection gradientBackground />
 			</RunnerContainer>
 			<RunnerContainer
-				style={{bottom: '13px', right: `${15 + 576 + 15 + 160}px`}}
+				style={{bottom: "13px", right: `${15 + 576 + 15 + 160}px`}}
 			>
 				<RtaijRunner index={2} columnDirection />
 			</RunnerContainer>
-			<RunnerContainer style={{bottom: '13px', right: `${15 + 160}px`}}>
+			<RunnerContainer style={{bottom: "13px", right: `${15 + 160}px`}}>
 				<RtaijRunner index={3} columnDirection />
 			</RunnerContainer>
 
@@ -130,13 +130,13 @@ const App: React.FunctionComponent = () => {
 				style={{top: `${13 + 432}px`, right: `${15 + 576 + 15}px`}}
 			></StyledCameraPlaceholder>
 			<StyledCameraPlaceholder
-				style={{top: `${13 + 432}px`, right: '15px'}}
+				style={{top: `${13 + 432}px`, right: "15px"}}
 			></StyledCameraPlaceholder>
 			<StyledCameraPlaceholder
-				style={{bottom: '13px', right: `${15 + 576 + 15}px`}}
+				style={{bottom: "13px", right: `${15 + 576 + 15}px`}}
 			></StyledCameraPlaceholder>
 			<StyledCameraPlaceholder
-				style={{bottom: '13px', right: '15px'}}
+				style={{bottom: "13px", right: "15px"}}
 			></StyledCameraPlaceholder>
 
 			<CommentatorContainer>
@@ -151,4 +151,4 @@ const App: React.FunctionComponent = () => {
 	);
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

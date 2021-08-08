@@ -1,5 +1,5 @@
-import {Button, Paper, TextField} from '@material-ui/core';
-import React from 'react';
+import {Button, Paper, TextField} from "@material-ui/core";
+import React from "react";
 
 export class ObsConnect extends React.Component<{
 	connected: boolean;
@@ -17,10 +17,10 @@ export class ObsConnect extends React.Component<{
 			<div>
 				<Paper
 					style={{
-						padding: '8px',
-						display: 'grid',
-						gridAutoFlow: 'row',
-						rowGap: '8px',
+						padding: "8px",
+						display: "grid",
+						gridAutoFlow: "row",
+						rowGap: "8px",
 					}}
 				>
 					<TextField
@@ -71,10 +71,10 @@ export class ObsConnect extends React.Component<{
 	}
 
 	private readonly connect = () => {
-		nodecg.sendMessage('obs:connect');
+		nodecg.sendMessage("obs:connect");
 	};
 
 	private readonly disconnect = () => {
-		nodecg.sendMessage('obs:disconnect');
+		nodecg.sendMessage("obs:disconnect");
 	};
 }

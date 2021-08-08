@@ -37,8 +37,8 @@ export const makeCoors = (
 
 export const outputCss = (coors: Coor[]) => {
 	const polygon = coors
-		.map((coor) => coor.map((n) => `${n}px`).join(' '))
-		.join(', ');
+		.map((coor) => coor.map((n) => `${n}px`).join(" "))
+		.join(", ");
 	const css = `clip-path: polygon(${polygon});`;
 	return css;
 };

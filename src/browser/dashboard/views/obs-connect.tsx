@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {ObsConnect} from '../components/obs/connect';
+import React from "react";
+import ReactDOM from "react-dom";
+import {ObsConnect} from "../components/obs/connect";
 
 const obsConfig = nodecg.bundleConfig.obs;
 
@@ -12,10 +12,10 @@ class App extends React.Component<{}, State> {
 	state: State = {
 		connected: false,
 	};
-	private readonly obsRep = nodecg.Replicant('obs');
+	private readonly obsRep = nodecg.Replicant("obs");
 
 	componentDidMount() {
-		this.obsRep.on('change', (newVal) => {
+		this.obsRep.on("change", (newVal) => {
 			if (!newVal) {
 				return;
 			}
@@ -26,7 +26,7 @@ class App extends React.Component<{}, State> {
 		});
 	}
 	componentWillUnmount() {
-		this.obsRep.removeAllListeners('change');
+		this.obsRep.removeAllListeners("change");
 	}
 
 	public render() {
@@ -43,4 +43,4 @@ class App extends React.Component<{}, State> {
 	}
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

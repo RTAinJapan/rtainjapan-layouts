@@ -1,9 +1,9 @@
-import delay from 'delay';
-import React from 'react';
-import styled, {css} from 'styled-components';
-import {Tweets} from '../../../../nodecg/replicants';
-import {TweetHighlighter} from '../../../tweet-highlighter';
-import twitterBlueIcon from '../../images/icon/tweet_blue.png';
+import delay from "delay";
+import React from "react";
+import styled, {css} from "styled-components";
+import {Tweets} from "../../../../nodecg/replicants";
+import {TweetHighlighter} from "../../../tweet-highlighter";
+import twitterBlueIcon from "../../images/icon/tweet_blue.png";
 
 const USE_PROFILE_IMAGE = false;
 const TWEET_TRANSITION_SECONDS = 2;
@@ -21,9 +21,9 @@ const ProfilePicture = styled.img`
 	height: 30px;
 	width: 100%;
 	${USE_PROFILE_IMAGE &&
-		css`
-			border-radius: 100%;
-		`}
+	css`
+		border-radius: 100%;
+	`}
 `;
 
 const Content = styled.div`
@@ -43,7 +43,7 @@ interface ContainerProps {
 }
 const Container = styled.div`
 	font-size: 24px;
-	font-family: 'MigMix 2P';
+	font-family: "MigMix 2P";
 	position: absolute;
 	background-color: #ffffff;
 	box-sizing: border-box;
@@ -144,11 +144,11 @@ export class Tweet extends React.Component<Props, State> {
 	public state: State = {tweetQueue: [], shown: false};
 
 	public componentDidMount() {
-		nodecg.listenFor('showTweet', this.showTweetHandler);
+		nodecg.listenFor("showTweet", this.showTweetHandler);
 	}
 
 	public componentWillUnmount() {
-		nodecg.unlisten('showTweet', this.showTweetHandler);
+		nodecg.unlisten("showTweet", this.showTweetHandler);
 	}
 
 	// Carefully coded to prevent infinite updates, be careful!
@@ -206,7 +206,7 @@ export class Tweet extends React.Component<Props, State> {
 				)}
 				{showingTweet && (
 					<Content>
-						<TweetHighlighter text={showingTweet.text.replace(/\n/g, ' ')} />
+						<TweetHighlighter text={showingTweet.text.replace(/\n/g, " ")} />
 					</Content>
 				)}
 			</Container>

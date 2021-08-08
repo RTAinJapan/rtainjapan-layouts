@@ -1,8 +1,8 @@
-import {useEffect, useState} from 'react';
-import _ from 'lodash';
-import {Replicant} from 'ts-nodecg/browser';
+import {useEffect, useState} from "react";
+import _ from "lodash";
+import {Replicant} from "ts-nodecg/browser";
 
-import {ReplicantMap} from '../nodecg/replicants';
+import {ReplicantMap} from "../nodecg/replicants";
 
 /**
  * Subscribe to a replicant, returns tuple of the replicant value and `setValue` function.
@@ -15,7 +15,7 @@ export const useReplicant = <
 	TBundleName extends string,
 	TRepMap extends ReplicantMap,
 	TRepName extends keyof ReplicantMap,
-	TSchema extends TRepMap[TRepName]
+	TSchema extends TRepMap[TRepName],
 >(
 	replicant: Replicant<TBundleName, TRepMap, TRepName, TSchema | undefined>,
 ): [TSchema | null, (newValue: TSchema) => void] => {
@@ -34,9 +34,9 @@ export const useReplicant = <
 	};
 
 	useEffect(() => {
-		replicant.on('change', changeHandler as any);
+		replicant.on("change", changeHandler as any);
 		return () => {
-			replicant.removeListener('change', changeHandler as any);
+			replicant.removeListener("change", changeHandler as any);
 		};
 	}, [replicant]);
 

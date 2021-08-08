@@ -1,11 +1,11 @@
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import React, {ChangeEvent} from 'react';
-import styled from 'styled-components';
-import {Checklist as ChecklistType} from '../../../../nodecg/replicants';
-import {BorderedBox} from '../lib/bordered-box';
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import React, {ChangeEvent} from "react";
+import styled from "styled-components";
+import {Checklist as ChecklistType} from "../../../../nodecg/replicants";
+import {BorderedBox} from "../lib/bordered-box";
 
-const checklistRep = nodecg.Replicant('checklist');
+const checklistRep = nodecg.Replicant("checklist");
 
 const Container = styled(BorderedBox)`
 	padding: 16px;
@@ -24,11 +24,11 @@ export class Checklist extends React.Component {
 	public state: State = {checklist: []};
 
 	public componentDidMount() {
-		checklistRep.on('change', this.checklistChangeHandler);
+		checklistRep.on("change", this.checklistChangeHandler);
 	}
 
 	public componentWillUnmount() {
-		checklistRep.removeListener('change', this.checklistChangeHandler);
+		checklistRep.removeListener("change", this.checklistChangeHandler);
 	}
 
 	public render() {
@@ -46,7 +46,7 @@ export class Checklist extends React.Component {
 	};
 
 	private readonly toggleCheckbox = (e: ChangeEvent<any>, checked: boolean) => {
-		nodecg.sendMessage('toggleCheckbox', {
+		nodecg.sendMessage("toggleCheckbox", {
 			name: e.target.name,
 			checked,
 		});
@@ -59,9 +59,9 @@ export class Checklist extends React.Component {
 			label={checklist.name}
 			onChange={this.toggleCheckbox}
 			style={{
-				margin: '0',
-				borderRadius: '3px',
-				border: '1px solid black',
+				margin: "0",
+				borderRadius: "3px",
+				border: "1px solid black",
 			}}
 		/>
 	);

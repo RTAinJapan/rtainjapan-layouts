@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import styled from 'styled-components';
-import {RemoteEdit} from '../components/obs/remote-edit';
+import React from "react";
+import ReactDOM from "react-dom";
+import styled from "styled-components";
+import {RemoteEdit} from "../components/obs/remote-edit";
 
 interface State {
 	connected: boolean;
@@ -23,18 +23,18 @@ class App extends React.Component<{}, State> {
 		remoteInputs: [],
 		browsers: [],
 	};
-	private readonly obsRep = nodecg.Replicant('obs');
-	private readonly obsRemoteInputsRep = nodecg.Replicant('obs-remote-inputs');
+	private readonly obsRep = nodecg.Replicant("obs");
+	private readonly obsRemoteInputsRep = nodecg.Replicant("obs-remote-inputs");
 
 	componentDidMount() {
-		this.obsRep.on('change', (newVal) => {
+		this.obsRep.on("change", (newVal) => {
 			if (!newVal) {
 				return;
 			}
 
 			const browsers = newVal.scenes.flatMap((scene) =>
 				scene.sources
-					.filter((source) => source.type === 'browser_source')
+					.filter((source) => source.type === "browser_source")
 					.map((source) => source.name),
 			);
 
@@ -46,7 +46,7 @@ class App extends React.Component<{}, State> {
 			});
 		});
 
-		this.obsRemoteInputsRep.on('change', (newVal) => {
+		this.obsRemoteInputsRep.on("change", (newVal) => {
 			if (!newVal) {
 				return;
 			}
@@ -57,12 +57,12 @@ class App extends React.Component<{}, State> {
 		});
 	}
 	componentWillUnmount() {
-		this.obsRemoteInputsRep.removeAllListeners('change');
+		this.obsRemoteInputsRep.removeAllListeners("change");
 	}
 
 	public render() {
 		return (
-			<div style={{height: '640px'}}>
+			<div style={{height: "640px"}}>
 				{this.state.connected ? (
 					<Container>
 						{this.state.remoteInputs.map((remote, rIndex) => (
@@ -70,7 +70,7 @@ class App extends React.Component<{}, State> {
 								key={rIndex}
 								browsers={this.state.browsers}
 								browserIndex={rIndex}
-								repBrowser={remote.input || ''}
+								repBrowser={remote.input || ""}
 								repViewId={remote.viewId}
 							></RemoteEdit>
 						))}
@@ -83,4 +83,4 @@ class App extends React.Component<{}, State> {
 	}
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

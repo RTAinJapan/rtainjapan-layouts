@@ -1,7 +1,7 @@
-import Typography from '@material-ui/core/Typography';
-import React from 'react';
-import styled from 'styled-components';
-import {Run} from '../../../../nodecg/replicants';
+import Typography from "@material-ui/core/Typography";
+import React from "react";
+import styled from "styled-components";
+import {Run} from "../../../../nodecg/replicants";
 
 const Container = styled.div`
 	display: grid;

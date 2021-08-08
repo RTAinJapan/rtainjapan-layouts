@@ -1,5 +1,5 @@
-import styled, {css} from 'styled-components';
-import {Box, calculateClipPath} from '../../clip-path-calculator';
+import styled, {css} from "styled-components";
+import {Box, calculateClipPath} from "../../clip-path-calculator";
 
 const {colorTheme} = nodecg.bundleConfig;
 
@@ -20,7 +20,7 @@ export const Container = styled.div`
 `;
 
 export const GradientRight =
-	colorTheme === 'blue'
+	colorTheme === "blue"
 		? css`
 				background: linear-gradient(
 					to right,
@@ -37,7 +37,7 @@ export const GradientRight =
 		  `;
 
 export const GradientCentre =
-	colorTheme === 'blue'
+	colorTheme === "blue"
 		? css`
 				background: linear-gradient(
 					to right,

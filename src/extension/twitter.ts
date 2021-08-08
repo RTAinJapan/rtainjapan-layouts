@@ -1,26 +1,26 @@
-import tweetSample from './sample-json/raw-tweet.json';
-import {throttle} from 'lodash';
-import Twit from 'twit';
-import {NodeCG} from './nodecg';
-import {Tweet} from '../nodecg/replicants';
+import tweetSample from "./sample-json/raw-tweet.json";
+import {throttle} from "lodash";
+import Twit from "twit";
+import {NodeCG} from "./nodecg";
+import {Tweet} from "../nodecg/replicants";
 
 const MAX_TWEETS = 100;
 
 export const twitter = async (nodecg: NodeCG) => {
-	const logger = new nodecg.Logger('twitter');
-	const streamLogger = new nodecg.Logger('twitter:stream');
+	const logger = new nodecg.Logger("twitter");
+	const streamLogger = new nodecg.Logger("twitter:stream");
 
 	const twitterConfig = nodecg.bundleConfig.twitter;
 	if (!twitterConfig) {
-		logger.warn('Twitter config is empty');
+		logger.warn("Twitter config is empty");
 		return;
 	}
 	if (twitterConfig.targetWords.length === 0) {
-		logger.warn('Twitter tracking words are empty');
+		logger.warn("Twitter tracking words are empty");
 		return;
 	}
 
-	const tweetsRep = nodecg.Replicant('tweets');
+	const tweetsRep = nodecg.Replicant("tweets");
 	const addTweet = (newTweet: Tweet) => {
 		if (
 			tweetsRep.value &&
@@ -49,11 +49,11 @@ export const twitter = async (nodecg: NodeCG) => {
 				stream.stop();
 			}
 
-			stream = twit.stream('statuses/filter', {
+			stream = twit.stream("statuses/filter", {
 				track: twitterConfig.targetWords,
 			});
 
-			stream.on('tweet', (rawTweet: typeof tweetSample) => {
+			stream.on("tweet", (rawTweet: typeof tweetSample) => {
 				if (
 					rawTweet.retweeted_status ||
 					rawTweet.quoted_status ||
@@ -69,32 +69,32 @@ export const twitter = async (nodecg: NodeCG) => {
 						name: rawTweet.user.name,
 						screenName: rawTweet.user.screen_name,
 					},
-					text: rawTweet.text.replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
+					text: rawTweet.text.replace(/&lt;/g, "<").replace(/&gt;/g, ">"),
 					createdAt: new Date(rawTweet.created_at).toISOString(),
 				};
 				addTweet(newTweet);
 			});
-			stream.on('disconnect', (msg) => {
-				streamLogger.error('disconnected', msg);
+			stream.on("disconnect", (msg) => {
+				streamLogger.error("disconnected", msg);
 				startStream();
 			});
-			stream.on('connect', () => {
-				streamLogger.warn('connecting');
+			stream.on("connect", () => {
+				streamLogger.warn("connecting");
 			});
-			stream.on('reconnect', (_req, _res, connectInterval: number) => {
+			stream.on("reconnect", (_req, _res, connectInterval: number) => {
 				console.log(_res);
 				// Twitter is having problems or we get rate limited. Reconnetion scheduled.
 				streamLogger.warn(`Reconnecting in ${connectInterval}ms`);
 			});
-			stream.on('connected', () => {
-				streamLogger.warn('connected');
+			stream.on("connected", () => {
+				streamLogger.warn("connected");
 			});
-			stream.on('warning', (warnMsg) => {
+			stream.on("warning", (warnMsg) => {
 				// Stream is stalling
-				streamLogger.warn('Warning:', warnMsg);
+				streamLogger.warn("Warning:", warnMsg);
 			});
 			stream.on(
-				'error',
+				"error",
 				(error: {
 					message: string;
 					statusCode: string;
@@ -106,7 +106,7 @@ export const twitter = async (nodecg: NodeCG) => {
 				},
 			);
 		} catch (error) {
-			streamLogger.error('Failed to start stream:', error.stack);
+			streamLogger.error("Failed to start stream:", error.stack);
 			startStream();
 		}
 	});
@@ -124,14 +124,14 @@ export const twitter = async (nodecg: NodeCG) => {
 		return tweet;
 	};
 
-	nodecg.listenFor('selectTweet', (id: string) => {
+	nodecg.listenFor("selectTweet", (id: string) => {
 		const deletedTweet = deleteTweetById(id);
 		if (deletedTweet) {
-			nodecg.sendMessage('showTweet', deletedTweet);
+			nodecg.sendMessage("showTweet", deletedTweet);
 		}
 	});
 
-	nodecg.listenFor('discardTweet', deleteTweetById);
+	nodecg.listenFor("discardTweet", deleteTweetById);
 
 	startStream();
 };

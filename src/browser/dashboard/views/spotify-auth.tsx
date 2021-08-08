@@ -1,6 +1,6 @@
-import Button from '@material-ui/core/Button';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import Button from "@material-ui/core/Button";
+import React from "react";
+import ReactDOM from "react-dom";
 
 const spotifyConfig = nodecg.bundleConfig.spotify;
 
@@ -13,10 +13,10 @@ interface State {
 
 class App extends React.Component<{}, State> {
 	state: State = {};
-	private readonly spotifyRep = nodecg.Replicant('spotify');
+	private readonly spotifyRep = nodecg.Replicant("spotify");
 
 	componentDidMount() {
-		this.spotifyRep.on('change', (newVal) => {
+		this.spotifyRep.on("change", (newVal) => {
 			if (!newVal) {
 				return;
 			}
@@ -25,14 +25,14 @@ class App extends React.Component<{}, State> {
 			}
 			this.setState({
 				currentTrack: {
-					name: newVal.currentTrack.name || '',
-					artists: newVal.currentTrack.artists || '',
+					name: newVal.currentTrack.name || "",
+					artists: newVal.currentTrack.artists || "",
 				},
 			});
 		});
 	}
 	componentWillUnmount() {
-		this.spotifyRep.removeAllListeners('change');
+		this.spotifyRep.removeAllListeners("change");
 	}
 
 	public render() {
@@ -52,15 +52,15 @@ class App extends React.Component<{}, State> {
 		if (!spotifyConfig) {
 			return;
 		}
-		const redirectUrl = await nodecg.sendMessage('spotify:login');
-		const url = new URL('authorize', 'https://accounts.spotify.com');
-		url.searchParams.set('client_id', spotifyConfig.clientId);
-		url.searchParams.set('response_type', 'code');
-		url.searchParams.set('redirect_uri', redirectUrl);
-		url.searchParams.set('scope', 'user-read-currently-playing');
-		url.searchParams.set('show_dialog', 'false');
+		const redirectUrl = await nodecg.sendMessage("spotify:login");
+		const url = new URL("authorize", "https://accounts.spotify.com");
+		url.searchParams.set("client_id", spotifyConfig.clientId);
+		url.searchParams.set("response_type", "code");
+		url.searchParams.set("redirect_uri", redirectUrl);
+		url.searchParams.set("scope", "user-read-currently-playing");
+		url.searchParams.set("show_dialog", "false");
 		window.parent.location.href = url.href;
 	};
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

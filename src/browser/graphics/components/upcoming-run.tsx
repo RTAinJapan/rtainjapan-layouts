@@ -1,14 +1,14 @@
-import moment from 'moment';
-import React from 'react';
-import styled from 'styled-components';
-import separatorBlue from '../images/break/separator-blue.png';
-import separatorBrown from '../images/break/separator-brown.png';
-import {Schedule} from '../../../nodecg/replicants';
+import moment from "moment";
+import React from "react";
+import styled from "styled-components";
+import separatorBlue from "../images/break/separator-blue.png";
+import separatorBrown from "../images/break/separator-brown.png";
+import {Schedule} from "../../../nodecg/replicants";
 
 const {colorTheme} = nodecg.bundleConfig;
 const Container = styled.div`
-	font-family: 'MigMix 2P';
-	color: ${colorTheme === 'brown' ? '#60392f' : '#2d4273'};
+	font-family: "MigMix 2P";
+	color: ${colorTheme === "brown" ? "#60392f" : "#2d4273"};
 
 	height: 87px;
 	box-sizing: border-box;
@@ -21,9 +21,9 @@ const Container = styled.div`
 	flex-flow: row nowrap;
 	align-items: center;
 
-	border-left: 15px ${colorTheme === 'brown' ? '#d2997b' : '#a7bfff'} solid;
+	border-left: 15px ${colorTheme === "brown" ? "#d2997b" : "#a7bfff"} solid;
 	&:first-child {
-		border-left-color: ${colorTheme === 'brown' ? '#824218' : '#4d7dff'};
+		border-left-color: ${colorTheme === "brown" ? "#824218" : "#4d7dff"};
 	}
 `;
 
@@ -63,7 +63,7 @@ export class UpcomingRun extends React.Component<{
 			`Runner: ${run.runners
 				.map((runner) => runner.name)
 				.filter(Boolean)
-				.join(', ')}`;
+				.join(", ")}`;
 		const misc =
 			category && runners ? `${category} | ${runners}` : category || runners;
 		return (
@@ -72,7 +72,7 @@ export class UpcomingRun extends React.Component<{
 					<Title>{title}</Title>
 					<Misc>{misc}</Misc>
 				</InfoContainer>
-				<img src={colorTheme === 'brown' ? separatorBrown : separatorBlue} />
+				<img src={colorTheme === "brown" ? separatorBrown : separatorBlue} />
 				<Time>{this.calcRemainingTime()}</Time>
 			</Container>
 		);
@@ -80,7 +80,7 @@ export class UpcomingRun extends React.Component<{
 
 	private calcRemainingTime = () => {
 		if (this.props.index === 0) {
-			return 'このあとすぐ！';
+			return "このあとすぐ！";
 		}
 		let remaining = moment.duration(0);
 		for (let i = this.props.index - 1; i >= 0; i--) {

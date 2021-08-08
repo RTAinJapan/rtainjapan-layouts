@@ -1,20 +1,20 @@
-import {NodeCG} from './nodecg';
-import OBSWebSocket from 'obs-websocket-js';
-import {SceneItem} from './obs-types/sceneItem';
-import {Filter} from './obs-types/filter';
+import {NodeCG} from "./nodecg";
+import OBSWebSocket from "obs-websocket-js";
+import {SceneItem} from "./obs-types/sceneItem";
+import {Filter} from "./obs-types/filter";
 
 export const obs = async (nodecg: NodeCG) => {
-	const logger = new nodecg.Logger('obs');
+	const logger = new nodecg.Logger("obs");
 	const obsConfig = nodecg.bundleConfig.obs;
 
 	if (!obsConfig) {
-		logger.warn('OBS config is empty.');
+		logger.warn("OBS config is empty.");
 		return;
 	}
 
-	const obsRep = nodecg.Replicant('obs');
-	const obsCropInputsRep = nodecg.Replicant('obs-crop-inputs');
-	const obsRemoteInputsRep = nodecg.Replicant('obs-remote-inputs');
+	const obsRep = nodecg.Replicant("obs");
+	const obsCropInputsRep = nodecg.Replicant("obs-crop-inputs");
+	const obsRemoteInputsRep = nodecg.Replicant("obs-remote-inputs");
 
 	const obs = new OBSWebSocket();
 
@@ -25,7 +25,7 @@ export const obs = async (nodecg: NodeCG) => {
 
 		obsRemoteInputsRep.value[index] = {
 			input: input || null,
-			viewId: '',
+			viewId: "",
 		};
 	};
 
@@ -43,9 +43,9 @@ export const obs = async (nodecg: NodeCG) => {
 		if (sourceName === null) {
 			return;
 		}
-		const viewUri = obsConfig.remoteViewUri.replace('{id}', viewId.trim());
+		const viewUri = obsConfig.remoteViewUri.replace("{id}", viewId.trim());
 		obs
-			.send('SetSourceSettings', {
+			.send("SetSourceSettings", {
 				sourceName,
 				sourceSettings: {url: viewUri},
 			})
@@ -63,7 +63,7 @@ export const obs = async (nodecg: NodeCG) => {
 			return;
 		}
 
-		obs.send('GetSceneList').then((data) => {
+		obs.send("GetSceneList").then((data) => {
 			if (!obsRep.value) {
 				return;
 			}
@@ -71,7 +71,7 @@ export const obs = async (nodecg: NodeCG) => {
 			const sources = data.scenes.flatMap((scene) => scene.sources);
 			obsCropInputsRep.value = obsCropInputs.filter((cropInput) => {
 				return sources.some((source) => {
-					const sceneItem = (source as any) as SceneItem;
+					const sceneItem = source as any as SceneItem;
 					return sceneItem.name === cropInput;
 				});
 			});
@@ -89,7 +89,7 @@ export const obs = async (nodecg: NodeCG) => {
 				address: obsAddress,
 				password: obsConfig.password,
 			});
-			logger.info('Connected to OBS.');
+			logger.info("Connected to OBS.");
 
 			updateSources();
 		} catch (error) {
@@ -103,7 +103,7 @@ export const obs = async (nodecg: NodeCG) => {
 
 	const disconnect = () => {
 		obs.disconnect();
-		logger.info('Disconnected to OBS.');
+		logger.info("Disconnected to OBS.");
 	};
 
 	const addCropInput = (id: string) => {
@@ -152,8 +152,8 @@ export const obs = async (nodecg: NodeCG) => {
 				return scene.sources
 					.filter((source) => obsCropInputs.includes(source.name))
 					.map((source) => {
-						return obs.send('SetSceneItemProperties', {
-							'scene-name': scene.name,
+						return obs.send("SetSceneItemProperties", {
+							"scene-name": scene.name,
 							item: {id: source.id},
 							crop: {
 								top: 0,
@@ -172,13 +172,13 @@ export const obs = async (nodecg: NodeCG) => {
 		const resetFilterPromise = Promise.all(
 			obsCropInputsRep.value.map((input) => {
 				return obs
-					.send('GetSourceFilters', {sourceName: input})
+					.send("GetSourceFilters", {sourceName: input})
 					.then((data) => {
 						const filters = data.filters as Filter[];
 						filters
-							.filter((filter) => filter.type === 'crop_filter')
+							.filter((filter) => filter.type === "crop_filter")
 							.map((filter) => {
-								return obs.send('SetSourceFilterSettings', {
+								return obs.send("SetSourceFilterSettings", {
 									sourceName: input,
 									filterName: filter.name,
 									filterSettings: {
@@ -194,15 +194,15 @@ export const obs = async (nodecg: NodeCG) => {
 		);
 
 		Promise.all([resetPropertiesPromise, resetFilterPromise]).then(() => {
-			logger.info('Reset crop of source items.');
+			logger.info("Reset crop of source items.");
 		});
 	};
 
-	nodecg.listenFor('nextRun', (_, __) => {
+	nodecg.listenFor("nextRun", (_, __) => {
 		resetCrop();
 	});
 
-	nodecg.listenFor('obs:connect', (_, cb) => {
+	nodecg.listenFor("obs:connect", (_, cb) => {
 		connect();
 
 		if (cb && !cb.handled) {
@@ -210,7 +210,7 @@ export const obs = async (nodecg: NodeCG) => {
 		}
 	});
 
-	nodecg.listenFor('obs:disconnect', (_, cb) => {
+	nodecg.listenFor("obs:disconnect", (_, cb) => {
 		disconnect();
 
 		if (cb && !cb.handled) {
@@ -218,7 +218,7 @@ export const obs = async (nodecg: NodeCG) => {
 		}
 	});
 
-	nodecg.listenFor('obs:enableCrop', (_, cb) => {
+	nodecg.listenFor("obs:enableCrop", (_, cb) => {
 		if (!obsRep.value || !obsRep.value.connected) {
 			return;
 		}
@@ -229,7 +229,7 @@ export const obs = async (nodecg: NodeCG) => {
 		}
 	});
 
-	nodecg.listenFor('obs:disableCrop', (_, cb) => {
+	nodecg.listenFor("obs:disableCrop", (_, cb) => {
 		if (!obsRep.value || !obsRep.value.connected) {
 			return;
 		}
@@ -240,7 +240,7 @@ export const obs = async (nodecg: NodeCG) => {
 		}
 	});
 
-	nodecg.listenFor('obs:update', (_, cb) => {
+	nodecg.listenFor("obs:update", (_, cb) => {
 		if (!obsRep.value || !obsRep.value.connected) {
 			return;
 		}
@@ -251,7 +251,7 @@ export const obs = async (nodecg: NodeCG) => {
 		}
 	});
 
-	nodecg.listenFor('obs:addCropInput', (data, cb) => {
+	nodecg.listenFor("obs:addCropInput", (data, cb) => {
 		addCropInput(data);
 
 		if (cb && !cb.handled) {
@@ -259,7 +259,7 @@ export const obs = async (nodecg: NodeCG) => {
 		}
 	});
 
-	nodecg.listenFor('obs:removeCropInput', (data, cb) => {
+	nodecg.listenFor("obs:removeCropInput", (data, cb) => {
 		removeCropInput(data);
 
 		if (cb && !cb.handled) {
@@ -267,7 +267,7 @@ export const obs = async (nodecg: NodeCG) => {
 		}
 	});
 
-	nodecg.listenFor('obs:setRemoteSource', (data, cb) => {
+	nodecg.listenFor("obs:setRemoteSource", (data, cb) => {
 		setRemoteSource(data.input, data.index);
 
 		if (cb && !cb.handled) {
@@ -275,7 +275,7 @@ export const obs = async (nodecg: NodeCG) => {
 		}
 	});
 
-	nodecg.listenFor('obs:updateRemoteBrowser', (data, cb) => {
+	nodecg.listenFor("obs:updateRemoteBrowser", (data, cb) => {
 		updateRemoteBrowser(data.viewId, data.index);
 
 		if (cb && !cb.handled) {
@@ -284,25 +284,25 @@ export const obs = async (nodecg: NodeCG) => {
 	});
 
 	// Events
-	obs.on('ConnectionOpened', (_) => {
+	obs.on("ConnectionOpened", (_) => {
 		if (!obsRep.value) {
 			return;
 		}
 		obsRep.value.connected = true;
 	});
 
-	obs.on('ConnectionClosed', (_) => {
+	obs.on("ConnectionClosed", (_) => {
 		if (!obsRep.value) {
 			return;
 		}
 		obsRep.value.connected = false;
 	});
 
-	obs.on('SceneCollectionChanged', (_) => {
+	obs.on("SceneCollectionChanged", (_) => {
 		updateSources();
 	});
 
-	logger.info('Connect to OBS automatically.');
+	logger.info("Connect to OBS automatically.");
 
 	// Automatically connect to OBS for later operations
 	await connect();

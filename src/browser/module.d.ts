@@ -1,17 +1,17 @@
-declare module '*.png' {
+declare module "*.png" {
 	const path: string;
 	export default path;
 }
-declare module '*.gif' {
+declare module "*.gif" {
 	const path: string;
 	export default path;
 }
-declare module '*.webm' {
+declare module "*.webm" {
 	const path: string;
 	export default path;
 }
 
-declare module '*.css' {
+declare module "*.css" {
 	const classes: Record<string, string>;
 	export default classes;
 }

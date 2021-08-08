@@ -1,16 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {Participant} from '../../../nodecg/replicants';
+import React from "react";
+import ReactDOM from "react-dom";
+import {Participant} from "../../../nodecg/replicants";
 
 interface State {
 	runners: Participant[];
 }
 class App extends React.Component<{}, State> {
-	private readonly currentRunRep = nodecg.Replicant('current-run');
+	private readonly currentRunRep = nodecg.Replicant("current-run");
 	state: State = {runners: []};
 
 	componentDidMount() {
-		this.currentRunRep.on('change', (newVal) => {
+		this.currentRunRep.on("change", (newVal) => {
 			if (!newVal) {
 				return;
 			}
@@ -18,7 +18,7 @@ class App extends React.Component<{}, State> {
 		});
 	}
 	componentWillUnmount() {
-		this.currentRunRep.removeAllListeners('change');
+		this.currentRunRep.removeAllListeners("change");
 	}
 
 	render() {
@@ -31,4 +31,4 @@ class App extends React.Component<{}, State> {
 	}
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

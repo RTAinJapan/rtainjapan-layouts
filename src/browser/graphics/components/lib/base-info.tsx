@@ -1,7 +1,7 @@
-import React from 'react';
-import styled, {css} from 'styled-components';
-import {Ruler} from './ruler';
-import {GradientCentre} from './styled';
+import React from "react";
+import styled, {css} from "styled-components";
+import {Ruler} from "./ruler";
+import {GradientCentre} from "./styled";
 
 interface ContainerProps {
 	thickRuler?: boolean;
@@ -12,10 +12,10 @@ interface ContainerProps {
 const calcContainerGridTemplateRows = (props: ContainerProps) => {
 	const primaryHeight = props.primaryHeight
 		? `${props.primaryHeight}px`
-		: 'auto';
+		: "auto";
 	const secondaryHeight = props.secondaryHeight
 		? `${props.secondaryHeight}px`
-		: 'auto';
+		: "auto";
 	const rulerHeight = `${props.thickRuler ? 6 : 3}px`;
 	return css`
 		grid-template-rows: ${primaryHeight} ${rulerHeight} ${secondaryHeight};
@@ -81,8 +81,8 @@ interface State {
 
 export abstract class BaseInfo extends React.Component<Props, State> {
 	public state: State = {
-		primaryInfo: '',
-		secondaryInfo: '',
+		primaryInfo: "",
+		secondaryInfo: "",
 		primarySize: 40 * 1.5,
 		secondarySize: 30,
 	};

@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
-import {Tweets} from '../../../../nodecg/replicants';
-import {BorderedBox} from '../lib/bordered-box';
-import {TweetItem} from './tweet-item';
+import React from "react";
+import styled from "styled-components";
+import {Tweets} from "../../../../nodecg/replicants";
+import {BorderedBox} from "../lib/bordered-box";
+import {TweetItem} from "./tweet-item";
 
 const Container = styled(BorderedBox)`
 	height: calc(100vh - 32px);
@@ -40,11 +40,11 @@ interface State {
 }
 
 export class Twitter extends React.Component<{}, State> {
-	tweetsRep = nodecg.Replicant('tweets');
+	tweetsRep = nodecg.Replicant("tweets");
 	state: State = {tweets: []};
 
 	componentDidMount() {
-		this.tweetsRep.on('change', (newVal: Tweets) => {
+		this.tweetsRep.on("change", (newVal: Tweets) => {
 			if (!newVal) {
 				return;
 			}
@@ -52,7 +52,7 @@ export class Twitter extends React.Component<{}, State> {
 		});
 	}
 	componentWillUnmount() {
-		this.tweetsRep.removeAllListeners('change');
+		this.tweetsRep.removeAllListeners("change");
 	}
 
 	render() {

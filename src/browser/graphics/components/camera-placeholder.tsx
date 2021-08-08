@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import noCameraImg from '../images/icon/no-camera.png';
+import styled from "styled-components";
+import noCameraImg from "../images/icon/no-camera.png";
 
 export const CameraPlaceholder = styled.div`
 	z-index: 10;

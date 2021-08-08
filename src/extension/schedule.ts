@@ -1,7 +1,7 @@
-import {cloneDeep} from 'lodash';
-import {NodeCG} from './nodecg';
-import {importFromSpreadsheet} from './schedule-import/google-spreadsheet';
-import {importFromOengus} from './schedule-import/oengus';
+import {cloneDeep} from "lodash";
+import {NodeCG} from "./nodecg";
+import {importFromSpreadsheet} from "./schedule-import/google-spreadsheet";
+import {importFromOengus} from "./schedule-import/oengus";
 
 export default async (nodecg: NodeCG) => {
 	if (nodecg.bundleConfig.oengus) {
@@ -13,10 +13,10 @@ export default async (nodecg: NodeCG) => {
 		importFromSpreadsheet(nodecg);
 	}
 
-	const scheduleRep = nodecg.Replicant('schedule');
-	const currentRunRep = nodecg.Replicant('current-run');
-	const nextRunRep = nodecg.Replicant('next-run');
-	const checklistRep = nodecg.Replicant('checklist');
+	const scheduleRep = nodecg.Replicant("schedule");
+	const currentRunRep = nodecg.Replicant("current-run");
+	const nextRunRep = nodecg.Replicant("next-run");
+	const checklistRep = nodecg.Replicant("checklist");
 
 	const resetChecklist = () => {
 		if (checklistRep.value) {
@@ -74,28 +74,28 @@ export default async (nodecg: NodeCG) => {
 		currentRunRep.value = cloneDeep(scheduleRep.value[currentIndex - 1]);
 	};
 
-	nodecg.listenFor('nextRun', (_, cb) => {
+	nodecg.listenFor("nextRun", (_, cb) => {
 		seekToNextRun();
 		if (cb && !cb.handled) {
 			cb(null);
 		}
 	});
 
-	nodecg.listenFor('previousRun', (_, cb) => {
+	nodecg.listenFor("previousRun", (_, cb) => {
 		seekToPreviousRun();
 		if (cb && !cb.handled) {
 			cb(null);
 		}
 	});
 
-	nodecg.listenFor('setCurrentRunByIndex', (index, cb) => {
+	nodecg.listenFor("setCurrentRunByIndex", (index, cb) => {
 		updateCurrentRun(index);
 		if (cb && !cb.handled) {
 			cb(null);
 		}
 	});
 
-	nodecg.listenFor('modifyRun', (data, cb) => {
+	nodecg.listenFor("modifyRun", (data, cb) => {
 		if (!currentRunRep.value || !nextRunRep.value) {
 			return;
 		}
@@ -111,8 +111,8 @@ export default async (nodecg: NodeCG) => {
 					nextRunRep.value = {...nextRunRep.value, ...data};
 					break;
 				default:
-					nodecg.log.warn('[modifyRun] run not found:', data);
-					msg = 'Error: Run not found';
+					nodecg.log.warn("[modifyRun] run not found:", data);
+					msg = "Error: Run not found";
 					break;
 			}
 			if (cb && !cb.handled) {
@@ -126,7 +126,7 @@ export default async (nodecg: NodeCG) => {
 	});
 
 	// Prevent empty current run
-	scheduleRep.on('change', (newVal) => {
+	scheduleRep.on("change", (newVal) => {
 		const isCurrentRunEmpty = !currentRunRep.value || !currentRunRep.value.pk;
 		if (isCurrentRunEmpty) {
 			const currentRun = newVal[0];

@@ -4,8 +4,8 @@ import {
 	FormGroup,
 	Paper,
 	Switch,
-} from '@material-ui/core';
-import React from 'react';
+} from "@material-ui/core";
+import React from "react";
 
 export class CropSwitch extends React.Component<{
 	cropEnabled: boolean;
@@ -17,7 +17,7 @@ export class CropSwitch extends React.Component<{
 			<div>
 				<Paper
 					style={{
-						padding: '8px',
+						padding: "8px",
 					}}
 				>
 					<FormControl>
@@ -41,7 +41,7 @@ export class CropSwitch extends React.Component<{
 
 	private handleChangeSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.target.checked
-			? nodecg.sendMessage('obs:enableCrop')
-			: nodecg.sendMessage('obs:disableCrop');
+			? nodecg.sendMessage("obs:enableCrop")
+			: nodecg.sendMessage("obs:disableCrop");
 	};
 }

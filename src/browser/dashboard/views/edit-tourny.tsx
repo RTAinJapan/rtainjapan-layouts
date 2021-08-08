@@ -1,13 +1,13 @@
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TextField from '@material-ui/core/TextField';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TextField from "@material-ui/core/TextField";
+import React from "react";
+import ReactDOM from "react-dom";
 
 interface TmpRunner {
 	name: string;
@@ -90,20 +90,20 @@ const TmpRunnerContainer: React.FC<{
 class App extends React.Component<{}, State> {
 	state = {
 		tmpRunners: [],
-		tmpName: '',
-		tmpTwitch: '',
-		tmpNico: '',
-		tmpTwitter: '',
+		tmpName: "",
+		tmpTwitch: "",
+		tmpNico: "",
+		tmpTwitter: "",
 	};
-	currentRunRep = nodecg.Replicant('current-run');
+	currentRunRep = nodecg.Replicant("current-run");
 
 	render() {
 		return (
 			<div
 				style={{
-					display: 'grid',
-					gridAutoFlow: 'row',
-					rowGap: '16px',
+					display: "grid",
+					gridAutoFlow: "row",
+					rowGap: "16px",
 				}}
 			>
 				<Description />
@@ -121,10 +121,10 @@ class App extends React.Component<{}, State> {
 				/>
 				<Paper
 					style={{
-						padding: '8px',
-						display: 'grid',
-						gridAutoFlow: 'row',
-						rowGap: '8px',
+						padding: "8px",
+						display: "grid",
+						gridAutoFlow: "row",
+						rowGap: "8px",
 					}}
 				>
 					<TextField
@@ -172,10 +172,10 @@ class App extends React.Component<{}, State> {
 								}),
 								() => {
 									this.setState({
-										tmpName: '',
-										tmpNico: '',
-										tmpTwitch: '',
-										tmpTwitter: '',
+										tmpName: "",
+										tmpNico: "",
+										tmpTwitch: "",
+										tmpTwitter: "",
 									});
 								},
 							);
@@ -189,4 +189,4 @@ class App extends React.Component<{}, State> {
 	}
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

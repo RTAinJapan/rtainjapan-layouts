@@ -1,12 +1,12 @@
-import IconButton from '@material-ui/core/IconButton';
-import CheckIcon from '@material-ui/icons/Check';
-import ClearIcon from '@material-ui/icons/Clear';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import ja from 'date-fns/locale/ja';
-import React from 'react';
-import styled, {css} from 'styled-components';
-import {Tweets} from '../../../../nodecg/replicants';
-import {TweetHighlighter} from '../../../tweet-highlighter';
+import IconButton from "@material-ui/core/IconButton";
+import CheckIcon from "@material-ui/icons/Check";
+import ClearIcon from "@material-ui/icons/Clear";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import ja from "date-fns/locale/ja";
+import React from "react";
+import styled, {css} from "styled-components";
+import {Tweets} from "../../../../nodecg/replicants";
+import {TweetHighlighter} from "../../../tweet-highlighter";
 
 interface Props {
 	tweet: Tweets[0];
@@ -126,11 +126,11 @@ export class TweetItem extends React.Component<Props, State> {
 	}
 
 	private readonly selectTweet = () => {
-		nodecg.sendMessage('selectTweet', this.props.tweet.id);
+		nodecg.sendMessage("selectTweet", this.props.tweet.id);
 	};
 
 	private readonly discardTweet = () => {
-		nodecg.sendMessage('discardTweet', this.props.tweet.id);
+		nodecg.sendMessage("discardTweet", this.props.tweet.id);
 	};
 
 	private readonly tweetUrl = () => {
