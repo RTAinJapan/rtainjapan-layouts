@@ -1624,10 +1624,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-highlight-words@0.16.1":
-  version "0.16.1"
-  resolved "https://registry.yarnpkg.com/@types/react-highlight-words/-/react-highlight-words-0.16.1.tgz#9744f9587e16cf74870b77ab419ec79c29f63068"
-  integrity sha512-J0JTrBbnCEpbGkXYs7FxZXlH/wJVO9cu1R0UYh+DGfw4/leMfUn37/dUdTXkcjkOMCxRSHk+OUNM3jQ//inM8w==
+"@types/react-highlight-words@0.16.3":
+  version "0.16.3"
+  resolved "https://registry.yarnpkg.com/@types/react-highlight-words/-/react-highlight-words-0.16.3.tgz#a62e8d31197a33559c38fcbe4c7c1e10d3f78cd8"
+  integrity sha512-ZarU4+/R593xctDXy/SkyWeS/dg5sG8TxZ2DATd2EdDKHlfqCPnOYzHEo/7XaYpCoSCgk5Sp1sVNhnOzC/ezJg==
   dependencies:
     "@types/react" "*"
 
@@ -6751,10 +6751,10 @@ react-dom@17.0.1:
     object-assign "^4.1.1"
     scheduler "^0.20.1"
 
-react-highlight-words@0.16.0:
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/react-highlight-words/-/react-highlight-words-0.16.0.tgz#4b4b9824e3d2b98789d3e3b3aedb5e961ae1b7cf"
-  integrity sha512-q34TwCSJOL+5pVDv6LUj3amaoyXdNDwd7zRqVAvceOrO9g1haWLAglK6WkGLMNUa3PFN8EgGedLg/k8Gpndxqg==
+react-highlight-words@0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/react-highlight-words/-/react-highlight-words-0.17.0.tgz#e79a559a2de301548339d7216264d6cd0f1eed6f"
+  integrity sha512-uX1Qh5IGjnLuJT0Zok234QDwRC8h4hcVMnB99Cb7aquB1NlPPDiWKm0XpSZOTdSactvnClCk8LOmVlP+75dgHA==
   dependencies:
     highlight-words-core "^1.2.0"
     memoize-one "^4.0.0"
