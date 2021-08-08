@@ -10,10 +10,8 @@
 		"dev:tsc": "yarn typecheck -w --preserveWatchOutput",
 		"dev:webpack": "cross-env WEBPACK_WATCH=true webpack",
 		"format": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --write",
-		"postinstall": "include-nodecg postinstall",
 		"prod": "cross-env NODE_ENV=production run-s clean build",
 		"schema-types": "del-cli src/nodecg/generated && nodecg schema-types -o src/nodecg/generated",
-		"start": "include-nodecg start",
 		"test": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --check && yarn typecheck",
 		"typecheck": "tsc -b src/browser src/extension"
 	},
@@ -38,7 +36,6 @@
 		"date-fns": "2.16.1",
 		"googleapis": "66.0.0",
 		"got": "9.6.0",
-		"include-nodecg": "0.0.3",
 		"load-json-file": "6.2.0",
 		"lodash": "4.17.20",
 		"moment": "2.29.1",
