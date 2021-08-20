@@ -37,7 +37,7 @@
 		"app-root-path": "3.0.0",
 		"date-fns": "2.23.0",
 		"googleapis": "84.0.0",
-		"got": "9.6.0",
+		"got": "11.8.2",
 		"load-json-file": "6.2.0",
 		"lodash": "4.17.21",
 		"lodash-es": "4.17.21",
