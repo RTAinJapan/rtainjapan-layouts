@@ -1,4 +1,9 @@
 {
-	"extends": ["config:base", ":semanticCommits", ":dependencyDashboard"],
+	"extends": [
+		"config:base",
+		":semanticCommits",
+		":dependencyDashboard",
+		"group:allNonMajor"
+	],
 	"postUpdateOptions": ["npmDedupe", "yarnDedupeHighest"]
 }
