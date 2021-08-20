@@ -110,7 +110,7 @@
 		"ts-nodecg": "0.3.1",
 		"typescript": "4.3.5",
 		"uuid": "8.3.2",
-		"webpack": "5.49.0",
+		"webpack": "5.51.1",
 		"webpack-bundle-analyzer": "4.4.2",
 		"webpack-cli": "4.7.2",
 		"webpack-merge": "5.8.0",
