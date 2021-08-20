@@ -2,32 +2,28 @@ import {setInterval} from "timers";
 import {NodeCG} from "../nodecg";
 import got from "got";
 import sampleSchedule from "./oengus-sample-schedule.json";
+import sampleSubmission from "./oengus-sample-submissions.json";
 import moment from "moment";
 import {Participant} from "../../nodecg/replicants";
 import {google} from "googleapis";
 import {padStart, zipObject} from "lodash";
 
-const englishTitles: {[x: string]: string} = require("./english-titles.json");
-
-type SampleRunner = typeof sampleSchedule["lines"][number]["runners"][number];
+// TODO: make these selectable from dashboard
+const MARATHON_ID = "rtaij2021s";
+const NICO_ANSWER_ID = 1548;
 
 const fetchSchedule = async (): Promise<typeof sampleSchedule> => {
 	const res = await got.get(
-		`https://oengus.io/api/marathon/rtaij2020/schedule`,
+		`https://oengus.io/api/marathons/${MARATHON_ID}/schedule`,
 		{json: true},
 	);
 	return res.body;
 };
 const fetchSubmissions = async (
 	token: string,
-): Promise<
-	Array<{
-		user: {id: number};
-		answers: Array<{question: {label: string}; answer: string | null}>;
-	}>
-> => {
+): Promise<typeof sampleSubmission> => {
 	const res = await got.get(
-		"https://oengus.io/api/marathon/rtaij2020/submission/answers",
+		`https://oengus.io/api/marathons/${MARATHON_ID}/submissions`,
 		{
 			json: true,
 			headers: {
@@ -50,8 +46,8 @@ const formatDuration = (duration: string) => {
 	return `${hours}:${padZero(minutes)}:${padZero(seconds)}`;
 };
 
-const extractNicoId = (str: string) => {
-	const regexResult = str.match(/co\d+/);
+const extractNicoId = (str?: string | null) => {
+	const regexResult = str?.match(/co\d+/);
 	if (regexResult) {
 		return regexResult[0];
 	}
@@ -77,7 +73,7 @@ export const importFromOengus = (nodecg: NodeCG) => {
 	const fetchCommentators = async () => {
 		const res = await sheetsApi.spreadsheets.values.batchGet({
 			spreadsheetId: oengus.commentatorSheet,
-			ranges: ["フォームの回答 1"],
+			ranges: ["解説応募"],
 		});
 		const sheetValues = res.data.valueRanges;
 		if (!sheetValues?.[0]?.values) {
@@ -98,56 +94,88 @@ export const importFromOengus = (nodecg: NodeCG) => {
 			};
 		});
 	};
+	const fetchAddtionalGameInfo = async () => {
+		const res = await sheetsApi.spreadsheets.values.batchGet({
+			spreadsheetId: oengus.additionalGameInfoSheet,
+			ranges: ["main"],
+		});
+		const sheetValues = res.data.valueRanges;
+		if (!sheetValues?.[0]?.values) {
+			throw new Error("Could not get values from spreadsheet");
+		}
+		const [labels, ...contents] = sheetValues[0].values;
+		if (!labels) {
+			throw new Error("Could not get values from spreadsheet");
+		}
+		const rawData = contents.map((content) => zipObject(labels, content));
+		return new Map(
+			rawData.map((el) => {
+				return [
+					parseInt(el["categoryId"]),
+					{
+						twitchCategory: el["twitchCategory"] as string,
+						releaseYear: parseInt(el["releaseYear"]),
+					},
+				];
+			}),
+		);
+	};
 
-	logger.info("Using Oengus to import schedule");
+	logger.warn("Using Oengus to import schedule");
 
 	const scheduleRep = nodecg.Replicant("schedule");
+	const warnedMissingCategoryId = new Set<number>();
 
 	const updateSchedule = async () => {
 		try {
-			const [schedule, submissions, rawCommentators] = await Promise.all([
-				fetchSchedule(),
-				fetchSubmissions(oengus.token),
-				fetchCommentators(),
-			]);
+			const [schedule, submissions, rawCommentators, additionalGameInfo] =
+				await Promise.all([
+					fetchSchedule(),
+					fetchSubmissions(oengus.token),
+					fetchCommentators(),
+					fetchAddtionalGameInfo(),
+				]);
 			scheduleRep.value = schedule.lines.map((run, index) => {
-				const runners: Participant[] = (run.runners as SampleRunner[]).map(
-					(runner) => {
-						const submission = submissions.find(
-							(sub) => sub.user.id === runner.id,
-						);
-						const answer =
-							submission &&
-							submission.answers.find((e) =>
-								e.question.label.includes("niconico"),
-							);
-						return {
-							name: runner.usernameJapanese || runner.username,
-							twitch: runner.twitchName || undefined,
-							twitter: runner.twitterName || undefined,
-							nico:
-								(answer && answer.answer && extractNicoId(answer.answer)) ||
-								undefined,
-							camera: false, // TODO: スプレッドシートから取得する必要アリ
-						};
-					},
-				);
+				const runners: Participant[] = run.runners.map((runner) => {
+					const answer = submissions
+						.find((sub) => sub.user.id === runner.id)
+						?.answers.find((e) => e.question.id === NICO_ANSWER_ID);
+					return {
+						name: runner.usernameJapanese || runner.username,
+						twitch:
+							runner.connections.find((c) => c.platform === "TWITCH")
+								?.username || undefined,
+						twitter:
+							runner.connections.find((c) => c.platform === "TWITTER")
+								?.username || undefined,
+						nico: extractNicoId(answer?.answer) || undefined,
+						camera: false, // TODO: スプレッドシートから取得する必要アリ
+					};
+				});
 				const gameCategory =
 					run.gameName.trim() + " - " + run.categoryName.trim();
 				const commentators = rawCommentators.filter(
 					(c) => c.gameCategory === gameCategory,
 				);
+				const additionalInfo = additionalGameInfo.get(run.categoryId);
+				if (!additionalInfo && !warnedMissingCategoryId.has(run.categoryId)) {
+					warnedMissingCategoryId.add(run.categoryId);
+					logger.warn(
+						`Cannot find ${run.gameName} (${run.categoryId}) from additional info sheet`,
+					);
+				}
 				return {
 					pk: run.id,
 					index,
 					title: run.gameName,
-					englishTitle: englishTitles[run.gameName] || "",
+					englishTitle: additionalInfo?.twitchCategory || "",
 					category: run.categoryName,
 					platform: run.console,
 					runDuration: formatDuration(run.estimate),
 					setupDuration: formatDuration(run.setupTime),
 					runners,
 					camera: true, // TODO: ゲーム全体の初期値決定方法を決める必要あり
+					releaseYear: additionalInfo?.releaseYear,
 					commentators: commentators.map((c) => ({
 						name: c.name,
 						twitch: c.twitch,

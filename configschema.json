@@ -4,25 +4,29 @@
 	"type": "object",
 	"additionalProperties": false,
 	"properties": {
-		"onsite": {"type": "boolean", "default": true},
+		"obs": {
+			"type": "object",
+			"properties": {
+				"address": {"type": "string"},
+				"password": {"type": "string"}
+			},
+			"additionalProperties": false,
+			"required": ["address", "password"]
+		},
+		"tracker": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["url"],
+			"properties": {
+				"url": {"type": "string"}
+			}
+		},
 		"colorTheme": {
 			"type": "string",
 			"enum": ["blue", "brown"],
 			"default": "brown"
 		},
 		"hasSponsor": {"type": "boolean", "default": true},
-		"sponsor": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"additionalProperties": false,
-				"required": ["url", "type"],
-				"properties": {
-					"url": {"type": "string"},
-					"type": {"type": "string", "enum": ["image", "video"]}
-				}
-			}
-		},
 		"twitter": {
 			"type": "object",
 			"additionalProperties": false,
@@ -58,21 +62,11 @@
 		"oengus": {
 			"type": "object",
 			"additionalProperties": false,
-			"required": ["token", "commentatorSheet"],
+			"required": ["token", "commentatorSheet", "additionalGameInfoSheet"],
 			"properties": {
 				"token": {"type": "string"},
-				"commentatorSheet": {"type": "string"}
-			}
-		},
-		"obs": {
-			"type": "object",
-			"additionalProperties": false,
-			"required": ["host", "remoteViewUri"],
-			"properties": {
-				"host": {"type": "string"},
-				"port": {"type": "number"},
-				"password": {"type": "string"},
-				"remoteViewUri": {"type": "string"}
+				"commentatorSheet": {"type": "string"},
+				"additionalGameInfoSheet": {"type": "string"}
 			}
 		}
 	}

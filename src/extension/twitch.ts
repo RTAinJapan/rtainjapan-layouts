@@ -2,8 +2,8 @@ import {setTimeout} from "timers";
 import got from "got";
 import appRootPath from "app-root-path";
 import {NodeCG} from "./nodecg";
-import {CurrentRun} from "../nodecg/replicants";
 
+// TODO: move to config
 const OUR_CHANNEL = "rtainjapan";
 
 export const twitch = (nodecg: NodeCG) => {
@@ -26,6 +26,7 @@ export const twitch = (nodecg: NodeCG) => {
 
 	const twitchRep = nodecg.Replicant("twitch");
 	const currentRunRep = nodecg.Replicant("current-run");
+	const scheduleRep = nodecg.Replicant("schedule");
 	const {clientSecret} = appRootPath.require("../../cfg/nodecg.json").login
 		.twitch;
 
@@ -53,15 +54,18 @@ export const twitch = (nodecg: NodeCG) => {
 				refreshToken: response.refresh_token,
 				refreshAt: Date.now() + expiresInMs,
 			};
-			log.info("Refreshed token");
+			log.warn("Refreshed token");
 		} catch (error) {
 			log.error("Failed to refresh token:", error);
 		}
 	};
 
 	let lastUpdateTitle = "";
-	const updateTitle = async (newRun: CurrentRun) => {
+	const updateTitle = async () => {
 		try {
+			const newRun = scheduleRep.value?.find(
+				(run) => run.pk === currentRunRep.value?.pk,
+			);
 			if (!newRun) {
 				return;
 			}
@@ -69,7 +73,7 @@ export const twitch = (nodecg: NodeCG) => {
 				log.error("Tried to update Twitch status but missing access token");
 				return;
 			}
-			const newTitle = `RTA in Japan 2020: ${newRun.title}`;
+			const newTitle = `RTA in Japan Summer 2021: ${newRun.title}`;
 			if (lastUpdateTitle === newTitle) {
 				return;
 			}
@@ -99,7 +103,7 @@ export const twitch = (nodecg: NodeCG) => {
 		}
 	};
 
-	const loginLib = appRootPath.require("./.nodecg/lib/login");
+	const loginLib = appRootPath.require("../../lib/login");
 	loginLib.on("login", (session: any) => {
 		const {user} = session.passport;
 		if (user.provider !== "twitch" || user.username !== OUR_CHANNEL) {
@@ -116,8 +120,8 @@ export const twitch = (nodecg: NodeCG) => {
 		log.info(`Twitch title updater is enabled for ${user.username}`);
 		refreshAccessToken();
 	});
-
 	currentRunRep.on("change", updateTitle);
+	scheduleRep.on("change", updateTitle);
 
 	twitchRep.once("change", (newVal) => {
 		if (newVal.refresh) {

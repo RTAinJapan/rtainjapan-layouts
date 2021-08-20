@@ -17,6 +17,7 @@ export default async (nodecg: NodeCG) => {
 	const currentRunRep = nodecg.Replicant("current-run");
 	const nextRunRep = nodecg.Replicant("next-run");
 	const checklistRep = nodecg.Replicant("checklist");
+	const timerRep = nodecg.Replicant("timer");
 
 	const resetChecklist = () => {
 		if (checklistRep.value) {
@@ -28,6 +29,9 @@ export default async (nodecg: NodeCG) => {
 	};
 
 	const updateCurrentRun = (index: number) => {
+		if (timerRep.value?.timerState === "Running") {
+			return;
+		}
 		if (!scheduleRep.value) {
 			return;
 		}
@@ -41,6 +45,9 @@ export default async (nodecg: NodeCG) => {
 	};
 
 	const seekToNextRun = () => {
+		if (timerRep.value?.timerState === "Running") {
+			return;
+		}
 		if (!currentRunRep.value || !scheduleRep.value) {
 			return;
 		}
@@ -58,6 +65,9 @@ export default async (nodecg: NodeCG) => {
 	};
 
 	const seekToPreviousRun = () => {
+		if (timerRep.value?.timerState === "Running") {
+			return;
+		}
 		if (!currentRunRep.value || !scheduleRep.value) {
 			return;
 		}

@@ -20,10 +20,7 @@ export const secondsToHMS = (seconds: number) => {
  */
 export const formatHMS = (hms: {h: number; m: number; s: number}) => {
 	let str = "";
-	if (hms.h) {
-		str += `${hms.h}:`;
-	}
-
+	str += `${hms.h}:`;
 	str += `${hms.m < 10 ? `0${hms.m}` : hms.m}:${
 		hms.s < 10 ? `0${hms.s}` : hms.s
 	}`;

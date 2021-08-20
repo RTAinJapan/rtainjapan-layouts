@@ -3,6 +3,7 @@ export * from './current-run';
 export * from './next-run';
 export * from './obs-crop-inputs';
 export * from './obs-remote-inputs';
+export * from './obs-status';
 export * from './obs';
 export * from './schedule';
 export * from './spotify';

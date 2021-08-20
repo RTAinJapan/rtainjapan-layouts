@@ -12,6 +12,7 @@ export type CurrentRun = null | {
 	englishTitle: string;
 	category?: string;
 	platform?: string;
+	releaseYear?: number;
 	runDuration: string;
 	setupDuration: string;
 	/**

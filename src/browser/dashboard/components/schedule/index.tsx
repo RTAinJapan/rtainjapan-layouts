@@ -8,6 +8,7 @@ import {
 	CurrentRun,
 	NextRun,
 	Schedule as ScheduleSchema,
+	Timer,
 } from "../../../../nodecg/replicants";
 import {BorderedBox} from "../lib/bordered-box";
 import {ColoredButton} from "../lib/colored-button";
@@ -18,6 +19,7 @@ import {Typeahead} from "./typeahead";
 const currentRunRep = nodecg.Replicant("current-run");
 const nextRunRep = nodecg.Replicant("next-run");
 const scheduleRep = nodecg.Replicant("schedule");
+const timerRep = nodecg.Replicant("timer");
 
 const Container = styled(BorderedBox)`
 	height: calc(100vh - 32px);
@@ -62,23 +64,31 @@ interface State {
 	currentRun?: CurrentRun;
 	nextRun?: NextRun;
 	edit?: "current" | "next";
+	disablePrevNextButtons: boolean;
 }
 
 export class Schedule extends React.Component<{}, State> {
 	public state: State = {
 		titles: [],
+		disablePrevNextButtons: false,
 	};
 
 	public componentDidMount() {
 		scheduleRep.on("change", this.scheduleChangeHandler);
 		currentRunRep.on("change", this.currentRunChangeHandler);
 		nextRunRep.on("change", this.nextRunChangeHandler);
+		timerRep.on("change", this.#timerChangeHandler);
 	}
+
+	#timerChangeHandler = (timer: Timer) => {
+		this.setState({disablePrevNextButtons: timer.timerState === "Running"});
+	};
 
 	public componentWillUnmount() {
 		scheduleRep.removeListener("change", this.scheduleChangeHandler);
 		currentRunRep.removeListener("change", this.currentRunChangeHandler);
 		nextRunRep.removeListener("change", this.nextRunChangeHandler);
+		timerRep.removeListener("change", this.#timerChangeHandler);
 	}
 
 	public render() {
@@ -87,12 +97,24 @@ export class Schedule extends React.Component<{}, State> {
 				<SelectionContainer>
 					<ColoredButton
 						color={purple}
-						ButtonProps={{onClick: movePreviousRun}}
+						ButtonProps={{
+							onClick: movePreviousRun,
+							disabled: this.state.disablePrevNextButtons,
+						}}
 					>
 						<ArrowBack />前
 					</ColoredButton>
-					<Typeahead titles={this.state.titles} />
-					<ColoredButton color={purple} ButtonProps={{onClick: moveNextRun}}>
+					<Typeahead
+						disabled={this.state.disablePrevNextButtons}
+						titles={this.state.titles}
+					/>
+					<ColoredButton
+						color={purple}
+						ButtonProps={{
+							onClick: moveNextRun,
+							disabled: this.state.disablePrevNextButtons,
+						}}
+					>
 						次<ArrowForward />
 					</ColoredButton>
 				</SelectionContainer>

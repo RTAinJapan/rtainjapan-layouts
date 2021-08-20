@@ -10,6 +10,7 @@
 		"englishTitle": {"type": "string"},
 		"category": {"type": "string"},
 		"platform": {"type": "string"},
+		"releaseYear": {"type": "integer"},
 		"runDuration": {"type": "string"},
 		"setupDuration": {"type": "string"},
 		"camera": {

@@ -81,6 +81,7 @@ export const Runner: React.FunctionComponent<Props> = (props) => {
 	const shouldShowForfeit = Boolean(!result || !result["forfeit"]);
 	const status = result ? result["formatted"] : "Running";
 	const defaultEditValue = result ? result["formatted"] : "00:00";
+	const timerIsZero = props.timer.raw === 0;
 
 	return (
 		<Container index={props.index}>
@@ -101,6 +102,7 @@ export const Runner: React.FunctionComponent<Props> = (props) => {
 										forfeit: false,
 									});
 								},
+								disabled: timerIsZero,
 							}}
 						>
 							<Flag />
@@ -115,6 +117,7 @@ export const Runner: React.FunctionComponent<Props> = (props) => {
 								onClick: () => {
 									nodecg.sendMessage("resumeRunner", props.index);
 								},
+								disabled: timerIsZero,
 							}}
 						>
 							<Undo />
@@ -132,6 +135,7 @@ export const Runner: React.FunctionComponent<Props> = (props) => {
 										forfeit: true,
 									});
 								},
+								disabled: timerIsZero,
 							}}
 						>
 							<Cancel />

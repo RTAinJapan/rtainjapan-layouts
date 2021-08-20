@@ -7,13 +7,15 @@
 		"clean": "del-cli bundle-analyzer dashboard extension graphics",
 		"dev": "run-p dev:*",
 		"dev:schema-types": "onchange schemas configschema.json -i -- nodecg schema-types -o src/nodecg/generated",
-		"dev:tsc": "yarn typecheck -w --preserveWatchOutput",
+		"dev:tsc": "yarn test:types -w --preserveWatchOutput",
 		"dev:webpack": "cross-env WEBPACK_WATCH=true webpack",
-		"format": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --write",
+		"format": "yarn test:prettier --write",
 		"prod": "cross-env NODE_ENV=production run-s clean build",
 		"schema-types": "del-cli src/nodecg/generated && nodecg schema-types -o src/nodecg/generated",
-		"test": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --check && yarn typecheck",
-		"typecheck": "tsc -b src/browser src/extension"
+		"test": "run-s test:lint test:prettier schema-types test:types",
+		"test:prettier": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --check",
+		"test:lint": "eslint --ext .ts .",
+		"test:types": "tsc -b src/browser src/extension"
 	},
 	"husky": {
 		"hooks": {
@@ -38,12 +40,14 @@
 		"got": "9.6.0",
 		"load-json-file": "6.2.0",
 		"lodash": "4.17.21",
+		"lodash-es": "^4.17.21",
 		"moment": "2.29.1",
 		"nodecg": "1.8.1",
 		"obs-websocket-js": "4.0.2",
 		"source-map-support": "0.5.19",
 		"tslib": "2.3.0",
-		"twit": "2.2.11"
+		"twit": "2.2.11",
+		"ws": "^8.0.0"
 	},
 	"devDependencies": {
 		"@babel/core": "7.15.0",
@@ -55,6 +59,7 @@
 		"@types/app-root-path": "1.2.4",
 		"@types/got": "9.6.12",
 		"@types/lodash": "4.14.172",
+		"@types/lodash-es": "^4.17.4",
 		"@types/mini-css-extract-plugin": "1.2.2",
 		"@types/node": "14.14.19",
 		"@types/react": "17.0.16",
@@ -66,8 +71,12 @@
 		"@types/twit": "2.2.30",
 		"@types/uuid": "8.3.1",
 		"@types/webpack-bundle-analyzer": "3.9.0",
+		"@types/webpack-env": "^1.16.2",
 		"@types/webpack-merge": "4.1.5",
 		"@types/webpack-node-externals": "2.5.2",
+		"@types/ws": "^7.4.7",
+		"@typescript-eslint/eslint-plugin": "^4.29.0",
+		"@typescript-eslint/parser": "^4.29.0",
 		"babel-loader": "8.2.2",
 		"babel-plugin-styled-components": "1.13.2",
 		"cross-env": "7.0.3",
@@ -75,8 +84,12 @@
 		"del-cli": "4.0.1",
 		"delay": "4.4.0",
 		"downshift": "6.1.6",
+		"eslint": "^7.32.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-react-hooks": "^4.2.0",
 		"file-loader": "6.2.0",
 		"globby": "11.0.4",
+		"gsap": "^3.7.1",
 		"html-webpack-plugin": "5.3.2",
 		"husky": "4.3.6",
 		"lint-staged": "11.1.2",
@@ -137,136 +150,61 @@
 				"width": 2,
 				"headerColor": "#00BEBE",
 				"workspace": "1-special"
-			},
-			{
-				"name": "obs-connect",
-				"title": "OBS接続",
-				"file": "obs-connect.html",
-				"width": 2,
-				"headerColor": "#00BEBE",
-				"workspace": "3-obs"
-			},
-			{
-				"name": "obs-video-sources",
-				"title": "クロップ対象選択",
-				"file": "obs-video-sources.html",
-				"width": 4,
-				"headerColor": "#00BEBE",
-				"workspace": "3-obs"
-			},
-			{
-				"name": "obs-remote-view",
-				"title": "ブラウザソース編集",
-				"file": "obs-remote-view.html",
-				"width": 4,
-				"headerColor": "#00BEBE",
-				"workspace": "3-obs"
 			}
 		],
 		"graphics": [
 			{
-				"file": "break-list.html",
+				"file": "break.html",
 				"width": 1920,
-				"height": 1080
+				"height": 1030
 			},
 			{
-				"file": "break-frame.html",
+				"file": "game.html",
 				"width": 1920,
-				"height": 1080
+				"height": 1030
 			},
 			{
-				"file": "game-gb1.html",
+				"file": "omnibar.html",
 				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-hd1.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-hd2.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-hd3.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-hd3-camera3.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-sd1.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-sd2.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-sd3.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-sd4-camera4.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-ds1.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-ds1-flat.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-ds2-camera2.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-3ds1.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-3ds2.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-gba1.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-gba2.html",
-				"width": 1920,
-				"height": 1080
-			},
-			{
-				"file": "game-qwop.html",
-				"width": 1920,
-				"height": 1080
+				"height": 50
 			}
 		],
 		"assetCategories": [
 			{
-				"name": "sponsorLogos",
-				"title": "スポンサーロゴ",
+				"name": "sponsor-horizontal",
+				"title": "スポンサーロゴ (ヨコ)",
 				"allowedTypes": [
-					"png",
-					"mov"
+					"png"
+				]
+			},
+			{
+				"name": "sponsor-vertical",
+				"title": "スポンサーロゴ (タテ)",
+				"allowedTypes": [
+					"png"
+				]
+			},
+			{
+				"name": "sponsor-setup",
+				"title": "スポンサーロゴ (セットアップ)",
+				"allowedTypes": [
+					"png"
+				]
+			},
+			{
+				"name": "charity-logo",
+				"title": "寄付先ロゴ",
+				"allowedTypes": [
+					"svg",
+					"png"
+				]
+			},
+			{
+				"name": "setup-background-video",
+				"title": "セットアップ背景動画",
+				"allowedTypes": [
+					"mp4",
+					"webm"
 				]
 			}
 		],

@@ -36,5 +36,5 @@ export type MessageMap = {
 	"obs:addCropInput": {data: string};
 	"obs:removeCropInput": {data: string};
 	"obs:setRemoteSource": {data: {input: string; index: number}};
-	"obs:updateRemoteBrowser": {data: {viewId: string; index: number}};
+	donation: {data: {amount: number; total: number}};
 };

@@ -12,6 +12,7 @@ export type NextRun = null | {
 	englishTitle: string;
 	category?: string;
 	platform?: string;
+	releaseYear?: number;
 	runDuration: string;
 	setupDuration: string;
 	/**

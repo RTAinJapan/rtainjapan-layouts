@@ -63,7 +63,9 @@ const stopTimer = () => {
 };
 
 const resetTimer = () => {
-	nodecg.sendMessage("resetTimer");
+	if (confirm("本当にタイマーをリセットしますか?")) {
+		nodecg.sendMessage("resetTimer");
+	}
 };
 
 interface State {

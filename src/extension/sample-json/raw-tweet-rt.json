@@ -1,0 +1,201 @@
+{
+	"created_at": "Fri Aug 13 16:17:56 +0000 2021",
+	"id": 1426216461366747100,
+	"id_str": "1426216461366747138",
+	"text": "RT @RTAinJapan: 次のタイムアタックは『零～zero～』\nカテゴリーは「Any％」\n走者は勇者_27さん(@yu_sya27____)です。\n\nお盆の深夜枠にふさわしい作品、スタートです…\n\n配信はこちらから⇒https://t.co/iSbmGQ22Zj\n#RT…",
+	"truncated": false,
+	"entities": {
+		"hashtags": [],
+		"symbols": [],
+		"user_mentions": [
+			{
+				"screen_name": "RTAinJapan",
+				"name": "RTA in Japan",
+				"id": 777125547532922900,
+				"id_str": "777125547532922880",
+				"indices": [3, 14]
+			},
+			{
+				"screen_name": "yu_sya27____",
+				"name": "勇者",
+				"id": 1234427109679878100,
+				"id_str": "1234427109679878146",
+				"indices": [60, 73]
+			}
+		],
+		"urls": [
+			{
+				"url": "https://t.co/iSbmGQ22Zj",
+				"expanded_url": "https://www.twitch.tv/rtainjapan",
+				"display_url": "twitch.tv/rtainjapan",
+				"indices": [112, 135]
+			}
+		]
+	},
+	"source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+	"in_reply_to_status_id": null,
+	"in_reply_to_status_id_str": null,
+	"in_reply_to_user_id": null,
+	"in_reply_to_user_id_str": null,
+	"in_reply_to_screen_name": null,
+	"user": {
+		"id": 967007698632847400,
+		"id_str": "967007698632847360",
+		"name": "ボルテクス@DQⅩとかいろいろ",
+		"screen_name": "pika_300010V",
+		"location": "バトンタウン",
+		"description": "かっこいいエル子　かわいいエル子 そんなの人の勝手 本当にエル子が好きなら　どっちもすこれ。   ドラクエ10以外にもいろんなゲームに手を出してるエル子のやべーやつ\nアイコン @hoshikake55 さん @gadq10 さん @cyan_dq10\n さん ヘッダー @sein_sero さん　",
+		"url": null,
+		"entities": {"description": {"urls": []}},
+		"protected": false,
+		"followers_count": 494,
+		"friends_count": 722,
+		"listed_count": 5,
+		"created_at": "Fri Feb 23 12:06:16 +0000 2018",
+		"favourites_count": 86820,
+		"utc_offset": null,
+		"time_zone": null,
+		"geo_enabled": false,
+		"verified": false,
+		"statuses_count": 53946,
+		"lang": null,
+		"contributors_enabled": false,
+		"is_translator": false,
+		"is_translation_enabled": false,
+		"profile_background_color": "000000",
+		"profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+		"profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+		"profile_background_tile": false,
+		"profile_image_url": "http://pbs.twimg.com/profile_images/1426187736008957956/9UCdTG5a_normal.jpg",
+		"profile_image_url_https": "https://pbs.twimg.com/profile_images/1426187736008957956/9UCdTG5a_normal.jpg",
+		"profile_banner_url": "https://pbs.twimg.com/profile_banners/967007698632847360/1584853587",
+		"profile_link_color": "19CF86",
+		"profile_sidebar_border_color": "000000",
+		"profile_sidebar_fill_color": "000000",
+		"profile_text_color": "000000",
+		"profile_use_background_image": false,
+		"has_extended_profile": true,
+		"default_profile": false,
+		"default_profile_image": false,
+		"following": false,
+		"follow_request_sent": false,
+		"notifications": false,
+		"translator_type": "none",
+		"withheld_in_countries": []
+	},
+	"geo": null,
+	"coordinates": null,
+	"place": null,
+	"contributors": null,
+	"retweeted_status": {
+		"created_at": "Fri Aug 13 15:54:07 +0000 2021",
+		"id": 1426210464615133200,
+		"id_str": "1426210464615133188",
+		"text": "次のタイムアタックは『零～zero～』\nカテゴリーは「Any％」\n走者は勇者_27さん(@yu_sya27____)です。\n\nお盆の深夜枠にふさわしい作品、スタートです…\n\n配信はこちらから⇒… https://t.co/8hGD7WgKL6",
+		"truncated": true,
+		"entities": {
+			"hashtags": [],
+			"symbols": [],
+			"user_mentions": [
+				{
+					"screen_name": "yu_sya27____",
+					"name": "勇者",
+					"id": 1234427109679878100,
+					"id_str": "1234427109679878146",
+					"indices": [44, 57]
+				}
+			],
+			"urls": [
+				{
+					"url": "https://t.co/8hGD7WgKL6",
+					"expanded_url": "https://twitter.com/i/web/status/1426210464615133188",
+					"display_url": "twitter.com/i/web/status/1…",
+					"indices": [98, 121]
+				}
+			]
+		},
+		"source": "<a href=\"https://rtain.jp\" rel=\"nofollow\">RTA in Japan Twitter Client</a>",
+		"in_reply_to_status_id": null,
+		"in_reply_to_status_id_str": null,
+		"in_reply_to_user_id": null,
+		"in_reply_to_user_id_str": null,
+		"in_reply_to_screen_name": null,
+		"user": {
+			"id": 777125547532922900,
+			"id_str": "777125547532922880",
+			"name": "RTA in Japan",
+			"screen_name": "RTAinJapan",
+			"location": "日本",
+			"description": "日本で行う大規模オフラインRTAイベント『RTA in Japan』の公式Twitterアカウントです。",
+			"url": "https://t.co/FqcPVWDVl9",
+			"entities": {
+				"url": {
+					"urls": [
+						{
+							"url": "https://t.co/FqcPVWDVl9",
+							"expanded_url": "https://rtain.jp/",
+							"display_url": "rtain.jp",
+							"indices": [0, 23]
+						}
+					]
+				},
+				"description": {"urls": []}
+			},
+			"protected": false,
+			"followers_count": 87621,
+			"friends_count": 0,
+			"listed_count": 519,
+			"created_at": "Sat Sep 17 12:42:23 +0000 2016",
+			"favourites_count": 308,
+			"utc_offset": null,
+			"time_zone": null,
+			"geo_enabled": false,
+			"verified": false,
+			"statuses_count": 2997,
+			"lang": null,
+			"contributors_enabled": false,
+			"is_translator": false,
+			"is_translation_enabled": false,
+			"profile_background_color": "000000",
+			"profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+			"profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+			"profile_background_tile": false,
+			"profile_image_url": "http://pbs.twimg.com/profile_images/794813981235871744/FppC2YmJ_normal.jpg",
+			"profile_image_url_https": "https://pbs.twimg.com/profile_images/794813981235871744/FppC2YmJ_normal.jpg",
+			"profile_banner_url": "https://pbs.twimg.com/profile_banners/777125547532922880/1480850244",
+			"profile_link_color": "7FDBB6",
+			"profile_sidebar_border_color": "000000",
+			"profile_sidebar_fill_color": "000000",
+			"profile_text_color": "000000",
+			"profile_use_background_image": false,
+			"has_extended_profile": true,
+			"default_profile": false,
+			"default_profile_image": false,
+			"following": true,
+			"follow_request_sent": false,
+			"notifications": false,
+			"translator_type": "none",
+			"withheld_in_countries": []
+		},
+		"geo": null,
+		"coordinates": null,
+		"place": null,
+		"contributors": null,
+		"is_quote_status": false,
+		"retweet_count": 1352,
+		"favorite_count": 688,
+		"favorited": false,
+		"retweeted": false,
+		"possibly_sensitive": false,
+		"possibly_sensitive_appealable": false,
+		"lang": "ja"
+	},
+	"is_quote_status": false,
+	"retweet_count": 1352,
+	"favorite_count": 0,
+	"favorited": false,
+	"retweeted": false,
+	"possibly_sensitive": false,
+	"possibly_sensitive_appealable": false,
+	"lang": "ja"
+}

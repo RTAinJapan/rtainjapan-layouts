@@ -6,13 +6,15 @@
  */
 
 export interface Configschema {
-	onsite?: boolean;
+	obs?: {
+		address: string;
+		password: string;
+	};
+	tracker?: {
+		url: string;
+	};
 	colorTheme?: 'blue' | 'brown';
 	hasSponsor?: boolean;
-	sponsor?: {
-		url: string;
-		type: 'image' | 'video';
-	}[];
 	twitter?: {
 		targetWords: string[];
 		consumerKey: string;
@@ -29,11 +31,6 @@ export interface Configschema {
 	oengus?: {
 		token: string;
 		commentatorSheet: string;
-	};
-	obs?: {
-		host: string;
-		port?: number;
-		password?: string;
-		remoteViewUri: string;
+		additionalGameInfoSheet: string;
 	};
 }

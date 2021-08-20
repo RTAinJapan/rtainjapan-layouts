@@ -1,7 +1,5 @@
 import {useEffect, useState} from "react";
-import _ from "lodash";
-import {Replicant} from "ts-nodecg/browser";
-
+import clone from "lodash-es/clone";
 import {ReplicantMap} from "../nodecg/replicants";
 
 /**
@@ -9,41 +7,27 @@ import {ReplicantMap} from "../nodecg/replicants";
  * The component using this function gets re-rendered when the value is updated.
  * The `setValue` function can be used to update replicant value.
  * @param replicant Replicant object to subscribe to
- * @param initialValue Initial value to pass to `useState` function
  */
-export const useReplicant = <
-	TBundleName extends string,
-	TRepMap extends ReplicantMap,
-	TRepName extends keyof ReplicantMap,
-	TSchema extends TRepMap[TRepName],
->(
-	replicant: Replicant<TBundleName, TRepMap, TRepName, TSchema | undefined>,
-): [TSchema | null, (newValue: TSchema) => void] => {
-	const [value, updateValue] = useState<TSchema | null>(null);
-
-	const changeHandler = (newValue: TSchema): void => {
-		updateValue((oldValue) => {
-			if (newValue !== oldValue) {
-				return newValue;
-			}
-			if (_.isEqual(oldValue, newValue)) {
-				return oldValue;
-			}
-			return _.clone(newValue);
-		});
-	};
+export const useReplicant = <TRepName extends keyof ReplicantMap>(
+	replicantName: TRepName,
+) => {
+	const replicant = nodecg.Replicant(replicantName);
+	const [value, updateValue] = useState<ReplicantMap[TRepName] | null>(null);
 
 	useEffect(() => {
-		replicant.on("change", changeHandler as any);
+		const changeHandler = (newValue: ReplicantMap[TRepName]): void => {
+			updateValue((oldValue) => {
+				if (newValue !== oldValue) {
+					return newValue;
+				}
+				return clone(newValue);
+			});
+		};
+		replicant.on("change", changeHandler);
 		return () => {
-			replicant.removeListener("change", changeHandler as any);
+			replicant.removeListener("change", changeHandler);
 		};
 	}, [replicant]);
 
-	return [
-		value,
-		(newValue) => {
-			replicant.value = newValue;
-		},
-	];
+	return value;
 };

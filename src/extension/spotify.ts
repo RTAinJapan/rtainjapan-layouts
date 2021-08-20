@@ -3,7 +3,7 @@ import {isEqual} from "lodash";
 import got from "got";
 import {NodeCG} from "./nodecg";
 
-const defaultWaitMs = 5 * 1000;
+const defaultWaitMs = 3 * 1000;
 
 const sumArtists = (artists: Array<{name: string}>) => {
 	return artists.map((artist) => artist.name).join(", ");
@@ -72,7 +72,6 @@ export const spotify = async (nodecg: NodeCG) => {
 				album: res.body.item.album.name,
 			};
 			if (!isEqual(newTrack, spotifyRep.value.currentTrack)) {
-				logger.info(`Now playing: ${newTrack.name}`);
 				spotifyRep.value.currentTrack = newTrack;
 			}
 			refreshCurrentTrackTimer(setTimeout(getCurrentTrack, defaultWaitMs));
@@ -142,7 +141,7 @@ export const spotify = async (nodecg: NodeCG) => {
 			if (expiresIn) {
 				spotifyRep.value.refreshAt = Date.now() + expiresIn * 1000;
 			}
-			logger.info(
+			logger.warn(
 				`Successfully refreshed token, refreshing in ${expiresIn} seconds`,
 			);
 			refreshAuthorizeTimer(setTimeout(authorize, expiresIn * 1000));
@@ -167,7 +166,7 @@ export const spotify = async (nodecg: NodeCG) => {
 
 	if (spotifyRep.value?.refreshAt) {
 		const refreshInMs = spotifyRep.value.refreshAt - Date.now();
-		logger.info(`Refreshing token in ${Math.ceil(refreshInMs / 1000)}`);
+		logger.warn(`Refreshing token in ${Math.ceil(refreshInMs / 1000)}`);
 		setTimeout(authorize, refreshInMs);
 	}
 

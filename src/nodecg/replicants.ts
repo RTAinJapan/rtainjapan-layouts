@@ -10,11 +10,22 @@ import {Twitch} from "./generated/twitch";
 import {Obs} from "./generated/obs";
 import {ObsCropInputs} from "./generated/obs-crop-inputs";
 import {ObsRemoteInputs} from "./generated/obs-remote-inputs";
+import {ObsStatus} from "./generated/obs-status";
 
 type Run = NonNullable<CurrentRun>;
 type Participant = Run["runners"][number];
 
 type Tweet = Tweets[number];
+
+type Assets = {
+	base: string;
+	category: string;
+	ext: string;
+	name: string;
+	namespace: string;
+	sum: string;
+	url: string;
+};
 
 type ReplicantMap = {
 	checklist: Checklist;
@@ -26,9 +37,15 @@ type ReplicantMap = {
 	timer: Timer;
 	tweets: Tweets;
 	twitch: Twitch;
+	"obs-status": ObsStatus;
 	obs: Obs;
 	"obs-crop-inputs": ObsCropInputs;
 	"obs-remote-inputs": ObsRemoteInputs;
+	"assets:sponsor-horizontal": Assets[];
+	"assets:sponsor-vertical": Assets[];
+	"assets:sponsor-setup": Assets[];
+	"assets:charity-logo": Assets[];
+	"donation-total": number;
 };
 
 export {

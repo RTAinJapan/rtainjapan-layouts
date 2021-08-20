@@ -27,7 +27,7 @@ const Container = styled.div`
 
 	display: grid;
 	grid-auto-flow: row;
-	grid-gap: 8px;
+	gap: 8px;
 `;
 
 const RunnerRow = styled.div`
@@ -94,28 +94,22 @@ export class EditRun extends React.Component<Props, Run> {
 							this.setState({category: e.currentTarget.value});
 						}}
 					/>
-					<TextField
-						defaultValue={this.props.defaultValue.runDuration}
-						label='予定タイム'
-						onChange={(e) => {
-							this.setState({runDuration: e.currentTarget.value});
-						}}
-					/>
-					<div>
-						<div className='MuiFormLabel-root'>
-							<TypoGraphy variant={"caption"}>全体カメラ使用可否</TypoGraphy>
-						</div>
-						<VideocamOffIcon />
-						<Switch2
-							defaultValue={!!this.props.defaultValue.camera}
-							onChange={() => {
-								this.setState({
-									camera: !this.state.camera,
-								});
+					<RunnerRow>
+						<TextField
+							defaultValue={this.props.defaultValue.runDuration}
+							label='予定タイム'
+							onChange={(e) => {
+								this.setState({runDuration: e.currentTarget.value});
 							}}
 						/>
-						<VideocamIcon color={"secondary"} />
-					</div>
+						<TextField
+							defaultValue={this.props.defaultValue.releaseYear}
+							label='発売年'
+							onChange={(e) => {
+								this.setState({releaseYear: parseInt(e.currentTarget.value)});
+							}}
+						/>
+					</RunnerRow>
 					{Array.from({length: 4}, (_, index) => {
 						const runner: Participant = runners[index] || {name: ""};
 						return (
@@ -178,7 +172,7 @@ export class EditRun extends React.Component<Props, Run> {
 					})}
 
 					{/* 解説 */}
-					{new Array(4).fill(null).map((_, index) => {
+					{new Array(2).fill(null).map((_, index) => {
 						const commentator: Participant = {
 							name: "",
 							...(commentators[index] as Partial<Participant>),

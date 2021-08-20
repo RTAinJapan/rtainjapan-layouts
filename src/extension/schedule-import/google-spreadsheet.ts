@@ -17,7 +17,7 @@ export const importFromSpreadsheet = async (nodecg: NodeCG) => {
 		return;
 	}
 
-	logger.info("Using spreadsheet to import schedule");
+	logger.warn("Using spreadsheet to import schedule");
 
 	const scheduleRep = nodecg.Replicant("schedule");
 	const spreadsheetRep = nodecg.Replicant("spreadsheet");

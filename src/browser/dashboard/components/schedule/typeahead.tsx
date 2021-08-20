@@ -22,6 +22,7 @@ interface State {
 
 interface Props {
 	titles: Array<string | undefined>;
+	disabled: boolean;
 }
 
 export class Typeahead extends React.Component<Props, State> {
@@ -70,6 +71,7 @@ export class Typeahead extends React.Component<Props, State> {
 					style={{whiteSpace: "nowrap", alignSelf: "flex-end"}}
 					size='small'
 					onClick={this.skipClicked}
+					disabled={this.props.disabled}
 				>
 					スキップ
 					<ChevronRight />

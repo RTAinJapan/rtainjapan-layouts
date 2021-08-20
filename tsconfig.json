@@ -18,7 +18,6 @@
 		"noPropertyAccessFromIndexSignature": true,
 
 		"moduleResolution": "node",
-		"types": [],
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true

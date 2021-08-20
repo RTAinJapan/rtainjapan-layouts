@@ -82,7 +82,6 @@ export const twitter = async (nodecg: NodeCG) => {
 				streamLogger.warn("connecting");
 			});
 			stream.on("reconnect", (_req, _res, connectInterval: number) => {
-				console.log(_res);
 				// Twitter is having problems or we get rate limited. Reconnetion scheduled.
 				streamLogger.warn(`Reconnecting in ${connectInterval}ms`);
 			});
