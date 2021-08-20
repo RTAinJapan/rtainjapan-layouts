@@ -1874,12 +1874,14 @@
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.1.tgz#1a32969cf8f0364b3d8c8af9cc3555b7805df14f"
   integrity sha512-Y2mHTRAbqfFkpjldbkHGY8JIzRN6XqYRliG8/24FcHm2D2PwW24fl5xMRTVGdrb7iMrwCaIEbLWerGIkXuFWVg==
 
-"@types/webpack-bundle-analyzer@3.9.4":
-  version "3.9.4"
-  resolved "https://registry.yarnpkg.com/@types/webpack-bundle-analyzer/-/webpack-bundle-analyzer-3.9.4.tgz#029d31294a3dc36a9d655cf36de30fe9a254e72d"
-  integrity sha512-I00B3BPLnKArbbLMhocyvY+jEwEAnIWoyPRdWZD+4z6q91dubgLR0czoTdDwfTlmjSfuT5HcMc56b6cCxRKbbQ==
+"@types/webpack-bundle-analyzer@4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@types/webpack-bundle-analyzer/-/webpack-bundle-analyzer-4.4.1.tgz#bcc2501be10c8cdd1d170bc6b7847b3321f20440"
+  integrity sha512-yQAj3l7bIYL+QRRlNJt6gyP+zrXZOlgaR4wsX0WY4yzZIbv41ZibREfZvuYjxY0iVtvQQlbhx0AeokkCuqUAQg==
   dependencies:
-    "@types/webpack" "^4"
+    "@types/node" "*"
+    tapable "^2.2.0"
+    webpack "^5"
 
 "@types/webpack-env@1.16.2":
   version "1.16.2"
