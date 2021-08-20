@@ -61,7 +61,7 @@
 		"@types/lodash": "4.14.172",
 		"@types/lodash-es": "^4.17.4",
 		"@types/mini-css-extract-plugin": "1.2.2",
-		"@types/node": "14.14.19",
+		"@types/node": "14.17.10",
 		"@types/react": "17.0.16",
 		"@types/react-dom": "17.0.9",
 		"@types/react-highlight-words": "0.16.3",
