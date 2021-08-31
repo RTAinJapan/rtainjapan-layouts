@@ -36,7 +36,7 @@
 	"dependencies": {
 		"app-root-path": "3.0.0",
 		"date-fns": "2.23.0",
-		"googleapis": "84.0.0",
+		"googleapis": "85.0.0",
 		"got": "9.6.0",
 		"load-json-file": "6.2.0",
 		"lodash": "4.17.21",
