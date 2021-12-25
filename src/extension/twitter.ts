@@ -1,4 +1,4 @@
-import tweetSample from "./sample-json/raw-tweet.json";
+import tweetSample from "./sample-json/twitter/raw-tweet.json";
 import {throttle} from "lodash";
 import Twit from "twit";
 import {NodeCG} from "./nodecg";
@@ -105,7 +105,9 @@ export const twitter = async (nodecg: NodeCG) => {
 				},
 			);
 		} catch (error) {
-			streamLogger.error("Failed to start stream:", error.stack);
+			if (error instanceof Error) {
+				streamLogger.error("Failed to start stream:", error.stack);
+			}
 			startStream();
 		}
 	});

@@ -35,17 +35,21 @@ export const twitch = (nodecg: NodeCG) => {
 			if (!twitchRep.value || !twitchRep.value.refresh) {
 				return;
 			}
-			const {body} = await got.post("https://id.twitch.tv/oauth2/token", {
-				form: true,
-				body: {
-					grant_type: "refresh_token",
-					refresh_token: twitchRep.value.refresh.refreshToken,
-					client_id: twitchConfig.clientID,
-					client_secret: clientSecret,
-					scope: twitchConfig.scope,
-				},
-			});
-			const response = JSON.parse(body);
+			const response = await got
+				.post("https://id.twitch.tv/oauth2/token", {
+					form: {
+						grant_type: "refresh_token",
+						refresh_token: twitchRep.value.refresh.refreshToken,
+						client_id: twitchConfig.clientID,
+						client_secret: clientSecret,
+						scope: twitchConfig.scope,
+					},
+				})
+				.json<{
+					expires_in: number;
+					access_token: string;
+					refresh_token: string;
+				}>();
 			const expiresInMs = response.expires_in * 1000;
 			setTimeout(refreshAccessToken, expiresInMs);
 
@@ -80,8 +84,7 @@ export const twitch = (nodecg: NodeCG) => {
 			await got.put(
 				`https://api.twitch.tv/kraken/channels/${twitchRep.value.channelId}`,
 				{
-					json: true,
-					body: {
+					json: {
 						channel: {
 							status: newTitle,
 							game: newRun.englishTitle,

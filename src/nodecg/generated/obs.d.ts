@@ -14,8 +14,8 @@ export interface Obs {
 			id: number;
 			name: string;
 			type: string;
-			[k: string]: any;
+			[k: string]: unknown;
 		}[];
 	}[];
-	[k: string]: any;
+	[k: string]: unknown;
 }

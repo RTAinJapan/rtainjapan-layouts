@@ -5,7 +5,21 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type ObsRemoteInputs = {
-	input: null | string;
-	viewId: string;
-}[];
+export type ObsRemoteInputs = [
+	{
+		input: null | string;
+		viewId: string;
+	},
+	{
+		input: null | string;
+		viewId: string;
+	},
+	{
+		input: null | string;
+		viewId: string;
+	},
+	{
+		input: null | string;
+		viewId: string;
+	}
+];

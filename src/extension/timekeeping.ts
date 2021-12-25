@@ -99,8 +99,8 @@ export const timekeeping = (nodecg: NodeCG) => {
 		const finishedResults = timerRep.value.results
 			.filter((result) => {
 				if (result) {
-					result["place"] = 0;
-					return !result["forfeit"];
+					result.place = 0;
+					return !result.forfeit;
 				}
 				return false;
 			})
@@ -117,7 +117,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 			if (!r) {
 				return;
 			}
-			r["place"] = index + 1;
+			r.place = index + 1;
 		});
 
 		if (currentRunRep.value.runners === undefined) {

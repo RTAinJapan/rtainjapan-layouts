@@ -2,24 +2,59 @@
 	"$schema": "http://json-schema.org/draft-04/schema",
 
 	"type": "object",
+	"additionalProperties": false,
 	"properties": {
-		"raw": {"type": "number"},
-		"hours": {"type": "number"},
-		"minutes": {"type": "number"},
-		"seconds": {"type": "number"},
-		"formatted": {"type": "string"},
-		"timestamp": {"type": "number"},
+		"raw": {"type": "number", "default": 0},
+		"hours": {"type": "number", "default": 0},
+		"minutes": {"type": "number", "default": 0},
+		"seconds": {"type": "number", "default": 0},
+		"formatted": {"type": "string", "default": ""},
+		"timestamp": {"type": "number", "default": 0},
 		"timerState": {
 			"enum": ["Finished", "Running", "Stopped"],
-			"type": "string"
+			"type": "string",
+			"default": "Stopped"
 		},
+		"forfeit": {"type": "boolean", "default": false},
+
 		"results": {
 			"type": "array",
 			"items": {
-				"oneOf": [{"type": "null"}, {"type": "object"}]
-			}
-		},
-		"forfeit": {"type": "boolean"}
+				"oneOf": [
+					{"type": "null"},
+					{
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"raw": {"type": "number", "default": 0},
+							"hours": {"type": "number", "default": 0},
+							"minutes": {"type": "number", "default": 0},
+							"seconds": {"type": "number", "default": 0},
+							"formatted": {"type": "string", "default": ""},
+							"timestamp": {"type": "number", "default": 0},
+							"timerState": {
+								"enum": ["Finished", "Running", "Stopped"],
+								"type": "string",
+								"default": "Stopped"
+							},
+							"forfeit": {"type": "boolean", "default": false},
+							"place": {"type": "number", "multipleOf": 1}
+						},
+						"required": [
+							"raw",
+							"hours",
+							"minutes",
+							"seconds",
+							"formatted",
+							"timestamp",
+							"timerState",
+							"forfeit"
+						]
+					}
+				]
+			},
+			"default": [null, null, null, null]
+		}
 	},
 	"required": [
 		"raw",
@@ -29,7 +64,7 @@
 		"formatted",
 		"timestamp",
 		"timerState",
-		"results",
-		"forfeit"
+		"forfeit",
+		"results"
 	]
 }

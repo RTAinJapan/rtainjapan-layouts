@@ -16,17 +16,13 @@
 		"tracker": {
 			"type": "object",
 			"additionalProperties": false,
-			"required": ["url"],
+			"required": ["domain", "event", "websocket"],
 			"properties": {
-				"url": {"type": "string"}
+				"domain": {"type": "string"},
+				"event": {"type": "number"},
+				"websocket": {"type": "string"}
 			}
 		},
-		"colorTheme": {
-			"type": "string",
-			"enum": ["blue", "brown"],
-			"default": "brown"
-		},
-		"hasSponsor": {"type": "boolean", "default": true},
 		"twitter": {
 			"type": "object",
 			"additionalProperties": false,
@@ -57,17 +53,7 @@
 				"clientSecret": {"type": "string"}
 			}
 		},
-		"spreadsheetId": {"type": "string"},
 		"googleApiKey": {"type": "string"},
-		"oengus": {
-			"type": "object",
-			"additionalProperties": false,
-			"required": ["token", "commentatorSheet", "additionalGameInfoSheet"],
-			"properties": {
-				"token": {"type": "string"},
-				"commentatorSheet": {"type": "string"},
-				"additionalGameInfoSheet": {"type": "string"}
-			}
-		}
+		"commentatorSheet": {"type": "string"}
 	}
 }

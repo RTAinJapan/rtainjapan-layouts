@@ -54,8 +54,7 @@ export const spotify = async (nodecg: NodeCG) => {
 			const res = await got.get(
 				"https://api.spotify.com/v1/me/player/currently-playing",
 				{
-					json: true,
-					query: {
+					searchParams: {
 						market: "from_token",
 					},
 					headers: {Authorization: `Bearer ${token}`},
@@ -66,24 +65,31 @@ export const spotify = async (nodecg: NodeCG) => {
 				refreshCurrentTrackTimer(setTimeout(getCurrentTrack, defaultWaitMs));
 				return;
 			}
+			const body = JSON.parse(res.body);
 			const newTrack = {
-				name: res.body.item.name,
-				artists: sumArtists(res.body.item.artists),
-				album: res.body.item.album.name,
+				name: body.item.name,
+				artists: sumArtists(body.item.artists),
+				album: body.item.album.name,
 			};
 			if (!isEqual(newTrack, spotifyRep.value.currentTrack)) {
 				spotifyRep.value.currentTrack = newTrack;
 			}
 			refreshCurrentTrackTimer(setTimeout(getCurrentTrack, defaultWaitMs));
 		} catch (err) {
-			logger.error("Failed to get current track:", err.stack);
+			if (err instanceof Error) {
+				logger.error("Failed to get current track:", err.stack);
+			}
 			if (
+				err instanceof got.RequestError &&
 				err.response &&
-				err.response.status === 429 &&
+				err.response.statusCode === 429 &&
 				err.response.headers &&
 				err.response.headers["Retry-After"]
 			) {
-				const retryInSeconds = err.response.headers["Retry-After"];
+				const retryAfter = err.response.headers["Retry-After"];
+				const retryInSeconds = parseInt(
+					(Array.isArray(retryAfter) ? retryAfter[0] : retryAfter) ?? "10",
+				);
 				refreshCurrentTrackTimer(
 					setTimeout(getCurrentTrack, retryInSeconds * 1000),
 				);
@@ -122,16 +128,20 @@ export const spotify = async (nodecg: NodeCG) => {
 						grant_type: "refresh_token",
 						refresh_token: spotifyRep.value.refreshToken,
 				  };
-			const res = await got.post("https://accounts.spotify.com/api/token", {
-				form: true,
-				body,
-				headers,
-			});
 			const {
 				access_token: accessToken,
 				expires_in: expiresIn,
 				refresh_token: refreshToken,
-			} = JSON.parse(res.body);
+			} = await got
+				.post("https://accounts.spotify.com/api/token", {
+					form: body,
+					headers,
+				})
+				.json<{
+					access_token: string;
+					expires_in: number;
+					refresh_token: string;
+				}>();
 			if (accessToken) {
 				spotifyRep.value.accessToken = accessToken;
 			}
@@ -146,7 +156,9 @@ export const spotify = async (nodecg: NodeCG) => {
 			);
 			refreshAuthorizeTimer(setTimeout(authorize, expiresIn * 1000));
 		} catch (err) {
-			logger.error("Failed to get access token", err.stack);
+			if (err instanceof Error) {
+				logger.error("Failed to get access token", err.stack);
+			}
 		}
 	};
 

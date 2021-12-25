@@ -19,7 +19,7 @@ export interface Spreadsheet {
 		runner3?: string;
 		commentator1?: string;
 		commentator2?: string;
-		[k: string]: any;
+		[k: string]: unknown;
 	}[];
 	runners: {
 		id: string;
@@ -27,7 +27,7 @@ export interface Spreadsheet {
 		twitter?: string;
 		nico?: string;
 		twitch?: string;
-		[k: string]: any;
+		[k: string]: unknown;
 	}[];
 	commentators: {
 		id: string;
@@ -35,6 +35,6 @@ export interface Spreadsheet {
 		twitter?: string;
 		nico?: string;
 		twitch?: string;
-		[k: string]: any;
+		[k: string]: unknown;
 	}[];
 }

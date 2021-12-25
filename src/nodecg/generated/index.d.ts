@@ -1,3 +1,4 @@
+export * from './configschema';
 export * from './checklist';
 export * from './current-run';
 export * from './next-run';

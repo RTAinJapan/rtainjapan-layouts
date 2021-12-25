@@ -79,8 +79,8 @@ export const Runner: React.FunctionComponent<Props> = (props) => {
 	const shouldDisableEdit = !shouldShowResume;
 	const shouldShowFinish = Boolean(!result || result["forfeit"]);
 	const shouldShowForfeit = Boolean(!result || !result["forfeit"]);
-	const status = result ? result["formatted"] : "Running";
-	const defaultEditValue = result ? result["formatted"] : "00:00";
+	const status = result ? result.formatted : "Running";
+	const defaultEditValue = result ? result.formatted : "00:00";
 	const timerIsZero = props.timer.raw === 0;
 
 	return (

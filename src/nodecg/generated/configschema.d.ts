@@ -11,10 +11,10 @@ export interface Configschema {
 		password: string;
 	};
 	tracker?: {
-		url: string;
+		domain: string;
+		event: number;
+		websocket: string;
 	};
-	colorTheme?: 'blue' | 'brown';
-	hasSponsor?: boolean;
 	twitter?: {
 		targetWords: string[];
 		consumerKey: string;
@@ -26,11 +26,6 @@ export interface Configschema {
 		clientId: string;
 		clientSecret: string;
 	};
-	spreadsheetId?: string;
 	googleApiKey?: string;
-	oengus?: {
-		token: string;
-		commentatorSheet: string;
-		additionalGameInfoSheet: string;
-	};
+	commentatorSheet?: string;
 }

@@ -1,18 +1,7 @@
 import {cloneDeep} from "lodash";
 import {NodeCG} from "./nodecg";
-import {importFromSpreadsheet} from "./schedule-import/google-spreadsheet";
-import {importFromOengus} from "./schedule-import/oengus";
 
 export default async (nodecg: NodeCG) => {
-	if (nodecg.bundleConfig.oengus) {
-		importFromOengus(nodecg);
-	} else if (
-		nodecg.bundleConfig.googleApiKey &&
-		nodecg.bundleConfig.spreadsheetId
-	) {
-		importFromSpreadsheet(nodecg);
-	}
-
 	const scheduleRep = nodecg.Replicant("schedule");
 	const currentRunRep = nodecg.Replicant("current-run");
 	const nextRunRep = nodecg.Replicant("next-run");
@@ -130,7 +119,7 @@ export default async (nodecg: NodeCG) => {
 			}
 		} catch (error) {
 			if (cb && !cb.handled) {
-				cb(error.message);
+				cb(error instanceof Error ? error.message : "error");
 			}
 		}
 	});

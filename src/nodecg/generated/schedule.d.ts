@@ -12,7 +12,7 @@ export type Schedule = {
 	englishTitle: string;
 	category?: string;
 	platform?: string;
-	releaseYear?: number;
+	releaseYear?: number | null;
 	runDuration: string;
 	setupDuration: string;
 	/**

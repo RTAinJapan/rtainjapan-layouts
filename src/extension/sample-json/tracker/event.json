@@ -1,0 +1,56 @@
+[
+	{
+		"model": "tracker.event",
+		"pk": 1,
+		"fields": {
+			"short": "rtaijw2021",
+			"name": "RTA in Japan Winter 2021",
+			"hashtag": "",
+			"use_one_step_screening": true,
+			"receivername": "国境なき医師団",
+			"targetamount": 10000000.0,
+			"minimumdonation": 100.0,
+			"paypalemail": "sb-l8jll6102199@business.example.com",
+			"paypalcurrency": "JPY",
+			"datetime": "2021-12-26T12:00:00Z",
+			"timezone": "Asia/Tokyo",
+			"locked": false,
+			"allow_donations": true,
+			"canonical_url": "https://dev-tracker.rtaij.app/event/1",
+			"public": "RTA in Japan Winter 2021",
+			"amount": 3499.0,
+			"count": 4,
+			"max": 1000.0,
+			"avg": 874.75,
+			"allowed_prize_countries": [],
+			"disallowed_prize_regions": []
+		}
+	},
+	{
+		"model": "tracker.event",
+		"pk": 2,
+		"fields": {
+			"short": "rtaimport",
+			"name": "Import Test",
+			"hashtag": "",
+			"use_one_step_screening": true,
+			"receivername": "",
+			"targetamount": 5000000000.0,
+			"minimumdonation": 100.0,
+			"paypalemail": "sb-l8jll6102199@business.example.com",
+			"paypalcurrency": "JPY",
+			"datetime": "2021-12-22T12:06:46Z",
+			"timezone": "Asia/Tokyo",
+			"locked": false,
+			"allow_donations": true,
+			"canonical_url": "https://dev-tracker.rtaij.app/event/2",
+			"public": "Import Test",
+			"amount": 0.0,
+			"count": 0,
+			"max": 0.0,
+			"avg": 0.0,
+			"allowed_prize_countries": [],
+			"disallowed_prize_regions": []
+		}
+	}
+]
