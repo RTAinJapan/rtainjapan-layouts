@@ -2,17 +2,7 @@ import gsap from "gsap";
 import {CSSProperties, FunctionComponent, useEffect, useRef} from "react";
 import {useReplicant} from "../../../use-replicant";
 import {background} from "../../styles/colors";
-
-const blurSwipe = {
-	enter: {
-		from: "linear-gradient(to right, rgba(0,0,0,1) -20%, rgba(0,0,0,0) 0%)",
-		to: "linear-gradient(to right, rgba(0,0,0,1) 100%, rgba(0,0,0,0) 120%)",
-	},
-	exit: {
-		from: "linear-gradient(to right, rgba(0,0,0,0) -20%, rgba(0,0,0,1) 0%)",
-		to: "linear-gradient(to right, rgba(0,0,0,0) 100%, rgba(0,0,0,1) 120%)",
-	},
-};
+import {swipeEnter, swipeExit} from "../lib/blur-swipe";
 
 export const Sponsor: FunctionComponent<{
 	style?: CSSProperties;
@@ -28,18 +18,8 @@ export const Sponsor: FunctionComponent<{
 		const tl = gsap.timeline({repeat: -1});
 		for (const asset of assets) {
 			tl.set(sponsorRef.current, {attr: {src: asset.url}});
-			tl.fromTo(
-				sponsorRef.current,
-				{maskImage: blurSwipe.enter.from},
-				{maskImage: blurSwipe.enter.to, duration: 0.5},
-				"<+=0.3",
-			);
-			tl.fromTo(
-				sponsorRef.current,
-				{maskImage: blurSwipe.exit.from},
-				{maskImage: blurSwipe.exit.to, duration: 0.5},
-				"<+=40",
-			);
+			tl.add(swipeEnter(sponsorRef), "<+=0.3");
+			tl.add(swipeExit(sponsorRef), "<+=40");
 		}
 		return () => {
 			tl.kill();

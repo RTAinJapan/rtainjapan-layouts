@@ -96,6 +96,7 @@
 		"modern-normalize": "1.1.0",
 		"nodecg-cli": "8.0.0",
 		"npm-run-all": "4.1.5",
+		"pixi.js": "^6.2.1",
 		"prettier": "2.3.2",
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
@@ -149,6 +150,22 @@
 				"width": 2,
 				"headerColor": "#00BEBE",
 				"workspace": "1-special"
+			},
+			{
+				"name": "countdown",
+				"title": "カウントダウン",
+				"file": "countdown.html",
+				"width": 2,
+				"headerColor": "#00BEBE",
+				"workspace": "2-misc"
+			},
+			{
+				"name": "camera",
+				"title": "カメラ",
+				"file": "camera.html",
+				"width": 2,
+				"headerColor": "#00BEBE",
+				"workspace": "2-misc"
 			}
 		],
 		"graphics": [
@@ -166,6 +183,16 @@
 				"file": "omnibar.html",
 				"width": 1920,
 				"height": 50
+			},
+			{
+				"file": "countdown.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "camera.html",
+				"width": 1920,
+				"height": 1080
 			}
 		],
 		"assetCategories": [

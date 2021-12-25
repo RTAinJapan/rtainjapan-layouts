@@ -11,6 +11,9 @@ import {Obs} from "./generated/obs";
 import {ObsCropInputs} from "./generated/obs-crop-inputs";
 import {ObsRemoteInputs} from "./generated/obs-remote-inputs";
 import {ObsStatus} from "./generated/obs-status";
+import {Countdown} from "./generated/countdown";
+import {CameraName} from "./generated/camera-name";
+import {CameraState} from "./generated/camera-state";
 
 type Run = NonNullable<CurrentRun>;
 type Participant = Run["runners"][number];
@@ -46,6 +49,9 @@ type ReplicantMap = {
 	"assets:sponsor-setup": Assets[];
 	"assets:charity-logo": Assets[];
 	"donation-total": number;
+	countdown: Countdown;
+	"camera-name": CameraName;
+	"camera-state": CameraState;
 };
 
 export {
@@ -65,4 +71,7 @@ export {
 	Obs,
 	ObsCropInputs,
 	ObsRemoteInputs,
+	Countdown,
+	CameraName,
+	CameraState,
 };

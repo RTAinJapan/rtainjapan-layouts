@@ -1,0 +1,18 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"endTime": {
+			"type": "number",
+			"default": 0
+		},
+		"state": {
+			"type": "string",
+			"enum": ["running", "stopped"],
+			"default": "stopped"
+		}
+	},
+	"required": ["endTime", "state"]
+}

@@ -18,4 +18,19 @@ export = (nodecg: NodeCG) => {
 	twitch(nodecg);
 	setupObs(nodecg);
 	tracker(nodecg);
+
+	const cameraStateRep = nodecg.Replicant("camera-state");
+	if (cameraStateRep.value !== "hidden") {
+		cameraStateRep.value = "hidden";
+	}
+	nodecg.listenFor("toggleCameraName", () => {
+		if (cameraStateRep.value === "hidden") {
+			cameraStateRep.value = "big";
+			setTimeout(() => {
+				cameraStateRep.value = "small";
+			}, 10 * 1000);
+		} else {
+			cameraStateRep.value = "hidden";
+		}
+	});
 };
