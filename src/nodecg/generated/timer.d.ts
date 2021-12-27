@@ -24,5 +24,6 @@ export interface Timer {
 		timerState: 'Finished' | 'Running' | 'Stopped';
 		forfeit: boolean;
 		place?: number;
+		results?: unknown[];
 	})[];
 }

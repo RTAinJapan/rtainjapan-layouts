@@ -2,8 +2,9 @@ import {FunctionComponent} from "react";
 import {Camera} from "../../../components/camera";
 import {EventLogo} from "../../../components/event-logo";
 import {SemiHorizontalGameInfo} from "../../../components/game-info/semi-horizontal";
+import {RoundedHoleImage} from "../../../components/rounded-hole-image";
 import {Sponsor} from "../../../components/sponsor";
-import background from "./background/background-H300.png";
+import background from "../../../images/background.png";
 import {HorizontalNamePlates} from "./horizontal-nameplates";
 
 export const TemplateH300: FunctionComponent<{race?: boolean}> = ({
@@ -17,10 +18,25 @@ export const TemplateH300: FunctionComponent<{race?: boolean}> = ({
 				width: "1920px",
 				height: "1030px",
 				overflow: "hidden",
-				backgroundImage: `url(${background})`,
 				color: "white",
 			}}
 		>
+			<RoundedHoleImage
+				src={background}
+				height={1080}
+				width={1920}
+				roundedRect={{
+					height: 300,
+					width: 400,
+					radius: 7,
+					x: 1030,
+					y: 715,
+					border: {
+						color: "white",
+						width: 2,
+					},
+				}}
+			></RoundedHoleImage>
 			<SemiHorizontalGameInfo
 				height={150}
 				style={{

@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import topLogo from "../images/header_rij.svg";
 import background from "../images/background.png";
 import {RoundedHoleImage} from "../components/rounded-hole-image";
-import logoR from "../images/speech_nameplate.png";
+import logoR from "../images/speech_nameplate.svg";
 import {BoldText} from "../components/lib/text";
 import {Divider} from "../components/lib/divider";
 import {useReplicant} from "../../use-replicant";

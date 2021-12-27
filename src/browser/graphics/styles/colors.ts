@@ -8,11 +8,11 @@ export const text = {
 };
 
 export const background = {
-	camera: "rgba(0, 20, 60, 0.35)",
-	sponsor: "rgba(0, 20, 60, 0.35)",
-	name: "rgba(0, 20, 60, 0.2)",
+	camera: "rgba(40, 15, 20, 0.5)",
+	sponsor: "rgba(40, 15, 20, 0.5)",
+	name: "rgba(40, 15, 20, 0.35)",
 };
 
 export const setup = {
-	frameBg: "rgba(37,48,58,0.6)",
+	frameBg: "rgba(37,15,35,0.6)",
 };

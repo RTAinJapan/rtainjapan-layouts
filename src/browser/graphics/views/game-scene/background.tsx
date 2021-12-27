@@ -1,4 +1,4 @@
-import background from "./templates/background/background.png";
+import background from "../../images/background.png";
 export default () => {
 	return (
 		<div

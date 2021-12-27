@@ -38,7 +38,8 @@
 								"default": "Stopped"
 							},
 							"forfeit": {"type": "boolean", "default": false},
-							"place": {"type": "number", "multipleOf": 1}
+							"place": {"type": "number", "multipleOf": 1},
+							"results": {"type": "array"}
 						},
 						"required": [
 							"raw",
