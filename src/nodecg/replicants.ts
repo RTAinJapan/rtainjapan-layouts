@@ -14,6 +14,7 @@ import {ObsStatus} from "./generated/obs-status";
 import {Countdown} from "./generated/countdown";
 import {CameraName} from "./generated/camera-name";
 import {CameraState} from "./generated/camera-state";
+import {BidWar} from "./generated/bid-war";
 
 type Run = NonNullable<CurrentRun>;
 type Participant = Run["runners"][number];
@@ -52,6 +53,7 @@ type ReplicantMap = {
 	countdown: Countdown;
 	"camera-name": CameraName;
 	"camera-state": CameraState;
+	"bid-war": BidWar;
 };
 
 export {
@@ -74,4 +76,5 @@ export {
 	Countdown,
 	CameraName,
 	CameraState,
+	BidWar,
 };

@@ -6,6 +6,8 @@ import zipObject from "lodash/zipObject";
 import type EventSample from "./sample-json/tracker/event.json";
 import type RunSample from "./sample-json/tracker/run.json";
 import type RunnerSample from "./sample-json/tracker/runner.json";
+import type BidSample from "./sample-json/tracker/bid.json";
+import type BidTargetSample from "./sample-json/tracker/bidtarget.json";
 
 export const tracker = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("tracker");
@@ -19,6 +21,7 @@ export const tracker = (nodecg: NodeCG) => {
 
 	const scheduleRep = nodecg.Replicant("schedule");
 	const donationTotalRep = nodecg.Replicant("donation-total");
+	const bidwarRep = nodecg.Replicant("bid-war");
 
 	const requestSearch = async <T>(type: string) => {
 		const url = new URL("/search", `https://${trackerConfig.domain}`);
@@ -115,11 +118,51 @@ export const tracker = (nodecg: NodeCG) => {
 		}
 	};
 
+	const updateBidWars = async () => {
+		try {
+			const [bids, bidTargets] = await Promise.all([
+				requestSearch<typeof BidSample>("bid"),
+				requestSearch<typeof BidTargetSample>("bidtarget"),
+			]);
+			const openTargets = bidTargets.filter(
+				(target) => target.fields.state === "OPENED",
+			);
+			const updated = bids
+				.filter((bid) => bid.fields.state === "OPENED")
+				.sort((a, b) => a.fields.speedrun__order - b.fields.speedrun__order)
+				.map((bid) => {
+					return {
+						pk: bid.pk,
+						name: bid.fields.name,
+						game: bid.fields.speedrun__name,
+						targets: openTargets
+							.filter((target) => target.fields.parent === bid.pk)
+							.sort((a, b) => Number(b.fields.total) - Number(a.fields.total))
+							.map((target) => {
+								const {name, total} = target.fields;
+								return {
+									pk: target.pk,
+									name,
+									total: Number(total),
+									percent:
+										Number(target.fields.total) / Number(bid.fields.total),
+								};
+							}),
+					};
+				});
+			bidwarRep.value = updated;
+		} catch (error) {
+			log.error(error);
+		}
+	};
+
 	updateTotal();
 	updateRuns();
+	updateBidWars();
 	setInterval(() => {
 		updateTotal();
 		updateRuns();
+		updateBidWars();
 	}, 10 * 1000);
 
 	const connectWebSocket = () => {

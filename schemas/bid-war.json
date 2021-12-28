@@ -1,0 +1,30 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "array",
+	"items": {
+		"type": "object",
+		"additionalProperties": false,
+		"properties": {
+			"pk": {"type": "number"},
+			"name": {"type": "string"},
+			"game": {"type": "string"},
+			"targets": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"pk": {"type": "number"},
+						"name": {"type": "string"},
+						"total": {"type": "number"},
+						"percent": {"type": "number"}
+					},
+					"required": ["pk", "name", "total", "percent"]
+				}
+			}
+		},
+		"required": ["pk", "name", "game", "targets"]
+	},
+	"default": []
+}
