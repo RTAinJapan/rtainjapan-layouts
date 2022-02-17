@@ -10,9 +10,9 @@ export default () => {
 				cutTop
 				style={{
 					position: "absolute",
-					top: "645px",
-					left: "15px",
-					width: "937px",
+					top: "621px",
+					left: "312px",
+					width: "640px",
 					height: "50px",
 				}}
 				race
@@ -23,9 +23,9 @@ export default () => {
 				cutTop
 				style={{
 					position: "absolute",
-					top: "645px",
-					left: "968px",
-					width: "937px",
+					top: "621px",
+					right: "312px",
+					width: "640px",
 					height: "50px",
 				}}
 				race

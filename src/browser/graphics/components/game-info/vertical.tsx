@@ -8,11 +8,11 @@ import {GameTimer} from "../lib/timer";
 const gradientBackground = `
 	linear-gradient(
 		to right,
-		rgba(0, 40, 150, 0),
-		rgba(0, 40, 150, 0.2) 20%,
-		rgba(0, 40, 150, 0.3) 50%,
-		rgba(0, 40, 150, 0.2) 80%,
-		rgba(0, 40, 150, 0) 100%
+		rgba(40, 15, 20, 0),
+		rgba(40, 15, 20, 0.4) 20%,
+		rgba(40, 15, 20, 0.5) 50%,
+		rgba(40, 15, 20, 0.4) 80%,
+		rgba(40, 15, 20, 0) 100%
 	)
 `;
 
