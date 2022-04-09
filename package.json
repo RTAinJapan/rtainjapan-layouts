@@ -41,7 +41,7 @@
 		"load-json-file": "6.2.0",
 		"lodash": "4.17.21",
 		"lodash-es": "4.17.21",
-		"moment": "2.29.1",
+		"moment": "2.29.2",
 		"obs-websocket-js": "4.0.3",
 		"source-map-support": "0.5.19",
 		"tslib": "2.3.1",
