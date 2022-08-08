@@ -8,7 +8,7 @@
 		"hours": {"type": "number", "default": 0},
 		"minutes": {"type": "number", "default": 0},
 		"seconds": {"type": "number", "default": 0},
-		"formatted": {"type": "string", "default": ""},
+		"formatted": {"type": "string", "default": "0:00:00"},
 		"timestamp": {"type": "number", "default": 0},
 		"timerState": {
 			"enum": ["Finished", "Running", "Stopped"],

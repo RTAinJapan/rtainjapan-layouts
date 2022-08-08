@@ -406,12 +406,14 @@ const Omnibar = () => {
 				style={{gridColumn: "3 / 4", gridRow: "1 / 2"}}
 			></img>
 
-			<DonationTotal></DonationTotal>
+			<div style={{width: "15px"}}></div>
 
-			<img
+			{/* <DonationTotal></DonationTotal> */}
+
+			{/* <img
 				src={sponsorAssets?.[0]?.url}
 				style={{gridColumn: "5 / 6", gridRow: "1 / 2"}}
-			></img>
+			></img> */}
 		</div>
 	);
 };

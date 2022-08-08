@@ -77,7 +77,7 @@ export const twitch = (nodecg: NodeCG) => {
 				log.error("Tried to update Twitch status but missing access token");
 				return;
 			}
-			const newTitle = `RTA in Japan Winter 2021: ${newRun.title}`;
+			const newTitle = `RTA in Japan ex #1: ${newRun.title}`;
 			if (lastUpdateTitle === newTitle) {
 				return;
 			}

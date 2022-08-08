@@ -16,6 +16,7 @@ import {Fragment, useCallback, useEffect, useRef} from "react";
 import {EventLogo} from "../components/event-logo";
 import {Tweet} from "../components/tweet";
 import {Music} from "../components/music";
+import {setup} from "../styles/colors";
 
 const Spacer = () => <img src={nextGameSpacer} width={50} height={60}></img>;
 
@@ -32,7 +33,7 @@ const Upcoming = () => {
 	const nextRun = currentRun;
 	const upcomingRuns = schedule?.slice(
 		currrentRunIndex + 1,
-		currrentRunIndex + 5,
+		currrentRunIndex + 3,
 	);
 
 	let now = moment();
@@ -120,19 +121,20 @@ const Sponsor = () => {
 		}
 		const tl = gsap.timeline({repeat: -1});
 		for (const asset of assets) {
-			tl.set(imageRef.current, {attr: {src: asset.url}}, "+=0.2");
 			tl.fromTo(
 				containerRef.current,
 				{x: 0},
-				{x: -440, duration: 1, ease: Power2.easeOut},
+				{x: 440, duration: 1, ease: Power2.easeOut},
 				"+=0.2",
 			);
+			tl.set(imageRef.current, {attr: {src: asset.url}}, "+=0.2");
 			tl.fromTo(
 				containerRef.current,
-				{x: -440},
+				{x: 440},
 				{x: 0, duration: 1, ease: Power2.easeOut},
-				"+=40",
+				"+=0.2",
 			);
+			tl.set({}, {}, "+=40");
 		}
 		return () => {
 			tl.kill();
@@ -145,22 +147,21 @@ const Sponsor = () => {
 			style={{
 				position: "absolute",
 				top: "620px",
-				left: "1890px",
-				width: "470px",
+				right: 0,
+				width: "440px",
 				height: "360px",
 				display: "grid",
-				gridTemplateColumns: "30px 440px",
-				willChange: "transform",
+				gridTemplateColumns: "1fr",
+				willChange: "transoform",
 			}}
 		>
-			<img src={tagSponsor} style={{alignSelf: "start"}}></img>
 			<div
 				style={{
 					placeSelf: "stretch",
 					display: "grid",
 					placeContent: "center",
 					placeItems: "center",
-					background: "rgba(37,48,58,0.6)",
+					background: setup.frameBg,
 					borderWidth: "2px 0 2px 2px",
 					borderStyle: "solid",
 					borderColor: "white",
@@ -184,9 +185,9 @@ const GradientOverlay = () => {
 				background: `
 					linear-gradient(
 						to right,
-						rgba(37,48,58,0.5),
-						rgba(37,48,58,0.4) 600px,
-						rgba(37,48,58,0) 800px
+						rgba(20,50,33,0.5),
+						rgba(20,50,33,0.4) 75%,
+						rgba(20,50,33,0) 100%
 					)`,
 			}}
 		></div>
@@ -216,7 +217,7 @@ const TweetContainer = () => {
 		<div
 			style={{
 				position: "absolute",
-				top: "50px",
+				top: "150px",
 				left: "1890px",
 				width: "470px",
 				display: "grid",
@@ -261,7 +262,7 @@ const TweetContainer = () => {
 					borderStyle: "solid",
 					borderWidth: "2px 0 2px 2px",
 					borderRadius: "7px 0 0 7px",
-					background: "rgba(37, 48, 58, 0.6)",
+					background: "rgba(8, 36, 20, 0.6)",
 					willChange: "transform",
 				}}
 			>
