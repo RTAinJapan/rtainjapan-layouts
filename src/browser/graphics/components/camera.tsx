@@ -89,13 +89,13 @@ const CameraContent = ({cameras}: {cameras: CameraSettings}) => {
 			<>
 				<SingleCamera
 					camera={cameras[0]}
-					borderWidth='0 1px 0 0'
+					borderWidth='0'
 					borderRadius='7px 0 0 7px'
 					style={{gridColumn: "1 / 2", gridRow: "1 / 3"}}
 				></SingleCamera>
 				<SingleCamera
 					camera={cameras[1]}
-					borderWidth='0 0 0 1px'
+					borderWidth='0'
 					borderRadius='0 7px 7px 0'
 					style={{gridColumn: "2 / 3", gridRow: "1 / 3"}}
 				></SingleCamera>
@@ -106,25 +106,25 @@ const CameraContent = ({cameras}: {cameras: CameraSettings}) => {
 		<>
 			<SingleCamera
 				camera={cameras[0]}
-				borderWidth='0 1px 1px 0'
+				borderWidth='0'
 				borderRadius='7px 0 0 0'
 				style={{gridColumn: "1 / 2", gridRow: "1 / 2"}}
 			></SingleCamera>
 			<SingleCamera
 				camera={cameras[1]}
-				borderWidth='0 0 1px 1px'
+				borderWidth='0'
 				borderRadius='0 7px 0 0'
 				style={{gridColumn: "2 / 3", gridRow: "1 / 2"}}
 			></SingleCamera>
 			<SingleCamera
 				camera={cameras[2]}
-				borderWidth='1px 1px 0 0'
+				borderWidth='0'
 				borderRadius='0 0 0 7px'
 				style={{gridColumn: "1 / 2", gridRow: "2 / 3"}}
 			></SingleCamera>
 			<SingleCamera
 				camera={cameras[3]}
-				borderWidth='1px 0 0 1px'
+				borderWidth='0'
 				borderRadius='0 0 7px 0'
 				style={{gridColumn: "2 / 3", gridRow: "2 / 3"}}
 			></SingleCamera>
