@@ -7,7 +7,7 @@ import {ThinText} from "./lib/text";
 
 export const Music = () => {
 	const spotify = useReplicant("spotify");
-	const text = `${spotify?.currentTrack?.name} - ${spotify?.currentTrack?.artists}`;
+	const text = `${spotify?.currentTrack?.name} - ${spotify?.currentTrack?.artists} music by サクラチル`;
 	const ref = useRef<HTMLDivElement>(null);
 	const [shownText, setShownText] = useState("");
 
