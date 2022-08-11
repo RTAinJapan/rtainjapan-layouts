@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import {BoldText, ThinText} from "../components/lib/text";
 import nextGameBar from "../images/next_line.svg";
 import nextGameSpacer from "../images/next_spacer.svg";
-import tagSponsor from "../images/tag_sponsor.svg";
+// import tagSponsor from "../images/tag_sponsor.svg";
 import tagFanart from "../images/tag_fanart.svg";
 import tagTweet from "../images/tag_tweet.svg";
 import {useReplicant} from "../../use-replicant";
@@ -185,9 +185,9 @@ const GradientOverlay = () => {
 				background: `
 					linear-gradient(
 						to right,
-						rgba(20,50,33,0.5),
-						rgba(20,50,33,0.4) 75%,
-						rgba(20,50,33,0) 100%
+						rgba(37, 48, 58, 0.5),
+						rgba(37, 48, 58, 0.4) 75%,
+						rgba(37, 48, 58, 0) 100%
 					)`,
 			}}
 		></div>

@@ -1,5 +1,5 @@
 import got from "got";
-// import WebSocket from "ws";
+import WebSocket from "ws";
 import {NodeCG} from "./nodecg";
 import {sheets} from "@googleapis/sheets";
 import zipObject from "lodash/zipObject";
@@ -145,7 +145,9 @@ export const tracker = (nodecg: NodeCG) => {
 									name,
 									total: Number(total),
 									percent:
-										Number(target.fields.total) / Number(bid.fields.total),
+										Number(bid.fields.total) === 0
+											? 0
+											: Number(target.fields.total) / Number(bid.fields.total),
 								};
 							}),
 					};
@@ -165,38 +167,38 @@ export const tracker = (nodecg: NodeCG) => {
 		updateBidWars();
 	}, 10 * 1000);
 
-	// const connectWebSocket = () => {
-	// 	const url = new URL(
-	// 		trackerConfig.websocket,
-	// 		`wss://${trackerConfig.domain}`,
-	// 	);
-	// 	log.warn("connecting websocket", url.href);
-	// 	const ws = new WebSocket(url.href, {origin: url.href});
+	const connectWebSocket = () => {
+		const url = new URL(
+			trackerConfig.websocket,
+			`wss://${trackerConfig.domain}`,
+		);
+		log.warn("connecting websocket", url.href);
+		const ws = new WebSocket(url.href, {origin: url.href});
 
-	// 	ws.addEventListener("message", ({data}) => {
-	// 		try {
-	// 			log.info(data);
-	// 			const {amount, new_total: total} = JSON.parse(data);
-	// 			nodecg.sendMessage("donation", {
-	// 				amount: parseInt(amount),
-	// 				total: parseInt(total),
-	// 			});
-	// 			donationTotalRep.value = parseInt(total);
-	// 		} catch (error) {
-	// 			log.error(error);
-	// 		}
-	// 	});
-	// 	ws.addEventListener("close", ({wasClean, code, reason}) => {
-	// 		log.error("websocket closed:", {wasClean, code, reason});
-	// 		setTimeout(connectWebSocket, 10 * 1000);
-	// 	});
-	// 	ws.addEventListener("error", ({type, message}) => {
-	// 		log.error("websocket error:", {type, message});
-	// 	});
-	// 	ws.addEventListener("open", () => {
-	// 		log.warn("websocket opened");
-	// 	});
-	// };
+		ws.addEventListener("message", ({data}) => {
+			try {
+				log.info(data);
+				const {amount, new_total: total} = JSON.parse(data);
+				nodecg.sendMessage("donation", {
+					amount: parseInt(amount),
+					total: parseInt(total),
+				});
+				donationTotalRep.value = parseInt(total);
+			} catch (error) {
+				log.error(error);
+			}
+		});
+		ws.addEventListener("close", ({wasClean, code, reason}) => {
+			log.error("websocket closed:", {wasClean, code, reason});
+			setTimeout(connectWebSocket, 10 * 1000);
+		});
+		ws.addEventListener("error", ({type, message}) => {
+			log.error("websocket error:", {type, message});
+		});
+		ws.addEventListener("open", () => {
+			log.warn("websocket opened");
+		});
+	};
 
-	// connectWebSocket();
+	connectWebSocket();
 };

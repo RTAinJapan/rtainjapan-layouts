@@ -1,4 +1,4 @@
-import OBSWebSocket from "obs-websocket-js";
+import OBSWebSocket, {EventSubscription} from "obs-websocket-js";
 
 import type {NodeCG} from "./nodecg";
 
@@ -21,8 +21,9 @@ export const setupObs = (nodecg: NodeCG) => {
 		}
 		attemptingToConnect = true;
 		try {
-			await obs.connect(obsConfig);
-			await obs.send("SetHeartbeat", {enable: true});
+			await obs.connect(obsConfig.address, obsConfig.password, {
+				eventSubscriptions: EventSubscription.Outputs,
+			});
 		} catch (error: unknown) {
 			if (emitError) {
 				logger.error("Failed to connect:", error);
@@ -33,7 +34,7 @@ export const setupObs = (nodecg: NodeCG) => {
 	};
 	const startRecording = async () => {
 		try {
-			await obs.send("StartRecording");
+			await obs.call("StartRecord");
 			logger.info("Started recording");
 		} catch (error: unknown) {
 			logger.error("Failed to start recording:", error);
@@ -41,7 +42,7 @@ export const setupObs = (nodecg: NodeCG) => {
 	};
 	const stopRecording = async () => {
 		try {
-			await obs.send("StopRecording");
+			await obs.call("StopRecord");
 			logger.info("Stopped recording");
 		} catch (error: unknown) {
 			logger.error("Failed to stop recording:", error);
@@ -54,36 +55,21 @@ export const setupObs = (nodecg: NodeCG) => {
 
 	obs.on("ConnectionOpened", () => {
 		logger.info(`Connected: ${obsConfig.address}`);
-		obsStatus.value = {
-			connected: true,
-			record: false,
-			stream: false,
-			streamTime: 0,
-			recordTime: 0,
-		};
 	});
-	obs.on("Heartbeat", (data) => {
-		obsStatus.value = {
-			connected: true,
-			record: data.recording ?? false,
-			stream: data.streaming ?? false,
-			streamTime: data["total-stream-time"] ?? 0,
-			recordTime: data["total-record-time"] ?? 0,
-		};
-		if (!data.recording) {
+	obs.on("Identified", async () => {
+		const {outputActive} = await obs.call("GetRecordStatus");
+		if (!outputActive) {
+			await startRecording();
+		}
+	});
+	obs.on("RecordStateChanged", (data) => {
+		if (data.outputState === "OBS_WEBSOCKET_OUTPUT_STOPPED") {
 			void startRecording();
 		}
 	});
 	obs.on("ConnectionClosed", () => {
 		if (obsStatus.value?.connected) {
 			logger.info(`Disconnected`);
-			obsStatus.value = {
-				connected: false,
-				record: false,
-				stream: false,
-				streamTime: 0,
-				recordTime: 0,
-			};
 		}
 	});
 

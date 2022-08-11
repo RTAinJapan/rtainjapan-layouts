@@ -5,7 +5,7 @@ import iconTwitter from "../../images/icon/icon_twitter.svg";
 import iconTwitch from "../../images/icon/icon_twitch.svg";
 import iconNico from "../../images/icon/icon_nico.svg";
 import iconRunner from "../../images/icon/icon_runner.svg";
-import iconCommentator from "../../images/icon/icon_commentator.svg";
+import iconCommentator from "../../images/icon/icon_commentary.svg";
 import {CSSProperties, HTMLAttributes, useEffect, useRef} from "react";
 import {background, text} from "../../styles/colors";
 import {filterNonNullable} from "../../../../lib/array";
