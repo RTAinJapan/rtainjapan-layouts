@@ -8,6 +8,7 @@ export default () => {
 				kind='runners'
 				index={0}
 				cutTop
+				race
 				style={{
 					position: "absolute",
 					top: "531px",
@@ -20,6 +21,7 @@ export default () => {
 				kind='runners'
 				index={1}
 				cutTop
+				race
 				style={{
 					position: "absolute",
 					top: "531px",
