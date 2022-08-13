@@ -33,6 +33,7 @@ const Container = styled.div`
 const RunnerRow = styled.div`
 	display: flex;
 	flex-flow: row nowrap;
+	gap: 8px;
 `;
 
 const CameraControl = styled.div`
@@ -100,6 +101,13 @@ export class EditRun extends React.Component<Props, Run> {
 							label='予定タイム'
 							onChange={(e) => {
 								this.setState({runDuration: e.currentTarget.value});
+							}}
+						/>
+						<TextField
+							defaultValue={this.props.defaultValue.platform}
+							label='機種'
+							onChange={(e) => {
+								this.setState({platform: e.currentTarget.value});
 							}}
 						/>
 						<TextField

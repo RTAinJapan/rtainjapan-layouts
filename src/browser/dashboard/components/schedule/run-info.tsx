@@ -82,7 +82,7 @@ export class RunInfo extends React.Component<{
 	private readonly renderRunners = () =>
 		this.runners().map((runner, index) => (
 			<LabeledDiv key={`runner${runner?.name}${index}`}>
-				<Typography variant='caption'>走者{index}</Typography>
+				<Typography variant='caption'>走者{index + 1}</Typography>
 				<div>{runner && runner.name}</div>
 			</LabeledDiv>
 		));
@@ -90,7 +90,7 @@ export class RunInfo extends React.Component<{
 	private readonly renderCommentators = () =>
 		this.commentators().map((commentator, index) => (
 			<LabeledDiv key={`commentator${commentator?.name}${index}`}>
-				<Typography variant='caption'>解説{index}</Typography>
+				<Typography variant='caption'>解説{index + 1}</Typography>
 				<div>{commentator && commentator.name}</div>
 			</LabeledDiv>
 		));
@@ -108,6 +108,6 @@ export class RunInfo extends React.Component<{
 		if (!commentators) {
 			return [];
 		}
-		return new Array(4).fill(null).map((_, index) => commentators[index] || _);
+		return new Array(2).fill(null).map((_, index) => commentators[index] || _);
 	};
 }
