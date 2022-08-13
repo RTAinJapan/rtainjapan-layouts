@@ -24,6 +24,9 @@
 		"commentators": {
 			"type": "array",
 			"items": {"$ref": "participant.json"}
+		},
+		"twitchGameId": {
+			"type": "string"
 		}
 	},
 	"required": [

@@ -8,6 +8,7 @@ import type RunSample from "./sample-json/tracker/run.json";
 import type RunnerSample from "./sample-json/tracker/runner.json";
 import type BidSample from "./sample-json/tracker/bid.json";
 import type BidTargetSample from "./sample-json/tracker/bidtarget.json";
+import {Run} from "../nodecg/replicants";
 
 export const tracker = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("tracker");
@@ -76,7 +77,7 @@ export const tracker = (nodecg: NodeCG) => {
 				requestSearch<typeof RunnerSample>("runner"),
 				fetchCommentators(),
 			]);
-			scheduleRep.value = runs.map((run, index) => {
+			scheduleRep.value = runs.map<Run>((run, index) => {
 				return {
 					pk: run.pk,
 					index,
@@ -111,6 +112,7 @@ export const tracker = (nodecg: NodeCG) => {
 								camera: false,
 							};
 						}),
+					twitchGameId: run.fields.twitch_name,
 				};
 			});
 		} catch (error) {

@@ -35,8 +35,11 @@
 	],
 	"dependencies": {
 		"@googleapis/sheets": "^0.3.0",
+		"@twurple/api": "^5.2.1",
+		"@twurple/auth": "^5.2.1",
 		"app-root-path": "3.0.0",
 		"date-fns": "2.23.0",
+		"express": "^4.18.1",
 		"got": "11",
 		"load-json-file": "6.2.0",
 		"lodash": "4.17.21",

@@ -16,6 +16,8 @@ import {CameraName} from "./generated/camera-name";
 import {CameraState} from "./generated/camera-state";
 import {BidWar} from "./generated/bid-war";
 
+import type {AccessToken} from "@twurple/auth";
+
 type Run = NonNullable<CurrentRun>;
 type Participant = Run["runners"][number];
 
@@ -54,6 +56,7 @@ type ReplicantMap = {
 	"camera-name": CameraName;
 	"camera-state": CameraState;
 	"bid-war": BidWar;
+	twitchOauth: AccessToken;
 };
 
 export {

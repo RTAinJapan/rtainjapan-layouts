@@ -15,6 +15,11 @@ export interface Configschema {
 		event: number;
 		websocket: string;
 	};
+	twitch?: {
+		channelName: string;
+		clientId: string;
+		clientSecret: string;
+	};
 	twitter?: {
 		targetWords: string[];
 		consumerKey: string;

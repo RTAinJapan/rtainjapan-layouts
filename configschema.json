@@ -23,6 +23,16 @@
 				"websocket": {"type": "string"}
 			}
 		},
+		"twitch": {
+			"type": "object",
+			"properties": {
+				"channelName": {"type": "string"},
+				"clientId": {"type": "string"},
+				"clientSecret": {"type": "string"}
+			},
+			"required": ["channelName", "clientId", "clientSecret"],
+			"additionalProperties": false
+		},
 		"twitter": {
 			"type": "object",
 			"additionalProperties": false,

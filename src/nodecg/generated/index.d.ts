@@ -15,4 +15,3 @@ export * from './spotify';
 export * from './spreadsheet';
 export * from './timer';
 export * from './tweets';
-export * from './twitch';

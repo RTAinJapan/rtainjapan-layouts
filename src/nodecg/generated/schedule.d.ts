@@ -39,4 +39,5 @@ export type Schedule = {
 		 */
 		camera?: boolean;
 	}[];
+	twitchGameId?: string;
 }[];

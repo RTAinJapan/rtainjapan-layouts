@@ -39,4 +39,5 @@ export type NextRun = null | {
 		 */
 		camera?: boolean;
 	}[];
+	twitchGameId?: string;
 };

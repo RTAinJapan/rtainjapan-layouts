@@ -39,4 +39,5 @@ export type CurrentRun = null | {
 		 */
 		camera?: boolean;
 	}[];
+	twitchGameId?: string;
 };
