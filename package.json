@@ -169,6 +169,14 @@
 				"width": 2,
 				"headerColor": "#00BEBE",
 				"workspace": "2-misc"
+			},
+			{
+				"name": "flash-warning",
+				"title": "点滅注意表示",
+				"file": "flash-warning.html",
+				"width": 2,
+				"headerColor": "#00BEBE",
+				"workspace": "2-misc"
 			}
 		],
 		"graphics": [

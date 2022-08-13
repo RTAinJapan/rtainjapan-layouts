@@ -57,6 +57,7 @@ type ReplicantMap = {
 	"camera-state": CameraState;
 	"bid-war": BidWar;
 	twitchOauth: AccessToken;
+	"flash-warning": boolean;
 };
 
 export {
