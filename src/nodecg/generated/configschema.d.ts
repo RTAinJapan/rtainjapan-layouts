@@ -33,4 +33,10 @@ export interface Configschema {
 	};
 	googleApiKey?: string;
 	commentatorSheet?: string;
+	endCredit?: {
+		staff: string[];
+		partners: string[];
+		volunteers: string[];
+		text?: string[];
+	};
 }

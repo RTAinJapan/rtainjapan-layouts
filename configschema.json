@@ -64,6 +64,33 @@
 			}
 		},
 		"googleApiKey": {"type": "string"},
-		"commentatorSheet": {"type": "string"}
+		"commentatorSheet": {"type": "string"},
+		"endCredit": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"staff": {
+					"type": "array",
+					"items": {"type": "string"},
+					"default": []
+				},
+				"partners": {
+					"type": "array",
+					"items": {"type": "string"},
+					"default": []
+				},
+				"volunteers": {
+					"type": "array",
+					"items": {"type": "string"},
+					"default": []
+				},
+				"text": {
+					"type": "array",
+					"items": {"type": "string"},
+					"default": []
+				}
+			},
+			"required": ["staff", "partners", "volunteers"]
+		}
 	}
 }

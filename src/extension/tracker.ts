@@ -23,6 +23,7 @@ export const tracker = (nodecg: NodeCG) => {
 	const scheduleRep = nodecg.Replicant("schedule");
 	const donationTotalRep = nodecg.Replicant("donation-total");
 	const bidwarRep = nodecg.Replicant("bid-war");
+	const runnersRep = nodecg.Replicant("runners");
 
 	const requestSearch = async <T>(type: string) => {
 		const url = new URL("/search", `https://${trackerConfig.domain}`);
@@ -115,6 +116,7 @@ export const tracker = (nodecg: NodeCG) => {
 					twitchGameId: run.fields.twitch_name,
 				};
 			});
+			runnersRep.value = runners.map((runner) => runner.fields.name);
 		} catch (error) {
 			log.error(error);
 		}

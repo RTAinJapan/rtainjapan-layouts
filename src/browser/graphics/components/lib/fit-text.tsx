@@ -18,13 +18,15 @@ export const FitText: FunctionComponent<{
 
 	useEffect(() => {
 		setSize(props.defaultSize);
-		const interval = setInterval(() => {
+		const fit = () => {
 			const maxWidth = ref?.current?.clientWidth;
 			const currentWidth = ref?.current?.scrollWidth;
 			if (maxWidth && currentWidth && maxWidth < currentWidth) {
 				setSize((size) => size * (maxWidth / currentWidth));
 			}
-		}, 1000);
+		};
+		const interval = setInterval(fit, 100);
+		fit();
 		return () => {
 			clearInterval(interval);
 		};

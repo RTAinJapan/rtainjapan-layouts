@@ -177,6 +177,14 @@
 				"width": 2,
 				"headerColor": "#00BEBE",
 				"workspace": "2-misc"
+			},
+			{
+				"name": "credit-control",
+				"title": "エンドロール操作",
+				"file": "credit-control.html",
+				"width": 2,
+				"headerColor": "#00BEBE",
+				"workspace": "2-misc"
 			}
 		],
 		"graphics": [
@@ -204,6 +212,11 @@
 				"file": "camera.html",
 				"width": 1920,
 				"height": 1080
+			},
+			{
+				"file": "credit.html",
+				"width": 1920,
+				"height": 1030
 			}
 		],
 		"assetCategories": [

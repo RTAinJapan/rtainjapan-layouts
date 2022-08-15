@@ -38,4 +38,5 @@ export type MessageMap = {
 	"obs:setRemoteSource": {data: {input: string; index: number}};
 	donation: {data: {amount: number; total: number}};
 	toggleCameraName: {};
+	startEndCredit: {};
 };
