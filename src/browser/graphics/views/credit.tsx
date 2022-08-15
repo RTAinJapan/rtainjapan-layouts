@@ -6,7 +6,7 @@ import topLogo from "../images/header_rij.svg";
 import gsap from "gsap";
 import chunk from "lodash-es/chunk";
 
-const NAME_SHOW_DURATION = 0;
+const NAME_SHOW_DURATION = 5;
 
 const runnersRep = nodecg.Replicant("runners");
 
