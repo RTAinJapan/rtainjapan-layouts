@@ -67,7 +67,7 @@ const App: FC = () => {
 				toggleTitle();
 
 				// Volunteers
-				toggleTitle("Volunteering Staff");
+				toggleTitle("Volunteer Staff");
 				for (const c of chunk(volunteers, 15)) {
 					showNames(c);
 				}
