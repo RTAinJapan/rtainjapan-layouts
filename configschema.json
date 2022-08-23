@@ -20,7 +20,8 @@
 			"properties": {
 				"domain": {"type": "string"},
 				"event": {"type": "number"},
-				"websocket": {"type": "string"}
+				"websocket": {"type": "string"},
+				"unsecure": {"type": "boolean"}
 			}
 		},
 		"twitch": {
