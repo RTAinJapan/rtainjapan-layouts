@@ -16,12 +16,12 @@
 		"tracker": {
 			"type": "object",
 			"additionalProperties": false,
-			"required": ["domain", "event", "websocket"],
+			"required": ["domain", "event", "websocket", "secure"],
 			"properties": {
 				"domain": {"type": "string"},
 				"event": {"type": "number"},
 				"websocket": {"type": "string"},
-				"unsecure": {"type": "boolean"}
+				"secure": {"type": "boolean", "default": true}
 			}
 		},
 		"twitch": {
