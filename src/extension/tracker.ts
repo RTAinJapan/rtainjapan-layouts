@@ -173,10 +173,10 @@ export const tracker = (nodecg: NodeCG) => {
 	}, 10 * 1000);
 
 	const connectWebSocket = () => {
-		const protocol = trackerConfig.secure ? "wss" : "ws";
+		const schema = trackerConfig.secure ? "wss" : "ws";
 		const url = new URL(
 			trackerConfig.websocket,
-			`${protocol}://${trackerConfig.domain}`,
+			`${schema}://${trackerConfig.domain}`,
 		);
 		log.warn("connecting websocket", url.href);
 		const ws = new WebSocket(url.href, {origin: url.href});
