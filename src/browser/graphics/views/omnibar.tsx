@@ -188,7 +188,7 @@ const BidwarTarget = ({
 			</ThinText>
 			<div
 				style={{
-					backgroundColor: "rgb(170,152,157)",
+					backgroundColor: "rgb(180,180,180)",
 					gridColumn: "1 / 4",
 					gridRow: "4 / 5",
 					placeSelf: "stretch",
@@ -196,7 +196,7 @@ const BidwarTarget = ({
 			></div>
 			<div
 				style={{
-					backgroundColor: "rgb(85,50,60)",
+					backgroundColor: "rgb(60,60,60)",
 					gridColumn: "1 / 4",
 					gridRow: "4 / 5",
 					alignSelf: "stretch",
@@ -374,7 +374,7 @@ const Omnibar = () => {
 				placeContent: "stretch",
 				alignItems: "center",
 				color: text.omnibar,
-				backgroundColor: "rgba(255,255,255,0.8)",
+				backgroundColor: "rgb(230,230,230)",
 			}}
 		>
 			<Row header='RTA in Japanからのお知らせ' ref={oshiraseRef}>
