@@ -18,11 +18,13 @@ import {BidWar} from "./generated/bid-war";
 
 import type {AccessToken} from "@twurple/auth";
 import {Runners} from "./generated/runners";
+import {Donations} from "./generated/donations";
 
 type Run = NonNullable<CurrentRun>;
 type Participant = Run["runners"][number];
 
 type Tweet = Tweets[number];
+type Donation = Donations[number];
 
 type Assets = {
 	base: string;
@@ -60,6 +62,7 @@ type ReplicantMap = {
 	twitchOauth: AccessToken;
 	"flash-warning": boolean;
 	runners: Runners;
+	donations: Donations;
 };
 
 export {
@@ -83,4 +86,6 @@ export {
 	CameraName,
 	CameraState,
 	BidWar,
+	Donations,
+	Donation,
 };

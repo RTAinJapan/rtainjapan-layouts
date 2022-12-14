@@ -1,0 +1,17 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "array",
+	"items": {
+		"type": "object",
+		"additionalProperties": false,
+		"properties": {
+			"pk": {"type": "number"},
+			"name": {"oneOf": [{"type": "string"}, {"type": "null"}]},
+			"comment": {"type": "string"},
+			"amount": {"type": "number"}
+		},
+		"required": ["pk", "name", "comment", "amount"]
+	},
+	"default": []
+}

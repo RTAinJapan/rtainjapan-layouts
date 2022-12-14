@@ -1,0 +1,22 @@
+[
+	{
+		"model": "tracker.donation",
+		"pk": 6,
+		"fields": {
+			"event": 1,
+			"domain": "PAYPAL",
+			"transactionstate": "COMPLETED",
+			"readstate": "PENDING",
+			"commentstate": "APPROVED",
+			"amount": 500.0,
+			"currency": "JPY",
+			"timereceived": "2022-12-14T14:12:33Z",
+			"comment": "匿名からのコメント",
+			"commentlanguage": "un",
+			"pinned": false,
+			"canonical_url": "http://dev-tracker.rtaij.app/donation/6",
+			"public": "(匿名) (500.00) 2022-12-14 14:12:33+00:00",
+			"donor__public": "(匿名)"
+		}
+	}
+]

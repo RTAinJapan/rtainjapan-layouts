@@ -8,7 +8,8 @@ import type RunSample from "./sample-json/tracker/run.json";
 import type RunnerSample from "./sample-json/tracker/runner.json";
 import type BidSample from "./sample-json/tracker/bid.json";
 import type BidTargetSample from "./sample-json/tracker/bidtarget.json";
-import {Run} from "../nodecg/replicants";
+import type DonationSample from "./sample-json/tracker/donation.json";
+import {Donation, Run} from "../nodecg/replicants";
 
 export const tracker = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("tracker");
@@ -24,6 +25,7 @@ export const tracker = (nodecg: NodeCG) => {
 	const donationTotalRep = nodecg.Replicant("donation-total");
 	const bidwarRep = nodecg.Replicant("bid-war");
 	const runnersRep = nodecg.Replicant("runners");
+	const donationsRep = nodecg.Replicant("donations");
 
 	const requestSearch = async <T>(type: string) => {
 		const url = new URL("/search", `https://${trackerConfig.domain}`);
@@ -162,13 +164,38 @@ export const tracker = (nodecg: NodeCG) => {
 		}
 	};
 
+	const updateDonations = async () => {
+		try {
+			const donations = await requestSearch<typeof DonationSample>("donation");
+
+			const updated = donations
+				.sort((a, b) => b.pk - a.pk)
+				.map(
+					(donation): Donation => ({
+						pk: donation.pk,
+						name:
+							donation.fields.donor__public === "(匿名)"
+								? null
+								: donation.fields.donor__public,
+						amount: donation.fields.amount,
+						comment: donation.fields.comment,
+					}),
+				);
+			donationsRep.value = updated;
+		} catch (error) {
+			log.error(error);
+		}
+	};
+
 	updateTotal();
 	updateRuns();
 	updateBidWars();
+	updateDonations();
 	setInterval(() => {
 		updateTotal();
 		updateRuns();
 		updateBidWars();
+		updateDonations();
 	}, 10 * 1000);
 
 	const connectWebSocket = () => {
