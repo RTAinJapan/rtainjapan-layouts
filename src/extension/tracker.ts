@@ -11,6 +11,10 @@ import type BidTargetSample from "./sample-json/tracker/bidtarget.json";
 import type DonationSample from "./sample-json/tracker/donation.json";
 import {Donation, Run} from "../nodecg/replicants";
 
+type CommentDonation = typeof DonationSample[number] & {
+	fields: {comment: string};
+};
+
 export const tracker = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("tracker");
 	const trackerConfig = nodecg.bundleConfig.tracker;
@@ -170,6 +174,9 @@ export const tracker = (nodecg: NodeCG) => {
 
 			const updated = donations
 				.sort((a, b) => b.pk - a.pk)
+				.filter(
+					(donation): donation is CommentDonation => !!donation.fields.comment,
+				)
 				.map(
 					(donation): Donation => ({
 						pk: donation.pk,

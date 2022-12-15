@@ -185,6 +185,14 @@
 				"width": 2,
 				"headerColor": "#00BEBE",
 				"workspace": "2-misc"
+			},
+			{
+				"name": "donations",
+				"title": "寄付コメント",
+				"file": "donations.html",
+				"width": 4,
+				"headerColor": "#00BEBE",
+				"workspace": "3-donations"
 			}
 		],
 		"graphics": [
