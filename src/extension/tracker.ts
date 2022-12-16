@@ -30,6 +30,13 @@ export const tracker = (nodecg: NodeCG) => {
 	const bidwarRep = nodecg.Replicant("bid-war");
 	const runnersRep = nodecg.Replicant("runners");
 	const donationsRep = nodecg.Replicant("donations");
+	const donationQueueRep = nodecg.Replicant("donation-queue", {
+		defaultValue: [],
+	});
+
+	nodecg.listenFor("clearDonationQueue", () => {
+		donationQueueRep.value = [];
+	});
 
 	const requestSearch = async <T>(type: string) => {
 		const url = new URL("/search", `https://${trackerConfig.domain}`);

@@ -20,7 +20,7 @@ import {
 	useState,
 } from "react";
 import {text} from "../styles/colors";
-import {BidWar} from "../../../nodecg/replicants";
+import {BidWar, Donation, DonationQueue} from "../../../nodecg/replicants";
 import cloneDeep from "lodash-es/cloneDeep";
 
 const bidTargetLabels = [bidwar1, bidwar2, bidwar3, bidwar4];
@@ -125,6 +125,7 @@ const below = 50;
 const duration = 0.5;
 const oshiraseHold = 30;
 const bidwarHold = 10;
+const donationHold = 20;
 const MAX_BIDWAR_DISPLAY = 4;
 
 const Row = forwardRef<HTMLDivElement, {header: string; children?: unknown}>(
@@ -267,6 +268,37 @@ const BidWarRow = forwardRef<HTMLDivElement, {bidwar?: BidWar[number]}>(
 	},
 );
 
+const DonationRow = forwardRef<HTMLDivElement, {donation?: Donation}>(
+	({donation}, ref) => {
+		return (
+			<div
+				ref={ref}
+				style={{
+					gridColumn: "1 / 2",
+					gridRow: "1 / 2",
+					display: "grid",
+					gridTemplateColumns: `auto auto`,
+					alignContent: "stretch",
+					justifyContent: "start",
+					fontSize: "22px",
+				}}
+			>
+				<ThinText
+					style={{
+						overflow: "hidden",
+						textOverflow: "ellipsis",
+						whiteSpace: "nowrap",
+					}}
+				>
+					{donation?.name && `${donation?.name}：`}
+					{donation?.comment}
+				</ThinText>
+				<ThinText>（￥{donation?.amount?.toLocaleString()}）</ThinText>
+			</div>
+		);
+	},
+);
+
 const Omnibar = () => {
 	const sponsorAssets = useReplicant("assets:charity-logo");
 
@@ -278,9 +310,17 @@ const Omnibar = () => {
 		}
 	}, [rawBidWar]);
 
+	const rawDonationQueue = useReplicant("donation-queue");
+	const donationQueue = useRef<DonationQueue>([]);
+	useEffect(() => {
+		if (rawDonationQueue) {
+			donationQueue.current = rawDonationQueue;
+		}
+	}, [rawDonationQueue]);
+
 	const oshiraseRef = useRef<HTMLDivElement>(null);
 	const bidwarRef = useRef<HTMLDivElement>(null);
-	// const donationCommentRef = useRef<HTMLDivElement>(null);
+	const donationCommentRef = useRef<HTMLDivElement>(null);
 
 	const donateLink = useRef<HTMLDivElement>(null);
 	const twitchIncome = useRef<HTMLDivElement>(null);
@@ -289,6 +329,11 @@ const Omnibar = () => {
 	const bidwarRowB = useRef<HTMLDivElement>(null);
 	const [bidwarA, setBidwarA] = useState<BidWar[number]>();
 	const [bidwarB, setBidwarB] = useState<BidWar[number]>();
+
+	const donationRowA = useRef<HTMLDivElement>(null);
+	const donationRowB = useRef<HTMLDivElement>(null);
+	const [donationA, setDonationA] = useState<Donation>();
+	const [donationB, setDonationB] = useState<Donation>();
 
 	useEffect(() => {
 		let tl: gsap.core.Timeline;
@@ -320,30 +365,62 @@ const Omnibar = () => {
 					0,
 					MAX_BIDWAR_DISPLAY,
 				);
-				if (!currentBidwars || currentBidwars.length === 0) {
+				const currentDonations = cloneDeep(donationQueue.current);
+				if (
+					(!currentBidwars || currentBidwars.length === 0) &&
+					(!currentDonations || currentDonations.length === 0)
+				) {
 					initialize(false);
 					return;
 				}
 
-				tl.call(() => {
-					setBidwarA(currentBidwars[0]);
-				});
-				tl.set(bidwarRowA.current, {y: 0});
-				tl.set(bidwarRowB.current, {y: below});
-				tl.set(bidwarRef.current, {y: below});
 				tl.to(oshiraseRef.current, {y: above, duration});
-				tl.to(bidwarRef.current, {y: 0, duration}, "<");
-				tl.to({}, {}, `+=${bidwarHold}`);
-				for (let i = 1; i < currentBidwars.length; i++) {
+				if (currentBidwars && currentBidwars.length !== 0) {
 					tl.call(() => {
-						(i % 2 === 1 ? setBidwarB : setBidwarA)(currentBidwars[i]);
+						setBidwarA(currentBidwars[0]);
 					});
-					const showing = (i % 2 === 1 ? bidwarRowB : bidwarRowA).current;
-					const hiding = (i % 2 === 1 ? bidwarRowA : bidwarRowB).current;
-					tl.set(showing, {y: below});
-					tl.to(hiding, {y: above, duration});
-					tl.to(showing, {y: 0, duration}, "<");
+					tl.set(bidwarRowA.current, {y: 0});
+					tl.set(bidwarRowB.current, {y: below});
+					tl.set(bidwarRef.current, {y: below});
+					tl.to(bidwarRef.current, {y: 0, duration}, "<");
 					tl.to({}, {}, `+=${bidwarHold}`);
+					for (let i = 1; i < currentBidwars.length; i++) {
+						tl.call(() => {
+							(i % 2 === 1 ? setBidwarB : setBidwarA)(currentBidwars[i]);
+						});
+						const showing = (i % 2 === 1 ? bidwarRowB : bidwarRowA).current;
+						const hiding = (i % 2 === 1 ? bidwarRowA : bidwarRowB).current;
+						tl.set(showing, {y: below});
+						tl.to(hiding, {y: above, duration});
+						tl.to(showing, {y: 0, duration}, "<");
+						tl.to({}, {}, `+=${bidwarHold}`);
+					}
+					tl.to(bidwarRef.current, {y: above});
+				}
+				if (currentDonations && currentDonations.length !== 0) {
+					tl.call(() => {
+						setDonationA(currentDonations[0]);
+					});
+					tl.set(donationRowA.current, {y: 0});
+					tl.set(donationRowB.current, {y: below});
+					tl.set(donationCommentRef.current, {y: below});
+					tl.to(donationCommentRef.current, {y: 0, duration}, "<");
+					tl.to({}, {}, `+=${donationHold}`);
+					for (let i = 1; i < currentDonations.length; i++) {
+						tl.call(() => {
+							(i % 2 === 1 ? setDonationB : setDonationA)(currentDonations[i]);
+						});
+						const showing = (i % 2 === 1 ? donationRowB : donationRowA).current;
+						const hiding = (i % 2 === 1 ? donationRowA : donationRowB).current;
+						tl.set(showing, {y: below});
+						tl.to(hiding, {y: above, duration});
+						tl.to(showing, {y: 0, duration}, "<");
+						tl.to({}, {}, `+=${donationHold}`);
+					}
+					tl.to(donationCommentRef.current, {y: above});
+					tl.call(() => {
+						nodecg.sendMessage("clearDonationQueue");
+					});
 				}
 				tl.call(() => {
 					initialize(true);
@@ -352,6 +429,7 @@ const Omnibar = () => {
 		};
 
 		gsap.set(bidwarRef.current, {y: below});
+		gsap.set(donationCommentRef.current, {y: below});
 		initialize(false);
 
 		return () => {
@@ -399,7 +477,12 @@ const Omnibar = () => {
 					<BidWarRow ref={bidwarRowB} bidwar={bidwarB}></BidWarRow>
 				</div>
 			</Row>
-			{/* <Row header='寄付コメント' ref={donationCommentRef}></Row> */}
+			<Row header='寄付コメント' ref={donationCommentRef}>
+				<div style={{display: "grid"}}>
+					<DonationRow ref={donationRowA} donation={donationA} />
+					<DonationRow ref={donationRowB} donation={donationB} />
+				</div>
+			</Row>
 
 			<img
 				src={lineImage}

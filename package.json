@@ -190,7 +190,7 @@
 				"name": "donations",
 				"title": "寄付コメント",
 				"file": "donations.html",
-				"width": 4,
+				"width": 6,
 				"headerColor": "#00BEBE",
 				"workspace": "3-donations"
 			}
@@ -209,7 +209,8 @@
 			{
 				"file": "omnibar.html",
 				"width": 1920,
-				"height": 50
+				"height": 50,
+				"singleInstance": true
 			},
 			{
 				"file": "countdown.html",

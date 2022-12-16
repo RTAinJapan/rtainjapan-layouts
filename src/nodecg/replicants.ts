@@ -19,6 +19,7 @@ import {BidWar} from "./generated/bid-war";
 import type {AccessToken} from "@twurple/auth";
 import {Runners} from "./generated/runners";
 import {Donations} from "./generated/donations";
+import {DonationQueue} from "./generated/donation-queue";
 
 type Run = NonNullable<CurrentRun>;
 type Participant = Run["runners"][number];
@@ -63,6 +64,7 @@ type ReplicantMap = {
 	"flash-warning": boolean;
 	runners: Runners;
 	donations: Donations;
+	"donation-queue": DonationQueue;
 };
 
 export {
@@ -88,4 +90,5 @@ export {
 	BidWar,
 	Donations,
 	Donation,
+	DonationQueue,
 };

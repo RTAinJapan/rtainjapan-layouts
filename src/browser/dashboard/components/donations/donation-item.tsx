@@ -1,4 +1,5 @@
-import CheckIcon from "@material-ui/icons/Check";
+import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
+import ClearIcon from "@material-ui/icons/Clear";
 import IconButton from "@material-ui/core/IconButton";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
@@ -8,9 +9,11 @@ import {Donation} from "../../../../nodecg/replicants";
 
 type Props = {
 	donation: Donation;
+	onActivate?: (donation: Donation) => void;
+	onDeactivate?: (pk: number) => void;
 };
 
-export const DonationItem = ({donation}: Props) => {
+export const DonationItem = ({donation, onActivate, onDeactivate}: Props) => {
 	return (
 		<ListItem>
 			<ListItemText
@@ -20,12 +23,32 @@ export const DonationItem = ({donation}: Props) => {
 						{donation.comment} (&yen;{donation.amount.toLocaleString()})
 					</Typography>
 				}
+				style={{
+					overflowX: "hidden",
+				}}
 			/>
-			<ListItemSecondaryAction>
-				<IconButton title='配信に表示' edge='end'>
-					<CheckIcon />
-				</IconButton>
-			</ListItemSecondaryAction>
+			{onActivate && (
+				<ListItemSecondaryAction>
+					<IconButton
+						title='配信に表示'
+						edge='end'
+						onClick={() => onActivate(donation)}
+					>
+						<ArrowRightAltIcon />
+					</IconButton>
+				</ListItemSecondaryAction>
+			)}
+			{onDeactivate && (
+				<ListItemSecondaryAction>
+					<IconButton
+						title='表示待ちから削除'
+						edge='end'
+						onClick={() => onDeactivate(donation.pk)}
+					>
+						<ClearIcon />
+					</IconButton>
+				</ListItemSecondaryAction>
+			)}
 		</ListItem>
 	);
 };
