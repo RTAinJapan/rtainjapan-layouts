@@ -664,5 +664,43 @@
 			"event__canonical_url": "https://tracker.rtain.jp/event/2",
 			"event__public": "RTA in Japan Winter 2021"
 		}
+	},
+	{
+		"model": "tracker.bid",
+		"pk": 4,
+		"fields": {
+			"event": 1,
+			"speedrun": 1,
+			"parent": null,
+			"name": "Incentive bid",
+			"state": "OPENED",
+			"description": "",
+			"shortdescription": "",
+			"goal": 1000000.0,
+			"istarget": true,
+			"allowuseroptions": false,
+			"option_max_length": null,
+			"revealedtime": "2022-12-16T16:28:52Z",
+			"biddependency": null,
+			"total": "0.00",
+			"count": 0,
+			"pinned": false,
+			"canonical_url": "http://dev-tracker.rtaij.app/bid/4",
+			"public": "バーガーバーガー Hard Any% (Run) -- Incentive bid",
+			"speedrun__name": "バーガーバーガー",
+			"speedrun__display_name": "バーガーバーガー Hard Any%",
+			"speedrun__twitch_name": "",
+			"speedrun__starttime": "2022-12-26T03:00:00Z",
+			"speedrun__endtime": "2022-12-26T04:03:00Z",
+			"speedrun__order": 1,
+			"speedrun__canonical_url": "http://dev-tracker.rtaij.app/run/1",
+			"speedrun__public": "バーガーバーガー Hard Any% (event_id: 1)",
+			"event__short": "rtaijw2022",
+			"event__name": "Dev in Japan Winter 2022",
+			"event__datetime": "2022-12-26T03:00:00Z",
+			"event__timezone": "Asia/Tokyo",
+			"event__canonical_url": "http://dev-tracker.rtaij.app/event/1",
+			"event__public": "Dev in Japan Winter 2022"
+		}
 	}
 ]

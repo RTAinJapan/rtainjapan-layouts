@@ -4,6 +4,7 @@ import gsap from "gsap";
 import ReactDOM from "react-dom";
 import {BoldText, ThinText, TimerText} from "../components/lib/text";
 import arrowImage from "../images/footer_arrow.svg";
+import arrowImage1 from "../images/footer_arrow1.svg";
 import lineImage from "../images/footer_line.svg";
 import bidwar1 from "../images/footer_bid1.svg";
 import bidwar2 from "../images/footer_bid2.svg";
@@ -20,7 +21,12 @@ import {
 	useState,
 } from "react";
 import {text} from "../styles/colors";
-import {BidWar, Donation, DonationQueue} from "../../../nodecg/replicants";
+import {
+	BidChallenge,
+	BidWar,
+	Donation,
+	DonationQueue,
+} from "../../../nodecg/replicants";
 import cloneDeep from "lodash-es/cloneDeep";
 
 const bidTargetLabels = [bidwar1, bidwar2, bidwar3, bidwar4];
@@ -127,6 +133,7 @@ const oshiraseHold = 30;
 const bidwarHold = 10;
 const donationHold = 20;
 const MAX_BIDWAR_DISPLAY = 4;
+const MAX_CHALLENGE_DISPLAY = 2;
 
 const Row = forwardRef<HTMLDivElement, {header: string; children?: unknown}>(
 	(props, ref) => {
@@ -268,6 +275,120 @@ const BidWarRow = forwardRef<HTMLDivElement, {bidwar?: BidWar[number]}>(
 	},
 );
 
+const BidChallengeRow = forwardRef<
+	HTMLDivElement,
+	{challenge?: BidChallenge[number]}
+>(({challenge}, ref) => {
+	return (
+		<div
+			ref={ref}
+			style={{
+				gridColumn: "1 / 2",
+				gridRow: "1 / 2",
+				display: "grid",
+				gridTemplateColumns: `auto auto auto`,
+				alignContent: "stretch",
+				justifyContent: "start",
+			}}
+		>
+			<div
+				style={{
+					display: "grid",
+					gridTemplateColumns: `auto auto`,
+					alignContent: "center",
+					alignItems: "center",
+					justifyContent: "start",
+					fontSize: "18px",
+				}}
+			>
+				<BoldText>{challenge?.game}</BoldText>
+				<ThinText>：{challenge?.name}</ThinText>
+			</div>
+			<img src={arrowImage1}></img>
+			<div
+				style={{
+					display: "grid",
+					gridTemplateColumns: "auto 9px auto 18px auto",
+					gridTemplateRows: "1fr auto 3.6px 4px 7px",
+					alignContent: "center",
+					alignItems: "baseline",
+					justifyContent: "start",
+				}}
+			>
+				<ThinText
+					style={{
+						fontSize: "24px",
+						gridRow: "2 / 3",
+						gridColumn: "1 / 2",
+					}}
+				>
+					￥{challenge?.total.toLocaleString("en")}
+				</ThinText>
+				<ThinText
+					style={{
+						fontSize: "18px",
+						gridRow: "2 / 3",
+						gridColumn: "3 / 4",
+					}}
+				>
+					/ ￥{challenge?.goal.toLocaleString("en")}
+				</ThinText>
+				<div
+					style={{
+						gridRow: "2 / 3",
+						gridColumn: "5 / 6",
+						display: "grid",
+						gridTemplateColumns: "auto auto auto",
+						alignContent: "center",
+						alignItems: "baseline",
+						justifyContent: "start",
+					}}
+				>
+					<ThinText
+						style={{
+							fontSize: "18px",
+						}}
+					>
+						達成率
+					</ThinText>
+					<ThinText
+						style={{
+							fontSize: "24px",
+						}}
+					>
+						{((challenge?.percent || 0) * 100).toFixed()}
+					</ThinText>
+					<ThinText
+						style={{
+							fontSize: "18px",
+						}}
+					>
+						％
+					</ThinText>
+				</div>
+				<div
+					style={{
+						backgroundColor: "rgb(180,180,180)",
+						gridColumn: "1 / 6",
+						gridRow: "4 / 5",
+						placeSelf: "stretch",
+					}}
+				></div>
+				<div
+					style={{
+						backgroundColor: "rgb(60,60,60)",
+						gridColumn: "1 / 6",
+						gridRow: "4 / 5",
+						alignSelf: "stretch",
+						justifySelf: "start",
+						width: `${(challenge?.percent || 0) * 100}%`,
+					}}
+				></div>
+			</div>
+		</div>
+	);
+});
+
 const DonationRow = forwardRef<HTMLDivElement, {donation?: Donation}>(
 	({donation}, ref) => {
 		return (
@@ -310,6 +431,14 @@ const Omnibar = () => {
 		}
 	}, [rawBidWar]);
 
+	const rawBidChallenge = useReplicant("bid-challenge");
+	const bidChallenges = useRef<BidChallenge>([]);
+	useEffect(() => {
+		if (rawBidChallenge) {
+			bidChallenges.current = rawBidChallenge;
+		}
+	}, [rawBidChallenge]);
+
 	const rawDonationQueue = useReplicant("donation-queue");
 	const donationQueue = useRef<DonationQueue>([]);
 	useEffect(() => {
@@ -320,6 +449,7 @@ const Omnibar = () => {
 
 	const oshiraseRef = useRef<HTMLDivElement>(null);
 	const bidwarRef = useRef<HTMLDivElement>(null);
+	const bidChallengeRef = useRef<HTMLDivElement>(null);
 	const donationCommentRef = useRef<HTMLDivElement>(null);
 
 	const donateLink = useRef<HTMLDivElement>(null);
@@ -329,6 +459,11 @@ const Omnibar = () => {
 	const bidwarRowB = useRef<HTMLDivElement>(null);
 	const [bidwarA, setBidwarA] = useState<BidWar[number]>();
 	const [bidwarB, setBidwarB] = useState<BidWar[number]>();
+
+	const challengeRowA = useRef<HTMLDivElement>(null);
+	const challengeRowB = useRef<HTMLDivElement>(null);
+	const [challengeA, setChallengeA] = useState<BidChallenge[number]>();
+	const [challengeB, setChallengeB] = useState<BidChallenge[number]>();
 
 	const donationRowA = useRef<HTMLDivElement>(null);
 	const donationRowB = useRef<HTMLDivElement>(null);
@@ -365,9 +500,14 @@ const Omnibar = () => {
 					0,
 					MAX_BIDWAR_DISPLAY,
 				);
+				const currentChallenges = cloneDeep(bidChallenges.current).slice(
+					0,
+					MAX_CHALLENGE_DISPLAY,
+				);
 				const currentDonations = cloneDeep(donationQueue.current);
 				if (
 					(!currentBidwars || currentBidwars.length === 0) &&
+					(!currentChallenges || currentChallenges.length === 0) &&
 					(!currentDonations || currentDonations.length === 0)
 				) {
 					initialize(false);
@@ -375,7 +515,7 @@ const Omnibar = () => {
 				}
 
 				tl.to(oshiraseRef.current, {y: above, duration});
-				if (currentBidwars && currentBidwars.length !== 0) {
+				if (currentBidwars && currentBidwars.length > 0) {
 					tl.call(() => {
 						setBidwarA(currentBidwars[0]);
 					});
@@ -397,7 +537,34 @@ const Omnibar = () => {
 					}
 					tl.to(bidwarRef.current, {y: above});
 				}
-				if (currentDonations && currentDonations.length !== 0) {
+				if (currentChallenges && currentChallenges.length > 0) {
+					tl.call(() => {
+						setChallengeA(currentChallenges[0]);
+					});
+					tl.set(challengeRowA.current, {y: 0});
+					tl.set(challengeRowB.current, {y: below});
+					tl.set(bidChallengeRef.current, {y: below});
+					tl.to(bidChallengeRef.current, {y: 0, duration}, "<");
+					tl.set(challengeRowB.current, {y: above});
+					tl.to({}, {}, `+=${bidwarHold}`);
+					for (let i = 1; i < currentChallenges.length; i++) {
+						tl.call(() => {
+							(i % 2 === 1 ? setChallengeB : setChallengeA)(
+								currentChallenges[i],
+							);
+						});
+						const showing = (i % 2 === 1 ? challengeRowB : challengeRowA)
+							.current;
+						const hiding = (i % 2 === 1 ? challengeRowA : challengeRowB)
+							.current;
+						tl.set(showing, {y: below});
+						tl.to(hiding, {y: above, duration});
+						tl.to(showing, {y: 0, duration}, "<");
+						tl.to({}, {}, `+=${bidwarHold}`);
+					}
+					tl.to(bidChallengeRef.current, {y: above});
+				}
+				if (currentDonations && currentDonations.length > 0) {
 					tl.call(() => {
 						setDonationA(currentDonations[0]);
 					});
@@ -429,6 +596,7 @@ const Omnibar = () => {
 		};
 
 		gsap.set(bidwarRef.current, {y: below});
+		gsap.set(bidChallengeRef.current, {y: below});
 		gsap.set(donationCommentRef.current, {y: below});
 		initialize(false);
 
@@ -475,6 +643,12 @@ const Omnibar = () => {
 				<div style={{display: "grid"}}>
 					<BidWarRow ref={bidwarRowA} bidwar={bidwarA}></BidWarRow>
 					<BidWarRow ref={bidwarRowB} bidwar={bidwarB}></BidWarRow>
+				</div>
+			</Row>
+			<Row header='寄付額目標' ref={bidChallengeRef}>
+				<div style={{display: "grid"}}>
+					<BidChallengeRow ref={challengeRowA} challenge={challengeA} />
+					<BidChallengeRow ref={challengeRowB} challenge={challengeB} />
 				</div>
 			</Row>
 			<Row header='寄付コメント' ref={donationCommentRef}>

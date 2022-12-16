@@ -15,6 +15,7 @@ import {Countdown} from "./generated/countdown";
 import {CameraName} from "./generated/camera-name";
 import {CameraState} from "./generated/camera-state";
 import {BidWar} from "./generated/bid-war";
+import {BidChallenge} from "./generated/bid-challenge";
 
 import type {AccessToken} from "@twurple/auth";
 import {Runners} from "./generated/runners";
@@ -65,6 +66,7 @@ type ReplicantMap = {
 	runners: Runners;
 	donations: Donations;
 	"donation-queue": DonationQueue;
+	"bid-challenge": BidChallenge;
 };
 
 export {
@@ -91,4 +93,5 @@ export {
 	Donations,
 	Donation,
 	DonationQueue,
+	BidChallenge,
 };

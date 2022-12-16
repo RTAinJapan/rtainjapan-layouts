@@ -9,7 +9,7 @@ import type RunnerSample from "./sample-json/tracker/runner.json";
 import type BidSample from "./sample-json/tracker/bid.json";
 import type BidTargetSample from "./sample-json/tracker/bidtarget.json";
 import type DonationSample from "./sample-json/tracker/donation.json";
-import {Donation, Run} from "../nodecg/replicants";
+import {BidChallenge, Donation, Run} from "../nodecg/replicants";
 
 type CommentDonation = typeof DonationSample[number] & {
 	fields: {comment: string};
@@ -28,6 +28,7 @@ export const tracker = (nodecg: NodeCG) => {
 	const scheduleRep = nodecg.Replicant("schedule");
 	const donationTotalRep = nodecg.Replicant("donation-total");
 	const bidwarRep = nodecg.Replicant("bid-war");
+	const bidChallengeRep = nodecg.Replicant("bid-challenge");
 	const runnersRep = nodecg.Replicant("runners");
 	const donationsRep = nodecg.Replicant("donations");
 	const donationQueueRep = nodecg.Replicant("donation-queue", {
@@ -135,7 +136,7 @@ export const tracker = (nodecg: NodeCG) => {
 		}
 	};
 
-	const updateBidWars = async () => {
+	const updateBids = async () => {
 		try {
 			const [bids, bidTargets] = await Promise.all([
 				requestSearch<typeof BidSample>("bid"),
@@ -144,8 +145,8 @@ export const tracker = (nodecg: NodeCG) => {
 			const openTargets = bidTargets.filter(
 				(target) => target.fields.state === "OPENED",
 			);
-			const updated = bids
-				.filter((bid) => bid.fields.state === "OPENED")
+			const updatedBidWars = bids
+				.filter((bid) => bid.fields.state === "OPENED" && !bid.fields.istarget)
 				.sort((a, b) => a.fields.speedrun__order - b.fields.speedrun__order)
 				.map((bid) => {
 					return {
@@ -169,7 +170,23 @@ export const tracker = (nodecg: NodeCG) => {
 							}),
 					};
 				});
-			bidwarRep.value = updated;
+			bidwarRep.value = updatedBidWars;
+
+			const updatedBidChallenges = bids
+				.filter((bid) => bid.fields.state === "OPENED" && bid.fields.istarget)
+				.sort((a, b) => a.fields.speedrun__order - b.fields.speedrun__order)
+				.map((bid): BidChallenge[number] => ({
+					pk: bid.pk,
+					name: bid.fields.name,
+					game: bid.fields.speedrun__name,
+					goal: Number(bid.fields.goal),
+					total: Number(bid.fields.total),
+					percent:
+						Number(bid.fields.total) === 0
+							? 0
+							: Number(bid.fields.total) / Number(bid.fields.goal),
+				}));
+			bidChallengeRep.value = updatedBidChallenges;
 		} catch (error) {
 			log.error(error);
 		}
@@ -203,12 +220,12 @@ export const tracker = (nodecg: NodeCG) => {
 
 	updateTotal();
 	updateRuns();
-	updateBidWars();
+	updateBids();
 	updateDonations();
 	setInterval(() => {
 		updateTotal();
 		updateRuns();
-		updateBidWars();
+		updateBids();
 		updateDonations();
 	}, 10 * 1000);
 
