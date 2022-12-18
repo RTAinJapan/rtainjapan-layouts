@@ -505,6 +505,9 @@ const Omnibar = () => {
 					MAX_CHALLENGE_DISPLAY,
 				);
 				const currentDonations = cloneDeep(donationQueue.current);
+				tl.call(() => {
+					nodecg.sendMessage("clearDonationQueue");
+				});
 				if (
 					(!currentBidwars || currentBidwars.length === 0) &&
 					(!currentChallenges || currentChallenges.length === 0) &&
@@ -524,6 +527,7 @@ const Omnibar = () => {
 					tl.set(bidwarRef.current, {y: below});
 					tl.to(bidwarRef.current, {y: 0, duration}, "<");
 					tl.to({}, {}, `+=${bidwarHold}`);
+					tl.set(bidwarRowB.current, {y: above});
 					for (let i = 1; i < currentBidwars.length; i++) {
 						tl.call(() => {
 							(i % 2 === 1 ? setBidwarB : setBidwarA)(currentBidwars[i]);
@@ -545,8 +549,8 @@ const Omnibar = () => {
 					tl.set(challengeRowB.current, {y: below});
 					tl.set(bidChallengeRef.current, {y: below});
 					tl.to(bidChallengeRef.current, {y: 0, duration}, "<");
-					tl.set(challengeRowB.current, {y: above});
 					tl.to({}, {}, `+=${bidwarHold}`);
+					tl.set(challengeRowB.current, {y: above});
 					for (let i = 1; i < currentChallenges.length; i++) {
 						tl.call(() => {
 							(i % 2 === 1 ? setChallengeB : setChallengeA)(
@@ -573,6 +577,7 @@ const Omnibar = () => {
 					tl.set(donationCommentRef.current, {y: below});
 					tl.to(donationCommentRef.current, {y: 0, duration}, "<");
 					tl.to({}, {}, `+=${donationHold}`);
+					tl.set(donationRowB.current, {y: above});
 					for (let i = 1; i < currentDonations.length; i++) {
 						tl.call(() => {
 							(i % 2 === 1 ? setDonationB : setDonationA)(currentDonations[i]);
@@ -585,9 +590,6 @@ const Omnibar = () => {
 						tl.to({}, {}, `+=${donationHold}`);
 					}
 					tl.to(donationCommentRef.current, {y: above});
-					tl.call(() => {
-						nodecg.sendMessage("clearDonationQueue");
-					});
 				}
 				tl.call(() => {
 					initialize(true);
