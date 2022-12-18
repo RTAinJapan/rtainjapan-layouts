@@ -645,7 +645,7 @@ const Omnibar = () => {
 					<BidWarRow ref={bidwarRowB} bidwar={bidwarB}></BidWarRow>
 				</div>
 			</Row>
-			<Row header='寄付額目標' ref={bidChallengeRef}>
+			<Row header='寄付額チャレンジ' ref={bidChallengeRef}>
 				<div style={{display: "grid"}}>
 					<BidChallengeRow ref={challengeRowA} challenge={challengeA} />
 					<BidChallengeRow ref={challengeRowB} challenge={challengeB} />
