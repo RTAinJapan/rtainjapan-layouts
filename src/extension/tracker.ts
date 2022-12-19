@@ -173,7 +173,12 @@ export const tracker = (nodecg: NodeCG) => {
 			bidwarRep.value = updatedBidWars;
 
 			const updatedBidChallenges = bids
-				.filter((bid) => bid.fields.state === "OPENED" && bid.fields.istarget)
+				.filter(
+					(bid) =>
+						bid.fields.state === "OPENED" &&
+						bid.fields.istarget &&
+						Number(bid.fields.goal) > 0,
+				)
 				.sort((a, b) => a.fields.speedrun__order - b.fields.speedrun__order)
 				.map((bid): BidChallenge[number] => ({
 					pk: bid.pk,
