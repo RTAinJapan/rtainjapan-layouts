@@ -150,11 +150,13 @@ const App = () => {
 					defaultValue={control?.path || SELECT_DEFAULT}
 				>
 					<option value={SELECT_DEFAULT}>-</option>
-					{[...(videos || [])].sort().map((v, idx) => (
-						<option key={idx} value={v.url}>
-							{v.name}
-						</option>
-					))}
+					{[...(videos || [])]
+						.sort((a, b) => a.name.localeCompare(b.name))
+						.map((v, idx) => (
+							<option key={idx} value={v.url}>
+								{v.name}
+							</option>
+						))}
 				</select>
 				<div
 					style={{
