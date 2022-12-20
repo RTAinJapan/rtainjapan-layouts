@@ -21,6 +21,7 @@ import type {AccessToken} from "@twurple/auth";
 import {Runners} from "./generated/runners";
 import {Donations} from "./generated/donations";
 import {DonationQueue} from "./generated/donation-queue";
+import {VideoControl} from "./generated/video-control";
 
 type Run = NonNullable<CurrentRun>;
 type Participant = Run["runners"][number];
@@ -67,6 +68,8 @@ type ReplicantMap = {
 	donations: Donations;
 	"donation-queue": DonationQueue;
 	"bid-challenge": BidChallenge;
+	"video-control": VideoControl;
+	"assets:interval-video": Assets[];
 };
 
 export {

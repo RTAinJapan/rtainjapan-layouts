@@ -193,6 +193,14 @@
 				"width": 6,
 				"headerColor": "#00BEBE",
 				"workspace": "3-donations"
+			},
+			{
+				"name": "video-control",
+				"title": "幕間動画操作",
+				"file": "video-control.html",
+				"width": 3,
+				"headerColor": "#00BEBE",
+				"workspace": "2-misc"
 			}
 		],
 		"graphics": [
@@ -226,6 +234,12 @@
 				"file": "credit.html",
 				"width": 1920,
 				"height": 1030
+			},
+			{
+				"file": "interval-video.html",
+				"width": 1920,
+				"height": 1080,
+				"singleInstance": true
 			}
 		],
 		"assetCategories": [
@@ -261,6 +275,14 @@
 			{
 				"name": "setup-background-video",
 				"title": "セットアップ背景動画",
+				"allowedTypes": [
+					"mp4",
+					"webm"
+				]
+			},
+			{
+				"name": "interval-video",
+				"title": "幕間動画",
 				"allowedTypes": [
 					"mp4",
 					"webm"

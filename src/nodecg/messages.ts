@@ -40,4 +40,9 @@ export type MessageMap = {
 	toggleCameraName: {};
 	startEndCredit: {};
 	clearDonationQueue: {};
+	"video:init": {data: string | null};
+	"video:play": {};
+	"video:pause": {};
+	"video:reset": {};
+	"video:stop": {};
 };
