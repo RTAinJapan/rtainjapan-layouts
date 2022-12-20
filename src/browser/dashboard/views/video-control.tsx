@@ -43,18 +43,13 @@ const Control = ({control}: {control: VideoControl}) => {
 						value={(control.current / control.duration) * 100}
 					/>
 					<ColoredButton
-						color={lightBlue}
-						ButtonProps={{
-							onClick: () => {
-								nodecg.sendMessage("video:reset");
-							},
-						}}
-					>
-						<SkipPreviousIcon />
-					</ColoredButton>
-					<ColoredButton
 						color={green}
 						ButtonProps={{
+							style: {
+								gridColumn: nodecg.bundleConfig.preventVideoStop
+									? "1 / 5"
+									: "2 / 3",
+							},
 							disabled: control.status === "play",
 							onClick: () => {
 								nodecg.sendMessage("video:play");
@@ -63,28 +58,54 @@ const Control = ({control}: {control: VideoControl}) => {
 					>
 						<PlayArrowIcon />
 					</ColoredButton>
-					<ColoredButton
-						color={orange}
-						ButtonProps={{
-							disabled: control.status === "pause",
-							onClick: () => {
-								nodecg.sendMessage("video:pause");
-							},
-						}}
-					>
-						<PauseIcon />
-					</ColoredButton>
-					<ColoredButton
-						color={pink}
-						ButtonProps={{
-							disabled: control.status === "pause",
-							onClick: () => {
-								nodecg.sendMessage("video:stop");
-							},
-						}}
-					>
-						<StopIcon />
-					</ColoredButton>
+					{!nodecg.bundleConfig.preventVideoStop && (
+						<>
+							<ColoredButton
+								color={lightBlue}
+								ButtonProps={{
+									style: {
+										gridColumn: "1 / 2",
+										gridRow: 3,
+									},
+									onClick: () => {
+										nodecg.sendMessage("video:reset");
+									},
+								}}
+							>
+								<SkipPreviousIcon />
+							</ColoredButton>
+							<ColoredButton
+								color={orange}
+								ButtonProps={{
+									style: {
+										gridColumn: "3 / 4",
+										gridRow: 3,
+									},
+									disabled: control.status === "pause",
+									onClick: () => {
+										nodecg.sendMessage("video:pause");
+									},
+								}}
+							>
+								<PauseIcon />
+							</ColoredButton>
+							<ColoredButton
+								color={pink}
+								ButtonProps={{
+									style: {
+										gridColumn: "4 / 5",
+										gridRow: 3,
+									},
+									disabled: control.status === "pause",
+									onClick: () => {
+										nodecg.sendMessage("video:stop");
+									},
+								}}
+							>
+								<StopIcon />
+							</ColoredButton>
+						</>
+					)}
 				</>
 			)}
 		</div>

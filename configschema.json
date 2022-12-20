@@ -93,6 +93,7 @@
 				}
 			},
 			"required": ["staff", "partners", "volunteers"]
-		}
+		},
+		"preventVideoStop": {"type": "boolean"}
 	}
 }
