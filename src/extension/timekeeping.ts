@@ -123,8 +123,14 @@ export const timekeeping = (nodecg: NodeCG) => {
 		if (currentRunRep.value.runners === undefined) {
 			return;
 		}
-		const allRunnersFinished = currentRunRep.value.runners.every((_, index) =>
-			Boolean(timerRep.value && timerRep.value.results[index]),
+
+		// 全ての走者のresultが入ってるかをチェックし、入ってたらマスタータイマーを止める
+		// 名前が入ってない走者は無視する
+		const allRunnersFinished = currentRunRep.value.runners.every(
+			(runner, index) =>
+				Boolean(
+					!runner.name || (timerRep.value && timerRep.value.results[index]),
+				),
 		);
 		if (allRunnersFinished) {
 			stop();
