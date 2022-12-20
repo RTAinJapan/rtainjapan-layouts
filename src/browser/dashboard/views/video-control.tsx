@@ -147,7 +147,7 @@ const App = () => {
 					style={{
 						width: "100%",
 					}}
-					defaultValue={control?.path || SELECT_DEFAULT}
+					value={control?.path || SELECT_DEFAULT}
 				>
 					<option value={SELECT_DEFAULT}>-</option>
 					{[...(videos || [])]
