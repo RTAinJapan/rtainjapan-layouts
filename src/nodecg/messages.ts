@@ -39,4 +39,5 @@ export type MessageMap = {
 	donation: {data: {amount: number; total: number}};
 	toggleCameraName: {};
 	startEndCredit: {};
+	clearDonationQueue: {};
 };

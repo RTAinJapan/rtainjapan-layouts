@@ -15,14 +15,18 @@ import {Countdown} from "./generated/countdown";
 import {CameraName} from "./generated/camera-name";
 import {CameraState} from "./generated/camera-state";
 import {BidWar} from "./generated/bid-war";
+import {BidChallenge} from "./generated/bid-challenge";
 
 import type {AccessToken} from "@twurple/auth";
 import {Runners} from "./generated/runners";
+import {Donations} from "./generated/donations";
+import {DonationQueue} from "./generated/donation-queue";
 
 type Run = NonNullable<CurrentRun>;
 type Participant = Run["runners"][number];
 
 type Tweet = Tweets[number];
+type Donation = Donations[number];
 
 type Assets = {
 	base: string;
@@ -60,6 +64,9 @@ type ReplicantMap = {
 	twitchOauth: AccessToken;
 	"flash-warning": boolean;
 	runners: Runners;
+	donations: Donations;
+	"donation-queue": DonationQueue;
+	"bid-challenge": BidChallenge;
 };
 
 export {
@@ -83,4 +90,8 @@ export {
 	CameraName,
 	CameraState,
 	BidWar,
+	Donations,
+	Donation,
+	DonationQueue,
+	BidChallenge,
 };

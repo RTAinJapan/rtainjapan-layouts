@@ -1,0 +1,45 @@
+[
+	{
+		"model": "tracker.donation",
+		"pk": 8,
+		"fields": {
+			"donor": 1,
+			"event": 1,
+			"domain": "PAYPAL",
+			"transactionstate": "COMPLETED",
+			"readstate": "PENDING",
+			"commentstate": "ABSENT",
+			"amount": 500.0,
+			"currency": "JPY",
+			"timereceived": "2022-12-15T15:15:45Z",
+			"pinned": false,
+			"canonical_url": "http://dev-tracker.rtaij.app/donation/8",
+			"public": "Cma (500.00) 2022-12-15 15:15:45+00:00",
+			"donor__alias": "Cma",
+			"donor__alias_num": 1004,
+			"donor__visibility": "ALIAS",
+			"donor__canonical_url": "http://dev-tracker.rtaij.app/donor/1",
+			"donor__public": "Cma"
+		}
+	},
+	{
+		"model": "tracker.donation",
+		"pk": 6,
+		"fields": {
+			"event": 1,
+			"domain": "PAYPAL",
+			"transactionstate": "COMPLETED",
+			"readstate": "PENDING",
+			"commentstate": "APPROVED",
+			"amount": 500.0,
+			"currency": "JPY",
+			"timereceived": "2022-12-14T14:12:33Z",
+			"comment": "匿名からのコメント",
+			"commentlanguage": "un",
+			"pinned": false,
+			"canonical_url": "http://dev-tracker.rtaij.app/donation/6",
+			"public": "(匿名) (500.00) 2022-12-14 14:12:33+00:00",
+			"donor__public": "(匿名)"
+		}
+	}
+]

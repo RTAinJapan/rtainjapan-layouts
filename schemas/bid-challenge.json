@@ -1,0 +1,19 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "array",
+	"items": {
+		"type": "object",
+		"additionalProperties": false,
+		"properties": {
+			"pk": {"type": "number"},
+			"name": {"type": "string"},
+			"game": {"type": "string"},
+			"goal": {"type": "number"},
+			"total": {"type": "number"},
+			"percent": {"type": "number"}
+		},
+		"required": ["pk", "name", "game", "goal", "total", "percent"]
+	},
+	"default": []
+}
