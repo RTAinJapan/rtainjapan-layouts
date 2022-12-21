@@ -14,6 +14,7 @@ export interface Configschema {
 		domain: string;
 		event: number;
 		websocket: string;
+		secure: boolean;
 	};
 	twitch?: {
 		channelName: string;

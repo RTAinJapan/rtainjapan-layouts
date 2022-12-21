@@ -26,7 +26,8 @@ export const tracker = (nodecg: NodeCG) => {
 	const runnersRep = nodecg.Replicant("runners");
 
 	const requestSearch = async <T>(type: string) => {
-		const url = new URL("/search", `https://${trackerConfig.domain}`);
+		const schema = trackerConfig.secure ? "https" : "http";
+		const url = new URL("/search", `${schema}://${trackerConfig.domain}`);
 		url.searchParams.append("type", type);
 		if (type !== "event") {
 			url.searchParams.append("event", String(trackerConfig.event));
@@ -172,9 +173,10 @@ export const tracker = (nodecg: NodeCG) => {
 	}, 10 * 1000);
 
 	const connectWebSocket = () => {
+		const schema = trackerConfig.secure ? "wss" : "ws";
 		const url = new URL(
 			trackerConfig.websocket,
-			`wss://${trackerConfig.domain}`,
+			`${schema}://${trackerConfig.domain}`,
 		);
 		log.warn("connecting websocket", url.href);
 		const ws = new WebSocket(url.href, {origin: url.href});
