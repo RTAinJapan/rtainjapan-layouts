@@ -82,20 +82,18 @@ const App = () => {
 	}, []);
 
 	return (
-		<>
-			<video
-				ref={videoRef}
-				src={videoControl?.path}
-				style={{
-					minWidth: "100vw",
-					minHeight: "100vh",
-				}}
-				onTimeUpdate={onTimeUpdate}
-				onPlay={onPlay}
-				onPause={onPause}
-				onEnded={onEnded}
-			/>
-		</>
+		<video
+			ref={videoRef}
+			src={videoControl?.path}
+			style={{
+				minWidth: "100vw",
+				minHeight: "100vh",
+			}}
+			onTimeUpdate={onTimeUpdate}
+			onPlay={onPlay}
+			onPause={onPause}
+			onEnded={onEnded}
+		/>
 	);
 };
 
