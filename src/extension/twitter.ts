@@ -1,8 +1,11 @@
-import tweetSample from "./sample-json/twitter/raw-tweet.json";
-import {throttle} from "lodash";
-import Twit from "twit";
 import {NodeCG} from "./nodecg";
 import {Tweet} from "../nodecg/replicants";
+import {
+	ETwitterStreamEvent,
+	TweetStream,
+	TweetV2SingleStreamResult,
+	TwitterApi,
+} from "twitter-api-v2";
 
 const MAX_TWEETS = 100;
 
@@ -31,86 +34,112 @@ export const twitter = async (nodecg: NodeCG) => {
 			tweetsRep.value = [newTweet];
 		}
 	};
-	const twit = new Twit({
-		consumer_key: twitterConfig.consumerKey,
-		consumer_secret: twitterConfig.consumerSecret,
-		access_token: twitterConfig.accessToken,
-		access_token_secret: twitterConfig.accessTokenSecret,
+
+	const twitterApi = new TwitterApi(twitterConfig.bearer);
+
+	// Reset rules
+	const rules = await twitterApi.v2.streamRules();
+
+	const ruleIds = rules.data
+		?.map((rule) => rule.id)
+		?.filter((id): id is string => {
+			return !!id;
+		});
+
+	if (ruleIds) {
+		await twitterApi.v2.updateStreamRules({
+			delete: {
+				ids: ruleIds,
+			},
+		});
+	}
+
+	const resultRules = await twitterApi.v2.updateStreamRules({
+		add: [
+			{
+				value: `(${twitterConfig.targetWords.join(
+					" OR ",
+				)}) -is:retweet -is:reply -is:quote`,
+			},
+		],
 	});
+
+	logger.info(`created rules: ${JSON.stringify(resultRules?.meta?.summary)}`);
 
 	/**
 	 * Incoming stream from Twitter
 	 */
-	let stream: Twit.Stream | null = null;
+	let stream: TweetStream<TweetV2SingleStreamResult> | null = null;
 
-	const startStream = throttle(() => {
+	const startStream = async () => {
 		try {
 			if (stream) {
-				stream.stop();
+				stream.close();
 			}
 
-			stream = twit.stream("statuses/filter", {
-				track: twitterConfig.targetWords,
+			stream = await twitterApi.v2.searchStream({
+				autoConnect: false,
+				expansions: ["author_id"],
+				"tweet.fields": ["created_at"],
+				"user.fields": ["profile_image_url", "name", "username"],
 			});
 
-			stream.on("tweet", (rawTweet: typeof tweetSample) => {
+			stream.on(ETwitterStreamEvent.Data, ({data, includes}) => {
 				if (
-					rawTweet.retweeted_status ||
-					rawTweet.quoted_status ||
-					rawTweet.in_reply_to_user_id
+					data.referenced_tweets?.some(
+						(ref) =>
+							ref.type === "retweeted" ||
+							ref.type === "quoted" ||
+							ref.type === "replied_to",
+					)
 				) {
 					return;
 				}
 
+				const author = includes?.users?.find((u) => u.id === data.author_id);
+				if (!author || !author.profile_image_url || !data.created_at) {
+					return;
+				}
 				const newTweet: Tweet = {
-					id: rawTweet.id_str,
+					id: data.id,
 					user: {
-						profileImageUrl: rawTweet.user.profile_image_url_https,
-						name: rawTweet.user.name,
-						screenName: rawTweet.user.screen_name,
+						profileImageUrl: author.profile_image_url,
+						name: author.name,
+						screenName: author.username,
 					},
-					text: rawTweet.text.replace(/&lt;/g, "<").replace(/&gt;/g, ">"),
-					createdAt: new Date(rawTweet.created_at).toISOString(),
+					text: data.text.replace(/&lt;/g, "<").replace(/&gt;/g, ">"),
+					createdAt: new Date(data.created_at).toISOString(),
 				};
 				addTweet(newTweet);
 			});
-			stream.on("disconnect", (msg) => {
-				streamLogger.error("disconnected", msg);
+
+			stream.on(ETwitterStreamEvent.ConnectionClosed, () => {
+				streamLogger.error("disconnected");
 				startStream();
 			});
-			stream.on("connect", () => {
-				streamLogger.warn("connecting");
-			});
-			stream.on("reconnect", (_req, _res, connectInterval: number) => {
+			stream.on(ETwitterStreamEvent.ReconnectAttempt, (attempt: number) => {
 				// Twitter is having problems or we get rate limited. Reconnetion scheduled.
-				streamLogger.warn(`Reconnecting in ${connectInterval}ms`);
+				streamLogger.warn(`Reconnecting attempt ${attempt}`);
 			});
-			stream.on("connected", () => {
+			stream.on(ETwitterStreamEvent.Connected, () => {
 				streamLogger.warn("connected");
 			});
-			stream.on("warning", (warnMsg) => {
+			stream.on(ETwitterStreamEvent.ConnectionLost, () => {
 				// Stream is stalling
-				streamLogger.warn("Warning:", warnMsg);
+				streamLogger.warn("lost stream connection");
 			});
-			stream.on(
-				"error",
-				(error: {
-					message: string;
-					statusCode: string;
-					code: string;
-					twitterReply: string;
-					allErrors: string;
-				}) => {
-					streamLogger.error(error);
-				},
-			);
+			stream.on(ETwitterStreamEvent.Error, (error) => {
+				streamLogger.error(error);
+			});
+
+			stream.connect();
 		} catch (error) {
 			if (error instanceof Error) {
 				streamLogger.error("Failed to start stream:", error.stack);
 			}
-			startStream();
+			await startStream();
 		}
-	});
+	};
 
 	const deleteTweetById = (id: string) => {
 		if (!tweetsRep.value) {
@@ -134,5 +163,5 @@ export const twitter = async (nodecg: NodeCG) => {
 
 	nodecg.listenFor("discardTweet", deleteTweetById);
 
-	startStream();
+	await startStream();
 };

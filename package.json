@@ -48,7 +48,7 @@
 		"obs-websocket-js": "5.0.1",
 		"source-map-support": "0.5.19",
 		"tslib": "2.3.1",
-		"twit": "2.2.11",
+		"twitter-api-v2": "^1.12.10",
 		"ws": "8.2.0"
 	},
 	"devDependencies": {
@@ -70,7 +70,6 @@
 		"@types/rimraf": "3.0.2",
 		"@types/source-map-support": "0.5.4",
 		"@types/styled-components": "5.1.12",
-		"@types/twit": "2.2.30",
 		"@types/uuid": "8.3.1",
 		"@types/webpack-bundle-analyzer": "4.4.1",
 		"@types/webpack-env": "1.16.2",

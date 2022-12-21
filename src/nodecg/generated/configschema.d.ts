@@ -23,10 +23,7 @@ export interface Configschema {
 	};
 	twitter?: {
 		targetWords: string[];
-		consumerKey: string;
-		consumerSecret: string;
-		accessToken: string;
-		accessTokenSecret: string;
+		bearer: string;
 	};
 	spotify?: {
 		clientId: string;

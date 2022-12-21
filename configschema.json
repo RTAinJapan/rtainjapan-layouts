@@ -37,22 +37,13 @@
 		"twitter": {
 			"type": "object",
 			"additionalProperties": false,
-			"required": [
-				"targetWords",
-				"consumerKey",
-				"consumerSecret",
-				"accessToken",
-				"accessTokenSecret"
-			],
+			"required": ["targetWords", "bearer"],
 			"properties": {
 				"targetWords": {
 					"type": "array",
 					"items": {"type": "string"}
 				},
-				"consumerKey": {"type": "string"},
-				"consumerSecret": {"type": "string"},
-				"accessToken": {"type": "string"},
-				"accessTokenSecret": {"type": "string"}
+				"bearer": {"type": "string"}
 			}
 		},
 		"spotify": {

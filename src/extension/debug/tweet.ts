@@ -1,17 +1,12 @@
 import appRootPath from "app-root-path";
-import Twit from "twit";
+import {TwitterApi} from "twitter-api-v2";
 
 const twitterConfig = appRootPath.require(
 	"../../cfg/rtainjapan-layouts.json",
 ).twitter;
 
-const twit = new Twit({
-	consumer_key: twitterConfig.consumerKey,
-	consumer_secret: twitterConfig.consumerSecret,
-	access_token: twitterConfig.accessToken,
-	access_token_secret: twitterConfig.accessTokenSecret,
-});
+const twitterApi = new TwitterApi(twitterConfig.bearer);
 
-twit.get("statuses/show/1426216461366747138").then(({data}) => {
+twitterApi.v2.tweets("1426216461366747138").then((data) => {
 	console.log(JSON.stringify(data));
 });
