@@ -4,18 +4,30 @@
 	"type": "object",
 	"additionalProperties": false,
 	"properties": {
-		"raw": {"type": "number", "default": 0},
+		"raw": {"type": "number", "default": 0, "description": "タイマー経過秒"},
 		"hours": {"type": "number", "default": 0},
 		"minutes": {"type": "number", "default": 0},
 		"seconds": {"type": "number", "default": 0},
-		"formatted": {"type": "string", "default": "0:00:00"},
-		"timestamp": {"type": "number", "default": 0},
+		"formatted": {
+			"type": "string",
+			"default": "0:00:00",
+			"description": "h:mm:ss形式の経過時間"
+		},
+		"timestamp": {
+			"type": "number",
+			"default": 0,
+			"description": "タイマーレプリカントの生成時刻。これを元にタイマーの再計算を行う。"
+		},
 		"timerState": {
 			"enum": ["Finished", "Running", "Stopped"],
 			"type": "string",
-			"default": "Stopped"
+			"default": "Stopped",
+			"description": "Finished: 全走者が完走orリタイアになった状態"
 		},
-		"forfeit": {"type": "boolean", "default": false},
+		"forfeit": {
+			"type": "boolean",
+			"default": false
+		},
 
 		"results": {
 			"type": "array",
@@ -30,14 +42,23 @@
 							"hours": {"type": "number", "default": 0},
 							"minutes": {"type": "number", "default": 0},
 							"seconds": {"type": "number", "default": 0},
-							"formatted": {"type": "string", "default": ""},
+							"formatted": {
+								"type": "string",
+								"default": "",
+								"description": "h:mm:ss形式の経過時間。走者ごとのタイムは、完走orリタイアの時のみセットされる"
+							},
 							"timestamp": {"type": "number", "default": 0},
 							"timerState": {
 								"enum": ["Finished", "Running", "Stopped"],
 								"type": "string",
-								"default": "Stopped"
+								"default": "Stopped",
+								"description": "Finished: 完走, Stopped: 開始前、リタイア"
 							},
-							"forfeit": {"type": "boolean", "default": false},
+							"forfeit": {
+								"type": "boolean",
+								"default": false,
+								"description": "リタイアフラグ"
+							},
 							"place": {"type": "number", "multipleOf": 1},
 							"results": {"type": "array"}
 						},

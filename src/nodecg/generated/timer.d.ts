@@ -6,12 +6,24 @@
  */
 
 export interface Timer {
+	/**
+	 * タイマー経過秒
+	 */
 	raw: number;
 	hours: number;
 	minutes: number;
 	seconds: number;
+	/**
+	 * h:mm:ss形式の経過時間
+	 */
 	formatted: string;
+	/**
+	 * タイマーレプリカントの生成時刻。これを元にタイマーの再計算を行う。
+	 */
 	timestamp: number;
+	/**
+	 * Finished: 全走者が完走orリタイアになった状態
+	 */
 	timerState: 'Finished' | 'Running' | 'Stopped';
 	forfeit: boolean;
 	results: (null | {
@@ -19,9 +31,18 @@ export interface Timer {
 		hours: number;
 		minutes: number;
 		seconds: number;
+		/**
+		 * h:mm:ss形式の経過時間。走者ごとのタイムは、完走orリタイアの時のみセットされる
+		 */
 		formatted: string;
 		timestamp: number;
+		/**
+		 * Finished: 完走, Stopped: 開始前、リタイア
+		 */
 		timerState: 'Finished' | 'Running' | 'Stopped';
+		/**
+		 * リタイアフラグ
+		 */
 		forfeit: boolean;
 		place?: number;
 		results?: unknown[];
