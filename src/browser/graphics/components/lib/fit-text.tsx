@@ -5,12 +5,13 @@ import {
 	useRef,
 	useState,
 } from "react";
-import {BoldText, ThinText} from "./text";
+import {BoldText, ThinText, CreditText} from "./text";
 
 export const FitText: FunctionComponent<{
 	defaultSize: number;
 	children: string | undefined | null;
 	thin?: boolean;
+	credit?: boolean;
 	style?: CSSProperties;
 }> = (props) => {
 	const [size, setSize] = useState(props.defaultSize);
@@ -44,11 +45,9 @@ export const FitText: FunctionComponent<{
 				...props.style,
 			}}
 		>
-			{props.thin ? (
-				<ThinText>{props.children}</ThinText>
-			) : (
-				<BoldText>{props.children}</BoldText>
-			)}
+			{!props.credit && props.thin && <ThinText>{props.children}</ThinText>}
+			{!props.credit && !props.thin && <BoldText>{props.children}</BoldText>}
+			{props.credit && <CreditText>{props.children}</CreditText>}
 		</div>
 	);
 };

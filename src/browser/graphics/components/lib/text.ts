@@ -18,3 +18,15 @@ export const TimerText = styled.div`
 	font-style: normal;
 	white-space: nowrap;
 `;
+export const CreditText = styled.div`
+	font-family: minion-3, sans-serif;
+	font-weight: 500; /* medium */
+	font-style: normal;
+	white-space: nowrap;
+`;
+export const CreditTitleText = styled.div`
+	font-family: fot-chiaro-std, sans-serif;
+	font-weight: 700; /* bold */
+	font-style: normal;
+	white-space: nowrap;
+`;
