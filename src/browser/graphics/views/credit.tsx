@@ -1,7 +1,7 @@
 import {FC, useEffect, useRef, useState} from "react";
 import ReactDOM from "react-dom";
 import {FitText} from "../components/lib/fit-text";
-import {BoldText, ThinText} from "../components/lib/text";
+import {BoldText, CreditTitleText} from "../components/lib/text";
 import topLogo from "../images/header_rij.svg";
 import gsap from "gsap";
 import chunk from "lodash-es/chunk";
@@ -115,7 +115,7 @@ const App: FC = () => {
 					backgroundColor: "rgba(37, 48, 58, 0.6)",
 				}}
 			>
-				<ThinText
+				<CreditTitleText
 					ref={titleRef}
 					style={{
 						position: "absolute",
@@ -130,7 +130,7 @@ const App: FC = () => {
 					}}
 				>
 					{title}
-				</ThinText>
+				</CreditTitleText>
 				<div
 					ref={namesRef}
 					style={{
@@ -147,7 +147,7 @@ const App: FC = () => {
 					}}
 				>
 					{names.map((name) => (
-						<FitText defaultSize={40} thin>
+						<FitText defaultSize={40} credit>
 							{name}
 						</FitText>
 					))}
