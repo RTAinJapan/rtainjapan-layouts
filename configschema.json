@@ -4,6 +4,7 @@
 	"type": "object",
 	"additionalProperties": false,
 	"properties": {
+		"isOnsite": {"type": "boolean"},
 		"obs": {
 			"type": "object",
 			"properties": {
