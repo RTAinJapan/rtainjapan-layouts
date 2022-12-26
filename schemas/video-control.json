@@ -1,0 +1,18 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"oneOf": [
+		{
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"status": {"type": "string", "enum": ["play", "pause"]},
+				"current": {"type": "number"},
+				"duration": {"type": "number"},
+				"path": {"type": "string"}
+			},
+			"required": ["status", "current", "duration", "path"]
+		},
+		{"type": "null"}
+	]
+}

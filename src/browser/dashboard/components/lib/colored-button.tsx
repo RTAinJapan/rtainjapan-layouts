@@ -17,7 +17,7 @@ export const ColoredButton: React.ComponentType<Props> = (props) => (
 	>
 		<Button
 			{...props.ButtonProps}
-			style={{whiteSpace: "nowrap"}}
+			style={{...props.ButtonProps?.style, whiteSpace: "nowrap"}}
 			color='primary'
 		>
 			{props.children}
