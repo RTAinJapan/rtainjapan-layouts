@@ -45,26 +45,29 @@ const useSocial = (icon: string, text?: string) => {
 const NamePlateContent = ({
 	runner,
 	style,
+	isRaceRunner,
 }: {
 	runner?: Participant;
 	style?: CSSProperties;
+	isRaceRunner?: boolean;
 }) => {
 	const nameRef = useRef<HTMLDivElement>(null);
+	const emptyRef = useRef<HTMLDivElement>(null);
 	const [twitter, twitterRef] = useSocial(iconTwitter, runner?.twitter);
 	const [twitch, twitchRef] = useSocial(iconTwitch, runner?.twitch);
 	const [nico, nicoRef] = useSocial(iconNico, runner?.nico);
 
 	useEffect(() => {
 		const refs = filterNonNullable(
-			[nameRef, twitterRef, twitchRef, nicoRef].map((ref) => ref?.current),
+			!isRaceRunner ? 
+				[nameRef, twitterRef, twitchRef, nicoRef].map((ref) => ref?.current ?? nameRef.current)
+				:
+				[emptyRef, twitterRef, twitchRef, nicoRef].map((ref) => ref?.current ?? emptyRef.current)
 		);
 		if (!refs[0]) {
 			return;
 		}
-		if (refs.length === 1) {
-			gsap.set(refs[0], {opacity: 1});
-			return;
-		}
+
 		const tl = gsap.timeline({repeat: -1});
 		for (const ref of refs) {
 			tl.fromTo(ref, {opacity: 0}, {opacity: 1, duration: 0.5});
@@ -75,7 +78,7 @@ const NamePlateContent = ({
 		};
 	}, [nicoRef, twitterRef, twitchRef]);
 
-	return (
+	return !isRaceRunner ? (
 		<div
 			style={{
 				display: "grid",
@@ -86,13 +89,41 @@ const NamePlateContent = ({
 		>
 			<ThinText
 				ref={nameRef}
-				style={{fontSize: "26px", opacity: 0, ...textPlacement}}
+				style={{ fontSize: "26px", opacity: 0, ...textPlacement}}
 			>
 				{runner?.name}
 			</ThinText>
 			{twitter}
 			{twitch}
 			{nico}
+		</div>
+	) : (
+		<div
+			style={{
+				display: "grid",
+				placeSelf: "center start",
+				...style,
+			}}
+		>
+			<ThinText
+				style={{fontSize: "26px", marginLeft: "10px", ...textPlacement}}
+			>
+				{runner?.name}
+				</ThinText>
+				<div
+					style={{
+						display: "grid",
+						placeContent: "center",
+						placeItems: "center",
+						marginLeft: "20px",
+						...style,
+					}}
+				>
+					<div ref={emptyRef}></div>
+					{twitter}
+					{twitch}
+					{nico}
+				</div>
 		</div>
 	);
 };
@@ -126,7 +157,8 @@ export const NamePlate = ({
 		typeof index === "number" ? (
 			<NamePlateContent
 				runner={currentRun[kind][index]}
-				style={{gridRow: "1 / 2", gridColumn: "3 / 4"}}
+				style={{ gridRow: "1 / 2", gridColumn: "3 / 4" }}
+				isRaceRunner={race && kind === "runners"}
 			></NamePlateContent>
 		) : (
 			<div
