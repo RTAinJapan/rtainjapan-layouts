@@ -49,6 +49,11 @@ const App = () => {
 		if (!video) {
 			return;
 		}
+
+		nodecg.listenFor("video:init", (path) => {
+			initialize(path);
+		});
+
 		nodecg.listenFor("video:play", () => {
 			video.play();
 		});
