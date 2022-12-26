@@ -10,6 +10,7 @@ import type BidSample from "./sample-json/tracker/bid.json";
 import type BidTargetSample from "./sample-json/tracker/bidtarget.json";
 import type DonationSample from "./sample-json/tracker/donation.json";
 import {BidChallenge, Donation, Run} from "../nodecg/replicants";
+import {uniqBy} from "lodash";
 
 type CommentDonation = typeof DonationSample[number] & {
 	fields: {comment: string};
@@ -33,10 +34,6 @@ export const tracker = (nodecg: NodeCG) => {
 	const donationsRep = nodecg.Replicant("donations");
 	const donationQueueRep = nodecg.Replicant("donation-queue", {
 		defaultValue: [],
-	});
-
-	nodecg.listenFor("clearDonationQueue", () => {
-		donationQueueRep.value = [];
 	});
 
 	const requestSearch = async <T>(type: string) => {
@@ -200,6 +197,9 @@ export const tracker = (nodecg: NodeCG) => {
 
 	const updateDonations = async () => {
 		try {
+			const lastDonations = Object.fromEntries(
+				donationsRep.value?.map((d) => [d.pk, d]) || [],
+			);
 			const donations = await requestSearch<typeof DonationSample>("donation");
 
 			const updated = donations
@@ -207,8 +207,9 @@ export const tracker = (nodecg: NodeCG) => {
 				.filter(
 					(donation): donation is CommentDonation => !!donation.fields.comment,
 				)
-				.map(
-					(donation): Donation => ({
+				.map((donation): Donation => {
+					const exists = lastDonations[donation.pk];
+					return {
 						pk: donation.pk,
 						name:
 							donation.fields.donor__public === "(匿名)"
@@ -216,8 +217,9 @@ export const tracker = (nodecg: NodeCG) => {
 								: donation.fields.donor__public,
 						amount: donation.fields.amount,
 						comment: donation.fields.comment,
-					}),
-				);
+						featured: exists?.featured || false,
+					};
+				});
 			donationsRep.value = updated;
 		} catch (error) {
 			log.error(error);
@@ -268,6 +270,31 @@ export const tracker = (nodecg: NodeCG) => {
 			log.warn("websocket opened");
 		});
 	};
+
+	const pushDonationToQueue = (pk: number) => {
+		const donation = donationsRep.value?.find((d) => d.pk === pk);
+
+		if (!donation) {
+			return;
+		}
+
+		donation.featured = true;
+
+		donationQueueRep.value = uniqBy(
+			[...donationQueueRep.value, {...donation}],
+			(d) => d.pk,
+		);
+	};
+
+	const removeDonationFromQueue = (pk: number) => {
+		donationQueueRep.value = donationQueueRep.value.filter((d) => d.pk !== pk);
+	};
+
+	nodecg.listenFor("donation:feature", pushDonationToQueue);
+	nodecg.listenFor("donation:cancel", removeDonationFromQueue);
+	nodecg.listenFor("donation:clear-queue", () => {
+		donationQueueRep.value = [];
+	});
 
 	connectWebSocket();
 };

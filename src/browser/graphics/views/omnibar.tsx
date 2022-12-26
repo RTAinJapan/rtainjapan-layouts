@@ -506,7 +506,7 @@ const Omnibar = () => {
 				);
 				const currentDonations = cloneDeep(donationQueue.current);
 				tl.call(() => {
-					nodecg.sendMessage("clearDonationQueue");
+					nodecg.sendMessage("donation:clear-queue");
 				});
 				if (
 					(!currentBidwars || currentBidwars.length === 0) &&

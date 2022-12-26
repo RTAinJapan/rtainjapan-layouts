@@ -39,10 +39,12 @@ export type MessageMap = {
 	donation: {data: {amount: number; total: number}};
 	toggleCameraName: {};
 	startEndCredit: {};
-	clearDonationQueue: {};
 	"video:init": {data: string | null};
 	"video:play": {};
 	"video:pause": {};
 	"video:reset": {};
 	"video:stop": {};
+	"donation:feature": {data: number};
+	"donation:cancel": {data: number};
+	"donation:clear-queue": {};
 };
