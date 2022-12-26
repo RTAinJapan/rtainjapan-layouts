@@ -56,15 +56,12 @@ const NamePlateContent = ({
 
 	useEffect(() => {
 		const refs = filterNonNullable(
-			[nameRef, twitterRef, twitchRef, nicoRef].map((ref) => ref?.current),
+			[nameRef, twitterRef, twitchRef, nicoRef].map((ref) => ref?.current ?? nameRef.current),
 		);
 		if (!refs[0]) {
 			return;
 		}
-		if (refs.length === 1) {
-			gsap.set(refs[0], {opacity: 1});
-			return;
-		}
+
 		const tl = gsap.timeline({repeat: -1});
 		for (const ref of refs) {
 			tl.fromTo(ref, {opacity: 0}, {opacity: 1, duration: 0.5});
