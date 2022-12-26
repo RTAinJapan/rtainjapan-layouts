@@ -7,7 +7,8 @@
 		"pk": {"type": "number"},
 		"name": {"oneOf": [{"type": "string"}, {"type": "null"}]},
 		"comment": {"type": "string"},
-		"amount": {"type": "number"}
+		"amount": {"type": "number"},
+		"featured": {"type": "boolean"}
 	},
-	"required": ["pk", "name", "comment", "amount"]
+	"required": ["pk", "name", "comment", "amount", "featured"]
 }
