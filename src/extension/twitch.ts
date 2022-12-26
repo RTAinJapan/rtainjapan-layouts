@@ -109,7 +109,7 @@ export const twitch = (nodecg: NodeCG) => {
 			if (!newRun) {
 				return;
 			}
-			const title = `RTA in Japan Summer 2022: ${newRun.title}`;
+			const title = `RTA in Japan Winter 2022: ${newRun.title}`;
 			if (lastUpdatedTitle === title) {
 				return;
 			}
