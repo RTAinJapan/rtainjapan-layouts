@@ -70,17 +70,11 @@ const App = () => {
 		video.onpause = onPause;
 		video.ontimeupdate = () => onTimeUpdate(video);
 		video.onended = () => onEnded(video);
-
-		nodecg.readReplicant("video-control", (v) => {
-			if (v) {
-				video.currentTime = v.current;
-			}
-		});
 	};
 
 	useEffect(() => {
-		nodecg.listenFor("video:init", (path) => {
-			initialize(path);
+		nodecg.readReplicant("video-control", (v) => {
+			initialize(v?.path || null);
 		});
 	}, []);
 
