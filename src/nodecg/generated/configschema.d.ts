@@ -6,6 +6,7 @@
  */
 
 export interface Configschema {
+	isOnsite?: boolean;
 	obs?: {
 		address: string;
 		password: string;
@@ -40,4 +41,5 @@ export interface Configschema {
 		volunteers: string[];
 		text?: string[];
 	};
+	preventVideoStop?: boolean;
 }

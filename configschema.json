@@ -3,6 +3,7 @@
 
 	"type": "object",
 	"additionalProperties": false,
+	"default": {},
 	"properties": {
 		"isOnsite": {"type": "boolean"},
 		"obs": {
@@ -94,6 +95,6 @@
 			},
 			"required": ["staff", "partners", "volunteers"]
 		},
-		"preventVideoStop": {"type": "boolean"}
+		"preventVideoStop": {"type": "boolean", "default": false}
 	}
 }
