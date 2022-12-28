@@ -6,7 +6,7 @@ import {
 import {ApiClient, HelixUser} from "@twurple/api";
 import express from "express";
 import {NodeCG} from "./nodecg";
-import {getEventName} from "./tracker";
+import * as tracker from "./tracker";
 
 export const twitch = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("twitch");
@@ -110,7 +110,12 @@ export const twitch = (nodecg: NodeCG) => {
 			if (!newRun) {
 				return;
 			}
-			const title = `${newRun.title} : ${getEventName()}`;
+			const eventName = tracker.getEventName();
+			if (!eventName) {
+				log.warn("Skip to update twitch title because event name is not set.");
+				return;
+			}
+			const title = `${newRun.title} : ${tracker.getEventName()}`;
 			if (lastUpdatedTitle === title) {
 				return;
 			}

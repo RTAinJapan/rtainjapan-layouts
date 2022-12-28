@@ -16,7 +16,7 @@ type CommentDonation = typeof DonationSample[number] & {
 	fields: {comment: string};
 };
 
-let eventName: string = "";
+let eventName: string | null = null;
 
 export const getEventName = () => {
 	return eventName;
