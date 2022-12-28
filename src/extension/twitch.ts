@@ -6,6 +6,7 @@ import {
 import {ApiClient, HelixUser} from "@twurple/api";
 import express from "express";
 import {NodeCG} from "./nodecg";
+import {getEventName} from "./tracker";
 
 export const twitch = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("twitch");
@@ -109,7 +110,7 @@ export const twitch = (nodecg: NodeCG) => {
 			if (!newRun) {
 				return;
 			}
-			const title = `RTA in Japan Winter 2022: ${newRun.title}`;
+			const title = `${newRun.title} : ${getEventName()}`;
 			if (lastUpdatedTitle === title) {
 				return;
 			}

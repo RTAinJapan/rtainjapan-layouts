@@ -16,6 +16,12 @@ type CommentDonation = typeof DonationSample[number] & {
 	fields: {comment: string};
 };
 
+let eventName: string = "";
+
+export const getEventName = () => {
+	return eventName;
+};
+
 export const tracker = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("tracker");
 	const trackerConfig = nodecg.bundleConfig.tracker;
@@ -47,11 +53,14 @@ export const tracker = (nodecg: NodeCG) => {
 		return res;
 	};
 
-	const updateTotal = async () => {
+	const updateEventData = async () => {
 		try {
 			const res = await requestSearch<typeof EventSample>("event");
-			const total = res.find((e) => e.pk === trackerConfig.event)?.fields
-				.amount;
+			const event = res.find((e) => e.pk === trackerConfig.event);
+
+			eventName = event?.fields.name || "";
+
+			const total = event?.fields.amount;
 			donationTotalRep.value = total;
 		} catch (error) {
 			log.error(error);
@@ -226,12 +235,12 @@ export const tracker = (nodecg: NodeCG) => {
 		}
 	};
 
-	updateTotal();
+	updateEventData();
 	updateRuns();
 	updateBids();
 	updateDonations();
 	setInterval(() => {
-		updateTotal();
+		updateEventData();
 		updateRuns();
 		updateBids();
 		updateDonations();
