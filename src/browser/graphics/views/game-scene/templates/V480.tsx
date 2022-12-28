@@ -13,7 +13,7 @@ export const TemplateV480: FunctionComponent = ({children}) => {
 		cameraHeight: "270px",
 		cameraHeightRace: "270px",
 		nameplateWidth: "450px",
-		limitOneCommentator: true,
+		limitOneCommentator: false,
 	});
 	return (
 		<div
