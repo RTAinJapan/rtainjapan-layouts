@@ -58,7 +58,7 @@ export const tracker = (nodecg: NodeCG) => {
 			const res = await requestSearch<typeof EventSample>("event");
 			const event = res.find((e) => e.pk === trackerConfig.event);
 
-			eventName = event?.fields.name || "";
+			eventName = event?.fields.name || null;
 
 			const total = event?.fields.amount;
 			donationTotalRep.value = total;
