@@ -17,6 +17,7 @@ import {EventLogo} from "../components/event-logo";
 import {Tweet} from "../components/tweet";
 import {Music} from "../components/music";
 import {setup} from "../styles/colors";
+import {swipeEnter, swipeExit} from "../components/lib/blur-swipe";
 
 const Spacer = () => <img src={nextGameSpacer} width={50} height={60}></img>;
 
@@ -112,7 +113,6 @@ const Upcoming = () => {
 
 const Sponsor = () => {
 	const assets = useReplicant(`assets:sponsor-setup`);
-	const containerRef = useRef<HTMLDivElement>(null);
 	const imageRef = useRef<HTMLImageElement>(null);
 
 	useEffect(() => {
@@ -121,20 +121,9 @@ const Sponsor = () => {
 		}
 		const tl = gsap.timeline({repeat: -1});
 		for (const asset of assets) {
-			tl.fromTo(
-				containerRef.current,
-				{x: 0},
-				{x: 440, duration: 1, ease: Power2.easeOut},
-				"+=0.2",
-			);
-			tl.set(imageRef.current, {attr: {src: asset.url}}, "+=0.2");
-			tl.fromTo(
-				containerRef.current,
-				{x: 440},
-				{x: 0, duration: 1, ease: Power2.easeOut},
-				"+=0.2",
-			);
-			tl.set({}, {}, "+=40");
+			tl.set(imageRef.current, {attr: {src: asset.url}});
+			tl.add(swipeEnter(imageRef), "<+=0.3");
+			tl.add(swipeExit(imageRef), "<+=40");
 		}
 		return () => {
 			tl.kill();
@@ -143,7 +132,6 @@ const Sponsor = () => {
 
 	return (
 		<div
-			ref={containerRef}
 			style={{
 				position: "absolute",
 				top: "620px",
