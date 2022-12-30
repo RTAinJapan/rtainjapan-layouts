@@ -16,6 +16,7 @@ export const TemplateL420: FunctionComponent<{
 		cameraHeight: "300px",
 		cameraHeightRace: "300px",
 		nameplateWidth: "390px",
+		twitterSmall: true,
 	});
 	return (
 		<div
