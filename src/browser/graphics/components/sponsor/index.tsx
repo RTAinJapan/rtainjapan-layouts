@@ -1,11 +1,17 @@
 import gsap from "gsap";
-import {CSSProperties, FunctionComponent, useEffect, useRef, useState} from "react";
+import {
+	CSSProperties,
+	FunctionComponent,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import {useReplicant} from "../../../use-replicant";
 import {background} from "../../styles/colors";
-import { swipeEnter, swipeExit } from "../lib/blur-swipe";
+import {swipeEnter, swipeExit} from "../lib/blur-swipe";
 import {Tweets} from "../../../../nodecg/generated/tweets";
 import iconTwitter from "../../images/icon/icon_twitter.svg";
-import { ThinText } from "../lib/text";
+import {ThinText} from "../lib/text";
 
 export const Sponsor: FunctionComponent<{
 	style?: CSSProperties;
@@ -33,7 +39,10 @@ export const Sponsor: FunctionComponent<{
 			}
 
 			if (text) {
-				tl.set(containerRef.current, { maskImage: "linear-gradient(to right, rgba(0,0,0,1) -20%, rgba(0,0,0,0) 0%)" });
+				tl.set(containerRef.current, {
+					maskImage:
+						"linear-gradient(to right, rgba(0,0,0,1) -20%, rgba(0,0,0,0) 0%)",
+				});
 				tl.set(twitterRef.current, {opacity: 1});
 				tl.add(swipeEnter(containerRef), "<+=0.3");
 				tl.add(swipeExit(containerRef), "<+=40");
@@ -44,15 +53,20 @@ export const Sponsor: FunctionComponent<{
 				});
 			}
 
-			tl.set(containerRef.current, { maskImage: "linear-gradient(to right, rgba(0,0,0,1) -20%, rgba(0,0,0,0) 0%)" });
+			tl.set(containerRef.current, {
+				maskImage:
+					"linear-gradient(to right, rgba(0,0,0,1) -20%, rgba(0,0,0,0) 0%)",
+			});
 			tl.set(sponsorRef.current, {opacity: 1});
-			tl.set(sponsorRef.current, { attr: { src: sponsorUrl } });
+			tl.set(sponsorRef.current, {attr: {src: sponsorUrl}});
 			tl.add(swipeEnter(containerRef), "<+=0.3");
 			tl.add(swipeExit(containerRef), "<+=40");
 
 			tl.set(sponsorRef.current, {opacity: 0});
 			tl.call(() => {
-				setCurrentSponsor((assets.length - 1) <= currentSponsor ? 0 : (currentSponsor + 1));
+				setCurrentSponsor(
+					assets.length - 1 <= currentSponsor ? 0 : currentSponsor + 1,
+				);
 				initialize();
 			});
 		};

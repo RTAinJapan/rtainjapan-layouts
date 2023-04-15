@@ -6,7 +6,6 @@ import {Tweets} from "./generated/tweets";
 import {Timer} from "./generated/timer";
 import {Spotify} from "./generated/spotify";
 import {Spreadsheet} from "./generated/spreadsheet";
-import {Twitch} from "./generated/twitch";
 import {Obs} from "./generated/obs";
 import {ObsCropInputs} from "./generated/obs-crop-inputs";
 import {ObsRemoteInputs} from "./generated/obs-remote-inputs";
@@ -48,7 +47,6 @@ type ReplicantMap = {
 	spreadsheet: Spreadsheet;
 	timer: Timer;
 	tweets: Tweets;
-	twitch: Twitch;
 	"obs-status": ObsStatus;
 	obs: Obs;
 	"obs-crop-inputs": ObsCropInputs;
@@ -82,7 +80,6 @@ export {
 	Timer,
 	Spotify,
 	Spreadsheet,
-	Twitch,
 	Run,
 	Participant,
 	Tweet,

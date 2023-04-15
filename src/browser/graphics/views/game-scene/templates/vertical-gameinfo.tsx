@@ -68,7 +68,11 @@ export const useVerticalGameInfo = (props: {
 			<Camera style={{placeSelf: "stretch"}}></Camera>
 			{runnerNamePlate}
 			{commentatorNamePlate}
-			<Sponsor kind='vertical' style={{ placeSelf: "stretch" }} twitterSmall={props.twitterSmall}></Sponsor>
+			<Sponsor
+				kind='vertical'
+				style={{placeSelf: "stretch"}}
+				twitterSmall={props.twitterSmall}
+			></Sponsor>
 		</div>
 	);
 };
