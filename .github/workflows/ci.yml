@@ -8,22 +8,15 @@ on:
     branches:
       - master
 
-env:
-  YARN_CACHE_FOLDER: ~/.yarn
-
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: "14"
-      - uses: actions/cache@v2
-        with:
-          path: ${{ env.YARN_CACHE_FOLDER }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-
-      - run: yarn install --frozen-lockfile
-      - run: yarn test
-      - run: yarn build
+          node-version: "18"
+          cache: "npm"
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
