@@ -128,7 +128,7 @@ export const tracker = (nodecg: NodeCG) => {
 						}),
 						commentators: commentators
 							.filter((commentator) => {
-								return commentator.gameCategory.startsWith(run.fields.name);
+								return commentator.gameCategory.endsWith(`- ${run.pk}`);
 							})
 							.map((commentator) => {
 								return {
