@@ -99,44 +99,49 @@ export const tracker = (nodecg: NodeCG) => {
 				requestSearch<typeof RunnerSample>("runner"),
 				fetchCommentators(),
 			]);
-			scheduleRep.value = runs.map<Run>((run, index) => {
-				return {
-					pk: run.pk,
-					index,
-					title: run.fields.name,
-					englishTitle: run.fields.twitch_name,
-					category: run.fields.category,
-					platform: run.fields.console,
-					releaseYear: run.fields.release_year,
-					runDuration: run.fields.run_time,
-					setupDuration: run.fields.setup_time,
-					camera: true,
-					runners: run.fields.runners.map((runnerId) => {
-						const runner = runners.find((runner) => runner.pk === runnerId);
-						return {
-							name: runner?.fields.name || "",
-							twitch: runner?.fields.twitch,
-							nico: runner?.fields.nico,
-							twitter: runner?.fields.twitter,
-							camera: false,
-						};
-					}),
-					commentators: commentators
-						.filter((commentator) => {
-							return commentator.gameCategory.startsWith(run.fields.name);
-						})
-						.map((commentator) => {
+			scheduleRep.value = runs
+				.filter((run) => {
+					// バックアップゲームをスケジュールから除外
+					return run.fields.order !== null;
+				})
+				.map<Run>((run, index) => {
+					return {
+						pk: run.pk,
+						index,
+						title: run.fields.name,
+						englishTitle: run.fields.twitch_name,
+						category: run.fields.category,
+						platform: run.fields.console,
+						releaseYear: run.fields.release_year,
+						runDuration: run.fields.run_time,
+						setupDuration: run.fields.setup_time,
+						camera: true,
+						runners: run.fields.runners.map((runnerId) => {
+							const runner = runners.find((runner) => runner.pk === runnerId);
 							return {
-								name: commentator.name,
-								twitch: commentator.twitch,
-								nico: commentator.nico,
-								twitter: commentator.twitter,
+								name: runner?.fields.name || "",
+								twitch: runner?.fields.twitch,
+								nico: runner?.fields.nico,
+								twitter: runner?.fields.twitter,
 								camera: false,
 							};
 						}),
-					twitchGameId: run.fields.twitch_name,
-				};
-			});
+						commentators: commentators
+							.filter((commentator) => {
+								return commentator.gameCategory.startsWith(run.fields.name);
+							})
+							.map((commentator) => {
+								return {
+									name: commentator.name,
+									twitch: commentator.twitch,
+									nico: commentator.nico,
+									twitter: commentator.twitter,
+									camera: false,
+								};
+							}),
+						twitchGameId: run.fields.twitch_name,
+					};
+				});
 			runnersRep.value = runners.map((runner) => runner.fields.name);
 		} catch (error) {
 			log.error(error);
