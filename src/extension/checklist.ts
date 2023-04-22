@@ -4,19 +4,25 @@ import {NodeCG} from "./nodecg";
 export const checklist = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("tracker");
 	const checklistRep = nodecg.Replicant("checklist");
-	const defaultChecklist = nodecg.bundleConfig.checklist;
-	if (!defaultChecklist) {
+	const checklist = nodecg.bundleConfig.checklist;
+
+	if (!checklist) {
 		log.warn("checklist is not configured in the bundle config");
 		return;
 	}
 
+	const defaultChecklist = checklist.map((item) => ({
+		name: item,
+		complete: false,
+	}));
+
 	if (checklistRep.value && checklistRep.value.length > 0) {
 		const currentNameList = checklistRep.value.map((item) => item.name);
-		const defaultNameList = defaultChecklist.map((item) => item.name);
+		const defaultNameList = defaultChecklist;
 		if (!isEqual(currentNameList, defaultNameList)) {
 			if (checklistRep.value.every((item) => item.complete)) {
-				checklistRep.value = defaultChecklist.map((item) => ({
-					name: item.name,
+				checklistRep.value = checklist.map((item) => ({
+					name: item,
 					complete: true,
 				}));
 			} else {

@@ -99,17 +99,7 @@
 		"checklist": {
 			"type": "array",
 			"items": {
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"complete": {
-						"type": "boolean"
-					}
-				},
-				"required": ["name", "complete"]
+				"type": "string"
 			}
 		}
 	}
