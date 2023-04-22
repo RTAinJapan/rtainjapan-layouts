@@ -95,6 +95,12 @@
 			},
 			"required": ["staff", "partners", "volunteers"]
 		},
-		"preventVideoStop": {"type": "boolean", "default": false}
+		"preventVideoStop": {"type": "boolean", "default": false},
+		"checklist": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		}
 	}
 }
