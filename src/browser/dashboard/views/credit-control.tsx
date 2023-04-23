@@ -38,12 +38,15 @@ const Credit: React.FC<{
 	</Accordion>
 );
 
+const sortNames = (names: string[]) => {
+	return [...names].sort((a, b) => a.localeCompare(b, "ja"));
+};
+
 const App = () => {
-	const runnersRep = useReplicant("runners");
-	const runner = runnersRep ?? [];
-	const staff = nodecg.bundleConfig.endCredit?.staff ?? [];
-	const partners = nodecg.bundleConfig.endCredit?.partners ?? [];
-	const volunteers = nodecg.bundleConfig.endCredit?.volunteers ?? [];
+	const runner = sortNames(useReplicant("runners") ?? []);
+	const staff = sortNames(nodecg.bundleConfig.endCredit?.staff ?? []);
+	const partners = sortNames(nodecg.bundleConfig.endCredit?.partners ?? []);
+	const volunteers = sortNames(nodecg.bundleConfig.endCredit?.volunteers ?? []);
 	const text = nodecg.bundleConfig.endCredit?.text ?? [];
 
 	return (
