@@ -162,25 +162,25 @@ const Sponsor = () => {
 	);
 };
 
-// const GradientOverlay = () => {
-// 	return (
-// 		<div
-// 			style={{
-// 				position: "absolute",
-// 				width: "1920px",
-// 				height: "1030px",
-// 				overflow: "hidden",
-// 				background: `
-// 					linear-gradient(
-// 						to right,
-// 						rgba(37, 48, 58, 0.5),
-// 						rgba(37, 48, 58, 0.4) 75%,
-// 						rgba(37, 48, 58, 0) 100%
-// 					)`,
-// 			}}
-// 		></div>
-// 	);
-// };
+const GradientOverlay = () => {
+	return (
+		<div
+			style={{
+				position: "absolute",
+				width: "1920px",
+				height: "1030px",
+				overflow: "hidden",
+				background: `
+ 					linear-gradient(
+ 						to right,
+ 						rgba(20, 50, 33, 0.5),
+ 						rgba(20, 50, 33, 0.4) 75%,
+ 						rgba(20, 50, 33, 0) 100%
+ 					)`,
+			}}
+		></div>
+	);
+};
 
 const TweetContainer = () => {
 	const tweetTag = useRef(null);
@@ -271,7 +271,7 @@ const App = () => {
 				color: "white",
 			}}
 		>
-			{/* <GradientOverlay></GradientOverlay> */}
+			<GradientOverlay></GradientOverlay>
 			<EventLogo
 				style={{position: "absolute", left: "30px", top: "20px"}}
 			></EventLogo>
