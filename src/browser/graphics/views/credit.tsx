@@ -2,7 +2,7 @@ import {FC, useEffect, useRef, useState} from "react";
 import ReactDOM from "react-dom";
 import {FitText} from "../components/lib/fit-text";
 import {BoldText, CreditTitleText} from "../components/lib/text";
-import topLogo from "../images/header_rij.svg";
+import topLogo from "../images/header_rij.png";
 import gsap from "gsap";
 import chunk from "lodash-es/chunk";
 
@@ -110,9 +110,9 @@ const App: FC = () => {
 					left: "160px",
 					width: "1600px",
 					height: "870px",
-					borderRadius: "7px",
+					borderRadius: "21px",
 					border: "2px solid white",
-					backgroundColor: "rgba(37, 48, 58, 0.6)",
+					backgroundColor: "rgba(8, 36, 20, 0.8)",
 				}}
 			>
 				<CreditTitleText
