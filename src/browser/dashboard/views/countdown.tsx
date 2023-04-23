@@ -17,13 +17,14 @@ const App = () => {
 			<label>開始時間</label>
 			<input
 				type='datetime-local'
-				value={moment(countdown?.endTime).format("yyyy-MM-DDThh:mm")}
+				value={moment(countdown?.endTime).format("yyyy-MM-DDTHH:mm")}
 				onChange={(e) => {
 					if (countdownRep.value) {
 						const time = new Date(e.target.value);
 						countdownRep.value.endTime = time.getTime();
 					}
 				}}
+				disabled={countdown?.state === "running"}
 			/>
 			<button
 				onClick={() => {
