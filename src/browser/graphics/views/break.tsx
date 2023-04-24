@@ -18,6 +18,7 @@ import {Tweet} from "../components/tweet";
 import {Music} from "../components/music";
 import {setup} from "../styles/colors";
 import {swipeEnter, swipeExit} from "../components/lib/blur-swipe";
+import {newlineString} from "../components/lib/util";
 
 const Spacer = () => <img src={nextGameSpacer} width={50} height={60}></img>;
 
@@ -78,12 +79,13 @@ const Upcoming = () => {
 				<BoldText
 					style={{fontSize: "40px", gridRow: "1 / 2", gridColumn: "2 / 3"}}
 				>
-					{nextRun.title}
+					{newlineString(nextRun.title)}
 				</BoldText>
 				<ThinText
 					style={{fontSize: "22px", gridRow: "2 / 3", gridColumn: "2 / 3"}}
 				>
-					{nextRun.category} - Runner:{" "}
+					{/* カテゴリ名は文字が小さいので改行はしない */}
+					{nextRun.category?.replace(/\\n/g, "")} - Runner:{" "}
 					{nextRun.runners.map((r) => r.name).join(", ")}
 				</ThinText>
 			</div>
@@ -100,7 +102,9 @@ const Upcoming = () => {
 						>
 							<ThinText>{calcStartTime(run)} ~</ThinText>
 							<ThinText>
-								{run.title} - {run.category}
+								{/* Trackerの段階で改行文字を入れてもいいようにしておく */}
+								{run.title.replace(/\\n/g, "")} -{" "}
+								{run.category?.replace(/\\n/g, "")}
 							</ThinText>
 						</div>
 						<Spacer></Spacer>
