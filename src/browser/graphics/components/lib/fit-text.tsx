@@ -6,6 +6,7 @@ import {
 	useState,
 } from "react";
 import {BoldText, ThinText, CreditText} from "./text";
+import {newlineString} from "./util";
 
 export const FitText: FunctionComponent<{
 	defaultSize: number;
@@ -45,9 +46,13 @@ export const FitText: FunctionComponent<{
 				...props.style,
 			}}
 		>
-			{!props.credit && props.thin && <ThinText>{props.children}</ThinText>}
-			{!props.credit && !props.thin && <BoldText>{props.children}</BoldText>}
-			{props.credit && <CreditText>{props.children}</CreditText>}
+			{!props.credit && props.thin && (
+				<ThinText>{newlineString(props.children)}</ThinText>
+			)}
+			{!props.credit && !props.thin && (
+				<BoldText>{newlineString(props.children)}</BoldText>
+			)}
+			{props.credit && <CreditText>{newlineString(props.children)}</CreditText>}
 		</div>
 	);
 };
