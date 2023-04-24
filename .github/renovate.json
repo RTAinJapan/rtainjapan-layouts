@@ -1,0 +1,11 @@
+{
+	"extends": [
+		"config:base",
+		"group:allNonMajor",
+		":prHourlyLimitNone",
+		":prConcurrentLimitNone",
+		":dependencyDashboardApproval"
+	],
+	"rangeStrategy": "bump",
+	"postUpdateOptions": ["npmDedupe", "pnpmDedupe", "yarnDedupeHighest"]
+}
