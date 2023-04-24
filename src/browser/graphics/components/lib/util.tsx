@@ -2,11 +2,11 @@
 export const newlineString = (title: string | undefined | null) => {
 	if (!title) return null;
 	const lines = title.split("\\n");
-	const renderTitle: (React.ReactElement | string)[] = [];
+	const renderTitle: React.ReactElement[] = [];
 	for (let i = 0; i < lines.length; i++) {
-		renderTitle.push(lines[i] as string);
+		renderTitle.push(<span key={i}>{lines[i]}</span>);
 		if (i !== lines.length - 1) {
-			renderTitle.push(<br key={`${i}`} />);
+			renderTitle.push(<br key={i} />);
 		}
 	}
 	return renderTitle;
