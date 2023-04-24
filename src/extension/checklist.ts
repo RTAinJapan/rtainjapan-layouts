@@ -11,7 +11,7 @@ export const checklist = (nodecg: NodeCG) => {
 		return;
 	}
 
-	const defaultChecklist = checklist.map((item) => ({
+	const defaultChecklist = [...new Set(checklist)].map((item) => ({
 		name: item,
 		complete: false,
 	}));
