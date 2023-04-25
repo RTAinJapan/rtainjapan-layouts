@@ -261,7 +261,7 @@ export class EditRun extends React.Component<Props, Run> {
 				return null;
 			}
 			// 固定値で4行表示してるので、対象のindexのoldが取得できないこともある
-			const oldRunner: Partial<typeof state.runners[0]> = state.runners[
+			const oldRunner: Partial<(typeof state.runners)[0]> = state.runners[
 				updatingIndex
 			] || {name: ""};
 			const newRunner = {name: "", ...oldRunner, [key]: value};
