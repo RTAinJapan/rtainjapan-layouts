@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  nodecg:
+    build:
+      context: .
+      target: dev
+    init: true
+    ports:
+      - 9090:9090
+    volumes:
+      - nodecg_db:/opt/nodecg/db
+      - nodecg_assets:/opt/nodecg/assets
+      - ./cfg:/opt/nodecg/cfg:ro
+      - ./dashboard:/opt/nodecg/bundles/rtainjapan-layouts/dashboard:ro
+      - ./extension:/opt/nodecg/bundles/rtainjapan-layouts/extension:ro
+      - ./graphics:/opt/nodecg/bundles/rtainjapan-layouts/graphics:ro
+      - ./schemas:/opt/nodecg/bundles/rtainjapan-layouts/schemas:ro
+      - ./shared:/opt/nodecg/bundles/rtainjapan-layouts/shared:ro
+      - ./spotify-callback:/opt/nodecg/bundles/rtainjapan-layouts/spotify-callback:ro
+      - ./src:/opt/nodecg/bundles/rtainjapan-layouts/src:ro
+
+volumes:
+  nodecg_db:
+  nodecg_assets:

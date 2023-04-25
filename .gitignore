@@ -4,6 +4,7 @@ generated/
 /graphics
 /extension
 /bundle-analyzer
+/cfg
 
 # Logs
 logs
