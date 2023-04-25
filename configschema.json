@@ -63,7 +63,9 @@
 			"required": ["clientId", "clientSecret"],
 			"properties": {
 				"clientId": {"type": "string"},
-				"clientSecret": {"type": "string"}
+				"clientSecret": {"type": "string"},
+				"textPrefix": {"type": "string", "default": ""},
+				"textSuffix": {"type": "string", "default": ""}
 			}
 		},
 		"googleApiKey": {"type": "string"},
