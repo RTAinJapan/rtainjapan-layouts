@@ -18,7 +18,7 @@
 		"tracker": {
 			"type": "object",
 			"additionalProperties": false,
-			"required": ["domain", "event", "websocket", "secure"],
+			"required": ["domain", "event", "secure"],
 			"properties": {
 				"domain": {"type": "string"},
 				"event": {"type": "number"},
