@@ -21,7 +21,7 @@ import {Runners} from "./generated/runners";
 import {Donations} from "./generated/donations";
 import {DonationQueue} from "./generated/donation-queue";
 import {VideoControl} from "./generated/video-control";
-import {Announcements} from './generated/announcements';
+import {Announcements} from "./generated/announcements";
 
 type Run = NonNullable<CurrentRun>;
 type Participant = Run["runners"][number];

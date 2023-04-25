@@ -448,7 +448,7 @@ const Omnibar = () => {
 		}
 	}, [rawDonationQueue]);
 
-	const rawAnnouncements = useReplicant('announcements');
+	const rawAnnouncements = useReplicant("announcements");
 	const announcements = useRef<Announcements>([]);
 	useEffect(() => {
 		if (rawAnnouncements) {
@@ -486,7 +486,7 @@ const Omnibar = () => {
 
 		const initialize = (playOshiraseEnter: boolean) => {
 			tl = gsap.timeline();
-			
+
 			const currentAnnouncements = announcements.current;
 			if (currentAnnouncements.length > 0) {
 				if (!lastAnnouncement) {
@@ -494,13 +494,13 @@ const Omnibar = () => {
 					tl.set(announceRowA.current, {y: below});
 					tl.set(announceRowB.current, {y: above});
 					tl.call(() => {
-						setAnnounceA(currentAnnouncements[0])
+						setAnnounceA(currentAnnouncements[0]);
 					});
 					tl.to(announceRowA.current, {y: 0, duration}, "<");
 				} else if (
-					lastAnnouncement.title === currentAnnouncements[0]?.title
-					&& lastAnnouncement.content === currentAnnouncements[0]?.content
-					&& !playOshiraseEnter
+					lastAnnouncement.title === currentAnnouncements[0]?.title &&
+					lastAnnouncement.content === currentAnnouncements[0]?.content &&
+					!playOshiraseEnter
 				) {
 					// 直前の announcement を出し続ける場合
 					// announceRowB を出してる場合があるので announceRowA に入れ替える
@@ -515,7 +515,7 @@ const Omnibar = () => {
 					tl.set(announceRowA.current, {y: below});
 					tl.set(announceRowB.current, {y: above});
 					tl.call(() => {
-						setAnnounceA(currentAnnouncements[0])
+						setAnnounceA(currentAnnouncements[0]);
 					});
 					tl.to(announceRowA.current, {y: 0, duration}, "<");
 				}
@@ -539,7 +539,7 @@ const Omnibar = () => {
 				tl.to(announceRowB.current, {y: above, duration}, "<");
 				lastAnnouncement = undefined;
 			}
-			
+
 			tl.call(() => {
 				const currentBidwars = cloneDeep(bidwars.current).slice(
 					0,
@@ -674,21 +674,21 @@ const Omnibar = () => {
 				backgroundColor: "rgb(230,230,230)",
 			}}
 		>
-			<Row header={announceA?.title || ''} ref={announceRowA}>
+			<Row header={announceA?.title || ""} ref={announceRowA}>
 				<div style={{display: "grid"}}>
 					<ThinText
 						style={{fontSize: "24px", gridColumn: "1 / 2", gridRow: "1 / 2"}}
 					>
-						{ announceA?.content || ''}
+						{announceA?.content || ""}
 					</ThinText>
 				</div>
 			</Row>
-			<Row header={announceB?.title || ''} ref={announceRowB}>
+			<Row header={announceB?.title || ""} ref={announceRowB}>
 				<div style={{display: "grid"}}>
 					<ThinText
 						style={{fontSize: "24px", gridColumn: "1 / 2", gridRow: "1 / 2"}}
 					>
-						{ announceB?.content || ''}
+						{announceB?.content || ""}
 					</ThinText>
 				</div>
 			</Row>

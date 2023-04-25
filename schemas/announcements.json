@@ -1,15 +1,15 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema",
+	"$schema": "http://json-schema.org/draft-04/schema",
 
-    "type": "array",
-    "items": {
-        "type": "object",
-        "properties": {
-            "title": { "type": "string" },
-            "content": { "type": "string" }
-        },
-        "additionalProperties": false,
-        "required": [ "title", "content" ]
-    },
-    "default": []
+	"type": "array",
+	"items": {
+		"type": "object",
+		"properties": {
+			"title": {"type": "string"},
+			"content": {"type": "string"}
+		},
+		"additionalProperties": false,
+		"required": ["title", "content"]
+	},
+	"default": []
 }
