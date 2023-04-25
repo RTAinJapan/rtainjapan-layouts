@@ -7,7 +7,8 @@ import {ThinText} from "./lib/text";
 
 export const Music = () => {
 	const spotify = useReplicant("spotify");
-	const text = `${spotify?.currentTrack?.name} - ${spotify?.currentTrack?.artists} music by サクラチル`;
+	// prettier-ignore
+	const text = `${nodecg.bundleConfig.spotify?.textPrefix ?? ""} ${spotify?.currentTrack?.name} - ${spotify?.currentTrack?.artists} ${nodecg.bundleConfig.spotify?.textSuffix ?? ""}`;
 	const ref = useRef<HTMLDivElement>(null);
 	const [shownText, setShownText] = useState("");
 
