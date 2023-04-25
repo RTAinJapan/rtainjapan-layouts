@@ -43,7 +43,4 @@ COPY --from=build /rtainjapan-layouts/dashboard dashboard
 COPY --from=build /rtainjapan-layouts/extension extension
 COPY --from=build /rtainjapan-layouts/graphics graphics
 COPY --from=build /rtainjapan-layouts/schemas schemas
-COPY --from=build /rtainjapan-layouts/shared shared
 COPY --from=build /rtainjapan-layouts/spotify-callback spotify-callback
-
-WORKDIR /opt/nodecg

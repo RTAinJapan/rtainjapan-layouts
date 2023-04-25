@@ -16,7 +16,6 @@ services:
       - ./extension:/opt/nodecg/bundles/rtainjapan-layouts/extension:ro
       - ./graphics:/opt/nodecg/bundles/rtainjapan-layouts/graphics:ro
       - ./schemas:/opt/nodecg/bundles/rtainjapan-layouts/schemas:ro
-      - ./shared:/opt/nodecg/bundles/rtainjapan-layouts/shared:ro
       - ./spotify-callback:/opt/nodecg/bundles/rtainjapan-layouts/spotify-callback:ro
       - ./src:/opt/nodecg/bundles/rtainjapan-layouts/src:ro
 
