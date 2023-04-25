@@ -22,6 +22,7 @@ import {
 } from "react";
 import {text} from "../styles/colors";
 import {
+	Announcements,
 	BidChallenge,
 	BidWar,
 	Donation,
@@ -447,13 +448,22 @@ const Omnibar = () => {
 		}
 	}, [rawDonationQueue]);
 
-	const oshiraseRef = useRef<HTMLDivElement>(null);
+	const rawAnnouncements = useReplicant("announcements");
+	const announcements = useRef<Announcements>([]);
+	useEffect(() => {
+		if (rawAnnouncements) {
+			announcements.current = rawAnnouncements;
+		}
+	}, [rawAnnouncements]);
+
 	const bidwarRef = useRef<HTMLDivElement>(null);
 	const bidChallengeRef = useRef<HTMLDivElement>(null);
 	const donationCommentRef = useRef<HTMLDivElement>(null);
 
-	const donateLink = useRef<HTMLDivElement>(null);
-	const twitchIncome = useRef<HTMLDivElement>(null);
+	const announceRowA = useRef<HTMLDivElement>(null);
+	const announceRowB = useRef<HTMLDivElement>(null);
+	const [announceA, setAnnounceA] = useState<Announcements[number]>();
+	const [announceB, setAnnounceB] = useState<Announcements[number]>();
 
 	const bidwarRowA = useRef<HTMLDivElement>(null);
 	const bidwarRowB = useRef<HTMLDivElement>(null);
@@ -472,28 +482,63 @@ const Omnibar = () => {
 
 	useEffect(() => {
 		let tl: gsap.core.Timeline;
+		let lastAnnouncement: Announcements[number] | undefined;
 
 		const initialize = (playOshiraseEnter: boolean) => {
 			tl = gsap.timeline();
 
-			if (playOshiraseEnter) {
-				tl.set(oshiraseRef.current, {y: below});
-				tl.set(donateLink.current, {y: 0});
-				tl.set(twitchIncome.current, {y: below});
-				tl.to(bidwarRef.current, {y: above});
-				tl.to(oshiraseRef.current, {y: 0}, "<");
-			} else {
-				tl.set(twitchIncome.current, {y: 0});
-				tl.set(donateLink.current, {y: below});
-				tl.to(twitchIncome.current, {y: above, duration});
-				tl.to(donateLink.current, {y: 0, duration}, "<");
+			const currentAnnouncements = announcements.current;
+			if (currentAnnouncements.length > 0) {
+				if (!lastAnnouncement) {
+					// 初回のinitialize時
+					tl.set(announceRowA.current, {y: below});
+					tl.set(announceRowB.current, {y: above});
+					tl.call(() => {
+						setAnnounceA(currentAnnouncements[0]);
+					});
+					tl.to(announceRowA.current, {y: 0, duration}, "<");
+				} else if (
+					lastAnnouncement.title === currentAnnouncements[0]?.title &&
+					lastAnnouncement.content === currentAnnouncements[0]?.content &&
+					!playOshiraseEnter
+				) {
+					// 直前の announcement を出し続ける場合
+					// announceRowB を出してる場合があるので announceRowA に入れ替える
+					tl.call(() => {
+						setAnnounceA(currentAnnouncements[0]);
+					});
+					tl.set(announceRowA.current, {y: 0});
+					tl.set(announceRowB.current, {y: above});
+				} else {
+					tl.to(announceRowA.current, {y: above, duration});
+					tl.to(announceRowB.current, {y: above, duration}, "<");
+					tl.set(announceRowA.current, {y: below});
+					tl.set(announceRowB.current, {y: above});
+					tl.call(() => {
+						setAnnounceA(currentAnnouncements[0]);
+					});
+					tl.to(announceRowA.current, {y: 0, duration}, "<");
+				}
+				tl.to({}, {}, `+=${oshiraseHold}`);
+				for (let i = 1; i < currentAnnouncements.length; i++) {
+					const nextAnnouncement = currentAnnouncements[i];
+					tl.call(() => {
+						(i % 2 === 1 ? setAnnounceB : setAnnounceA)(nextAnnouncement);
+					});
+					const showing = (i % 2 === 1 ? announceRowB : announceRowA).current;
+					const hiding = (i % 2 === 1 ? announceRowA : announceRowB).current;
+					tl.to(hiding, {y: above, duration});
+					tl.set(showing, {y: below});
+					tl.to(showing, {y: 0, duration}, "<");
+					tl.to({}, {}, `+=${oshiraseHold}`);
+				}
+
+				[lastAnnouncement] = currentAnnouncements.slice(-1);
+			} else if (lastAnnouncement) {
+				tl.to(announceRowA.current, {y: above, duration});
+				tl.to(announceRowB.current, {y: above, duration}, "<");
+				lastAnnouncement = undefined;
 			}
-
-			tl.set(twitchIncome.current, {y: below});
-			tl.to(donateLink.current, {y: above, duration}, `+=${oshiraseHold}`);
-			tl.to(twitchIncome.current, {y: 0, duration}, "<");
-
-			tl.to({}, {}, `+=${oshiraseHold}`);
 
 			tl.call(() => {
 				const currentBidwars = cloneDeep(bidwars.current).slice(
@@ -517,7 +562,9 @@ const Omnibar = () => {
 					return;
 				}
 
-				tl.to(oshiraseRef.current, {y: above, duration});
+				tl.to(announceRowA.current, {y: above, duration});
+				tl.to(announceRowB.current, {y: above, duration}, "<");
+
 				if (currentBidwars && currentBidwars.length > 0) {
 					tl.call(() => {
 						setBidwarA(currentBidwars[0]);
@@ -597,6 +644,8 @@ const Omnibar = () => {
 			});
 		};
 
+		gsap.set(announceRowA.current, {y: below});
+		gsap.set(announceRowB.current, {y: below});
 		gsap.set(bidwarRef.current, {y: below});
 		gsap.set(bidChallengeRef.current, {y: below});
 		gsap.set(donationCommentRef.current, {y: below});
@@ -625,19 +674,21 @@ const Omnibar = () => {
 				backgroundColor: "rgb(230,230,230)",
 			}}
 		>
-			<Row header='RTA in Japanからのお知らせ' ref={oshiraseRef}>
+			<Row header={announceA?.title || ""} ref={announceRowA}>
 				<div style={{display: "grid"}}>
 					<ThinText
 						style={{fontSize: "24px", gridColumn: "1 / 2", gridRow: "1 / 2"}}
-						ref={donateLink}
 					>
-						国境なき医師団への寄付は donate.rtain.jp から
+						{announceA?.content || ""}
 					</ThinText>
+				</div>
+			</Row>
+			<Row header={announceB?.title || ""} ref={announceRowB}>
+				<div style={{display: "grid"}}>
 					<ThinText
 						style={{fontSize: "24px", gridColumn: "1 / 2", gridRow: "1 / 2"}}
-						ref={twitchIncome}
 					>
-						イベント中のTwitchの収益も国境なき医師団に寄付されます
+						{announceB?.content || ""}
 					</ThinText>
 				</div>
 			</Row>

@@ -199,6 +199,14 @@
 				"width": 3,
 				"headerColor": "#00BEBE",
 				"workspace": "2-misc"
+			},
+			{
+				"name": "announcements",
+				"title": "お知らせ",
+				"file": "announcements.html",
+				"width": 4,
+				"headerColor": "#00BEBE",
+				"workspace": "2-misc"
 			}
 		],
 		"graphics": [
