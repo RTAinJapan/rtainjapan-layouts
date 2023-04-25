@@ -16,7 +16,7 @@
 		"test:prettier": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --check",
 		"test:lint": "eslint --ext .ts .",
 		"test:types": "tsc -b src/browser src/extension",
-		"prepare": "simple-git-hooks && npm run schema-types"
+		"prepare": "simple-git-hooks || true"
 	},
 	"simple-git-hooks": {
 		"pre-commit": "npx lint-staged"
