@@ -63,6 +63,8 @@ export const Music = () => {
 				gridTemplateColumns: "24px auto",
 				gap: "10px",
 				placeItems: "center",
+				placeContent: "center",
+				minWidth: "440px",
 			}}
 		>
 			<img src={musicIcon} height={24} width={24}></img>
