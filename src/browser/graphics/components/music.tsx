@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import gsap, {Power2} from "gsap";
 import {useEffect, useRef, useState} from "react";
 import {useReplicant} from "../../use-replicant";
 import musicIcon from "../images/icon/icon_music.svg";
@@ -13,11 +13,26 @@ export const Music = () => {
 
 	useEffect(() => {
 		const tl = gsap.timeline();
-		tl.fromTo(ref.current, {opacity: 1}, {opacity: 0, duration: 0.5});
+		tl.to(ref.current, {
+			x: ref.current?.getBoundingClientRect().width ?? 0,
+			duration: 1,
+			ease: Power2.easeOut,
+		});
+		tl.set(ref.current, {opacity: 0});
 		tl.call(() => {
 			setShownText(text);
+			tl.set(ref.current, {opacity: 1});
+			tl.fromTo(
+				ref.current,
+				{x: ref.current?.getBoundingClientRect().width ?? 0},
+				{
+					x: 0,
+					duration: 1,
+					ease: Power2.easeOut,
+				},
+				"+=0.2",
+			);
 		});
-		tl.fromTo(ref.current, {opacity: 0}, {opacity: 1, duration: 0.5}, "+=0.2");
 		return () => {
 			tl.kill();
 		};
@@ -41,6 +56,8 @@ export const Music = () => {
 				gridTemplateColumns: "24px auto",
 				gap: "10px",
 				placeItems: "center",
+				placeContent: "center",
+				minWidth: "440px",
 			}}
 		>
 			<img src={musicIcon} height={24} width={24}></img>
