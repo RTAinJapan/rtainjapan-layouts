@@ -2,30 +2,26 @@
 
 This is the [NodeCG](http://github.com/nodecg/nodecg) bundle used for the streaming overlay in RTA in Japan events.
 
-## Status
+## Local development
 
-Master branch is currently in progress of huge refactoring from JavaScript to TypeScript, both client-side and server-side.
+Start the development build server/watcher
 
-It will be using [React](https://reactjs.org), [Material UI](https://material-ui.com/) and TypeScript with no [`any`](https://www.typescriptlang.org/docs/handbook/basic-types.html#any).
+```sh
+npm install
+npm run dev
+```
 
-### extension
+`docker compose` is easiest to launch NodeCG on local environment, without installing NodeCG in the parent directory.
 
-- [x] Refactor to TypeScript
-- [x] Eliminate `any`
+```sh
+mkdir cfg
+```
 
-### dashboard
+Then create and configure cfg/nodecg.json and/or cfg/rtainjapan-layouts.json
 
-- [x] Setup ~~webpack~~ ~~Parcel~~ webpack
-- [x] Port all Polymer components to React with TypeScript
-- [ ] Use Material UI API
-- [ ] Eliminate `any`
-
-### graphics
-
-- [x] Setup ~~webpack~~ Parcel
-- [ ] Port all Polymer components to React with TypeScript
-- [ ] Use Material UI API
-- [ ] Eliminate `any`
+```sh
+docker compose up
+```
 
 ## Credits
 
