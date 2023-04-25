@@ -108,9 +108,11 @@ export const tracker = (nodecg: NodeCG) => {
 					return {
 						pk: run.pk,
 						index,
-						title: run.fields.name,
+						title: run.fields.name.replace(/\\n/g, " "),
+						titleLines: run.fields.name.split("\\n"),
 						englishTitle: run.fields.twitch_name,
-						category: run.fields.category,
+						category: run.fields.category.replace(/\\n/g, " "),
+						categoryLines: run.fields.category.split("\\n"),
 						platform: run.fields.console,
 						releaseYear: run.fields.release_year,
 						runDuration: run.fields.run_time,

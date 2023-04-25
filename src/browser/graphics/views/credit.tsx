@@ -1,7 +1,7 @@
 import {FC, useEffect, useRef, useState} from "react";
 import ReactDOM from "react-dom";
 import {FitText} from "../components/lib/fit-text";
-import {BoldText, CreditTitleText} from "../components/lib/text";
+import {BoldText, CreditText, CreditTitleText} from "../components/lib/text";
 import topLogo from "../images/header_rij.png";
 import gsap from "gsap";
 import chunk from "lodash-es/chunk";
@@ -146,9 +146,9 @@ const App: FC = () => {
 						opacity: 0,
 					}}
 				>
-					{names.map((name) => (
-						<FitText defaultSize={40} credit>
-							{name}
+					{names.map((name, i) => (
+						<FitText key={i} defaultSize={40}>
+							<CreditText>{name}</CreditText>
 						</FitText>
 					))}
 				</div>

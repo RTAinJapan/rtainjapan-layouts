@@ -1,4 +1,4 @@
-import {ThinText} from "../lib/text";
+import {BoldText, ThinText} from "../lib/text";
 import {useCurrentRun} from "../lib/hooks";
 import {Divider} from "../lib/divider";
 import {CSSProperties} from "react";
@@ -46,7 +46,11 @@ export const VerticalGameInfo = ({
 				}}
 			>
 				<div></div>
-				<FitText defaultSize={wide ? 60 : 50}>{currentRun?.title}</FitText>
+				<FitText defaultSize={wide ? 60 : 50}>
+					{currentRun?.title.split("\\n").map((line) => (
+						<BoldText>{line}</BoldText>
+					))}
+				</FitText>
 				<div></div>
 			</div>
 
@@ -59,8 +63,14 @@ export const VerticalGameInfo = ({
 				}}
 			>
 				<div></div>
-				<FitText defaultSize={22} thin>
-					{`${currentRun?.category} - ${currentRun?.platform} - ${currentRun?.releaseYear}`}
+				<FitText defaultSize={22}>
+					<ThinText>
+						{[
+							currentRun?.category,
+							currentRun?.platform,
+							currentRun?.releaseYear,
+						].join(" - ")}
+					</ThinText>
 				</FitText>
 				<div></div>
 			</div>

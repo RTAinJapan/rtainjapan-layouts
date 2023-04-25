@@ -1,4 +1,4 @@
-import {ThinText} from "../lib/text";
+import {BoldText, ThinText} from "../lib/text";
 import {useCurrentRun} from "../lib/hooks";
 import {Divider} from "../lib/divider";
 import {FitText} from "../lib/fit-text";
@@ -20,7 +20,11 @@ export const HorizontalGameInfo = (props: {style?: CSSProperties}) => {
 			}}
 		>
 			<Divider></Divider>
-			<FitText defaultSize={60}>{currentRun?.title}</FitText>
+			<FitText defaultSize={60}>
+				{currentRun?.titleLines.map((line) => (
+					<BoldText>{line}</BoldText>
+				))}
+			</FitText>
 			<Divider></Divider>
 			<ThinText
 				style={{
@@ -31,8 +35,10 @@ export const HorizontalGameInfo = (props: {style?: CSSProperties}) => {
 					justifyItems: "start",
 				}}
 			>
-				<FitText defaultSize={22} thin={true}>
-					{currentRun?.category}
+				<FitText defaultSize={22}>
+					{currentRun?.category?.split("\\n").map((line) => (
+						<ThinText>{line}</ThinText>
+					))}
 				</FitText>
 				<div>
 					{currentRun?.platform} - {currentRun?.releaseYear}
