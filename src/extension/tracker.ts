@@ -12,7 +12,7 @@ import type DonationSample from "./sample-json/tracker/donation.json";
 import {BidChallenge, Donation, Run} from "../nodecg/replicants";
 import {uniqBy} from "lodash";
 
-type CommentDonation = typeof DonationSample[number] & {
+type CommentDonation = (typeof DonationSample)[number] & {
 	fields: {comment: string};
 };
 
