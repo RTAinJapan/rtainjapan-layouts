@@ -252,6 +252,13 @@ export const tracker = (nodecg: NodeCG) => {
 	}, 10 * 1000);
 
 	const connectWebSocket = () => {
+		if (!trackerConfig.websocket) {
+			log.warn(
+				"`websocket` config is empty. NodeCG will not connect to donation tracker's WebSocket.",
+			);
+			return;
+		}
+
 		const schema = trackerConfig.secure ? "wss" : "ws";
 		const url = new URL(
 			trackerConfig.websocket,
