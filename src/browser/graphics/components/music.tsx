@@ -1,4 +1,5 @@
-import gsap from "gsap";
+/* eslint-disable react-hooks/exhaustive-deps */
+import gsap, {Power2} from "gsap";
 import {useEffect, useRef, useState} from "react";
 import {useReplicant} from "../../use-replicant";
 import musicIcon from "../images/icon/icon_music.svg";
@@ -10,18 +11,39 @@ export const Music = () => {
 	const text = `${spotify?.currentTrack?.name} - ${spotify?.currentTrack?.artists} music by サクラチル`;
 	const ref = useRef<HTMLDivElement>(null);
 	const [shownText, setShownText] = useState("");
+	const tl = gsap.timeline();
 
 	useEffect(() => {
-		const tl = gsap.timeline();
-		tl.fromTo(ref.current, {opacity: 1}, {opacity: 0, duration: 0.5});
+		tl.to(ref.current, {
+			x: ref.current?.getBoundingClientRect().width ?? 0,
+			duration: 1,
+			ease: Power2.easeOut,
+		});
+		tl.set(ref.current, {opacity: 0});
 		tl.call(() => {
 			setShownText(text);
 		});
-		tl.fromTo(ref.current, {opacity: 0}, {opacity: 1, duration: 0.5}, "+=0.2");
 		return () => {
 			tl.kill();
 		};
 	}, [text]);
+
+	useEffect(() => {
+		tl.set(ref.current, {opacity: 1});
+		tl.fromTo(
+			ref.current,
+			{x: ref.current?.getBoundingClientRect().width ?? 0},
+			{
+				x: 0,
+				duration: 1,
+				ease: Power2.easeOut,
+			},
+			"+=0.2",
+		);
+		return () => {
+			tl.kill();
+		};
+	}, [shownText]);
 
 	return (
 		<div
