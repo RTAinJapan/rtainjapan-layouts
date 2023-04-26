@@ -103,6 +103,7 @@
 			"items": {
 				"type": "string"
 			}
-		}
+		},
+		"donationEnabled": {"type": "boolean", "default": true}
 	}
 }
