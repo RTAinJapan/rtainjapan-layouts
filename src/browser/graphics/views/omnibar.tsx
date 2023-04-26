@@ -711,19 +711,23 @@ const Omnibar = () => {
 				</div>
 			</Row>
 
-			<img
-				src={lineImage}
-				style={{gridColumn: "3 / 4", gridRow: "1 / 2"}}
-			></img>
+			{nodecg.bundleConfig.donationEnabled && (
+				<>
+					<img
+						src={lineImage}
+						style={{gridColumn: "3 / 4", gridRow: "1 / 2"}}
+					></img>
 
-			<div style={{width: "15px"}}></div>
+					<div style={{width: "15px"}}></div>
 
-			<DonationTotal></DonationTotal>
+					<DonationTotal></DonationTotal>
 
-			<img
-				src={sponsorAssets?.[0]?.url}
-				style={{gridColumn: "5 / 6", gridRow: "1 / 2"}}
-			></img>
+					<img
+						src={sponsorAssets?.[0]?.url}
+						style={{gridColumn: "5 / 6", gridRow: "1 / 2"}}
+					></img>
+				</>
+			)}
 		</div>
 	);
 };
