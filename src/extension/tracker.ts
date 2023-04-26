@@ -123,7 +123,7 @@ export const tracker = (nodecg: NodeCG) => {
 								twitch: runner?.fields.twitch,
 								nico: runner?.fields.nico,
 								twitter: runner?.fields.twitter,
-								camera: false,
+								camera: true,
 							};
 						}),
 						commentators: commentators
