@@ -180,7 +180,7 @@
 				"name": "credit-control",
 				"title": "エンドロール操作",
 				"file": "credit-control.html",
-				"width": 1,
+				"width": 2,
 				"headerColor": "#00BEBE",
 				"workspace": "2-misc"
 			},

@@ -12,7 +12,7 @@ import type DonationSample from "./sample-json/tracker/donation.json";
 import {BidChallenge, Donation, Run} from "../nodecg/replicants";
 import {uniqBy} from "lodash";
 
-type CommentDonation = (typeof DonationSample)[number] & {
+type CommentDonation = typeof DonationSample[number] & {
 	fields: {comment: string};
 };
 
@@ -123,7 +123,7 @@ export const tracker = (nodecg: NodeCG) => {
 								twitch: runner?.fields.twitch,
 								nico: runner?.fields.nico,
 								twitter: runner?.fields.twitter,
-								camera: false,
+								camera: true,
 							};
 						}),
 						commentators: commentators
