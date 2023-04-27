@@ -164,7 +164,7 @@
 				"name": "camera",
 				"title": "カメラ",
 				"file": "camera.html",
-				"width": 2,
+				"width": 4,
 				"headerColor": "#00BEBE",
 				"workspace": "2-misc"
 			},
