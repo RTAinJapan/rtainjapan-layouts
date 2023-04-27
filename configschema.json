@@ -18,7 +18,7 @@
 		"tracker": {
 			"type": "object",
 			"additionalProperties": false,
-			"required": ["domain", "event", "websocket", "secure"],
+			"required": ["domain", "event", "secure"],
 			"properties": {
 				"domain": {"type": "string"},
 				"event": {"type": "number"},
@@ -103,6 +103,7 @@
 			"items": {
 				"type": "string"
 			}
-		}
+		},
+		"donationEnabled": {"type": "boolean", "default": true}
 	}
 }
