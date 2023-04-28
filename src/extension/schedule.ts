@@ -95,25 +95,18 @@ export default async (nodecg: NodeCG) => {
 	});
 
 	nodecg.listenFor("modifyRun", (data, cb) => {
-		if (!currentRunRep.value || !nextRunRep.value) {
-			return;
-		}
-
 		let msg: string | null = null;
 
 		try {
-			switch (data.pk) {
-				case currentRunRep.value.pk:
-					currentRunRep.value = {...currentRunRep.value, ...data};
-					break;
-				case nextRunRep.value.pk:
-					nextRunRep.value = {...nextRunRep.value, ...data};
-					break;
-				default:
-					nodecg.log.warn("[modifyRun] run not found:", data);
-					msg = "Error: Run not found";
-					break;
+			if (currentRunRep.value && currentRunRep.value.pk === data.pk) {
+				currentRunRep.value = {...currentRunRep.value, ...data};
+			} else if (nextRunRep.value && nextRunRep.value.pk === data.pk) {
+				nextRunRep.value = {...nextRunRep.value, ...data};
+			} else {
+				nodecg.log.warn("[modifyRun] run not found:", data);
+				msg = "Error: Run not found";
 			}
+
 			if (cb && !cb.handled) {
 				cb(msg);
 			}
