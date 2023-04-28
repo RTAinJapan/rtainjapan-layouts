@@ -6,10 +6,11 @@
 		"type": "object",
 		"additionalProperties": false,
 		"properties": {
+			"pk": {"type": "string"},
 			"name": {"type": "string"},
 			"complete": {"type": "boolean"}
 		},
-		"required": ["name", "complete"]
+		"required": ["pk", "name", "complete"]
 	},
 	"default": []
 }

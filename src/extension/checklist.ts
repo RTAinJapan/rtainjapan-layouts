@@ -1,5 +1,6 @@
-import {isEqual} from "lodash";
+import {clone} from "lodash";
 import {NodeCG} from "./nodecg";
+import {v4 as uuid} from "uuid";
 
 export const checklist = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("tracker");
@@ -11,27 +12,21 @@ export const checklist = (nodecg: NodeCG) => {
 		return;
 	}
 
-	const defaultChecklist = [...new Set(checklist)].map((item) => ({
-		name: item,
-		complete: false,
-	}));
+	const configChecklistNames = [...new Set(checklist)];
 
-	if (checklistRep.value && checklistRep.value.length > 0) {
-		const currentNameList = checklistRep.value.map((item) => item.name);
-		const defaultNameList = defaultChecklist;
-		if (!isEqual(currentNameList, defaultNameList)) {
-			if (checklistRep.value.every((item) => item.complete)) {
-				checklistRep.value = checklist.map((item) => ({
-					name: item,
-					complete: true,
-				}));
-			} else {
-				checklistRep.value = defaultChecklist;
+	const currentChecklist = checklistRep.value ? clone(checklistRep.value) : [];
+
+	checklistRep.value = configChecklistNames.map((name) => {
+		const existsCurrent = currentChecklist.find((c) => c.name === name);
+
+		return (
+			existsCurrent ?? {
+				pk: uuid(),
+				name,
+				complete: false,
 			}
-		}
-	} else {
-		checklistRep.value = defaultChecklist;
-	}
+		);
+	});
 
 	const toggleCheckbox = (payload: {name: string; checked: boolean}) => {
 		if (!checklistRep.value) {
