@@ -18,7 +18,7 @@ import {Tweet} from "../components/tweet";
 import {Music} from "../components/music";
 import {setup} from "../styles/colors";
 import {swipeEnter, swipeExit} from "../components/lib/blur-swipe";
-import {newlineString} from "../components/lib/util";
+import {newlineString} from "../components/lib/new-line-display";
 
 const Spacer = () => <img src={nextGameSpacer} width={50} height={60}></img>;
 

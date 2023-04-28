@@ -1,18 +1,15 @@
 import {
 	CSSProperties,
 	FunctionComponent,
+	ReactNode,
 	useEffect,
 	useRef,
 	useState,
 } from "react";
-import {BoldText, ThinText, CreditText} from "./text";
-import {newlineString} from "./util";
 
 export const FitText: FunctionComponent<{
 	defaultSize: number;
-	children: string | undefined | null;
-	thin?: boolean;
-	credit?: boolean;
+	children: ReactNode;
 	style?: CSSProperties;
 }> = (props) => {
 	const [size, setSize] = useState(props.defaultSize);
@@ -46,13 +43,7 @@ export const FitText: FunctionComponent<{
 				...props.style,
 			}}
 		>
-			{!props.credit && props.thin && (
-				<ThinText>{newlineString(props.children)}</ThinText>
-			)}
-			{!props.credit && !props.thin && (
-				<BoldText>{newlineString(props.children)}</BoldText>
-			)}
-			{props.credit && <CreditText>{newlineString(props.children)}</CreditText>}
+			{props.children}
 		</div>
 	);
 };

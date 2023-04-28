@@ -1,4 +1,4 @@
-import {ThinText} from "../lib/text";
+import {BoldText, ThinText} from "../lib/text";
 import {useCurrentRun} from "../lib/hooks";
 import {Divider} from "../lib/divider";
 import {FitText} from "../lib/fit-text";
@@ -37,14 +37,24 @@ export const SemiHorizontalGameInfo = ({
 			>
 				<div style={{display: "grid", gridTemplateColumns: "15px 1fr 15px"}}>
 					<div></div>
-					<FitText defaultSize={60}>{currentRun?.title}</FitText>
+					<FitText defaultSize={60}>
+						{currentRun?.title.split("\\n").map((line) => (
+							<BoldText>{line}</BoldText>
+						))}
+					</FitText>
 					<div></div>
 				</div>
 				<Divider></Divider>
 				<div style={{display: "grid", gridTemplateColumns: "15px 1fr 15px"}}>
 					<div></div>
-					<FitText thin defaultSize={22}>
-						{`${currentRun?.category} - ${currentRun?.platform} - ${currentRun?.releaseYear}`}
+					<FitText defaultSize={22}>
+						<ThinText>
+							{[
+								currentRun?.category,
+								currentRun?.platform,
+								currentRun?.releaseYear,
+							].join(" - ")}
+						</ThinText>
 					</FitText>
 					<div></div>
 				</div>
