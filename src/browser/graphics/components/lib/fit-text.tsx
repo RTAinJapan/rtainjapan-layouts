@@ -20,13 +20,23 @@ export const FitText: FunctionComponent<{
 
 	useEffect(() => {
 		setSize(props.defaultSize);
+
+		const fixSize = (max: number | undefined, current: number | undefined) => {
+			if (max && current && max < current) {
+				setSize((size) => size * (max / current));
+			}
+		};
+
 		const fit = () => {
 			const maxWidth = ref?.current?.clientWidth;
 			const currentWidth = ref?.current?.scrollWidth;
-			if (maxWidth && currentWidth && maxWidth < currentWidth) {
-				setSize((size) => size * (maxWidth / currentWidth));
-			}
+			fixSize(maxWidth, currentWidth);
+
+			const maxHeight = ref?.current?.clientHeight;
+			const currentHeight = ref?.current?.scrollHeight;
+			fixSize(maxHeight, currentHeight);
 		};
+
 		const interval = setInterval(fit, 100);
 		fit();
 		return () => {
@@ -39,6 +49,7 @@ export const FitText: FunctionComponent<{
 			ref={ref}
 			style={{
 				width: "100%",
+				height: "100%",
 				overflow: "hidden",
 				fontSize: `${size}px`,
 				display: "grid",
