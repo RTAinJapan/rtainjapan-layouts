@@ -43,6 +43,7 @@ export const FitText: FunctionComponent<{
 				fontSize: `${size}px`,
 				display: "grid",
 				placeItems: "center",
+				textAlign: "center",
 				...props.style,
 			}}
 		>
