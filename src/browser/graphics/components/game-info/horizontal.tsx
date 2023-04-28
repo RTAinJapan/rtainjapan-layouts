@@ -31,7 +31,11 @@ export const HorizontalGameInfo = (props: {style?: CSSProperties}) => {
 					justifyItems: "start",
 				}}
 			>
-				<FitText defaultSize={22} thin={true}>
+				<FitText
+					defaultSize={22}
+					thin={true}
+					style={{textAlign: "left", display: "block"}}
+				>
 					{currentRun?.category}
 				</FitText>
 				<div>
