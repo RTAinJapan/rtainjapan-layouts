@@ -39,6 +39,18 @@ const BigNameplate = (props: {innerRef?: RefObject<HTMLDivElement>}) => {
 			<BoldText
 				style={{
 					gridColumn: "2 / 3",
+					gridRow: "2 / 3",
+					alignSelf: "center",
+					justifySelf: "start",
+					fontSize: "24px",
+					textShadow: "0 0 10px black",
+				}}
+			>
+				{camera?.title}
+			</BoldText>
+			<BoldText
+				style={{
+					gridColumn: "2 / 3",
 					gridRow: "3 / 4",
 					alignSelf: "center",
 					justifySelf: "start",
