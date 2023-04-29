@@ -11,6 +11,7 @@ import {useReplicant} from "../../use-replicant";
 import {RefObject, useEffect, useRef} from "react";
 import {swipeEnter, swipeExit} from "../components/lib/blur-swipe";
 import {CameraState} from "../../../nodecg/replicants";
+import {useFitViewport} from "../components/lib/use-fit-viewport";
 
 const BigNameplate = (props: {innerRef?: RefObject<HTMLDivElement>}) => {
 	const camera = useReplicant("camera-name");
@@ -145,8 +146,12 @@ const App = () => {
 		};
 	}, []);
 
+	const ref = useRef<HTMLDivElement>(null);
+	useFitViewport(ref);
+
 	return (
 		<div
+			ref={ref}
 			style={{
 				position: "absolute",
 				width: "1920px",

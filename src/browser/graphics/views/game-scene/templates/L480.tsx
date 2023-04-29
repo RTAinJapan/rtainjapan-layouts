@@ -1,14 +1,17 @@
 import {EventLogo} from "../../../components/event-logo";
 import {HorizontalGameInfo} from "../../../components/game-info/horizontal";
 import background from "../../../images/background.png";
-import {FunctionComponent} from "react";
+import {FunctionComponent, useRef} from "react";
 import {useVerticalGameInfo} from "./vertical-gameinfo";
 import {RoundedHoleImage} from "../../../components/rounded-hole-image";
+import {useFitViewport} from "../../../components/lib/use-fit-viewport";
 
 export const TemplateL480: FunctionComponent<{
 	race?: boolean;
 	hideGameInfo?: boolean;
 }> = ({children, race, hideGameInfo}) => {
+	const ref = useRef<HTMLDivElement>(null);
+	useFitViewport(ref);
 	const gameInfo = useVerticalGameInfo({
 		race,
 		width: "480px",
@@ -19,6 +22,7 @@ export const TemplateL480: FunctionComponent<{
 	});
 	return (
 		<div
+			ref={ref}
 			style={{
 				position: "absolute",
 				overflow: "hidden",

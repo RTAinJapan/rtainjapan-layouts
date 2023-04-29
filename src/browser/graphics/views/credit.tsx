@@ -5,6 +5,7 @@ import {BoldText, CreditTitleText} from "../components/lib/text";
 import topLogo from "../images/header_rij.png";
 import gsap from "gsap";
 import chunk from "lodash-es/chunk";
+import {useFitViewport} from "../components/lib/use-fit-viewport";
 
 const NAME_SHOW_DURATION = 5;
 
@@ -92,8 +93,12 @@ const App: FC = () => {
 		});
 	}, []);
 
+	const ref = useRef<HTMLDivElement>(null);
+	useFitViewport(ref);
+
 	return (
 		<div
+			ref={ref}
 			style={{
 				position: "absolute",
 				width: "1920px",

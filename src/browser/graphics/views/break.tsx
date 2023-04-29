@@ -19,6 +19,7 @@ import {Music} from "../components/music";
 import {setup} from "../styles/colors";
 import {swipeEnter, swipeExit} from "../components/lib/blur-swipe";
 import {newlineString} from "../components/lib/util";
+import {useFitViewport} from "../components/lib/use-fit-viewport";
 
 const Spacer = () => <img src={nextGameSpacer} width={50} height={60}></img>;
 
@@ -265,8 +266,11 @@ const TweetContainer = () => {
 };
 
 const App = () => {
+	const ref = useRef<HTMLDivElement>(null);
+	useFitViewport(ref);
 	return (
 		<div
+			ref={ref}
 			style={{
 				position: "absolute",
 				width: "1920px",

@@ -1,7 +1,8 @@
-import {FunctionComponent} from "react";
+import {FunctionComponent, useRef} from "react";
 import {Camera} from "../../../components/camera";
 import {EventLogo} from "../../../components/event-logo";
 import {SemiHorizontalGameInfo} from "../../../components/game-info/semi-horizontal";
+import {useFitViewport} from "../../../components/lib/use-fit-viewport";
 import {RoundedHoleImage} from "../../../components/rounded-hole-image";
 import {Sponsor} from "../../../components/sponsor";
 import background from "../../../images/background.png";
@@ -11,8 +12,11 @@ export const TemplateH300: FunctionComponent<{race?: boolean}> = ({
 	children,
 	race,
 }) => {
+	const ref = useRef<HTMLDivElement>(null);
+	useFitViewport(ref);
 	return (
 		<div
+			ref={ref}
 			style={{
 				position: "absolute",
 				width: "1920px",

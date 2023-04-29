@@ -5,12 +5,16 @@ import {Music} from "../components/music";
 import rchan from "../images/rchan_count.webm";
 import bg from "../images/background.png";
 import {useReplicant} from "../../use-replicant";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import moment from "moment";
+import {useFitViewport} from "../components/lib/use-fit-viewport";
 
 const App = () => {
 	const countdown = useReplicant("countdown");
 	const [text, setText] = useState("00:00");
+
+	const ref = useRef<HTMLDivElement>(null);
+	useFitViewport(ref);
 
 	useEffect(() => {
 		if (countdown?.state !== "running") {
@@ -43,6 +47,7 @@ const App = () => {
 
 	return (
 		<div
+			ref={ref}
 			style={{
 				position: "absolute",
 				width: "1920px",

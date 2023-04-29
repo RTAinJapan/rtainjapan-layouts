@@ -29,6 +29,7 @@ import {
 	DonationQueue,
 } from "../../../nodecg/replicants";
 import cloneDeep from "lodash-es/cloneDeep";
+import {useFitViewport} from "../components/lib/use-fit-viewport";
 
 const bidTargetLabels = [bidwar1, bidwar2, bidwar3, bidwar4];
 
@@ -656,8 +657,12 @@ const Omnibar = () => {
 		};
 	}, []);
 
+	const ref = useRef<HTMLDivElement>(null);
+	useFitViewport(ref);
+
 	return (
 		<div
+			ref={ref}
 			style={{
 				position: "absolute",
 				overflow: "hidden",
