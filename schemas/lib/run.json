@@ -27,6 +27,10 @@
 		},
 		"twitchGameId": {
 			"type": "string"
+		},
+		"checklistStatus": {
+			"type": "object",
+			"additionalProperties": {"type": "boolean"}
 		}
 	},
 	"required": [
@@ -37,6 +41,7 @@
 		"runDuration",
 		"setupDuration",
 		"runners",
-		"commentators"
+		"commentators",
+		"checklistStatus"
 	]
 }

@@ -5,17 +5,7 @@ export default async (nodecg: NodeCG) => {
 	const scheduleRep = nodecg.Replicant("schedule");
 	const currentRunRep = nodecg.Replicant("current-run");
 	const nextRunRep = nodecg.Replicant("next-run");
-	const checklistRep = nodecg.Replicant("checklist");
 	const timerRep = nodecg.Replicant("timer");
-
-	const resetChecklist = () => {
-		if (checklistRep.value) {
-			checklistRep.value = checklistRep.value.map((item) => ({
-				...item,
-				complete: false,
-			}));
-		}
-	};
 
 	const updateCurrentRun = (index: number) => {
 		if (timerRep.value?.timerState === "Running") {
@@ -24,7 +14,6 @@ export default async (nodecg: NodeCG) => {
 		if (!scheduleRep.value) {
 			return;
 		}
-		resetChecklist();
 		const newCurrentRun = scheduleRep.value[index];
 		if (!newCurrentRun) {
 			return;
@@ -48,7 +37,6 @@ export default async (nodecg: NodeCG) => {
 		if (currentIndex >= scheduleRep.value.length - 1) {
 			return;
 		}
-		resetChecklist();
 		currentRunRep.value = cloneDeep(nextRunRep.value);
 		nextRunRep.value = cloneDeep(scheduleRep.value[currentIndex + 2]);
 	};
@@ -68,7 +56,6 @@ export default async (nodecg: NodeCG) => {
 		if (currentIndex === 0) {
 			return;
 		}
-		resetChecklist();
 		nextRunRep.value = cloneDeep(currentRunRep.value);
 		currentRunRep.value = cloneDeep(scheduleRep.value[currentIndex - 1]);
 	};

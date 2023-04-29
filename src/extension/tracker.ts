@@ -10,7 +10,7 @@ import type BidSample from "./sample-json/tracker/bid.json";
 import type BidTargetSample from "./sample-json/tracker/bidtarget.json";
 import type DonationSample from "./sample-json/tracker/donation.json";
 import {BidChallenge, Donation, Run} from "../nodecg/replicants";
-import {uniqBy} from "lodash";
+import {clone, uniqBy} from "lodash";
 
 type CommentDonation = (typeof DonationSample)[number] & {
 	fields: {comment: string};
@@ -41,6 +41,7 @@ export const tracker = (nodecg: NodeCG) => {
 	const donationQueueRep = nodecg.Replicant("donation-queue", {
 		defaultValue: [],
 	});
+	const checklistRep = nodecg.Replicant("checklist");
 
 	const requestSearch = async <T>(type: string) => {
 		const schema = trackerConfig.secure ? "https" : "http";
@@ -94,6 +95,7 @@ export const tracker = (nodecg: NodeCG) => {
 	};
 	const updateRuns = async () => {
 		try {
+			const prevSchedule = scheduleRep.value ? clone(scheduleRep.value) : [];
 			const [runs, runners, commentators] = await Promise.all([
 				requestSearch<typeof RunSample>("run"),
 				requestSearch<typeof RunnerSample>("runner"),
@@ -105,6 +107,9 @@ export const tracker = (nodecg: NodeCG) => {
 					return run.fields.order !== null;
 				})
 				.map<Run>((run, index) => {
+					const prevCheckStatus = prevSchedule.find(
+						(pRun) => pRun.pk === run.pk,
+					)?.checklistStatus;
 					return {
 						pk: run.pk,
 						index,
@@ -140,6 +145,12 @@ export const tracker = (nodecg: NodeCG) => {
 								};
 							}),
 						twitchGameId: run.fields.twitch_name,
+						checklistStatus: Object.fromEntries(
+							checklistRep.value?.map(({pk}) => {
+								const completed = prevCheckStatus?.[pk] ?? false;
+								return [pk, completed];
+							}) ?? [],
+						),
 					};
 				});
 			runnersRep.value = runners.map((runner) => runner.fields.name);

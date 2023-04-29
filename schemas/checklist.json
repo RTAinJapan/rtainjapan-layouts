@@ -7,10 +7,9 @@
 		"additionalProperties": false,
 		"properties": {
 			"pk": {"type": "string"},
-			"name": {"type": "string"},
-			"complete": {"type": "boolean"}
+			"name": {"type": "string"}
 		},
-		"required": ["pk", "name", "complete"]
+		"required": ["pk", "name"]
 	},
 	"default": []
 }

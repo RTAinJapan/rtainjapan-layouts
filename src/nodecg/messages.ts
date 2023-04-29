@@ -26,7 +26,7 @@ export type MessageMap = {
 	nextRun: {};
 	previousRun: {};
 	modifyRun: {data: Run; error: string};
-	toggleCheckbox: {data: {name: string; checked: boolean}};
+	toggleCheckbox: {data: {runPk: number; checkPk: string; checked: boolean}};
 	resetChecklist: {};
 	"obs:connect": {};
 	"obs:disconnect": {};

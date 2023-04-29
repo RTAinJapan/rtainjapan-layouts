@@ -5,6 +5,9 @@ import {v4 as uuid} from "uuid";
 export const checklist = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("tracker");
 	const checklistRep = nodecg.Replicant("checklist");
+	const scheduleRep = nodecg.Replicant("schedule");
+	const currentRunRep = nodecg.Replicant("current-run");
+	const nextRunRep = nodecg.Replicant("next-run");
 	const checklist = nodecg.bundleConfig.checklist;
 
 	if (!checklist) {
@@ -23,30 +26,33 @@ export const checklist = (nodecg: NodeCG) => {
 			existsCurrent ?? {
 				pk: uuid(),
 				name,
-				complete: false,
 			}
 		);
 	});
 
-	const toggleCheckbox = (payload: {name: string; checked: boolean}) => {
-		if (!checklistRep.value) {
+	const toggleCheckbox = (payload: {
+		runPk: number;
+		checkPk: string;
+		checked: boolean;
+	}) => {
+		if (!checklistRep.value || !scheduleRep.value) {
 			return;
 		}
-		const item = checklistRep.value.find((item) => item.name === payload.name);
-		if (item) {
-			item.complete = payload.checked;
-		}
-	};
 
-	const resetChecklist = () => {
-		if (!checklistRep.value) {
-			return;
+		const scheduleRun = scheduleRep.value.find(
+			(run) => run.pk === payload.runPk,
+		);
+		if (scheduleRun) {
+			scheduleRun.checklistStatus[payload.checkPk] = payload.checked;
 		}
-		for (const item of checklistRep.value) {
-			item.complete = false;
+
+		if (currentRunRep.value?.pk === payload.runPk) {
+			currentRunRep.value.checklistStatus[payload.checkPk] = payload.checked;
+		}
+		if (nextRunRep.value?.pk === payload.runPk) {
+			nextRunRep.value.checklistStatus[payload.checkPk] = payload.checked;
 		}
 	};
 
 	nodecg.listenFor("toggleCheckbox", toggleCheckbox);
-	nodecg.listenFor("resetChecklist", resetChecklist);
 };

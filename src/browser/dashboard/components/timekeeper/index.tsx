@@ -73,6 +73,7 @@ interface State {
 	runners: Array<{name: string | undefined; id: string}>;
 	checklistComplete: boolean;
 	isModalOpened: boolean;
+	checklistPks: string[];
 }
 
 export class Timekeeper extends React.Component<{}, State> {
@@ -81,6 +82,7 @@ export class Timekeeper extends React.Component<{}, State> {
 		runners: [],
 		checklistComplete: false,
 		isModalOpened: false,
+		checklistPks: [],
 	};
 
 	public render() {
@@ -192,17 +194,21 @@ export class Timekeeper extends React.Component<{}, State> {
 			return;
 		}
 		const newRunners = newVal.runners;
+		const checklistComplete = this.state.checklistPks
+			.map((pk) => newVal.checklistStatus[pk])
+			.every((completed) => completed);
 		this.setState({
 			runners: Array.from({length: 4}, (_, index) => {
 				const name = newRunners && newRunners[index] && newRunners[index]?.name;
 				return {name, id: uuidv4()};
 			}),
+			checklistComplete,
 		});
 	};
 
 	private readonly checklistChangeHandler = (newVal: Checklist) => {
 		this.setState({
-			checklistComplete: newVal.every((item) => item.complete),
+			checklistPks: newVal.map((check) => check.pk),
 		});
 	};
 
