@@ -108,7 +108,7 @@ export const tracker = (nodecg: NodeCG) => {
 				})
 				.map<Run>((run, index) => {
 					const prevCompletedChecklist =
-						prevSchedule.find((pRun) => pRun.pk === run.pk)
+						prevSchedule.find((prevRun) => prevRun.pk === run.pk)
 							?.completedChecklist ?? [];
 					return {
 						pk: run.pk,

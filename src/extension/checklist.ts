@@ -1,6 +1,7 @@
 import {clone} from "lodash";
 import {NodeCG} from "./nodecg";
 import {v4 as uuid} from "uuid";
+import {Run} from "../nodecg/generated";
 
 export const checklist = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("tracker");
@@ -30,6 +31,16 @@ export const checklist = (nodecg: NodeCG) => {
 		);
 	});
 
+	const complete = (run: Run, checklistPk: string) => {
+		run.completedChecklist = [...run.completedChecklist, checklistPk];
+	};
+
+	const uncomplete = (run: Run, checklistPk: string) => {
+		run.completedChecklist = run.completedChecklist.filter(
+			(pk) => pk !== checklistPk,
+		);
+	};
+
 	const toggleCheckbox = (payload: {
 		runPk: number;
 		checkPk: string;
@@ -44,36 +55,17 @@ export const checklist = (nodecg: NodeCG) => {
 		);
 
 		if (payload.checked) {
-			scheduleRun &&
-				(scheduleRun.completedChecklist = [
-					...scheduleRun.completedChecklist,
-					payload.checkPk,
-				]);
+			scheduleRun && complete(scheduleRun, payload.checkPk);
 			currentRunRep.value?.pk === payload.runPk &&
-				(currentRunRep.value.completedChecklist = [
-					...currentRunRep.value.completedChecklist,
-					payload.checkPk,
-				]);
+				complete(currentRunRep.value, payload.checkPk);
 			nextRunRep.value?.pk === payload.runPk &&
-				(nextRunRep.value.completedChecklist = [
-					...nextRunRep.value.completedChecklist,
-					payload.checkPk,
-				]);
+				complete(nextRunRep.value, payload.checkPk);
 		} else {
-			scheduleRun &&
-				(scheduleRun.completedChecklist = scheduleRun.completedChecklist.filter(
-					(pk) => pk !== payload.checkPk,
-				));
+			scheduleRun && uncomplete(scheduleRun, payload.checkPk);
 			currentRunRep.value?.pk === payload.runPk &&
-				(currentRunRep.value.completedChecklist =
-					currentRunRep.value.completedChecklist.filter(
-						(pk) => pk !== payload.checkPk,
-					));
+				uncomplete(currentRunRep.value, payload.checkPk);
 			nextRunRep.value?.pk === payload.runPk &&
-				(nextRunRep.value.completedChecklist =
-					nextRunRep.value.completedChecklist.filter(
-						(pk) => pk !== payload.checkPk,
-					));
+				uncomplete(nextRunRep.value, payload.checkPk);
 		}
 	};
 
