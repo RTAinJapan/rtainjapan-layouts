@@ -107,9 +107,9 @@ export const tracker = (nodecg: NodeCG) => {
 					return run.fields.order !== null;
 				})
 				.map<Run>((run, index) => {
-					const prevCheckStatus = prevSchedule.find(
-						(pRun) => pRun.pk === run.pk,
-					)?.checklistStatus;
+					const prevCompletedChecklist =
+						prevSchedule.find((pRun) => pRun.pk === run.pk)
+							?.completedChecklist ?? [];
 					return {
 						pk: run.pk,
 						index,
@@ -145,12 +145,12 @@ export const tracker = (nodecg: NodeCG) => {
 								};
 							}),
 						twitchGameId: run.fields.twitch_name,
-						checklistStatus: Object.fromEntries(
-							checklistRep.value?.map(({pk}) => {
-								const completed = prevCheckStatus?.[pk] ?? false;
-								return [pk, completed];
-							}) ?? [],
-						),
+						completedChecklist:
+							checklistRep.value
+								?.filter((checklist) => {
+									return prevCompletedChecklist.includes(checklist.pk);
+								})
+								.map((checklist) => checklist.pk) ?? [],
 					};
 				});
 			runnersRep.value = runners.map((runner) => runner.fields.name);

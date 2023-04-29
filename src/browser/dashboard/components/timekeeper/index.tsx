@@ -201,11 +201,7 @@ export class Timekeeper extends React.Component<{}, State> {
 				const name = newRunners && newRunners[index] && newRunners[index]?.name;
 				return {name, id: uuidv4()};
 			}),
-			completedChecklist: Object.entries(newVal.checklistStatus)
-				.filter(([_, completed]) => {
-					return completed;
-				})
-				.map(([pk]) => pk),
+			completedChecklist: newVal.completedChecklist,
 		});
 		this.updateChecklistComplete();
 	};

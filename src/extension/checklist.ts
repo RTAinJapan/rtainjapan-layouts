@@ -42,15 +42,38 @@ export const checklist = (nodecg: NodeCG) => {
 		const scheduleRun = scheduleRep.value.find(
 			(run) => run.pk === payload.runPk,
 		);
-		if (scheduleRun) {
-			scheduleRun.checklistStatus[payload.checkPk] = payload.checked;
-		}
 
-		if (currentRunRep.value?.pk === payload.runPk) {
-			currentRunRep.value.checklistStatus[payload.checkPk] = payload.checked;
-		}
-		if (nextRunRep.value?.pk === payload.runPk) {
-			nextRunRep.value.checklistStatus[payload.checkPk] = payload.checked;
+		if (payload.checked) {
+			scheduleRun &&
+				(scheduleRun.completedChecklist = [
+					...scheduleRun.completedChecklist,
+					payload.checkPk,
+				]);
+			currentRunRep.value?.pk === payload.runPk &&
+				(currentRunRep.value.completedChecklist = [
+					...currentRunRep.value.completedChecklist,
+					payload.checkPk,
+				]);
+			nextRunRep.value?.pk === payload.runPk &&
+				(nextRunRep.value.completedChecklist = [
+					...nextRunRep.value.completedChecklist,
+					payload.checkPk,
+				]);
+		} else {
+			scheduleRun &&
+				(scheduleRun.completedChecklist = scheduleRun.completedChecklist.filter(
+					(pk) => pk !== payload.checkPk,
+				));
+			currentRunRep.value?.pk === payload.runPk &&
+				(currentRunRep.value.completedChecklist =
+					currentRunRep.value.completedChecklist.filter(
+						(pk) => pk !== payload.checkPk,
+					));
+			nextRunRep.value?.pk === payload.runPk &&
+				(nextRunRep.value.completedChecklist =
+					nextRunRep.value.completedChecklist.filter(
+						(pk) => pk !== payload.checkPk,
+					));
 		}
 	};
 

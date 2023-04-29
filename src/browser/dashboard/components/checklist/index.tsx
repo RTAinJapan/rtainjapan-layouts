@@ -100,7 +100,7 @@ export class Checklist extends React.Component {
 		checklist: ChecklistType[0],
 		run: Run,
 	) => {
-		const complete = run.checklistStatus[checklist.pk] ?? false;
+		const complete = run.completedChecklist.includes(checklist.pk);
 
 		return (
 			<FormControlLabel

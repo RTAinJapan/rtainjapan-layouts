@@ -51,7 +51,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 		if (
 			!checklistRep.value ||
 			checklistRep.value.some(
-				(item) => !currentRunRep.value?.checklistStatus[item.pk],
+				(item) => !currentRunRep.value?.completedChecklist.includes(item.pk),
 			)
 		) {
 			return;
