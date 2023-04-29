@@ -37,13 +37,15 @@ export const SemiHorizontalGameInfo = ({
 			>
 				<div style={{display: "grid", gridTemplateColumns: "15px 1fr 15px"}}>
 					<div></div>
-					<FitText defaultSize={60}>{currentRun?.title}</FitText>
+					<FitText defaultSize={60} disableHeight>
+						{currentRun?.title}
+					</FitText>
 					<div></div>
 				</div>
 				<Divider></Divider>
 				<div style={{display: "grid", gridTemplateColumns: "15px 1fr 15px"}}>
 					<div></div>
-					<FitText thin defaultSize={22}>
+					<FitText thin defaultSize={22} disableHeight>
 						{`${currentRun?.category} - ${currentRun?.platform} - ${currentRun?.releaseYear}`}
 					</FitText>
 					<div></div>

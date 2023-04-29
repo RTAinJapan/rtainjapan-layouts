@@ -4,9 +4,9 @@ export const newlineString = (title: string | undefined | null) => {
 	const lines = title.split("\\n");
 	const renderTitle: React.ReactElement[] = [];
 	for (let i = 0; i < lines.length; i++) {
-		renderTitle.push(<span key={i}>{lines[i]}</span>);
+		renderTitle.push(<span key={`main${i}`}>{lines[i]}</span>);
 		if (i !== lines.length - 1) {
-			renderTitle.push(<br key={i} />);
+			renderTitle.push(<br key={`br${i}`} />);
 		}
 	}
 	return renderTitle;

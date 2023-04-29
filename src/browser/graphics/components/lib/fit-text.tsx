@@ -14,6 +14,8 @@ export const FitText: FunctionComponent<{
 	thin?: boolean;
 	credit?: boolean;
 	style?: CSSProperties;
+	disableWidth?: boolean;
+	disableHeight?: boolean;
 }> = (props) => {
 	const [size, setSize] = useState(props.defaultSize);
 	const ref = useRef<HTMLDivElement>(null);
@@ -28,13 +30,17 @@ export const FitText: FunctionComponent<{
 		};
 
 		const fit = () => {
-			const maxWidth = ref?.current?.clientWidth;
-			const currentWidth = ref?.current?.scrollWidth;
-			fixSize(maxWidth, currentWidth);
+			if (!props.disableWidth) {
+				const maxWidth = ref?.current?.clientWidth;
+				const currentWidth = ref?.current?.scrollWidth;
+				fixSize(maxWidth, currentWidth);
+			}
 
-			const maxHeight = ref?.current?.clientHeight;
-			const currentHeight = ref?.current?.scrollHeight;
-			fixSize(maxHeight, currentHeight);
+			if (!props.disableHeight) {
+				const maxHeight = ref?.current?.clientHeight;
+				const currentHeight = ref?.current?.scrollHeight;
+				fixSize(maxHeight, currentHeight);
+			}
 		};
 
 		const interval = setInterval(fit, 100);
@@ -42,7 +48,12 @@ export const FitText: FunctionComponent<{
 		return () => {
 			clearInterval(interval);
 		};
-	}, [props.defaultSize, props.children]);
+	}, [
+		props.defaultSize,
+		props.children,
+		props.disableWidth,
+		props.disableHeight,
+	]);
 
 	return (
 		<div
