@@ -39,31 +39,25 @@ export const VerticalGameInfo = ({
 				...style,
 			}}
 		>
-			<div
+			<FitText
 				style={{
-					display: "grid",
-					gridTemplateColumns: wide ? "40px 1fr 40px" : "15px 1fr 15px",
+					padding: wide ? "0 40px" : "0 15px",
 				}}
+				defaultSize={wide ? 60 : 50}
 			>
-				<div></div>
-				<FitText defaultSize={wide ? 60 : 50}>{currentRun?.title}</FitText>
-				<div></div>
-			</div>
-
+				{currentRun?.title}
+			</FitText>
 			<Divider gradient={bg}></Divider>
 
-			<div
+			<FitText
 				style={{
-					display: "grid",
-					gridTemplateColumns: wide ? "40px 1fr 40px" : "15px 1fr 15px",
+					padding: wide ? "0 40px" : "0 15px",
 				}}
+				defaultSize={22}
+				thin
 			>
-				<div></div>
-				<FitText defaultSize={22} thin>
-					{`${currentRun?.category} - ${currentRun?.platform} - ${currentRun?.releaseYear}`}
-				</FitText>
-				<div></div>
-			</div>
+				{`${currentRun?.category} - ${currentRun?.platform} - ${currentRun?.releaseYear}`}
+			</FitText>
 
 			<Divider gradient={bg}></Divider>
 

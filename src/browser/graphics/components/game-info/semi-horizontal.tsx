@@ -35,21 +35,13 @@ export const SemiHorizontalGameInfo = ({
 					placeItems: "center",
 				}}
 			>
-				<div style={{display: "grid", gridTemplateColumns: "15px 1fr 15px"}}>
-					<div></div>
-					<FitText defaultSize={60} disableHeight>
-						{currentRun?.title}
-					</FitText>
-					<div></div>
-				</div>
+				<FitText style={{padding: "0 15px"}} defaultSize={60}>
+					{currentRun?.title}
+				</FitText>
 				<Divider></Divider>
-				<div style={{display: "grid", gridTemplateColumns: "15px 1fr 15px"}}>
-					<div></div>
-					<FitText thin defaultSize={22} disableHeight>
-						{`${currentRun?.category} - ${currentRun?.platform} - ${currentRun?.releaseYear}`}
-					</FitText>
-					<div></div>
-				</div>
+				<FitText style={{padding: "0 15px"}} align='left' thin defaultSize={22}>
+					{`${currentRun?.category} - ${currentRun?.platform} - ${currentRun?.releaseYear}`}
+				</FitText>
 			</div>
 
 			<Divider></Divider>

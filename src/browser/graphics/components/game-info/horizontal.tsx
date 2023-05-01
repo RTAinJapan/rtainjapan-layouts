@@ -22,26 +22,9 @@ export const HorizontalGameInfo = (props: {style?: CSSProperties}) => {
 			<Divider></Divider>
 			<FitText defaultSize={60}>{currentRun?.title}</FitText>
 			<Divider></Divider>
-			<ThinText
-				style={{
-					fontSize: "22px",
-					display: "grid",
-					gridTemplateRows: "auto auto",
-					alignContent: "center",
-					justifyItems: "start",
-				}}
-			>
-				<FitText
-					defaultSize={22}
-					thin={true}
-					style={{textAlign: "left", display: "block"}}
-				>
-					{currentRun?.category}
-				</FitText>
-				<div>
-					{currentRun?.platform} - {currentRun?.releaseYear}
-				</div>
-			</ThinText>
+			<FitText defaultSize={22} thin align='left'>
+				{`${currentRun?.category}\\n${currentRun?.platform} - ${currentRun?.releaseYear}`}
+			</FitText>
 			<Divider></Divider>
 			<div
 				style={{
