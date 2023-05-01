@@ -1,9 +1,14 @@
-import {isEqual} from "lodash";
+import {clone} from "lodash";
 import {NodeCG} from "./nodecg";
+import {v4 as uuid} from "uuid";
+import {Run} from "../nodecg/generated";
 
 export const checklist = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("tracker");
 	const checklistRep = nodecg.Replicant("checklist");
+	const scheduleRep = nodecg.Replicant("schedule");
+	const currentRunRep = nodecg.Replicant("current-run");
+	const nextRunRep = nodecg.Replicant("next-run");
 	const checklist = nodecg.bundleConfig.checklist;
 
 	if (!checklist) {
@@ -11,47 +16,58 @@ export const checklist = (nodecg: NodeCG) => {
 		return;
 	}
 
-	const defaultChecklist = [...new Set(checklist)].map((item) => ({
-		name: item,
-		complete: false,
-	}));
+	const configChecklistNames = [...new Set(checklist)];
 
-	if (checklistRep.value && checklistRep.value.length > 0) {
-		const currentNameList = checklistRep.value.map((item) => item.name);
-		const defaultNameList = defaultChecklist;
-		if (!isEqual(currentNameList, defaultNameList)) {
-			if (checklistRep.value.every((item) => item.complete)) {
-				checklistRep.value = checklist.map((item) => ({
-					name: item,
-					complete: true,
-				}));
-			} else {
-				checklistRep.value = defaultChecklist;
+	const currentChecklist = checklistRep.value ? clone(checklistRep.value) : [];
+
+	checklistRep.value = configChecklistNames.map((name) => {
+		const existsCurrent = currentChecklist.find((c) => c.name === name);
+
+		return (
+			existsCurrent ?? {
+				pk: uuid(),
+				name,
 			}
-		}
-	} else {
-		checklistRep.value = defaultChecklist;
-	}
+		);
+	});
 
-	const toggleCheckbox = (payload: {name: string; checked: boolean}) => {
-		if (!checklistRep.value) {
-			return;
-		}
-		const item = checklistRep.value.find((item) => item.name === payload.name);
-		if (item) {
-			item.complete = payload.checked;
-		}
+	const complete = (run: Run, checklistPk: string) => {
+		run.completedChecklist = [...run.completedChecklist, checklistPk];
 	};
 
-	const resetChecklist = () => {
-		if (!checklistRep.value) {
+	const uncomplete = (run: Run, checklistPk: string) => {
+		run.completedChecklist = run.completedChecklist.filter(
+			(pk) => pk !== checklistPk,
+		);
+	};
+
+	const toggleCheckbox = (payload: {
+		runPk: number;
+		checkPk: string;
+		checked: boolean;
+	}) => {
+		if (!checklistRep.value || !scheduleRep.value) {
 			return;
 		}
-		for (const item of checklistRep.value) {
-			item.complete = false;
+
+		const scheduleRun = scheduleRep.value.find(
+			(run) => run.pk === payload.runPk,
+		);
+
+		if (payload.checked) {
+			scheduleRun && complete(scheduleRun, payload.checkPk);
+			currentRunRep.value?.pk === payload.runPk &&
+				complete(currentRunRep.value, payload.checkPk);
+			nextRunRep.value?.pk === payload.runPk &&
+				complete(nextRunRep.value, payload.checkPk);
+		} else {
+			scheduleRun && uncomplete(scheduleRun, payload.checkPk);
+			currentRunRep.value?.pk === payload.runPk &&
+				uncomplete(currentRunRep.value, payload.checkPk);
+			nextRunRep.value?.pk === payload.runPk &&
+				uncomplete(nextRunRep.value, payload.checkPk);
 		}
 	};
 
 	nodecg.listenFor("toggleCheckbox", toggleCheckbox);
-	nodecg.listenFor("resetChecklist", resetChecklist);
 };

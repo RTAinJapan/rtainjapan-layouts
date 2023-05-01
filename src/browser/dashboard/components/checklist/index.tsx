@@ -1,11 +1,19 @@
-import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import React, {ChangeEvent} from "react";
+import React from "react";
 import styled from "styled-components";
-import {Checklist as ChecklistType, Timer} from "../../../../nodecg/replicants";
+import {Run} from "../../../../nodecg/generated";
+import {
+	Checklist as ChecklistType,
+	CurrentRun,
+	NextRun,
+	Timer,
+} from "../../../../nodecg/replicants";
 import {BorderedBox} from "../lib/bordered-box";
+import {Checkbox} from "./Checkbox";
 
 const checklistRep = nodecg.Replicant("checklist");
+const currentRunRep = nodecg.Replicant("current-run");
+const nextRunRep = nodecg.Replicant("next-run");
 const timerRep = nodecg.Replicant("timer");
 
 const Container = styled(BorderedBox)`
@@ -17,34 +25,60 @@ const Container = styled(BorderedBox)`
 	user-select: none;
 `;
 
+const CurrentRunNameRow = styled.div`
+	text-align: center;
+	grid-column: 1 / 3;
+`;
+
 interface State {
 	checklist: ChecklistType;
-	disable: boolean;
+	currentRun: CurrentRun;
+	nextRun: NextRun;
+	setupNext: boolean;
 }
 
 export class Checklist extends React.Component {
-	public state: State = {checklist: [], disable: false};
+	public state: State = {
+		checklist: [],
+		currentRun: null,
+		nextRun: null,
+		setupNext: false,
+	};
 
 	public componentDidMount() {
 		checklistRep.on("change", this.checklistChangeHandler);
+		currentRunRep.on("change", this.currentRunChangeHandler);
+		nextRunRep.on("change", this.nextRunChangeHandler);
 		timerRep.on("change", this.#timerChangeHandler);
 	}
 
 	public componentWillUnmount() {
 		checklistRep.removeListener("change", this.checklistChangeHandler);
+		currentRunRep.removeListener("change", this.currentRunChangeHandler);
+		nextRunRep.removeListener("change", this.nextRunChangeHandler);
 		timerRep.removeListener("change", this.#timerChangeHandler);
 	}
 
 	#timerChangeHandler = (newVal: Timer) => {
-		const disable = newVal.timerState === "Running";
-		this.setState({disable});
+		const setupNext = ["Running", "Finished"].includes(newVal.timerState);
+		this.setState({setupNext});
 	};
 
 	public render() {
+		const targetRun =
+			this.state.setupNext && this.state.nextRun
+				? this.state.nextRun
+				: this.state.currentRun;
+
 		return (
 			<Container>
-				{this.state.checklist.map((checklist) =>
-					this.makeChecklistElement(checklist),
+				<CurrentRunNameRow>
+					{this.state.setupNext ? "次のゲーム" : "現在のゲーム"} -{" "}
+					{targetRun?.title}
+				</CurrentRunNameRow>
+				{this.state.checklist.map(
+					(checklist) =>
+						targetRun && this.makeChecklistElement(checklist, targetRun),
 				)}
 			</Container>
 		);
@@ -54,25 +88,33 @@ export class Checklist extends React.Component {
 		this.setState({checklist: newVal});
 	};
 
-	private readonly toggleCheckbox = (e: ChangeEvent<any>, checked: boolean) => {
-		nodecg.sendMessage("toggleCheckbox", {
-			name: e.target.name,
-			checked,
-		});
+	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
+		this.setState({currentRun: newVal});
 	};
 
-	private readonly makeChecklistElement = (checklist: ChecklistType[0]) => (
-		<FormControlLabel
-			disabled={this.state.disable}
-			key={checklist.name}
-			control={<Checkbox checked={checklist.complete} name={checklist.name} />}
-			label={checklist.name}
-			onChange={this.toggleCheckbox}
-			style={{
-				margin: "0",
-				borderRadius: "3px",
-				border: "1px solid black",
-			}}
-		/>
-	);
+	private readonly nextRunChangeHandler = (newVal: NextRun) => {
+		this.setState({nextRun: newVal});
+	};
+
+	private readonly makeChecklistElement = (
+		checklist: ChecklistType[0],
+		run: Run,
+	) => {
+		const complete = run.completedChecklist.includes(checklist.pk);
+
+		return (
+			<FormControlLabel
+				key={checklist.name}
+				control={
+					<Checkbox runPk={run.pk} checklist={checklist} complete={complete} />
+				}
+				label={checklist.name}
+				style={{
+					margin: "0",
+					borderRadius: "3px",
+					border: "1px solid black",
+				}}
+			/>
+		);
+	};
 }

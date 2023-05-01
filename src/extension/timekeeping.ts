@@ -50,7 +50,9 @@ export const timekeeping = (nodecg: NodeCG) => {
 		// Don't start if checklist is not completed
 		if (
 			!checklistRep.value ||
-			checklistRep.value.some((item) => !item.complete)
+			checklistRep.value.some(
+				(item) => !currentRunRep.value?.completedChecklist.includes(item.pk),
+			)
 		) {
 			return;
 		}

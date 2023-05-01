@@ -27,6 +27,11 @@
 		},
 		"twitchGameId": {
 			"type": "string"
+		},
+		"completedChecklist": {
+			"type": "array",
+			"items": {"type": "string"},
+			"description": "完了したチェックリストのPKの配列"
 		}
 	},
 	"required": [
@@ -37,6 +42,7 @@
 		"runDuration",
 		"setupDuration",
 		"runners",
-		"commentators"
+		"commentators",
+		"completedChecklist"
 	]
 }

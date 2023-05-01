@@ -73,6 +73,8 @@ interface State {
 	runners: Array<{name: string | undefined; id: string}>;
 	checklistComplete: boolean;
 	isModalOpened: boolean;
+	checklistPks: string[];
+	completedChecklist: string[];
 }
 
 export class Timekeeper extends React.Component<{}, State> {
@@ -81,6 +83,8 @@ export class Timekeeper extends React.Component<{}, State> {
 		runners: [],
 		checklistComplete: false,
 		isModalOpened: false,
+		checklistPks: [],
+		completedChecklist: [],
 	};
 
 	public render() {
@@ -197,18 +201,30 @@ export class Timekeeper extends React.Component<{}, State> {
 				const name = newRunners && newRunners[index] && newRunners[index]?.name;
 				return {name, id: uuidv4()};
 			}),
+			completedChecklist: newVal.completedChecklist,
 		});
+		this.updateChecklistComplete();
 	};
 
 	private readonly checklistChangeHandler = (newVal: Checklist) => {
 		this.setState({
-			checklistComplete: newVal.every((item) => item.complete),
+			checklistPks: newVal.map((check) => check.pk),
 		});
+		this.updateChecklistComplete();
 	};
 
 	private readonly stopwatchRepChangeHandler = (newVal: Timer) => {
 		this.setState({
 			timer: newVal,
+		});
+	};
+
+	private readonly updateChecklistComplete = () => {
+		const checklistComplete = this.state.checklistPks.every((pk) =>
+			this.state.completedChecklist.includes(pk),
+		);
+		this.setState({
+			checklistComplete,
 		});
 	};
 }
