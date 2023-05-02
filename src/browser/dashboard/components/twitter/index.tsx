@@ -39,6 +39,9 @@ interface State {
 	tweets: Tweets;
 }
 
+/**
+ * @deprecated We're going to remove this some time soon.
+ */
 export class Twitter extends React.Component<{}, State> {
 	tweetsRep = nodecg.Replicant("tweets");
 	state: State = {tweets: []};

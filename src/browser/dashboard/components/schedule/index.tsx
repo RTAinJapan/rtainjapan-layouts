@@ -2,24 +2,15 @@ import pink from "@material-ui/core/colors/pink";
 import purple from "@material-ui/core/colors/purple";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import ArrowForward from "@material-ui/icons/ArrowForward";
-import React from "react";
+import {FC, useState} from "react";
 import styled from "styled-components";
-import {
-	CurrentRun,
-	NextRun,
-	Schedule as ScheduleSchema,
-	Timer,
-} from "../../../../nodecg/replicants";
+import {useCurrentRun} from "../../../graphics/components/lib/hooks";
+import {useReplicant} from "../../../use-replicant";
 import {BorderedBox} from "../lib/bordered-box";
 import {ColoredButton} from "../lib/colored-button";
 import {EditRun} from "./edit";
 import {RunInfo} from "./run-info";
 import {Typeahead} from "./typeahead";
-
-const currentRunRep = nodecg.Replicant("current-run");
-const nextRunRep = nodecg.Replicant("next-run");
-const scheduleRep = nodecg.Replicant("schedule");
-const timerRep = nodecg.Replicant("timer");
 
 const Container = styled(BorderedBox)`
 	height: calc(100vh - 32px);
@@ -59,126 +50,69 @@ const movePreviousRun = () => {
 	nodecg.sendMessage("previousRun");
 };
 
-interface State {
-	titles: Array<string | undefined>;
-	currentRun?: CurrentRun;
-	nextRun?: NextRun;
-	edit?: "current" | "next";
-	disablePrevNextButtons: boolean;
-}
+export const Schedule: FC = () => {
+	const currentRun = useCurrentRun();
+	const nextRun = useReplicant("next-run");
+	const [editting, setEditting] = useState<"current" | "next">();
+	const schedule = useReplicant("schedule");
+	const timer = useReplicant("timer");
 
-export class Schedule extends React.Component<{}, State> {
-	public state: State = {
-		titles: [],
-		disablePrevNextButtons: false,
-	};
-
-	public componentDidMount() {
-		scheduleRep.on("change", this.scheduleChangeHandler);
-		currentRunRep.on("change", this.currentRunChangeHandler);
-		nextRunRep.on("change", this.nextRunChangeHandler);
-		timerRep.on("change", this.#timerChangeHandler);
+	if (!timer || !schedule) {
+		return null;
 	}
 
-	#timerChangeHandler = (timer: Timer) => {
-		this.setState({disablePrevNextButtons: timer.timerState === "Running"});
-	};
+	const titles = schedule.map((run) => run.title);
+	const disablePrevNextButtons = timer.timerState === "Running";
 
-	public componentWillUnmount() {
-		scheduleRep.removeListener("change", this.scheduleChangeHandler);
-		currentRunRep.removeListener("change", this.currentRunChangeHandler);
-		nextRunRep.removeListener("change", this.nextRunChangeHandler);
-		timerRep.removeListener("change", this.#timerChangeHandler);
-	}
-
-	public render() {
-		return (
-			<Container>
-				<SelectionContainer>
-					<ColoredButton
-						color={purple}
-						ButtonProps={{
-							onClick: movePreviousRun,
-							disabled: this.state.disablePrevNextButtons,
-						}}
-					>
-						<ArrowBack />前
-					</ColoredButton>
-					<Typeahead
-						disabled={this.state.disablePrevNextButtons}
-						titles={this.state.titles}
-					/>
-					<ColoredButton
-						color={purple}
-						ButtonProps={{
-							onClick: moveNextRun,
-							disabled: this.state.disablePrevNextButtons,
-						}}
-					>
-						次<ArrowForward />
-					</ColoredButton>
-				</SelectionContainer>
-				<RunInfoContainer>
-					{this.state.currentRun && (
-						<RunInfo run={this.state.currentRun} label='現在のゲーム' />
-					)}
-					<Divider />
-					{this.state.nextRun && (
-						<RunInfo run={this.state.nextRun} label='次のゲーム' />
-					)}
-				</RunInfoContainer>
-				<EditControls>
-					<ColoredButton
-						color={pink}
-						ButtonProps={{onClick: this.editCurrentRun}}
-					>
-						編集：現在のゲーム
-					</ColoredButton>
-					<ColoredButton color={pink} ButtonProps={{onClick: this.editNextRun}}>
-						編集：次のゲーム
-					</ColoredButton>
-				</EditControls>
-				<EditRun
-					edit={this.state.edit}
-					defaultValue={
-						(this.state.edit === "current"
-							? this.state.currentRun
-							: this.state.nextRun) || undefined
-					}
-					onFinish={this.onEditFinish}
-				/>
-			</Container>
-		);
-	}
-
-	private readonly editCurrentRun = () => {
-		this.setState({edit: "current"});
-	};
-
-	private readonly editNextRun = () => {
-		this.setState({edit: "next"});
-	};
-
-	private readonly onEditFinish = () => {
-		this.setState({edit: undefined});
-	};
-
-	private readonly scheduleChangeHandler = (newVal: ScheduleSchema) => {
-		if (!newVal) {
-			return;
-		}
-		const titles = newVal.map((run) => run.title);
-		this.setState({titles});
-	};
-
-	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
-		if (!newVal) {
-			return;
-		}
-		this.setState({currentRun: newVal});
-	};
-
-	private readonly nextRunChangeHandler = (newVal: NextRun) => {
-		this.setState({nextRun: newVal || undefined});
-	};
-}
+	return (
+		<Container>
+			<SelectionContainer>
+				<ColoredButton
+					color={purple}
+					ButtonProps={{
+						onClick: movePreviousRun,
+						disabled: disablePrevNextButtons,
+					}}
+				>
+					<ArrowBack />前
+				</ColoredButton>
+				<Typeahead disabled={disablePrevNextButtons} titles={titles} />
+				<ColoredButton
+					color={purple}
+					ButtonProps={{
+						onClick: moveNextRun,
+						disabled: disablePrevNextButtons,
+					}}
+				>
+					次<ArrowForward />
+				</ColoredButton>
+			</SelectionContainer>
+			<RunInfoContainer>
+				{currentRun && <RunInfo run={currentRun} label='現在のゲーム' />}
+				<Divider />
+				{nextRun && <RunInfo run={nextRun} label='次のゲーム' />}
+			</RunInfoContainer>
+			<EditControls>
+				<ColoredButton
+					color={pink}
+					ButtonProps={{onClick: () => setEditting("current")}}
+				>
+					編集：現在のゲーム
+				</ColoredButton>
+				<ColoredButton
+					color={pink}
+					ButtonProps={{onClick: () => setEditting("next")}}
+				>
+					編集：次のゲーム
+				</ColoredButton>
+			</EditControls>
+			<EditRun
+				edit={editting}
+				defaultValue={
+					(editting === "current" ? currentRun : nextRun) || undefined
+				}
+				onFinish={() => setEditting(undefined)}
+			/>
+		</Container>
+	);
+};

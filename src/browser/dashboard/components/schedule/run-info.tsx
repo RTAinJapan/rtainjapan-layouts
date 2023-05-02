@@ -1,5 +1,5 @@
 import Typography from "@material-ui/core/Typography";
-import React from "react";
+import {FC} from "react";
 import styled from "styled-components";
 import {Run} from "../../../../nodecg/replicants";
 
@@ -40,74 +40,57 @@ const MiscContainer = styled.div`
 	justify-content: center;
 `;
 
-export class RunInfo extends React.Component<{
-	run: Run;
-	label: string;
-}> {
-	public render() {
-		const {run, label} = this.props;
-		return (
-			<Container>
-				<Label>
-					{label}&nbsp;(#{run.index})
-				</Label>
-				<LabeledDiv>
-					<Typography variant='caption'>ゲーム</Typography>
-					<div>{run.title}</div>
-				</LabeledDiv>
-				<Divider />
-				<RunnersContainer>{this.renderRunners()}</RunnersContainer>
-				<Divider />
-				<RunnersContainer>{this.renderCommentators()}</RunnersContainer>
-				<Divider />
-				<LabeledDiv>
-					<Typography variant='caption'>カテゴリ</Typography>
-					<div>{run.category}</div>
-				</LabeledDiv>
-				<Divider />
-				<MiscContainer>
-					<LabeledDiv>
-						<Typography variant='caption'>予定時間</Typography>
-						<div>{run.runDuration}</div>
-					</LabeledDiv>
-					<LabeledDiv>
-						<Typography variant='caption'>機種</Typography>
-						<div>{run.platform}</div>
-					</LabeledDiv>
-				</MiscContainer>
-			</Container>
-		);
-	}
+export const RunInfo: FC<{run: Run; label: string}> = ({run, label}) => {
+	const runners = Array.from({length: 4}).map(
+		(_, index) => run.runners[index] ?? null,
+	);
+	const commentators = Array.from({length: 2}).map(
+		(_, index) => run.commentators[index] ?? null,
+	);
 
-	private readonly renderRunners = () =>
-		this.runners().map((runner, index) => (
-			<LabeledDiv key={`runner${runner?.name}${index}`}>
-				<Typography variant='caption'>走者{index + 1}</Typography>
-				<div>{runner && runner.name}</div>
+	return (
+		<Container>
+			<Label>
+				{label}&nbsp;(#{run.index})
+			</Label>
+			<LabeledDiv>
+				<Typography variant='caption'>ゲーム</Typography>
+				<div>{run.title}</div>
 			</LabeledDiv>
-		));
-
-	private readonly renderCommentators = () =>
-		this.commentators().map((commentator, index) => (
-			<LabeledDiv key={`commentator${commentator?.name}${index}`}>
-				<Typography variant='caption'>解説{index + 1}</Typography>
-				<div>{commentator && commentator.name}</div>
+			<Divider />
+			<RunnersContainer>
+				{runners.map((runner, index) => (
+					<LabeledDiv key={`runner${runner?.name}${index}`}>
+						<Typography variant='caption'>走者{index + 1}</Typography>
+						<div>{runner && runner.name}</div>
+					</LabeledDiv>
+				))}
+			</RunnersContainer>
+			<Divider />
+			<RunnersContainer>
+				{commentators.map((commentator, index) => (
+					<LabeledDiv key={`commentator${commentator?.name}${index}`}>
+						<Typography variant='caption'>解説{index + 1}</Typography>
+						<div>{commentator && commentator.name}</div>
+					</LabeledDiv>
+				))}
+			</RunnersContainer>
+			<Divider />
+			<LabeledDiv>
+				<Typography variant='caption'>カテゴリ</Typography>
+				<div>{run.category}</div>
 			</LabeledDiv>
-		));
-
-	private readonly runners = () => {
-		const {runners} = this.props.run;
-		if (!runners) {
-			return [];
-		}
-		return new Array(4).fill(null).map((_, index) => runners[index] || _);
-	};
-
-	private readonly commentators = () => {
-		const {commentators} = this.props.run;
-		if (!commentators) {
-			return [];
-		}
-		return new Array(2).fill(null).map((_, index) => commentators[index] || _);
-	};
-}
+			<Divider />
+			<MiscContainer>
+				<LabeledDiv>
+					<Typography variant='caption'>予定時間</Typography>
+					<div>{run.runDuration}</div>
+				</LabeledDiv>
+				<LabeledDiv>
+					<Typography variant='caption'>機種</Typography>
+					<div>{run.platform}</div>
+				</LabeledDiv>
+			</MiscContainer>
+		</Container>
+	);
+};
