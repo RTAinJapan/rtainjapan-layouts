@@ -82,6 +82,9 @@ const TweetText = styled.div`
 	align-self: start;
 `;
 
+/**
+ * @deprecated We're going to remove this some time soon.
+ */
 export class TweetItem extends React.Component<Props, State> {
 	public state: State = this.calcTimeago();
 

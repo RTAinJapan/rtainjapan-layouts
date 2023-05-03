@@ -1,21 +1,18 @@
+import {FC, useState} from "react";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import TextField from "@material-ui/core/TextField";
-import TypoGraphy from "@material-ui/core/Typography";
-import React from "react";
+import Typography from "@material-ui/core/Typography";
 import styled from "styled-components";
 
 const Container = styled.div`
 	position: absolute;
-
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-
 	background-color: white;
 	box-sizing: border-box;
 	padding: 16px;
-
 	display: flex;
 	flex-flow: column nowrap;
 `;
@@ -36,52 +33,45 @@ interface Props {
 	onFinish(value?: string): void;
 }
 
-interface State {
-	value: string;
-}
+export const EditTimeModal: FC<Props> = ({open, defaultValue, onFinish}) => {
+	const [value, setValue] = useState<string>(defaultValue);
 
-export class EditTimeModal extends React.Component<Props, State> {
-	public state: State = {value: this.props.defaultValue};
+	const isValid = timeFormat.test(value);
 
-	public render() {
-		const isValid = timeFormat.test(this.state.value);
-		return (
-			<Modal
-				aria-labelledby='simple-modal-title'
-				aria-describedby='simple-modal-description'
-				open={this.props.open}
-			>
-				<Container>
-					<TypoGraphy variant='h1'>マスタータイマー更新</TypoGraphy>
-					<Inputs>
-						<TextField
-							required
-							value={this.state.value}
-							margin='normal'
-							error={!isValid}
-							onChange={this.handleInput}
-						/>
-					</Inputs>
-					<Buttons>
-						<Button onClick={this.updateClicked}>更新</Button>
-						<Button onClick={this.cancelClicked}>キャンセル</Button>
-					</Buttons>
-				</Container>
-			</Modal>
-		);
-	}
-
-	private readonly updateClicked = () => {
-		this.props.onFinish(this.state.value);
+	const updateClicked = () => {
+		onFinish(value);
 	};
 
-	private readonly cancelClicked = () => {
-		this.props.onFinish();
+	const cancelClicked = () => {
+		onFinish();
 	};
 
-	private readonly handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-		this.setState({
-			value: e.currentTarget.value,
-		});
+	const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setValue(e.currentTarget.value);
 	};
-}
+
+	return (
+		<Modal
+			aria-labelledby='simple-modal-title'
+			aria-describedby='simple-modal-description'
+			open={open}
+		>
+			<Container>
+				<Typography variant='h1'>マスタータイマー更新</Typography>
+				<Inputs>
+					<TextField
+						required
+						value={value}
+						margin='normal'
+						error={!isValid}
+						onChange={handleInput}
+					/>
+				</Inputs>
+				<Buttons>
+					<Button onClick={updateClicked}>更新</Button>
+					<Button onClick={cancelClicked}>キャンセル</Button>
+				</Buttons>
+			</Container>
+		</Modal>
+	);
+};

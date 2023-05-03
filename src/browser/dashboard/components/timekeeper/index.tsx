@@ -6,19 +6,16 @@ import Edit from "@material-ui/icons/Edit";
 import Pause from "@material-ui/icons/Pause";
 import PlayArrow from "@material-ui/icons/PlayArrow";
 import Refresh from "@material-ui/icons/Refresh";
-import React from "react";
+import {FC, useState} from "react";
 import styled from "styled-components";
 import {v4 as uuidv4} from "uuid";
-import {CurrentRun, Timer, Checklist} from "../../../../nodecg/replicants";
-import {newTimer} from "../../../../nodecg/timer";
+import {Timer} from "../../../../nodecg/replicants";
+import {useTimer} from "../../../graphics/components/lib/hooks";
+import {useReplicant} from "../../../use-replicant";
 import {BorderedBox} from "../lib/bordered-box";
 import {ColoredButton} from "../lib/colored-button";
 import {EditTimeModal} from "./edit";
 import {Runner} from "./runner";
-
-const checklistRep = nodecg.Replicant("checklist");
-const currentRunRep = nodecg.Replicant("current-run");
-const timerRep = nodecg.Replicant("timer");
 
 const Container = styled(BorderedBox)`
 	display: grid;
@@ -68,163 +65,111 @@ const resetTimer = () => {
 	}
 };
 
-interface State {
-	timer: Timer;
-	runners: Array<{name: string | undefined; id: string}>;
-	checklistComplete: boolean;
-	isModalOpened: boolean;
-	checklistPks: string[];
-	completedChecklist: string[];
-}
+export const Timekeeper: FC = () => {
+	const timer = useTimer();
+	const currentRun = useReplicant("current-run");
+	const checklist = useReplicant("checklist");
 
-export class Timekeeper extends React.Component<{}, State> {
-	public state: State = {
-		timer: newTimer(0),
-		runners: [],
-		checklistComplete: false,
-		isModalOpened: false,
-		checklistPks: [],
-		completedChecklist: [],
-	};
+	const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
-	public render() {
-		const {state} = this;
-
-		// Disable start if checklist is not completed or timer is not stopped state
-		const shouldDisableStart =
-			!state.checklistComplete || state.timer.timerState !== "Stopped";
-
-		// Disable pause if timer is not running
-		const shouldDisablePause = state.timer.timerState !== "Running";
-
-		return (
-			<Container>
-				<Timer>{state.timer.formatted}</Timer>
-				<CtrlsContainer>
-					<ColoredButton
-						color={green}
-						ButtonProps={{
-							disabled: shouldDisableStart,
-							onClick: startTimer,
-							fullWidth: true,
-						}}
-					>
-						<PlayArrow />
-						開始
-					</ColoredButton>
-					<ColoredButton
-						color={orange}
-						ButtonProps={{
-							disabled: shouldDisablePause,
-							onClick: stopTimer,
-							fullWidth: true,
-						}}
-					>
-						<Pause />
-						停止
-					</ColoredButton>
-					<ColoredButton
-						color={pink}
-						ButtonProps={{
-							onClick: resetTimer,
-							fullWidth: true,
-						}}
-					>
-						<Refresh />
-						リセット
-					</ColoredButton>
-					<ColoredButton
-						color={grey}
-						ButtonProps={{
-							onClick: this.openEdit,
-							fullWidth: true,
-						}}
-					>
-						<Edit />
-						編集
-					</ColoredButton>
-				</CtrlsContainer>
-
-				<RunnersContainer>
-					{state.runners.map((runner, index) => (
-						<Runner
-							key={runner.id}
-							checklistCompleted={state.checklistComplete}
-							index={index}
-							runner={runner.name}
-							timer={state.timer}
-						>
-							{runner}
-						</Runner>
-					))}
-				</RunnersContainer>
-
-				<EditTimeModal
-					open={state.isModalOpened}
-					defaultValue={state.timer.formatted}
-					onFinish={this.closeModal}
-				/>
-			</Container>
-		);
+	if (!currentRun || !checklist || !timer) {
+		return null;
 	}
 
-	public componentDidMount() {
-		timerRep.on("change", this.stopwatchRepChangeHandler);
-		currentRunRep.on("change", this.currentRunChangeHandler);
-		checklistRep.on("change", this.checklistChangeHandler);
-	}
+	const runners = Array.from({length: 4}).map((_, index) => ({
+		name: currentRun.runners[index]?.name,
+		id: uuidv4(),
+	}));
+	const checklistPks = checklist.map((check) => check.pk);
+	const completedChecklist = currentRun.completedChecklist;
+	const checklistComplete = checklistPks.every((pk) =>
+		completedChecklist.includes(pk),
+	);
 
-	public componentWillUnmount() {
-		timerRep.removeListener("change", this.stopwatchRepChangeHandler);
-		currentRunRep.removeListener("change", this.currentRunChangeHandler);
-		checklistRep.removeListener("change", this.checklistChangeHandler);
-	}
+	// Disable start if checklist is not completed or timer is not stopped state
+	const shouldDisableStart =
+		!checklistComplete || timer.timerState !== "Stopped";
 
-	private readonly closeModal = (value?: string) => {
+	// Disable pause if timer is not running
+	const shouldDisablePause = timer.timerState !== "Running";
+
+	const closeModal = (value?: string) => {
 		if (value) {
 			nodecg.sendMessage("editTime", {index: "master", newTime: value});
 		}
-		this.setState({isModalOpened: false});
+		setIsModalOpened(false);
 	};
 
-	private readonly openEdit = () => {
-		this.setState({isModalOpened: true});
+	const openEdit = () => {
+		setIsModalOpened(true);
 	};
 
-	private readonly currentRunChangeHandler = (newVal: CurrentRun) => {
-		if (!newVal) {
-			return;
-		}
-		const newRunners = newVal.runners;
-		this.setState({
-			runners: Array.from({length: 4}, (_, index) => {
-				const name = newRunners && newRunners[index] && newRunners[index]?.name;
-				return {name, id: uuidv4()};
-			}),
-			completedChecklist: newVal.completedChecklist,
-		});
-		this.updateChecklistComplete();
-	};
+	return (
+		<Container>
+			<Timer>{timer.formatted}</Timer>
+			<CtrlsContainer>
+				<ColoredButton
+					color={green}
+					ButtonProps={{
+						disabled: shouldDisableStart,
+						onClick: startTimer,
+						fullWidth: true,
+					}}
+				>
+					<PlayArrow />
+					開始
+				</ColoredButton>
+				<ColoredButton
+					color={orange}
+					ButtonProps={{
+						disabled: shouldDisablePause,
+						onClick: stopTimer,
+						fullWidth: true,
+					}}
+				>
+					<Pause />
+					停止
+				</ColoredButton>
+				<ColoredButton
+					color={pink}
+					ButtonProps={{
+						onClick: resetTimer,
+						fullWidth: true,
+					}}
+				>
+					<Refresh />
+					リセット
+				</ColoredButton>
+				<ColoredButton
+					color={grey}
+					ButtonProps={{
+						onClick: openEdit,
+						fullWidth: true,
+					}}
+				>
+					<Edit />
+					編集
+				</ColoredButton>
+			</CtrlsContainer>
+			<RunnersContainer>
+				{runners.map((runner, index) => (
+					<Runner
+						key={runner.id}
+						checklistCompleted={checklistComplete}
+						index={index}
+						runner={runner.name}
+						timer={timer}
+					>
+						{runner}
+					</Runner>
+				))}
+			</RunnersContainer>
 
-	private readonly checklistChangeHandler = (newVal: Checklist) => {
-		this.setState({
-			checklistPks: newVal.map((check) => check.pk),
-		});
-		this.updateChecklistComplete();
-	};
-
-	private readonly stopwatchRepChangeHandler = (newVal: Timer) => {
-		this.setState({
-			timer: newVal,
-		});
-	};
-
-	private readonly updateChecklistComplete = () => {
-		const checklistComplete = this.state.checklistPks.every((pk) =>
-			this.state.completedChecklist.includes(pk),
-		);
-		this.setState({
-			checklistComplete,
-		});
-	};
-}
+			<EditTimeModal
+				open={isModalOpened}
+				defaultValue={timer.formatted}
+				onFinish={closeModal}
+			/>
+		</Container>
+	);
+};

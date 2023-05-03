@@ -87,6 +87,9 @@ const TmpRunnerContainer: React.FC<{
 	);
 };
 
+/**
+ * @deprecated Once we have the run editor able to sort runners with buttons, we won't need this anymore
+ */
 class App extends React.Component<{}, State> {
 	state = {
 		tmpRunners: [],

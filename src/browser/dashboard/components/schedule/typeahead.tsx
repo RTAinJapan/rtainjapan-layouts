@@ -3,11 +3,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import ChevronRight from "@material-ui/icons/ChevronRight";
-import Downshift, {
-	ControllerStateAndHelpers,
-	GetItemPropsOptions,
-} from "downshift";
-import React from "react";
+import Downshift, {ControllerStateAndHelpers} from "downshift";
+import {FC, useState} from "react";
 import styled from "styled-components";
 
 const TypeaheadContainer = styled.div`
@@ -16,102 +13,18 @@ const TypeaheadContainer = styled.div`
 	justify-content: center;
 `;
 
-interface State {
-	inputText: string;
-}
-
 interface Props {
 	titles: Array<string | undefined>;
 	disabled: boolean;
 }
 
-export class Typeahead extends React.Component<Props, State> {
-	public state: State = {inputText: ""};
+export const Typeahead: FC<Props> = (props: Props) => {
+	const [inputText, setInputText] = useState("");
 
-	public render() {
-		return (
-			<TypeaheadContainer>
-				<Downshift
-					inputValue={this.state.inputText}
-					onInputValueChange={this.handleInputChange}
-				>
-					{({
-						getInputProps,
-						isOpen,
-						inputValue,
-						highlightedIndex,
-						getItemProps,
-					}: ControllerStateAndHelpers<any>) => (
-						<div>
-							<TextField
-								fullWidth
-								inputProps={getInputProps({
-									placeholder: "ゲーム名",
-								})}
-							/>
-							{isOpen && (
-								<Paper
-									style={{
-										position: "absolute",
-										zIndex: 1,
-									}}
-									square
-								>
-									{this.renderSuggestion(
-										inputValue,
-										getItemProps,
-										highlightedIndex,
-									)}
-								</Paper>
-							)}
-						</div>
-					)}
-				</Downshift>
-				<Button
-					style={{whiteSpace: "nowrap", alignSelf: "flex-end"}}
-					size='small'
-					onClick={this.skipClicked}
-					disabled={this.props.disabled}
-				>
-					スキップ
-					<ChevronRight />
-				</Button>
-			</TypeaheadContainer>
-		);
-	}
-
-	private readonly handleInputChange = (inputText: string) => {
-		this.setState({inputText});
-	};
-
-	private readonly skipClicked = async () => {
-		const index = this.props.titles.indexOf(this.state.inputText);
-		await nodecg.sendMessage("setCurrentRunByIndex", index);
-		this.setState({inputText: ""});
-	};
-
-	private readonly renderSuggestion = (
-		inputValue: string | null,
-		getItemProps: (options: GetItemPropsOptions<any>) => any,
-		highlightedIndex: number | null,
-	) =>
-		this.getSuggestions(inputValue).map((suggestion, index) => (
-			<MenuItem
-				{...getItemProps({
-					item: suggestion,
-				})}
-				key={suggestion}
-				selected={index === highlightedIndex}
-				component='div'
-			>
-				{suggestion}
-			</MenuItem>
-		));
-
-	private readonly getSuggestions = (inputValue: string | null) => {
+	const getSuggestions = (inputValue: string | null) => {
 		const suggestions: string[] = [];
 		if (inputValue) {
-			for (const title of this.props.titles) {
+			for (const title of props.titles) {
 				if (!title) {
 					continue;
 				}
@@ -128,4 +41,67 @@ export class Typeahead extends React.Component<Props, State> {
 		}
 		return suggestions;
 	};
-}
+
+	return (
+		<TypeaheadContainer>
+			<Downshift
+				inputValue={inputText}
+				onInputValueChange={(inputText) => {
+					setInputText(inputText);
+				}}
+			>
+				{({
+					getInputProps,
+					isOpen,
+					inputValue,
+					highlightedIndex,
+					getItemProps,
+				}: ControllerStateAndHelpers<any>) => (
+					<div>
+						<TextField
+							fullWidth
+							inputProps={getInputProps({
+								placeholder: "ゲーム名",
+							})}
+						/>
+						{isOpen && (
+							<Paper
+								style={{
+									position: "absolute",
+									zIndex: 1,
+								}}
+								square
+							>
+								{getSuggestions(inputValue).map((suggestion, index) => (
+									<MenuItem
+										{...getItemProps({
+											item: suggestion,
+										})}
+										key={suggestion}
+										selected={index === highlightedIndex}
+										component='div'
+									>
+										{suggestion}
+									</MenuItem>
+								))}
+							</Paper>
+						)}
+					</div>
+				)}
+			</Downshift>
+			<Button
+				style={{whiteSpace: "nowrap", alignSelf: "flex-end"}}
+				size='small'
+				onClick={async () => {
+					const index = props.titles.indexOf(inputText);
+					await nodecg.sendMessage("setCurrentRunByIndex", index);
+					setInputText("");
+				}}
+				disabled={props.disabled}
+			>
+				スキップ
+				<ChevronRight />
+			</Button>
+		</TypeaheadContainer>
+	);
+};

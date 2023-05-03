@@ -1,34 +1,20 @@
-import React from "react";
+import {FC} from "react";
 import ReactDOM from "react-dom";
-import {Participant} from "../../../nodecg/replicants";
+import {useCurrentRun} from "../../graphics/components/lib/hooks";
 
-interface State {
-	runners: Participant[];
-}
-class App extends React.Component<{}, State> {
-	private readonly currentRunRep = nodecg.Replicant("current-run");
-	state: State = {runners: []};
+const App: FC = () => {
+	const currentRun = useCurrentRun();
+	if (!currentRun) {
+		return null;
+	}
+	const runners = currentRun.runners;
 
-	componentDidMount() {
-		this.currentRunRep.on("change", (newVal) => {
-			if (!newVal) {
-				return;
-			}
-			this.setState({runners: newVal.runners});
-		});
-	}
-	componentWillUnmount() {
-		this.currentRunRep.removeAllListeners("change");
-	}
-
-	render() {
-		return (
-			<div>
-				<div>走者0: {this.state.runners[0] && this.state.runners[0].name}</div>
-				<div>走者1: {this.state.runners[1] && this.state.runners[1].name}</div>
-			</div>
-		);
-	}
-}
+	return (
+		<div>
+			<div>走者0: {runners[0] && runners[0].name}</div>
+			<div>走者1: {runners[1] && runners[1].name}</div>
+		</div>
+	);
+};
 
 ReactDOM.render(<App />, document.getElementById("root"));
