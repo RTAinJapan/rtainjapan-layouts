@@ -8,7 +8,7 @@ import iconRunner from "../../images/icon/icon_runner.svg";
 import iconCommentator from "../../images/icon/icon_commentary.svg";
 import {CSSProperties, HTMLAttributes, useEffect, useRef} from "react";
 import {background, text} from "../../styles/colors";
-import {filterNonNullable} from "../../../../lib/array";
+import {filterNonNullable} from "../../../../extension/lib/array";
 import {Participant, Timer} from "../../../../nodecg/replicants";
 
 const textPlacement = {

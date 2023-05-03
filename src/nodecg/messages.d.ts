@@ -9,11 +9,7 @@ export type MessageMap = {
 		result: string;
 		error: Error;
 	};
-	"twitter:loginSuccess": {
-		data: {oauthToken: string | null; oauthVerifier: string | null};
-	};
-	"spotify:authenticated": {data: {code: string | null}};
-	"spotify:login": {result: string};
+	"spotify:get-login-url": {result: string};
 	discardTweet: {data: string};
 	selectTweet: {data: string};
 	completeRunner: {data: {index: number; forfeit: boolean}};

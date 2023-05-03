@@ -18,6 +18,7 @@ services:
       - ./schemas:/opt/nodecg/bundles/rtainjapan-layouts/schemas:ro
       - ./spotify-callback:/opt/nodecg/bundles/rtainjapan-layouts/spotify-callback:ro
       - ./src:/opt/nodecg/bundles/rtainjapan-layouts/src:ro
+      - ./shared:/opt/nodecg/bundles/rtainjapan-layouts/shared:ro
 
 volumes:
   nodecg_db:

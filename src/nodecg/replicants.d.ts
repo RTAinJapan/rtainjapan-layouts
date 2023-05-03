@@ -72,7 +72,7 @@ type ReplicantMap = {
 	announcements: Announcements;
 };
 
-export {
+export type {
 	ReplicantMap,
 	Checklist,
 	CurrentRun,

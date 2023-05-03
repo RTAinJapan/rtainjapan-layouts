@@ -5,6 +5,7 @@ generated/
 /extension
 /bundle-analyzer
 /cfg
+/shared/dist
 
 # Logs
 logs

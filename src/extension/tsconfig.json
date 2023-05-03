@@ -1,9 +1,10 @@
 {
 	"extends": "../../tsconfig",
 	"compilerOptions": {
-		"noEmit": true,
-		"module": "commonjs",
-		"lib": ["ES2021"]
-	},
-	"include": ["**/*.ts", "../nodecg/**/*.ts"]
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"rootDir": ".",
+		"outDir": "../../extension"
+	}
 }
