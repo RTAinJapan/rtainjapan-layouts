@@ -1,4 +1,6 @@
 import "modern-normalize";
+import "../styles/adobe-fonts.js";
+
 import {useEffect} from "react";
 import ReactDOM from "react-dom";
 import {useReplicant} from "../../use-replicant";

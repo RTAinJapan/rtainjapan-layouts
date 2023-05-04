@@ -1,4 +1,6 @@
 import "modern-normalize";
+import "../styles/adobe-fonts.js";
+
 import ReactDOM from "react-dom";
 
 const params = new URLSearchParams(location.search);

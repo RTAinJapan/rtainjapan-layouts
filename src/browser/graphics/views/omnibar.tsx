@@ -1,4 +1,5 @@
 import "modern-normalize";
+import "../styles/adobe-fonts.js";
 
 import gsap from "gsap";
 import ReactDOM from "react-dom";
