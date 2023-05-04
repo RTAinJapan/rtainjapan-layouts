@@ -72,11 +72,11 @@ export const AnnouncementItem = ({
 					edit ? (
 						<input
 							value={announcement.title}
-							onChange={(e) => {
-								setAnnouncement({
+							onChange={({currentTarget: {value}}) => {
+								setAnnouncement((announcement) => ({
 									...announcement,
-									title: e.currentTarget.value,
-								});
+									title: value,
+								}));
 							}}
 						/>
 					) : (
@@ -87,11 +87,11 @@ export const AnnouncementItem = ({
 					edit ? (
 						<input
 							value={announcement.content}
-							onChange={(e) => {
-								setAnnouncement({
+							onChange={({currentTarget: {value}}) => {
+								setAnnouncement((announcement) => ({
 									...announcement,
-									content: e.currentTarget.value,
-								});
+									content: value,
+								}));
 							}}
 							size={50}
 						/>
