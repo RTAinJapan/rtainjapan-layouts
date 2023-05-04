@@ -70,11 +70,11 @@ const App = () => {
 							edit ? (
 								<input
 									value={cameraNameForm?.title}
-									onChange={(e) => {
-										setCameraNameForm({
+									onChange={({currentTarget: {value}}) => {
+										setCameraNameForm((cameraNameForm) => ({
 											...cameraNameForm,
-											title: e.currentTarget.value,
-										});
+											title: value,
+										}));
 									}}
 									placeholder='タイトル'
 								/>
@@ -86,11 +86,11 @@ const App = () => {
 							edit ? (
 								<input
 									value={cameraNameForm?.name}
-									onChange={(e) => {
-										setCameraNameForm({
+									onChange={({currentTarget: {value}}) => {
+										setCameraNameForm((cameraNameForm) => ({
 											...cameraNameForm,
-											name: e.currentTarget.value,
-										});
+											name: value,
+										}));
 									}}
 									placeholder='名前'
 								/>

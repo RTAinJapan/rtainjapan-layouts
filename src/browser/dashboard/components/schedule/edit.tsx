@@ -50,7 +50,7 @@ const Switch: React.FC<{defaultValue: boolean; onChange: Function}> = (
 			color='primary'
 			checked={enable}
 			onChange={() => {
-				setEnable(!enable);
+				setEnable((enable) => !enable);
 				props.onChange();
 			}}
 		/>
@@ -156,48 +156,38 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 				<TextField
 					defaultValue={defaultValue.title}
 					label='タイトル'
-					onChange={(e) => {
-						setRun((run) =>
-							run ? {...run, title: e.currentTarget.value} : run,
-						);
+					onChange={({currentTarget: {value}}) => {
+						setRun((run) => (run ? {...run, title: value} : run));
 					}}
 				/>
 				<TextField
 					defaultValue={defaultValue.category}
 					label='カテゴリ'
-					onChange={(e) => {
-						setRun((run) =>
-							run ? {...run, category: e.currentTarget.value} : run,
-						);
+					onChange={({currentTarget: {value}}) => {
+						setRun((run) => (run ? {...run, category: value} : run));
 					}}
 				/>
 				<RunnerRow>
 					<TextField
 						defaultValue={defaultValue.runDuration}
 						label='予定タイム'
-						onChange={(e) => {
-							setRun((run) =>
-								run ? {...run, runDuration: e.currentTarget.value} : run,
-							);
+						onChange={({currentTarget: {value}}) => {
+							setRun((run) => (run ? {...run, runDuration: value} : run));
 						}}
 					/>
 					<TextField
 						defaultValue={defaultValue.platform}
 						label='機種'
-						onChange={(e) => {
-							setRun((run) =>
-								run ? {...run, platform: e.currentTarget.value} : run,
-							);
+						onChange={({currentTarget: {value}}) => {
+							setRun((run) => (run ? {...run, platform: value} : run));
 						}}
 					/>
 					<TextField
 						defaultValue={defaultValue.releaseYear}
 						label='発売年'
-						onChange={(e) => {
+						onChange={({currentTarget: {value}}) => {
 							setRun((run) =>
-								run
-									? {...run, releaseYear: parseInt(e.currentTarget.value)}
-									: run,
+								run ? {...run, releaseYear: parseInt(value)} : run,
 							);
 						}}
 					/>
@@ -245,6 +235,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 									<Switch
 										defaultValue={!!runner.camera}
 										onChange={() => {
+											// TODO: should prevent stale state reference
 											updateRunnerInfo(index, "camera", !runner.camera);
 										}}
 									/>

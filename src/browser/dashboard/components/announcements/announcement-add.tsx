@@ -41,11 +41,11 @@ export const AnnouncementAdd = ({onSubmit}: Props) => {
 				primary={
 					<input
 						value={announcement.title}
-						onChange={(e) => {
-							setAnnouncement({
+						onChange={({currentTarget: {value}}) => {
+							setAnnouncement((announcement) => ({
 								...announcement,
-								title: e.currentTarget.value,
-							});
+								title: value,
+							}));
 						}}
 						placeholder='タイトル'
 					/>
@@ -53,11 +53,11 @@ export const AnnouncementAdd = ({onSubmit}: Props) => {
 				secondary={
 					<input
 						value={announcement.content}
-						onChange={(e) => {
-							setAnnouncement({
+						onChange={({currentTarget: {value}}) => {
+							setAnnouncement((announcement) => ({
 								...announcement,
-								content: e.currentTarget.value,
-							});
+								content: value,
+							}));
 						}}
 						placeholder='内容'
 						size={50}
