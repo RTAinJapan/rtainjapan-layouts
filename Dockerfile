@@ -12,7 +12,7 @@ FROM ghcr.io/nodecg/nodecg:2 AS npm
 
 WORKDIR /rtainjapan-layouts
 
-COPY package.json package-lock.json ./
+COPY --chown=nodecg:nodecg package.json package-lock.json ./
 RUN npm ci --omit=dev
 
 
@@ -20,14 +20,13 @@ FROM ghcr.io/nodecg/nodecg:2 AS build
 
 WORKDIR /rtainjapan-layouts
 
-COPY package.json package-lock.json ./
+COPY --chown=nodecg:nodecg package.json package-lock.json ./
 RUN npm ci
 
-COPY schemas schemas
-COPY src src
-COPY spotify-callback spotify-callback
-COPY webpack webpack
-COPY .babelrc configschema.json tsconfig.json webpack.config.ts ./
+COPY --chown=nodecg:nodecg schemas schemas
+COPY --chown=nodecg:nodecg src src
+COPY --chown=nodecg:nodecg spotify-callback spotify-callback
+COPY --chown=nodecg:nodecg configschema.json tsconfig.json vite-plugin-nodecg.mts vite.config.mts ./
 
 RUN npm run build
 
@@ -44,3 +43,4 @@ COPY --from=build /rtainjapan-layouts/extension extension
 COPY --from=build /rtainjapan-layouts/graphics graphics
 COPY --from=build /rtainjapan-layouts/schemas schemas
 COPY --from=build /rtainjapan-layouts/spotify-callback spotify-callback
+COPY --from=build /rtainjapan-layouts/shared shared

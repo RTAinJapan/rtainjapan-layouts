@@ -1,9 +1,11 @@
 {
 	"compilerOptions": {
-		"target": "ES2020",
-		"module": "CommonJS",
-		"lib": ["ES2020"],
-		"declaration": true,
+		"module": "ES2022",
+		"target": "ES2022",
+		"moduleResolution": "bundler",
+		"lib": ["ES2022"],
+		"types": [],
+
 		"sourceMap": true,
 		"importHelpers": true,
 		"resolveJsonModule": true,
@@ -16,10 +18,8 @@
 		"noUncheckedIndexedAccess": true,
 		"noImplicitOverride": false, // TODO: enable this
 		"noPropertyAccessFromIndexSignature": true,
-
-		"moduleResolution": "node",
-		"esModuleInterop": true,
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": true
 	}
 }

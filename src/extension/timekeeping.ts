@@ -1,5 +1,5 @@
 import {setInterval, clearInterval} from "timers";
-import {increment, newTimer, parseSeconds, setSeconds} from "../nodecg/timer";
+import {increment, newTimer, parseSeconds, setSeconds} from "./lib/timer";
 import {NodeCG} from "./nodecg";
 
 const TRY_TICK_INTERVAL = 10;

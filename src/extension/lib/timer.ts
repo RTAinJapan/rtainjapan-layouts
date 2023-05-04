@@ -1,4 +1,4 @@
-import {Timer} from "./replicants";
+import {Timer} from "../../nodecg/replicants";
 
 /**
  * Parses a number of seconds into an HMS object.

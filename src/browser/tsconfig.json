@@ -1,12 +1,10 @@
 {
 	"extends": "../../tsconfig",
 	"compilerOptions": {
-		"target": "ES2018",
-		"module": "ESNext",
-		"lib": ["ESNext", "DOM"],
+		"module": "ES2022",
+		"lib": ["ES2022", "DOM"],
 		"jsx": "react-jsx",
 		"noEmit": true,
-		"types": ["webpack-env"]
-	},
-	"include": ["**/*.ts", "**/*.tsx", "../nodecg/**/*.ts"]
+		"types": ["vite/client"]
+	}
 }
