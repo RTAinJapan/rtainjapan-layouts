@@ -39,7 +39,7 @@ export const SemiHorizontalGameInfo = ({
 					{currentRun?.title}
 				</FitText>
 				<Divider></Divider>
-				<FitText style={{padding: "0 15px"}} align='left' thin defaultSize={22}>
+				<FitText style={{padding: "0 15px"}} thin defaultSize={22}>
 					{`${currentRun?.category} - ${currentRun?.platform} - ${currentRun?.releaseYear}`}
 				</FitText>
 			</div>
