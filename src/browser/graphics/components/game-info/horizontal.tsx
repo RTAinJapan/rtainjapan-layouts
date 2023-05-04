@@ -22,7 +22,7 @@ export const HorizontalGameInfo = (props: {style?: CSSProperties}) => {
 			<Divider></Divider>
 			<FitText defaultSize={60}>{currentRun?.title}</FitText>
 			<Divider></Divider>
-			<FitText defaultSize={22} thin align='left'>
+			<FitText defaultSize={22} thin horizontalAlign='left'>
 				{`${currentRun?.category}\\n${currentRun?.platform} - ${currentRun?.releaseYear}`}
 			</FitText>
 			<Divider></Divider>
