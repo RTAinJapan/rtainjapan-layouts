@@ -38,7 +38,9 @@ export const FitText: FunctionComponent<{
 			return;
 		}
 		const ratio = Math.min(getRatio("width"), getRatio("height"));
-		setFontSize((size) => Math.min(size * ratio, props.defaultSize));
+		setFontSize((size) =>
+			Math.min(Math.floor(size * ratio), props.defaultSize),
+		);
 	}, [getRatio, props.defaultSize]);
 
 	useElementResize(containerRef, resizeCallback);
