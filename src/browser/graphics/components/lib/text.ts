@@ -25,7 +25,7 @@ export const CreditText = styled.div`
 	white-space: nowrap;
 `;
 export const CreditTitleText = styled.div`
-	font-family: minion-3, sans-serif;
+	font-family: minion-3, serif;
 	font-weight: 700; /* bold */
 	font-style: normal;
 	white-space: nowrap;

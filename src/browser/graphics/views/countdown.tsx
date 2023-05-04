@@ -1,4 +1,6 @@
 import "modern-normalize";
+import "../styles/adobe-fonts.js";
+
 import ReactDOM from "react-dom";
 import {TimerText} from "../components/lib/text";
 import {Music} from "../components/music";
