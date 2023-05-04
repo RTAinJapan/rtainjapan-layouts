@@ -64,7 +64,7 @@ export const Sponsor: FunctionComponent<{
 
 			tl.set(sponsorRef.current, {opacity: 0});
 			tl.call(() => {
-				setCurrentSponsor(
+				setCurrentSponsor((currentSponsor) =>
 					assets.length - 1 <= currentSponsor ? 0 : currentSponsor + 1,
 				);
 				initialize();
