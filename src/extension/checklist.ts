@@ -4,7 +4,7 @@ import {v4 as uuid} from "uuid";
 import {Run} from "../nodecg/generated";
 
 export const checklist = (nodecg: NodeCG) => {
-	const log = new nodecg.Logger("tracker");
+	const log = new nodecg.Logger("checklist");
 	const checklistRep = nodecg.Replicant("checklist");
 	const scheduleRep = nodecg.Replicant("schedule");
 	const currentRunRep = nodecg.Replicant("current-run");
