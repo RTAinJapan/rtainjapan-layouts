@@ -1,7 +1,7 @@
 import "modern-normalize";
-import ReactDOM from "react-dom";
 import moment from "moment";
 import {useReplicant} from "../../use-replicant";
+import {render} from "../../render";
 
 const countdownRep = nodecg.Replicant("countdown");
 
@@ -40,4 +40,4 @@ const App = () => {
 	);
 };
 
-ReactDOM.render(<App></App>, document.getElementById("root"));
+render(<App />);

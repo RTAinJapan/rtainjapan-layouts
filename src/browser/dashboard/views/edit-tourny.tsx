@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import ReactDOM from "react-dom";
+import {render} from "../../render";
 
 interface TmpRunner {
 	name: string;
@@ -192,4 +192,4 @@ class App extends React.Component<{}, State> {
 	}
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+render(<App />);

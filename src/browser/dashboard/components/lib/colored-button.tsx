@@ -2,14 +2,14 @@ import Button, {ButtonProps} from "@mui/material/Button";
 import createTheme from "@mui/material/styles/createTheme";
 import {PaletteColorOptions} from "@mui/material/styles/createPalette";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
-import React from "react";
+import {FC, PropsWithChildren} from "react";
 
-interface Props {
+type Props = PropsWithChildren<{
 	color: PaletteColorOptions;
 	ButtonProps?: ButtonProps;
-}
+}>;
 
-export const ColoredButton: React.ComponentType<Props> = (props) => (
+export const ColoredButton: FC<Props> = (props) => (
 	<ThemeProvider
 		theme={(outer: any) =>
 			createTheme({...outer, palette: {primary: props.color}})

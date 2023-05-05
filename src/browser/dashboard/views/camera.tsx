@@ -1,6 +1,5 @@
 import "modern-normalize";
 import styled from "styled-components";
-import ReactDOM from "react-dom";
 import Button from "@mui/material/Button";
 import IconButton, {IconButtonProps} from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -14,6 +13,7 @@ import ListItemText from "@mui/material/ListItemText";
 import {useEffect, useState} from "react";
 
 import {useReplicant} from "../../use-replicant";
+import {render} from "../../render";
 
 const Container = styled.div`
 	padding: 8px;
@@ -150,4 +150,4 @@ const App = () => {
 	);
 };
 
-ReactDOM.render(<App></App>, document.getElementById("root"));
+render(<App />);

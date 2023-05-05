@@ -1,6 +1,6 @@
 import "modern-normalize";
 import {useReplicant} from "../../use-replicant";
-import ReactDOM from "react-dom";
+import {render} from "../../render";
 
 const flashWarningRep = nodecg.Replicant("flash-warning");
 
@@ -21,4 +21,4 @@ const App = () => {
 	);
 };
 
-ReactDOM.render(<App></App>, document.getElementById("root"));
+render(<App />);

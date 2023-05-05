@@ -2,7 +2,6 @@ import "modern-normalize";
 import "../styles/adobe-fonts.js";
 
 import gsap from "gsap";
-import ReactDOM from "react-dom";
 import {BoldText, ThinText, TimerText} from "../components/lib/text";
 import arrowImage from "../images/footer_arrow.svg";
 import arrowImage1 from "../images/footer_arrow1.svg";
@@ -17,6 +16,7 @@ import {
 	CSSProperties,
 	forwardRef,
 	Fragment,
+	PropsWithChildren,
 	useEffect,
 	useRef,
 	useState,
@@ -31,6 +31,7 @@ import {
 } from "../../../nodecg/replicants";
 import cloneDeep from "lodash-es/cloneDeep";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
+import {render} from "../../render.js";
 
 const bidTargetLabels = [bidwar1, bidwar2, bidwar3, bidwar4];
 
@@ -138,7 +139,7 @@ const donationHold = 20;
 const MAX_BIDWAR_DISPLAY = 4;
 const MAX_CHALLENGE_DISPLAY = 2;
 
-const Row = forwardRef<HTMLDivElement, {header: string; children?: unknown}>(
+const Row = forwardRef<HTMLDivElement, PropsWithChildren<{header: string}>>(
 	(props, ref) => {
 		return (
 			<div
@@ -738,4 +739,4 @@ const Omnibar = () => {
 	);
 };
 
-ReactDOM.render(<Omnibar />, document.getElementById("root"));
+render(<Omnibar />);

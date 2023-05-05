@@ -1,8 +1,8 @@
-import ReactDOM from "react-dom";
+import "modern-normalize";
 import createTheme from "@mui/material/styles/createTheme";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
-import "modern-normalize";
 import {Donations} from "../components/donations";
+import {render} from "../../render";
 
 const theme = createTheme();
 
@@ -14,4 +14,4 @@ const App = () => {
 	);
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+render(<App />);

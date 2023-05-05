@@ -1,7 +1,7 @@
-import ReactDOM from "react-dom";
 import Button from "@mui/material/Button";
 import {useReplicant} from "../../use-replicant";
 import {FC} from "react";
+import {render} from "../../render";
 
 const spotifyConfig = nodecg.bundleConfig.spotify;
 
@@ -32,4 +32,4 @@ const App: FC = () => {
 	);
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+render(<App />);

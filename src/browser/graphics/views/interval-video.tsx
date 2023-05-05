@@ -2,8 +2,8 @@ import "modern-normalize";
 import "../styles/adobe-fonts.js";
 
 import {useEffect} from "react";
-import ReactDOM from "react-dom";
 import {useReplicant} from "../../use-replicant";
+import {render} from "../../render.js";
 
 const videoControlRep = nodecg.Replicant("video-control");
 
@@ -97,4 +97,4 @@ const App = () => {
 	);
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+render(<App />);

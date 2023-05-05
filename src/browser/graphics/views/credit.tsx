@@ -2,13 +2,13 @@ import "modern-normalize";
 import "../styles/adobe-fonts.js";
 
 import {FC, useEffect, useRef, useState} from "react";
-import ReactDOM from "react-dom";
 import {FitText} from "../components/lib/fit-text";
 import {BoldText, CreditTitleText} from "../components/lib/text";
 import topLogo from "../images/header_rij.png";
 import gsap from "gsap";
 import chunk from "lodash-es/chunk";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
+import {render} from "../../render.js";
 
 const NAME_SHOW_DURATION = 5;
 
@@ -198,4 +198,4 @@ const App: FC = () => {
 	);
 };
 
-ReactDOM.render(<App></App>, document.getElementById("root"));
+render(<App />);

@@ -1,6 +1,6 @@
 import {FC} from "react";
-import ReactDOM from "react-dom";
 import {useCurrentRun} from "../../graphics/components/lib/hooks";
+import {render} from "../../render";
 
 const App: FC = () => {
 	const currentRun = useCurrentRun();
@@ -17,4 +17,4 @@ const App: FC = () => {
 	);
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+render(<App />);
