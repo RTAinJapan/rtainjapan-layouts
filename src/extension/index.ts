@@ -1,4 +1,3 @@
-import "source-map-support/register";
 import {checklist} from "./checklist";
 import schedule from "./schedule";
 import {spotify} from "./spotify";
@@ -8,7 +7,7 @@ import {twitch} from "./twitch";
 import {setupObs} from "./obs";
 import {tracker} from "./tracker";
 
-export = (nodecg: NodeCG) => {
+export default (nodecg: NodeCG) => {
 	checklist(nodecg);
 	schedule(nodecg);
 	spotify(nodecg);

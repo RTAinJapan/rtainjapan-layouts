@@ -4,25 +4,80 @@ import * as cheerio from "cheerio";
 import {ResolvedConfig, Manifest, Plugin} from "vite";
 import {globbySync} from "globby";
 import {deleteSync} from "del";
-import getPort, {portNumbers} from "get-port";
+import getPort from "get-port";
+import {
+	rollup,
+	watch as rollupWatch,
+	type RollupOptions,
+	type RollupWatcherEvent,
+	type RollupWatcher,
+} from "rollup";
+
+const setupExtensionBuild = async (options: RollupOptions) => {
+	const resolvedOptions: RollupOptions = {
+		...options,
+		output: {
+			dir: "./extension",
+			format: "cjs",
+			sourcemap: true,
+			interop: "auto",
+			...options.output,
+		},
+		watch: {
+			clearScreen: false,
+			...options.watch,
+		},
+	};
+
+	let watcher: RollupWatcher;
+	const watchEventHandler = (event: RollupWatcherEvent) => {
+		if (event.code === "BUNDLE_END" || event.code === "ERROR") {
+			event.result?.close();
+		}
+	};
+
+	return {
+		watch: () => {
+			watcher = rollupWatch(resolvedOptions);
+			watcher.on("event", watchEventHandler);
+		},
+		unwatch: () => {
+			watcher.off("event", watchEventHandler);
+			watcher.close();
+		},
+		build: async () => {
+			const bundle = await rollup(resolvedOptions);
+			await bundle.close();
+		},
+	};
+};
 
 type PluginConfig = {
 	bundleName: string;
 	graphics?: string | string[];
 	dashboard?: string | string[];
+	extension?: string | RollupOptions;
 	template?: string | {graphics: string; dashboard: string};
 };
 
-export default ({
+export default async ({
 	bundleName,
 	graphics = [],
 	dashboard = [],
+	extension,
 	template = "./src/template.html",
-}: PluginConfig): Plugin => {
+}: PluginConfig): Promise<Plugin> => {
 	let config: ResolvedConfig;
 	let protocol: string;
 	let host: string;
 	let port: number;
+
+	const extensionRollup =
+		typeof extension === "string"
+			? await setupExtensionBuild({input: extension})
+			: typeof extension === "object"
+			? await setupExtensionBuild(extension)
+			: extension;
 
 	const graphicsInputs = globbySync(graphics);
 	const dashboardInputs = globbySync(dashboard);
@@ -57,7 +112,7 @@ export default ({
 			const $ = cheerio.load(templateHtml);
 			const head = $("head");
 
-			if (config.mode === "development") {
+			if (config.command === "serve") {
 				const address = `${protocol}://${host}:${port}`;
 				head.append(`
 					<script type="module">
@@ -85,7 +140,7 @@ export default ({
 				);
 			}
 
-			if (config.mode === "production") {
+			if (config.command === "build") {
 				const inputName = input.replace(/^\.\//, "");
 				const manifest: Manifest = JSON.parse(
 					fs.readFileSync(
@@ -131,9 +186,7 @@ export default ({
 				typeof baseConfig.server?.host === "string"
 					? baseConfig.server.host
 					: "localhost";
-			port =
-				baseConfig.server?.port ??
-				(await getPort({port: portNumbers(3000, 4000)}));
+			port = baseConfig.server?.port ?? (await getPort());
 
 			return {
 				appType: "mpa",
@@ -154,6 +207,7 @@ export default ({
 					outDir: "./shared/dist",
 					assetsDir: ".",
 				},
+				clearScreen: baseConfig.clearScreen ?? false,
 			};
 		},
 
@@ -161,15 +215,25 @@ export default ({
 			config = resolvedConfig;
 		},
 
-		buildStart: () => {
+		buildStart: async () => {
 			if (config.command === "serve") {
 				generateHtmlFiles();
+				extensionRollup?.watch();
+			}
+			if (config.command === "build") {
+				await extensionRollup?.build();
 			}
 		},
 
 		writeBundle: () => {
 			if (config.command === "build") {
 				generateHtmlFiles();
+			}
+		},
+
+		buildEnd: () => {
+			if (config.command === "serve") {
+				extensionRollup?.unwatch();
 			}
 		},
 	};

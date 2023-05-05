@@ -1,4 +1,4 @@
-import {setTimeout} from "timers";
+import {setTimeout} from "node:timers";
 import {isEqual} from "lodash";
 import got, {RequestError} from "got";
 import {NodeCG} from "./nodecg";
