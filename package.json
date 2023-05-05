@@ -8,7 +8,7 @@
 		"dev:tsc": "tsc -b src/browser src/extension -w --preserveWatchOutput",
 		"dev:vite": "vite",
 		"format": "npm run test:prettier -- --write",
-		"build": "npm run schema-types && vite build && tsc -b src/extension",
+		"build": "vite build",
 		"schema-types": "del-cli src/nodecg/generated && nodecg schema-types -o src/nodecg/generated",
 		"test": "run-s schema-types test:*",
 		"test:prettier": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --check",
@@ -41,6 +41,7 @@
 		"moment": "^2.29.4",
 		"obs-websocket-js": "5.0.2",
 		"tslib": "2.5.0",
+		"uuid": "^9.0.0",
 		"ws": "8.13.0"
 	},
 	"devDependencies": {
@@ -82,12 +83,13 @@
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
 		"react-highlight-words": "0.20.0",
+		"rollup-plugin-esbuild": "^5.0.0",
+		"rollup-plugin-node-externals": "^5.1.2",
 		"simple-git-hooks": "^2.8.1",
 		"sort-package-json": "1.57.0",
 		"styled-components": "5.3.10",
 		"ts-nodecg": "0.3.1",
 		"typescript": "5.0.4",
-		"uuid": "8.3.2",
 		"vite": "^4.3.1"
 	},
 	"nodecg": {

@@ -7,6 +7,8 @@ RUN npm ci
 
 WORKDIR /opt/nodecg
 
+CMD ["node", "--enable-source-maps", "index.js"]
+
 
 FROM ghcr.io/nodecg/nodecg:2 AS npm
 
@@ -44,3 +46,7 @@ COPY --from=build /rtainjapan-layouts/graphics graphics
 COPY --from=build /rtainjapan-layouts/schemas schemas
 COPY --from=build /rtainjapan-layouts/spotify-callback spotify-callback
 COPY --from=build /rtainjapan-layouts/shared shared
+
+WORKDIR /opt/nodecg
+
+CMD ["node", "--enable-source-maps", "index.js"]
