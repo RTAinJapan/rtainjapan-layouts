@@ -2,7 +2,6 @@ import "modern-normalize";
 import "../styles/adobe-fonts.js";
 
 import gsap from "gsap";
-import ReactDOM from "react-dom";
 import topLogo from "../images/header_rij.png";
 import background from "../images/background.png";
 import {RoundedHoleImage} from "../components/rounded-hole-image";
@@ -14,6 +13,7 @@ import {RefObject, useEffect, useRef} from "react";
 import {swipeEnter, swipeExit} from "../components/lib/blur-swipe";
 import {CameraState} from "../../../nodecg/replicants";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
+import {render} from "../../render.js";
 
 const BigNameplate = (props: {innerRef?: RefObject<HTMLDivElement>}) => {
 	const camera = useReplicant("camera-name");
@@ -196,4 +196,4 @@ const App = () => {
 	);
 };
 
-ReactDOM.render(<App></App>, document.getElementById("root"));
+render(<App />);

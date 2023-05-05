@@ -159,9 +159,7 @@ export const Timekeeper: FC = () => {
 						index={index}
 						runner={runner.name}
 						timer={timer}
-					>
-						{runner}
-					</Runner>
+					/>
 				))}
 			</RunnersContainer>
 

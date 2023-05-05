@@ -2,7 +2,6 @@ import "modern-normalize";
 import "../styles/adobe-fonts.js";
 
 import gsap, {Power2} from "gsap";
-import ReactDOM from "react-dom";
 import {BoldText, ThinText} from "../components/lib/text";
 import nextGameBar from "../images/next_line.svg";
 import nextGameSpacer from "../images/next_spacer.svg";
@@ -21,6 +20,7 @@ import {setup} from "../styles/colors";
 import {swipeEnter, swipeExit} from "../components/lib/blur-swipe";
 import {newlineString} from "../components/lib/util";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
+import {render} from "../../render.js";
 
 const Spacer = () => <img src={nextGameSpacer} width={50} height={60}></img>;
 
@@ -292,4 +292,4 @@ const App = () => {
 	);
 };
 
-ReactDOM.render(<App></App>, document.getElementById("root"));
+render(<App />);

@@ -5,7 +5,7 @@ import Cancel from "@mui/icons-material/Cancel";
 import Edit from "@mui/icons-material/Edit";
 import Flag from "@mui/icons-material/Flag";
 import Undo from "@mui/icons-material/Undo";
-import React, {useState} from "react";
+import {FC, useState} from "react";
 import styled, {css} from "styled-components";
 import {Timer} from "../../../../nodecg/replicants";
 import {ColoredButton} from "../lib/colored-button";
@@ -56,14 +56,14 @@ const EmptySlot = styled.div`
 	text-align: center;
 `;
 
-interface Props {
+type Props = {
 	runner: string | undefined;
 	checklistCompleted: boolean;
 	timer: Timer;
 	index: number;
-}
+};
 
-export const Runner: React.FunctionComponent<Props> = (props) => {
+export const Runner: FC<Props> = (props) => {
 	const [isModalOpened, setIsModalOpened] = useState(false);
 
 	if (!props.runner) {

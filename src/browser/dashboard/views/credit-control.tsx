@@ -1,5 +1,4 @@
 import "modern-normalize";
-import ReactDOM from "react-dom";
 import styled from "@mui/material/styles/styled";
 import Accordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
@@ -7,6 +6,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {useReplicant} from "../../use-replicant";
+import {render} from "../../render";
 
 const AccordionSummary = styled(MuiAccordionSummary)({
 	"&.MuiAccordionSummary-root": {
@@ -76,4 +76,4 @@ const App = () => {
 	);
 };
 
-ReactDOM.render(<App></App>, document.getElementById("root"));
+render(<App />);

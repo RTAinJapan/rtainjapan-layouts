@@ -2,12 +2,12 @@ import "modern-normalize/modern-normalize.css";
 
 import createTheme from "@mui/material/styles/createTheme";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
-import ReactDOM from "react-dom";
 import styled from "styled-components";
 import {Checklist} from "../components/checklist";
 import {Schedule} from "../components/schedule";
 import {Timekeeper} from "../components/timekeeper";
 import {Twitter} from "../components/twitter";
+import {render} from "../../render";
 
 const Container = styled.div`
 	color: #000;
@@ -79,4 +79,4 @@ if (spotifyCallback) {
 	}
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+render(<App />);

@@ -2,7 +2,6 @@ import "modern-normalize";
 import createTheme from "@mui/material/styles/createTheme";
 import LinearProgress from "@mui/material/LinearProgress";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
-import ReactDOM from "react-dom";
 import {useReplicant} from "../../use-replicant";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
@@ -11,6 +10,7 @@ import StopIcon from "@mui/icons-material/Stop";
 import {ColoredButton} from "../components/lib/colored-button";
 import {green, lightBlue, orange, pink} from "@mui/material/colors";
 import {VideoControl} from "../../../nodecg/generated";
+import {render} from "../../render";
 
 const parseDuration = (seconds: number) => {
 	return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(
@@ -175,4 +175,4 @@ const App = () => {
 	);
 };
 
-ReactDOM.render(<App></App>, document.getElementById("root"));
+render(<App />);

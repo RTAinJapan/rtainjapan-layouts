@@ -1,7 +1,6 @@
 import "modern-normalize";
 import "../styles/adobe-fonts.js";
 
-import ReactDOM from "react-dom";
 import {TimerText} from "../components/lib/text";
 import {Music} from "../components/music";
 import rchan from "../images/rchan_count.webm";
@@ -10,6 +9,7 @@ import {useReplicant} from "../../use-replicant";
 import {useEffect, useRef, useState} from "react";
 import moment from "moment";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
+import {render} from "../../render.js";
 
 const App = () => {
 	const countdown = useReplicant("countdown");
@@ -93,4 +93,4 @@ const App = () => {
 	);
 };
 
-ReactDOM.render(<App></App>, document.getElementById("root"));
+render(<App />);

@@ -1,4 +1,4 @@
-import {FunctionComponent, useRef} from "react";
+import {FunctionComponent, PropsWithChildren, useRef} from "react";
 import {Camera} from "../../../components/camera";
 import {EventLogo} from "../../../components/event-logo";
 import {SemiHorizontalGameInfo} from "../../../components/game-info/semi-horizontal";
@@ -8,10 +8,11 @@ import {Sponsor} from "../../../components/sponsor";
 import background from "../../../images/background.png";
 import {HorizontalNamePlates} from "./horizontal-nameplates";
 
-export const TemplateH300: FunctionComponent<{race?: boolean}> = ({
-	children,
-	race,
-}) => {
+type Props = PropsWithChildren<{
+	race?: boolean;
+}>;
+
+export const TemplateH300: FunctionComponent<Props> = ({children, race}) => {
 	const ref = useRef<HTMLDivElement>(null);
 	useFitViewport(ref);
 	return (

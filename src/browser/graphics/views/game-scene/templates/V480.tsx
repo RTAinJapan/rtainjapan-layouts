@@ -1,12 +1,14 @@
 import {EventLogo} from "../../../components/event-logo";
 import background from "../../../images/background.png";
 import {VerticalGameInfo} from "../../../components/game-info/vertical";
-import {FunctionComponent, useRef} from "react";
+import {FunctionComponent, PropsWithChildren, useRef} from "react";
 import {useVerticalGameInfo} from "./vertical-gameinfo";
 import {RoundedHoleImage} from "../../../components/rounded-hole-image";
 import {useFitViewport} from "../../../components/lib/use-fit-viewport";
 
-export const TemplateV480: FunctionComponent = ({children}) => {
+export const TemplateV480: FunctionComponent<PropsWithChildren> = ({
+	children,
+}) => {
 	const ref = useRef<HTMLDivElement>(null);
 	useFitViewport(ref);
 	const gameInfo = useVerticalGameInfo({

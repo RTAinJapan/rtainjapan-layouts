@@ -1,15 +1,21 @@
 import {EventLogo} from "../../../components/event-logo";
 import {HorizontalGameInfo} from "../../../components/game-info/horizontal";
 import background from "../../../images/background.png";
-import {FunctionComponent, useRef} from "react";
+import {FunctionComponent, PropsWithChildren, useRef} from "react";
 import {useVerticalGameInfo} from "./vertical-gameinfo";
 import {RoundedHoleImage} from "../../../components/rounded-hole-image";
 import {useFitViewport} from "../../../components/lib/use-fit-viewport";
 
-export const TemplateL420: FunctionComponent<{
+type Props = PropsWithChildren<{
 	race?: boolean;
 	hideGameInfo?: boolean;
-}> = ({children, race, hideGameInfo}) => {
+}>;
+
+export const TemplateL420: FunctionComponent<Props> = ({
+	children,
+	race,
+	hideGameInfo,
+}) => {
 	const ref = useRef<HTMLDivElement>(null);
 	useFitViewport(ref);
 	const gameInfo = useVerticalGameInfo({
