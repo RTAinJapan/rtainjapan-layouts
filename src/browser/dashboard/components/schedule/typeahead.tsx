@@ -1,8 +1,8 @@
-import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import ChevronRight from "@material-ui/icons/ChevronRight";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import ChevronRight from "@mui/icons-material/ChevronRight";
 import Downshift, {ControllerStateAndHelpers} from "downshift";
 import {FC, useState} from "react";
 import styled from "styled-components";

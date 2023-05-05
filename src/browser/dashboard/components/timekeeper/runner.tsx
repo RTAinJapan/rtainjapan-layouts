@@ -1,10 +1,10 @@
-import blueGrey from "@material-ui/core/colors/blueGrey";
-import green from "@material-ui/core/colors/green";
-import grey from "@material-ui/core/colors/grey";
-import Cancel from "@material-ui/icons/Cancel";
-import Edit from "@material-ui/icons/Edit";
-import Flag from "@material-ui/icons/Flag";
-import Undo from "@material-ui/icons/Undo";
+import blueGrey from "@mui/material/colors/blueGrey";
+import green from "@mui/material/colors/green";
+import grey from "@mui/material/colors/grey";
+import Cancel from "@mui/icons-material/Cancel";
+import Edit from "@mui/icons-material/Edit";
+import Flag from "@mui/icons-material/Flag";
+import Undo from "@mui/icons-material/Undo";
 import React, {useState} from "react";
 import styled, {css} from "styled-components";
 import {Timer} from "../../../../nodecg/replicants";

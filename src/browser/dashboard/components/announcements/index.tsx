@@ -1,4 +1,4 @@
-import List from "@material-ui/core/List";
+import List from "@mui/material/List";
 import styled from "styled-components";
 import {useReplicant} from "../../../use-replicant";
 import {AnnouncementAdd} from "./announcement-add";

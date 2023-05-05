@@ -1,6 +1,6 @@
-import {ListItemText, Typography} from "@material-ui/core";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import {ListItemText, Typography} from "@mui/material";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import styled from "styled-components";
 import {Donation} from "../../../../nodecg/replicants";
 import {useReplicant} from "../../../use-replicant";

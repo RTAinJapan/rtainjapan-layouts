@@ -1,7 +1,7 @@
-import pink from "@material-ui/core/colors/pink";
-import purple from "@material-ui/core/colors/purple";
-import ArrowBack from "@material-ui/icons/ArrowBack";
-import ArrowForward from "@material-ui/icons/ArrowForward";
+import pink from "@mui/material/colors/pink";
+import purple from "@mui/material/colors/purple";
+import ArrowBack from "@mui/icons-material/ArrowBack";
+import ArrowForward from "@mui/icons-material/ArrowForward";
 import {FC, useState} from "react";
 import styled from "styled-components";
 import {useCurrentRun} from "../../../graphics/components/lib/hooks";

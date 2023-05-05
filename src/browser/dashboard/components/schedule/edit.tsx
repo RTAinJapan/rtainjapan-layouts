@@ -1,14 +1,14 @@
-import Button from "@material-ui/core/Button";
-import Modal from "@material-ui/core/Modal";
-import TextField from "@material-ui/core/TextField";
-import TypoGraphy from "@material-ui/core/Typography";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import TypoGraphy from "@mui/material/Typography";
 import max from "lodash/max";
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import styled from "styled-components";
 import {Participant, Run} from "../../../../nodecg/replicants";
-import MuiSwitch from "@material-ui/core/Switch";
-import VideocamIcon from "@material-ui/icons/Videocam";
-import VideocamOffIcon from "@material-ui/icons/VideocamOff";
+import MuiSwitch from "@mui/material/Switch";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 
 const Container = styled.div`
 	position: absolute;
@@ -130,6 +130,12 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 		}
 	};
 
+	useEffect(() => {
+		if (edit) {
+			setRun(defaultValue);
+		}
+	}, [edit, defaultValue]);
+
 	if (!defaultValue) {
 		return null;
 	}
@@ -142,11 +148,6 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 			aria-labelledby='simple-modal-title'
 			aria-describedby='simple-modal-description'
 			open={Boolean(edit)}
-			onRendered={() => {
-				if (defaultValue) {
-					setRun(defaultValue);
-				}
-			}}
 		>
 			<Container>
 				<TypoGraphy variant='h4'>

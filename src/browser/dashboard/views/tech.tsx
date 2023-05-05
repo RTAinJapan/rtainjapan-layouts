@@ -1,7 +1,7 @@
 import "modern-normalize/modern-normalize.css";
 
-import createTheme from "@material-ui/core/styles/createTheme";
-import {MuiThemeProvider} from "@material-ui/core/styles";
+import createTheme from "@mui/material/styles/createTheme";
+import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import {Checklist} from "../components/checklist";
@@ -31,15 +31,17 @@ const LeftColumn = styled(Column)`
 `;
 
 const appTheme = createTheme({
-	props: {
+	components: {
 		MuiButton: {
-			variant: "contained",
+			defaultProps: {
+				variant: "contained",
+			},
 		},
 	},
 });
 
 export const App = () => (
-	<MuiThemeProvider theme={appTheme}>
+	<ThemeProvider theme={appTheme}>
 		<Container>
 			<LeftColumn>
 				<Timekeeper />
@@ -52,7 +54,7 @@ export const App = () => (
 				<Twitter />
 			</Column>
 		</Container>
-	</MuiThemeProvider>
+	</ThemeProvider>
 );
 
 const twitterCallback = localStorage.getItem("twitter-callback");

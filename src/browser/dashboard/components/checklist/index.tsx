@@ -1,4 +1,4 @@
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import {FC} from "react";
 import styled from "styled-components";
 import {useCurrentRun} from "../../../graphics/components/lib/hooks";

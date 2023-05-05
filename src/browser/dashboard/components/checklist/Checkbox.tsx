@@ -1,5 +1,5 @@
 import {Checklist} from "../../../../nodecg/replicants";
-import MuiCheckbox from "@material-ui/core/Checkbox";
+import MuiCheckbox from "@mui/material/Checkbox";
 
 type Props = {
 	checklist: Checklist[number];

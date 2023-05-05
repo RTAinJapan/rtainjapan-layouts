@@ -1,20 +1,20 @@
 import "modern-normalize";
 import ReactDOM from "react-dom";
-import {withStyles} from "@material-ui/core/styles";
-import Accordion from "@material-ui/core/Accordion";
-import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import styled from "@mui/material/styles/styled";
+import Accordion from "@mui/material/Accordion";
+import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {useReplicant} from "../../use-replicant";
 
-const AccordionSummary = withStyles({
-	root: {
+const AccordionSummary = styled(MuiAccordionSummary)({
+	"&.MuiAccordionSummary-root": {
 		backgroundColor: "rgba(0, 0, 0, .1)",
 		borderBottom: "1px solid rgba(0, 0, 0, .125)",
 	},
-	expanded: {},
-})(MuiAccordionSummary);
+	"&..Mui-expanded": {},
+});
 
 const Credit: React.FC<{
 	title: string;

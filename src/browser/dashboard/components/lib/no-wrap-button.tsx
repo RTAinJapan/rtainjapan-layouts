@@ -1,4 +1,4 @@
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import styled from "styled-components";
 
 export const NoWrapButton = styled(Button)`

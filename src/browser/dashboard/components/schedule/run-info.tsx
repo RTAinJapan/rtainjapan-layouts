@@ -1,4 +1,4 @@
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import {FC} from "react";
 import styled from "styled-components";
 import {Run} from "../../../../nodecg/replicants";
