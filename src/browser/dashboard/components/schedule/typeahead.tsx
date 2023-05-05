@@ -1,11 +1,10 @@
 import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import ChevronRight from "@mui/icons-material/ChevronRight";
-import Downshift, {ControllerStateAndHelpers} from "downshift";
+import Autocomplete from "@mui/material/Autocomplete";
 import {FC, useState} from "react";
 import styled from "styled-components";
+import {Run} from "../../../../nodecg/replicants";
 
 const TypeaheadContainer = styled.div`
 	display: flex;
@@ -14,88 +13,38 @@ const TypeaheadContainer = styled.div`
 `;
 
 interface Props {
-	titles: Array<string | undefined>;
+	runs: Run[];
 	disabled: boolean;
 }
 
 export const Typeahead: FC<Props> = (props: Props) => {
-	const [inputText, setInputText] = useState("");
-
-	const getSuggestions = (inputValue: string | null) => {
-		const suggestions: string[] = [];
-		if (inputValue) {
-			for (const title of props.titles) {
-				if (!title) {
-					continue;
-				}
-				const titleMatches = title
-					.toLowerCase()
-					.includes(inputValue.toLowerCase());
-				if (titleMatches) {
-					suggestions.push(title);
-				}
-				if (suggestions.length >= 5) {
-					break;
-				}
-			}
-		}
-		return suggestions;
-	};
+	const [selectedRun, setSelectedRun] = useState<{pk: number}>();
 
 	return (
 		<TypeaheadContainer>
-			<Downshift
-				inputValue={inputText}
-				onInputValueChange={(inputText) => {
-					setInputText(inputText);
+			<Autocomplete
+				options={props.runs.map((run) => ({
+					pk: run.pk,
+					label: run.title,
+				}))}
+				isOptionEqualToValue={(option, value) => {
+					return option.pk === value.pk;
 				}}
-			>
-				{({
-					getInputProps,
-					isOpen,
-					inputValue,
-					highlightedIndex,
-					getItemProps,
-				}: ControllerStateAndHelpers<any>) => (
-					<div>
-						<TextField
-							fullWidth
-							inputProps={getInputProps({
-								placeholder: "ゲーム名",
-							})}
-						/>
-						{isOpen && (
-							<Paper
-								style={{
-									position: "absolute",
-									zIndex: 1,
-								}}
-								square
-							>
-								{getSuggestions(inputValue).map((suggestion, index) => (
-									<MenuItem
-										{...getItemProps({
-											item: suggestion,
-										})}
-										key={suggestion}
-										selected={index === highlightedIndex}
-										component='div'
-									>
-										{suggestion}
-									</MenuItem>
-								))}
-							</Paper>
-						)}
-					</div>
-				)}
-			</Downshift>
+				renderInput={(params) => <TextField {...params} label='ゲーム名' />}
+				onChange={(_, value) => {
+					if (value) {
+						setSelectedRun(value);
+					}
+				}}
+			/>
 			<Button
 				style={{whiteSpace: "nowrap", alignSelf: "flex-end"}}
 				size='small'
 				onClick={async () => {
-					const index = props.titles.indexOf(inputText);
+					const index = props.runs.findIndex(
+						(run) => run.pk === selectedRun?.pk,
+					);
 					await nodecg.sendMessage("setCurrentRunByIndex", index);
-					setInputText("");
 				}}
 				disabled={props.disabled}
 			>

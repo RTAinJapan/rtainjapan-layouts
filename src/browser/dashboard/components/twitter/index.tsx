@@ -46,16 +46,18 @@ export class Twitter extends React.Component<{}, State> {
 	tweetsRep = nodecg.Replicant("tweets");
 	state: State = {tweets: []};
 
+	#tweetsHandler = (newVal: Tweets) => {
+		if (!newVal) {
+			return;
+		}
+		this.setState({tweets: newVal});
+	};
+
 	componentDidMount() {
-		this.tweetsRep.on("change", (newVal: Tweets) => {
-			if (!newVal) {
-				return;
-			}
-			this.setState({tweets: newVal});
-		});
+		this.tweetsRep.on("change", this.#tweetsHandler);
 	}
 	componentWillUnmount() {
-		this.tweetsRep.removeAllListeners("change");
+		this.tweetsRep.removeListener("change", this.#tweetsHandler);
 	}
 
 	render() {
