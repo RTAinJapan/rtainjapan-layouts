@@ -1,4 +1,5 @@
-import "modern-normalize";
+import "../styles/global";
+
 import moment from "moment";
 import {useReplicant} from "../../use-replicant";
 import {render} from "../../render";

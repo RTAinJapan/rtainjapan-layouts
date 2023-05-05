@@ -1,3 +1,5 @@
+import "../styles/global";
+
 import {FC} from "react";
 import {useCurrentRun} from "../../graphics/components/lib/hooks";
 import {render} from "../../render";

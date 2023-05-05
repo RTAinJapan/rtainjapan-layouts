@@ -1,3 +1,5 @@
+import "../styles/global";
+
 import Button from "@mui/material/Button";
 import {useReplicant} from "../../use-replicant";
 import {FC} from "react";
