@@ -8,7 +8,7 @@
 		"dev:tsc": "tsc -b src/browser src/extension -w --preserveWatchOutput",
 		"dev:vite": "vite",
 		"format": "npm run test:prettier -- --write",
-		"build": "npm run schema-types && vite build",
+		"build": "vite build",
 		"schema-types": "del-cli src/nodecg/generated && nodecg schema-types -o src/nodecg/generated",
 		"test": "run-s schema-types test:*",
 		"test:prettier": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --check",
