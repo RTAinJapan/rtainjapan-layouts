@@ -6,17 +6,16 @@ import styled from "styled-components";
 import {Checklist} from "../components/checklist";
 import {Schedule} from "../components/schedule";
 import {Timekeeper} from "../components/timekeeper";
-import {Twitter} from "../components/twitter";
 import {render} from "../../render";
 
 const Container = styled.div`
 	color: #000;
 	height: 100vh;
-	width: 1920px;
+	width: 100vw;
 	padding: 16px;
 	box-sizing: border-box;
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(2, 1fr);
 	grid-gap: 20px;
 `;
 
@@ -49,9 +48,6 @@ export const App = () => (
 			</LeftColumn>
 			<Column>
 				<Schedule />
-			</Column>
-			<Column>
-				<Twitter />
 			</Column>
 		</Container>
 	</ThemeProvider>
