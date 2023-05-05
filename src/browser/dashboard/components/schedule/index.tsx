@@ -61,7 +61,6 @@ export const Schedule: FC = () => {
 		return null;
 	}
 
-	const titles = schedule.map((run) => run.title);
 	const disablePrevNextButtons = timer.timerState === "Running";
 
 	return (
@@ -76,7 +75,7 @@ export const Schedule: FC = () => {
 				>
 					<ArrowBack />前
 				</ColoredButton>
-				<Typeahead disabled={disablePrevNextButtons} titles={titles} />
+				<Typeahead disabled={disablePrevNextButtons} runs={schedule} />
 				<ColoredButton
 					color={purple}
 					ButtonProps={{
