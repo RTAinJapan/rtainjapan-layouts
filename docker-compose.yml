@@ -2,16 +2,20 @@ version: "3"
 
 services:
   nodecg:
-    build:
-      context: .
-      target: dev
+    image: ghcr.io/nodecg/nodecg:2
+    user: root
+    command: sh -c "npm i --omit=dev && node --enable-source-maps ../.."
+    working_dir: /opt/nodecg/bundles/rtainjapan-layouts
     init: true
     ports:
       - 9090:9090
     volumes:
       - nodecg_db:/opt/nodecg/db
       - nodecg_assets:/opt/nodecg/assets
+      - node_modules:/opt/nodecg/bundles/rtainjapan-layouts/node_modules
       - ./cfg:/opt/nodecg/cfg:ro
+      - ./package.json:/opt/nodecg/bundles/rtainjapan-layouts/package.json:ro
+      - ./package-lock.json:/opt/nodecg/bundles/rtainjapan-layouts/package-lock.json
       - ./dashboard:/opt/nodecg/bundles/rtainjapan-layouts/dashboard:ro
       - ./extension:/opt/nodecg/bundles/rtainjapan-layouts/extension:ro
       - ./graphics:/opt/nodecg/bundles/rtainjapan-layouts/graphics:ro
@@ -23,3 +27,4 @@ services:
 volumes:
   nodecg_db:
   nodecg_assets:
+  node_modules:
