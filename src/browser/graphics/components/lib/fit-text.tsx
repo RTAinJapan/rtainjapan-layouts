@@ -15,7 +15,8 @@ export const FitText: FunctionComponent<{
 	thin?: boolean;
 	credit?: boolean;
 	style?: CSSProperties;
-	align?: "left" | "right";
+	horizontalAlign?: "left" | "right" | "center";
+	verticalAlign?: "top" | "bottom" | "center";
 }> = (props) => {
 	const [fontSize, setFontSize] = useState(props.defaultSize);
 
@@ -68,14 +69,19 @@ export const FitText: FunctionComponent<{
 				style={{
 					overflow: "hidden",
 					display: "grid",
-					alignItems: "center",
-					justifyItems:
-						props.align === "left"
+					alignItems:
+						props.verticalAlign === "top"
 							? "start"
-							: props.align === "right"
+							: props.verticalAlign === "bottom"
 							? "end"
 							: "center",
-					textAlign: props.align ?? "center",
+					justifyItems:
+						props.horizontalAlign === "left"
+							? "start"
+							: props.horizontalAlign === "right"
+							? "end"
+							: "center",
+					textAlign: props.horizontalAlign ?? "center",
 				}}
 			>
 				<TextComponent ref={textRef}>
