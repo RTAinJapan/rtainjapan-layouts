@@ -280,8 +280,9 @@ export const tracker = (nodecg: NodeCG) => {
 
 		ws.addEventListener("message", ({data}) => {
 			try {
-				log.info(data);
-				const {amount, new_total: total} = JSON.parse(data);
+				const dataString = String(data);
+				log.info(dataString);
+				const {amount, new_total: total} = JSON.parse(dataString);
 				nodecg.sendMessage("donation", {
 					amount: parseInt(amount),
 					total: parseInt(total),
