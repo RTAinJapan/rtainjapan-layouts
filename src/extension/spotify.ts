@@ -1,6 +1,5 @@
 import {setTimeout} from "node:timers";
 import {isEqual} from "lodash";
-import got, {RequestError} from "got";
 import {NodeCG} from "./nodecg";
 
 const defaultWaitMs = 3 * 1000;
@@ -14,6 +13,8 @@ const base64Encode = (str: string) => {
 };
 
 export const spotify = async (nodecg: NodeCG) => {
+	const {default: got, RequestError} = await import("got");
+
 	const logger = new nodecg.Logger("spotify");
 	const spotifyConfig = nodecg.bundleConfig.spotify;
 	if (!spotifyConfig) {

@@ -1,4 +1,3 @@
-import got from "got";
 import WebSocket from "ws";
 import {NodeCG} from "./nodecg";
 import {sheets} from "@googleapis/sheets";
@@ -22,7 +21,9 @@ export const getEventName = () => {
 	return eventName;
 };
 
-export const tracker = (nodecg: NodeCG) => {
+export const tracker = async (nodecg: NodeCG) => {
+	const {default: got} = await import("got");
+
 	const log = new nodecg.Logger("tracker");
 	const trackerConfig = nodecg.bundleConfig.tracker;
 	const {googleApiKey, commentatorSheet} = nodecg.bundleConfig;
