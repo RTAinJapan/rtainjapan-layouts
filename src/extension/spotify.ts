@@ -1,6 +1,6 @@
 import {setTimeout} from "timers";
 import {isEqual} from "lodash";
-import got from "got";
+import got, {RequestError} from "got";
 import {NodeCG} from "./nodecg";
 
 const defaultWaitMs = 3 * 1000;
@@ -80,7 +80,7 @@ export const spotify = async (nodecg: NodeCG) => {
 				logger.error("Failed to get current track:", err.stack);
 			}
 			if (
-				err instanceof got.RequestError &&
+				err instanceof RequestError &&
 				err.response &&
 				err.response.statusCode === 429 &&
 				err.response.headers &&
