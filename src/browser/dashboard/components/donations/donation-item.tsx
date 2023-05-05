@@ -1,10 +1,10 @@
-import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
-import ClearIcon from "@material-ui/icons/Clear";
-import IconButton from "@material-ui/core/IconButton";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import ListItemText from "@material-ui/core/ListItemText";
-import Typography from "@material-ui/core/Typography";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import ClearIcon from "@mui/icons-material/Clear";
+import IconButton from "@mui/material/IconButton";
+import ListItem from "@mui/material/ListItem";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
 import {Donation} from "../../../../nodecg/replicants";
 
 type Props = {

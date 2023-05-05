@@ -1,7 +1,7 @@
-import Button, {ButtonProps} from "@material-ui/core/Button";
-import createTheme from "@material-ui/core/styles/createTheme";
-import {PaletteColorOptions} from "@material-ui/core/styles/createPalette";
-import {MuiThemeProvider} from "@material-ui/core/styles";
+import Button, {ButtonProps} from "@mui/material/Button";
+import createTheme from "@mui/material/styles/createTheme";
+import {PaletteColorOptions} from "@mui/material/styles/createPalette";
+import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import React from "react";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const ColoredButton: React.ComponentType<Props> = (props) => (
-	<MuiThemeProvider
+	<ThemeProvider
 		theme={(outer: any) =>
 			createTheme({...outer, palette: {primary: props.color}})
 		}
@@ -22,5 +22,5 @@ export const ColoredButton: React.ComponentType<Props> = (props) => (
 		>
 			{props.children}
 		</Button>
-	</MuiThemeProvider>
+	</ThemeProvider>
 );

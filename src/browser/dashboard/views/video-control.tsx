@@ -1,13 +1,15 @@
-import {createTheme, LinearProgress, MuiThemeProvider} from "@material-ui/core";
 import "modern-normalize";
+import createTheme from "@mui/material/styles/createTheme";
+import LinearProgress from "@mui/material/LinearProgress";
+import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import ReactDOM from "react-dom";
 import {useReplicant} from "../../use-replicant";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
-import PauseIcon from "@material-ui/icons/Pause";
-import StopIcon from "@material-ui/icons/Stop";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
+import PauseIcon from "@mui/icons-material/Pause";
+import StopIcon from "@mui/icons-material/Stop";
 import {ColoredButton} from "../components/lib/colored-button";
-import {green, lightBlue, orange, pink} from "@material-ui/core/colors";
+import {green, lightBlue, orange, pink} from "@mui/material/colors";
 import {VideoControl} from "../../../nodecg/generated";
 
 const parseDuration = (seconds: number) => {
@@ -114,20 +116,22 @@ const Control = ({control}: {control: VideoControl}) => {
 
 const SELECT_DEFAULT = "none";
 
+const theme = createTheme({
+	components: {
+		MuiButton: {
+			defaultProps: {
+				variant: "contained",
+			},
+		},
+	},
+});
+
 const App = () => {
 	const control = useReplicant("video-control");
 	const videos = useReplicant("assets:interval-video");
 
 	return (
-		<MuiThemeProvider
-			theme={createTheme({
-				props: {
-					MuiButton: {
-						variant: "contained",
-					},
-				},
-			})}
-		>
+		<ThemeProvider theme={theme}>
 			<div
 				style={{
 					padding: "8px",
@@ -167,7 +171,7 @@ const App = () => {
 					<Control control={control} />
 				</div>
 			</div>
-		</MuiThemeProvider>
+		</ThemeProvider>
 	);
 };
 

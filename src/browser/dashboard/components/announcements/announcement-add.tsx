@@ -1,8 +1,8 @@
-import IconButton, {IconButtonProps} from "@material-ui/core/IconButton";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import ListItemText from "@material-ui/core/ListItemText";
-import AddIcon from "@material-ui/icons/Add";
+import IconButton, {IconButtonProps} from "@mui/material/IconButton";
+import ListItem from "@mui/material/ListItem";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import ListItemText from "@mui/material/ListItemText";
+import AddIcon from "@mui/icons-material/Add";
 import {useState} from "react";
 import {Announcements} from "../../../../nodecg/generated";
 
