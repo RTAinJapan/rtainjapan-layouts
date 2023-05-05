@@ -9,23 +9,38 @@ import {
 	rollup,
 	watch as rollupWatch,
 	type RollupOptions,
+	type InputOptions,
+	type OutputOptions,
+	type RollupWatchOptions,
 	type RollupWatcherEvent,
 	type RollupWatcher,
 } from "rollup";
 
 const setupExtensionBuild = async (options: RollupOptions) => {
-	const resolvedOptions: RollupOptions = {
+	const inputOptions: InputOptions = {
 		...options,
+	};
+
+	const outputOptions: OutputOptions = {
+		dir: "./extension",
+		format: "cjs",
+		sourcemap: true,
+		interop: "auto",
+		...options.output,
+	};
+
+	const watchOptions: RollupWatchOptions = {
+		...options,
+		watch: {
+			clearScreen: false,
+			...options.watch,
+		},
 		output: {
 			dir: "./extension",
 			format: "cjs",
 			sourcemap: true,
 			interop: "auto",
 			...options.output,
-		},
-		watch: {
-			clearScreen: false,
-			...options.watch,
 		},
 	};
 
@@ -38,7 +53,7 @@ const setupExtensionBuild = async (options: RollupOptions) => {
 
 	return {
 		watch: () => {
-			watcher = rollupWatch(resolvedOptions);
+			watcher = rollupWatch(watchOptions);
 			watcher.on("event", watchEventHandler);
 		},
 		unwatch: () => {
@@ -46,7 +61,8 @@ const setupExtensionBuild = async (options: RollupOptions) => {
 			watcher.close();
 		},
 		build: async () => {
-			const bundle = await rollup(resolvedOptions);
+			const bundle = await rollup(inputOptions);
+			await bundle.write(outputOptions);
 			await bundle.close();
 		},
 	};
