@@ -1,4 +1,5 @@
-import "modern-normalize";
+import "../styles/global";
+
 import createTheme from "@mui/material/styles/createTheme";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import {Donations} from "../components/donations";

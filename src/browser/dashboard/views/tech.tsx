@@ -1,4 +1,4 @@
-import "modern-normalize/modern-normalize.css";
+import "../styles/global";
 
 import createTheme from "@mui/material/styles/createTheme";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";

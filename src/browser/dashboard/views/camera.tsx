@@ -1,4 +1,5 @@
-import "modern-normalize";
+import "../styles/global";
+
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import IconButton, {IconButtonProps} from "@mui/material/IconButton";

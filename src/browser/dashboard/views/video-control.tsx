@@ -1,4 +1,5 @@
-import "modern-normalize";
+import "../styles/global";
+
 import createTheme from "@mui/material/styles/createTheme";
 import LinearProgress from "@mui/material/LinearProgress";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";

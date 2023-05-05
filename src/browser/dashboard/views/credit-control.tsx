@@ -1,4 +1,5 @@
-import "modern-normalize";
+import "../styles/global";
+
 import styled from "@mui/material/styles/styled";
 import Accordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";

@@ -1,3 +1,5 @@
+import "../styles/global";
+
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
