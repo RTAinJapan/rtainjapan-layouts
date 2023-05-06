@@ -25,7 +25,8 @@ import {Announcements} from "./generated/announcements";
 import {PlayingMusic} from "./generated/playing-music";
 
 type Run = NonNullable<CurrentRun>;
-type Participant = Run["runners"][number];
+type Runner = Run["runners"][number];
+type Commentator = Runner["commentators"][number];
 
 type Tweet = Tweets[number];
 type Donation = Donations[number];
@@ -85,7 +86,8 @@ export type {
 	Spotify,
 	Spreadsheet,
 	Run,
-	Participant,
+	Runner,
+	Commentator,
 	Tweet,
 	Obs,
 	ObsCropInputs,

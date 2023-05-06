@@ -108,58 +108,60 @@ export const tracker = async (nodecg: NodeCG) => {
 				requestSearch<typeof RunnerSample>("runner"),
 				fetchCommentators(),
 			]);
-			scheduleRep.value = runs
-				.filter((run) => {
-					// バックアップゲームをスケジュールから除外
-					return run.fields.order !== null;
-				})
-				.map<Run>((run, index) => {
-					const prevCompletedChecklist =
-						prevSchedule.find((prevRun) => prevRun.pk === run.pk)
-							?.completedChecklist ?? [];
-					return {
-						pk: run.pk,
-						index,
-						title: run.fields.name,
-						englishTitle: run.fields.twitch_name,
-						category: run.fields.category,
-						platform: run.fields.console,
-						releaseYear: run.fields.release_year,
-						runDuration: run.fields.run_time,
-						setupDuration: run.fields.setup_time,
-						camera: true,
-						runners: run.fields.runners.map((runnerId) => {
-							const runner = runners.find((runner) => runner.pk === runnerId);
-							return {
-								name: runner?.fields.name || "",
-								twitch: runner?.fields.twitch,
-								nico: runner?.fields.nico,
-								twitter: runner?.fields.twitter,
-								camera: true,
-							};
-						}),
-						commentators: commentators
-							.filter((commentator) => {
-								return commentator.gameCategory.endsWith(`- ${run.pk}`);
-							})
-							.map((commentator) => {
-								return {
-									name: commentator.name,
-									twitch: commentator.twitch,
-									nico: commentator.nico,
-									twitter: commentator.twitter,
-									camera: false,
-								};
-							}),
-						twitchGameId: run.fields.twitch_name,
-						completedChecklist:
-							checklistRep.value
-								?.filter((checklist) => {
-									return prevCompletedChecklist.includes(checklist.pk);
-								})
-								.map((checklist) => checklist.pk) ?? [],
-					};
+			const filteredRuns: Run[] = [];
+			for (const run of runs) {
+				// バックアップゲームをスケジュールから除外
+				if (run.fields.order === null) {
+					continue;
+				}
+				const prevCompletedChecklist =
+					prevSchedule.find((prevRun) => prevRun.pk === run.pk)
+						?.completedChecklist ?? [];
+				const runCommentators = commentators.filter((commentator) => {
+					return commentator.gameCategory.endsWith(`- ${run.pk}`);
 				});
+				filteredRuns.push({
+					pk: run.pk,
+					index: run.fields.order,
+					title: run.fields.name,
+					englishTitle: run.fields.twitch_name,
+					category: run.fields.category,
+					platform: run.fields.console,
+					releaseYear: run.fields.release_year,
+					runDuration: run.fields.run_time,
+					setupDuration: run.fields.setup_time,
+					camera: true,
+					runners: run.fields.runners.map((runnerId) => {
+						const runner = runners.find((runner) => runner.pk === runnerId);
+						if (!runner) {
+							return {
+								pk: runnerId,
+								name: "",
+							};
+						}
+						return {
+							pk: runnerId,
+							name: runner?.fields.name || "",
+							twitch: runner?.fields.twitch,
+							nico: runner?.fields.nico,
+							twitter: runner?.fields.twitter,
+							camera: true,
+						};
+					}),
+					commentators: [
+						runCommentators[0] ?? null,
+						runCommentators[1] ?? null,
+					],
+					twitchGameId: run.fields.twitch_name,
+					completedChecklist:
+						checklistRep.value
+							?.filter((checklist) => {
+								return prevCompletedChecklist.includes(checklist.pk);
+							})
+							.map((checklist) => checklist.pk) ?? [],
+				});
+			}
+			scheduleRep.value = filteredRuns;
 			runnersRep.value = runners.map((runner) => runner.fields.name);
 		} catch (error) {
 			log.error(error);

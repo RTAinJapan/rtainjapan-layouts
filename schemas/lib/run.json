@@ -19,11 +19,43 @@
 		},
 		"runners": {
 			"type": "array",
-			"items": {"$ref": "participant.json"}
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"properties": {
+					"pk": {"type": "number"},
+					"name": {"type": "string"},
+					"twitch": {"type": "string"},
+					"nico": {"type": "string"},
+					"twitter": {"type": "string"},
+					"camera": {
+						"type": "boolean",
+						"description": "人ごとのカメラ使用有無"
+					}
+				},
+				"required": ["pk", "name"]
+			}
 		},
 		"commentators": {
 			"type": "array",
-			"items": {"$ref": "participant.json"}
+			"items": {
+				"oneOf": [
+					{
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"name": {"type": "string"},
+							"twitch": {"type": "string"},
+							"nico": {"type": "string"},
+							"twitter": {"type": "string"}
+						},
+						"required": ["name"]
+					},
+					{"type": "null"}
+				]
+			},
+			"minItems": 2,
+			"maxItems": 2
 		},
 		"twitchGameId": {
 			"type": "string"
