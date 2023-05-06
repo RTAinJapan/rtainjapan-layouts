@@ -8,7 +8,7 @@ import type RunnerSample from "./sample-json/tracker/runner.json";
 import type BidSample from "./sample-json/tracker/bid.json";
 import type BidTargetSample from "./sample-json/tracker/bidtarget.json";
 import type DonationSample from "./sample-json/tracker/donation.json";
-import {BidChallenge, Donation} from "../nodecg/replicants";
+import {BidChallenge, Donation, Run} from "../nodecg/replicants";
 import {clone, uniqBy} from "lodash";
 
 type CommentDonation = (typeof DonationSample)[number] & {
@@ -107,7 +107,7 @@ export const tracker = async (nodecg: NodeCG) => {
 					// バックアップゲームをスケジュールから除外
 					return run.fields.order !== null;
 				})
-				.map((run, index) => {
+				.map<Run>((run, index) => {
 					const prevCompletedChecklist =
 						prevSchedule.find((prevRun) => prevRun.pk === run.pk)
 							?.completedChecklist ?? [];
