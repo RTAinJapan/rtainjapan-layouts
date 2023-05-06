@@ -222,6 +222,8 @@ export default async ({
 					manifest: true,
 					outDir: "./shared/dist",
 					assetsDir: ".",
+					minify: false,
+					sourcemap: true,
 				},
 				clearScreen: baseConfig.clearScreen ?? false,
 			};
