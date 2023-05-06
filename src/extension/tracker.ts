@@ -8,7 +8,7 @@ import type RunnerSample from "./sample-json/tracker/runner.json";
 import type BidSample from "./sample-json/tracker/bid.json";
 import type BidTargetSample from "./sample-json/tracker/bidtarget.json";
 import type DonationSample from "./sample-json/tracker/donation.json";
-import {BidChallenge, Donation, Run} from "../nodecg/replicants";
+import {BidChallenge, Donation} from "../nodecg/replicants";
 import {clone, uniqBy} from "lodash";
 
 type CommentDonation = (typeof DonationSample)[number] & {
@@ -102,67 +102,63 @@ export const tracker = async (nodecg: NodeCG) => {
 				requestSearch<typeof RunnerSample>("runner"),
 				fetchCommentators(),
 			]);
-			const filteredRuns: Run[] = [];
-			for (const run of runs) {
-				// バックアップゲームをスケジュールから除外
-				if (run.fields.order === null) {
-					continue;
-				}
-				const prevCompletedChecklist =
-					prevSchedule.find((prevRun) => prevRun.pk === run.pk)
-						?.completedChecklist ?? [];
-				const runCommentators = commentators
-					.filter((commentator) => {
-						return commentator.gameCategory.endsWith(`- ${run.pk}`);
-					})
-					.map((commentator) => ({
-						name: commentator.name,
-						twitch: commentator.twitch,
-						twitter: commentator.twitter,
-						nico: commentator.nico,
-					}));
-				filteredRuns.push({
-					pk: run.pk,
-					index: run.fields.order,
-					title: run.fields.name,
-					englishTitle: run.fields.twitch_name,
-					category: run.fields.category,
-					platform: run.fields.console,
-					releaseYear: run.fields.release_year,
-					runDuration: run.fields.run_time,
-					setupDuration: run.fields.setup_time,
-					camera: true,
-					runners: run.fields.runners.map((runnerId) => {
-						const runner = runners.find((runner) => runner.pk === runnerId);
-						if (!runner) {
+			scheduleRep.value = runs
+				.filter((run) => run.fields.order !== null)
+				.map((run, index) => {
+					const prevCompletedChecklist =
+						prevSchedule.find((prevRun) => prevRun.pk === run.pk)
+							?.completedChecklist ?? [];
+					const runCommentators = commentators
+						.filter((commentator) => {
+							return commentator.gameCategory.endsWith(`- ${run.pk}`);
+						})
+						.map((commentator) => ({
+							name: commentator.name,
+							twitch: commentator.twitch,
+							twitter: commentator.twitter,
+							nico: commentator.nico,
+						}));
+					return {
+						pk: run.pk,
+						index,
+						title: run.fields.name,
+						englishTitle: run.fields.twitch_name,
+						category: run.fields.category,
+						platform: run.fields.console,
+						releaseYear: run.fields.release_year,
+						runDuration: run.fields.run_time,
+						setupDuration: run.fields.setup_time,
+						camera: true,
+						runners: run.fields.runners.map((runnerId) => {
+							const runner = runners.find((runner) => runner.pk === runnerId);
+							if (!runner) {
+								return {
+									pk: runnerId,
+									name: "",
+								};
+							}
 							return {
 								pk: runnerId,
-								name: "",
+								name: runner?.fields.name || "",
+								twitch: runner?.fields.twitch,
+								nico: runner?.fields.nico,
+								twitter: runner?.fields.twitter,
+								camera: true,
 							};
-						}
-						return {
-							pk: runnerId,
-							name: runner?.fields.name || "",
-							twitch: runner?.fields.twitch,
-							nico: runner?.fields.nico,
-							twitter: runner?.fields.twitter,
-							camera: true,
-						};
-					}),
-					commentators: [
-						runCommentators[0] ?? null,
-						runCommentators[1] ?? null,
-					],
-					twitchGameId: run.fields.twitch_name,
-					completedChecklist:
-						checklistRep.value
-							?.filter((checklist) => {
-								return prevCompletedChecklist.includes(checklist.pk);
-							})
-							.map((checklist) => checklist.pk) ?? [],
+						}),
+						commentators: [
+							runCommentators[0] ?? null,
+							runCommentators[1] ?? null,
+						],
+						twitchGameId: run.fields.twitch_name,
+						completedChecklist:
+							checklistRep.value
+								?.filter((checklist) => {
+									return prevCompletedChecklist.includes(checklist.pk);
+								})
+								.map((checklist) => checklist.pk) ?? [],
+					};
 				});
-			}
-			scheduleRep.value = filteredRuns;
 			runnersRep.value = runners.map((runner) => runner.fields.name);
 		} catch (error) {
 			log.error(error);
