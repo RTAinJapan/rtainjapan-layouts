@@ -9,7 +9,7 @@ import iconCommentator from "../../images/icon/icon_commentary.svg";
 import {CSSProperties, HTMLAttributes, useEffect, useRef} from "react";
 import {background, text} from "../../styles/colors";
 import {filterNonNullable} from "../../../../extension/lib/array";
-import {Participant, Timer} from "../../../../nodecg/replicants";
+import {Commentator, Runner, Timer} from "../../../../nodecg/replicants";
 
 const textPlacement = {
 	gridColumn: "1 / 2",
@@ -47,7 +47,7 @@ const NamePlateContent = ({
 	style,
 	isRaceRunner,
 }: {
-	runner?: Participant;
+	runner?: Runner | Commentator;
 	style?: CSSProperties;
 	isRaceRunner?: boolean;
 }) => {
@@ -79,7 +79,7 @@ const NamePlateContent = ({
 		return () => {
 			tl.kill();
 		};
-	}, [nicoRef, twitterRef, twitchRef]);
+	}, [nicoRef, twitterRef, twitchRef, isRaceRunner]);
 
 	return !isRaceRunner ? (
 		<div
@@ -159,7 +159,7 @@ export const NamePlate = ({
 	const content =
 		typeof index === "number" ? (
 			<NamePlateContent
-				runner={currentRun[kind][index]}
+				runner={currentRun[kind][index] ?? undefined}
 				style={{gridRow: "1 / 2", gridColumn: "3 / 4"}}
 				isRaceRunner={race && kind === "runners"}
 			></NamePlateContent>
@@ -176,13 +176,13 @@ export const NamePlate = ({
 				}}
 			>
 				<NamePlateContent
-					runner={currentRun[kind][index[0]]}
+					runner={currentRun[kind][index[0]] ?? undefined}
 				></NamePlateContent>
 				<div
 					style={{background: "white", margin: "5px 0", placeSelf: "stretch"}}
 				></div>
 				<NamePlateContent
-					runner={currentRun[kind][index[1]]}
+					runner={currentRun[kind][index[1]] ?? undefined}
 				></NamePlateContent>
 			</div>
 		);

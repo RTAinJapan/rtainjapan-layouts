@@ -1,3 +1,4 @@
+import {Commentator} from "../../../../nodecg/replicants";
 import {useReplicant} from "../../../use-replicant";
 
 export const useCurrentRun = () => {
@@ -17,5 +18,14 @@ export const useTimer = () => {
 
 export const useCommentators = () => {
 	const currentRun = useCurrentRun();
-	return currentRun?.commentators.filter((person) => person.name) ?? [];
+	if (!currentRun) {
+		return [];
+	}
+	const commentators: Commentator[] = [];
+	for (const commentator of currentRun.commentators) {
+		if (commentator) {
+			commentators.push(commentator);
+		}
+	}
+	return commentators;
 };
