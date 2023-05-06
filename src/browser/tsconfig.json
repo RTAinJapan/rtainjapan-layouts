@@ -1,11 +1,11 @@
 {
 	"extends": "../../tsconfig",
 	"compilerOptions": {
-		"module": "ES2022",
+		"moduleResolution": "bundler",
 		"lib": ["ES2022", "DOM"],
 		"jsx": "react-jsx",
 		"noEmit": true,
 		"types": ["vite/client"]
 	},
-	"include": ["./**/*.ts", "./**/*.tsx", "../nodecg/**/*.d.ts"]
+	"include": ["./**/*.ts", "./**/*.tsx", "../nodecg/**/*.ts"]
 }

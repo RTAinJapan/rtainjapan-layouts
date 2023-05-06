@@ -111,6 +111,16 @@ export const tracker = async (nodecg: NodeCG) => {
 					const prevCompletedChecklist =
 						prevSchedule.find((prevRun) => prevRun.pk === run.pk)
 							?.completedChecklist ?? [];
+					const runCommentators = commentators
+						.filter((commentator) => {
+							return commentator.gameCategory.endsWith(`- ${run.pk}`);
+						})
+						.map((commentator) => ({
+							name: commentator.name,
+							twitch: commentator.twitch,
+							twitter: commentator.twitter,
+							nico: commentator.nico,
+						}));
 					return {
 						pk: run.pk,
 						index,
@@ -125,26 +135,18 @@ export const tracker = async (nodecg: NodeCG) => {
 						runners: run.fields.runners.map((runnerId) => {
 							const runner = runners.find((runner) => runner.pk === runnerId);
 							return {
-								name: runner?.fields.name || "",
+								pk: runnerId,
+								name: runner?.fields.name ?? "",
 								twitch: runner?.fields.twitch,
 								nico: runner?.fields.nico,
 								twitter: runner?.fields.twitter,
 								camera: true,
 							};
 						}),
-						commentators: commentators
-							.filter((commentator) => {
-								return commentator.gameCategory.endsWith(`- ${run.pk}`);
-							})
-							.map((commentator) => {
-								return {
-									name: commentator.name,
-									twitch: commentator.twitch,
-									nico: commentator.nico,
-									twitter: commentator.twitter,
-									camera: false,
-								};
-							}),
+						commentators: [
+							runCommentators[0] ?? null,
+							runCommentators[1] ?? null,
+						],
 						twitchGameId: run.fields.twitch_name,
 						completedChecklist:
 							checklistRep.value

@@ -1,7 +1,7 @@
 import {clone} from "lodash";
 import {NodeCG} from "./nodecg";
 import {v4 as uuid} from "uuid";
-import {Run} from "../nodecg/generated";
+import {Run} from "../nodecg/replicants";
 
 export const checklist = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("checklist");

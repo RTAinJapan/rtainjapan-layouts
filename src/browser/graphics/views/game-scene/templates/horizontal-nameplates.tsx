@@ -8,14 +8,17 @@ const NamePlateGroup = ({race}: {race?: boolean}) => {
 	if (race) {
 		return (
 			<>
-				{commentators.slice(0, 2).map((commentator, index) => (
-					<NamePlate
-						kind='commentators'
-						key={commentator.name}
-						index={index}
-						style={{width: "400px"}}
-					></NamePlate>
-				))}
+				{commentators.map(
+					(commentator, index) =>
+						commentator && (
+							<NamePlate
+								kind='commentators'
+								key={commentator.name}
+								index={index}
+								style={{width: "400px"}}
+							></NamePlate>
+						),
+				)}
 			</>
 		);
 	}
