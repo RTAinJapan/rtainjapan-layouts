@@ -86,7 +86,7 @@
 		"rollup-plugin-esbuild": "^5.0.0",
 		"rollup-plugin-node-externals": "^5.1.2",
 		"simple-git-hooks": "^2.8.1",
-		"sort-package-json": "^1.57.0",
+		"sort-package-json": "^2.4.1",
 		"styled-components": "^5.3.10",
 		"ts-nodecg": "^0.3.1",
 		"typescript": "~5.0.4",
