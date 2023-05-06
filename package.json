@@ -78,7 +78,7 @@
 		"nodecg-cli": "^8.6.4",
 		"npm-run-all": "^4.1.5",
 		"onchange": "^7.1.0",
-		"pixi.js": "^6.5.9",
+		"pixi.js": "^7.2.4",
 		"prettier": "^2.8.8",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
