@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import {useReplicant} from "../../use-replicant";
 import {FC} from "react";
 import {render} from "../../render";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const spotifyConfig = nodecg.bundleConfig.spotify;
 
@@ -34,4 +35,9 @@ const App: FC = () => {
 	);
 };
 
-render(<App />);
+render(
+	<>
+		<CssBaseline />
+		<App />
+	</>,
+);

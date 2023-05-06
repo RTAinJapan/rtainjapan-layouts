@@ -1,5 +1,6 @@
 import "../styles/global";
 
+import CssBaseline from "@mui/material/CssBaseline";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -194,4 +195,9 @@ class App extends React.Component<{}, State> {
 	}
 }
 
-render(<App />);
+render(
+	<>
+		<CssBaseline />
+		<App />
+	</>,
+);

@@ -1,5 +1,6 @@
 import "../styles/global";
 
+import CssBaseline from "@mui/material/CssBaseline";
 import {FC} from "react";
 import {useCurrentRun} from "../../graphics/components/lib/hooks";
 import {render} from "../../render";
@@ -19,4 +20,9 @@ const App: FC = () => {
 	);
 };
 
-render(<App />);
+render(
+	<>
+		<CssBaseline />
+		<App />
+	</>,
+);

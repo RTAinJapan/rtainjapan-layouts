@@ -2,6 +2,7 @@ import "../styles/global";
 
 import createTheme from "@mui/material/styles/createTheme";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
+import CssBaseline from "@mui/material/CssBaseline";
 import styled from "styled-components";
 import {Checklist} from "../components/checklist";
 import {Schedule} from "../components/schedule";
@@ -39,7 +40,7 @@ const appTheme = createTheme({
 	},
 });
 
-export const App = () => (
+const App = () => (
 	<ThemeProvider theme={appTheme}>
 		<Container>
 			<LeftColumn>
@@ -75,4 +76,9 @@ if (spotifyCallback) {
 	}
 }
 
-render(<App />);
+render(
+	<>
+		<CssBaseline />
+		<App />
+	</>,
+);

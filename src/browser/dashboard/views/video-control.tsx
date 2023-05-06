@@ -12,6 +12,7 @@ import {ColoredButton} from "../components/lib/colored-button";
 import {green, lightBlue, orange, pink} from "@mui/material/colors";
 import {VideoControl} from "../../../nodecg/generated";
 import {render} from "../../render";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const parseDuration = (seconds: number) => {
 	return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(
@@ -176,4 +177,9 @@ const App = () => {
 	);
 };
 
-render(<App />);
+render(
+	<>
+		<CssBaseline />
+		<App />
+	</>,
+);

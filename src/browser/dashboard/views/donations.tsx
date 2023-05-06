@@ -1,5 +1,6 @@
 import "../styles/global";
 
+import CssBaseline from "@mui/material/CssBaseline";
 import createTheme from "@mui/material/styles/createTheme";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import {Donations} from "../components/donations";
@@ -15,4 +16,9 @@ const App = () => {
 	);
 };
 
-render(<App />);
+render(
+	<>
+		<CssBaseline />
+		<App />
+	</>,
+);

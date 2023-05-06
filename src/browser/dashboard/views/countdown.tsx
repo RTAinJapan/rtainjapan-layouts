@@ -1,5 +1,6 @@
 import "../styles/global";
 
+import CssBaseline from "@mui/material/CssBaseline";
 import moment from "moment";
 import {useReplicant} from "../../use-replicant";
 import {render} from "../../render";
@@ -41,4 +42,9 @@ const App = () => {
 	);
 };
 
-render(<App />);
+render(
+	<>
+		<CssBaseline />
+		<App />
+	</>,
+);

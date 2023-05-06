@@ -1,5 +1,6 @@
 import "../styles/global";
 
+import CssBaseline from "@mui/material/CssBaseline";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import IconButton, {IconButtonProps} from "@mui/material/IconButton";
@@ -151,4 +152,9 @@ const App = () => {
 	);
 };
 
-render(<App />);
+render(
+	<>
+		<CssBaseline />
+		<App />
+	</>,
+);
