@@ -117,9 +117,16 @@ export const tracker = async (nodecg: NodeCG) => {
 				const prevCompletedChecklist =
 					prevSchedule.find((prevRun) => prevRun.pk === run.pk)
 						?.completedChecklist ?? [];
-				const runCommentators = commentators.filter((commentator) => {
-					return commentator.gameCategory.endsWith(`- ${run.pk}`);
-				});
+				const runCommentators = commentators
+					.filter((commentator) => {
+						return commentator.gameCategory.endsWith(`- ${run.pk}`);
+					})
+					.map((commentator) => ({
+						name: commentator.name,
+						twitch: commentator.twitch,
+						twitter: commentator.twitter,
+						nico: commentator.nico,
+					}));
 				filteredRuns.push({
 					pk: run.pk,
 					index: run.fields.order,
