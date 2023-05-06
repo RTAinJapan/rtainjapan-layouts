@@ -1,4 +1,4 @@
-import "../styles/global";
+import "../styles/global.css";
 
 import createTheme from "@mui/material/styles/createTheme";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
