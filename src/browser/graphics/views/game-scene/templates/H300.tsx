@@ -24,6 +24,7 @@ export const TemplateH300: FunctionComponent<Props> = ({children, race}) => {
 				height: "1030px",
 				overflow: "hidden",
 				color: "white",
+				backgroundColor: import.meta.env.DEV ? "magenta" : undefined,
 			}}
 		>
 			<RoundedHoleImage
@@ -36,10 +37,6 @@ export const TemplateH300: FunctionComponent<Props> = ({children, race}) => {
 					radius: 7,
 					x: 1030,
 					y: 715,
-					border: {
-						color: "white",
-						width: 2,
-					},
 				}}
 			></RoundedHoleImage>
 			<SemiHorizontalGameInfo

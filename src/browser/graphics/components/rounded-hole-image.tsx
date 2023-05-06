@@ -1,5 +1,4 @@
 import {CSSProperties, useEffect, useRef} from "react";
-import * as PIXI from "pixi.js";
 
 export const RoundedHoleImage: React.FunctionComponent<{
 	src: string;
@@ -11,67 +10,68 @@ export const RoundedHoleImage: React.FunctionComponent<{
 		width: number;
 		height: number;
 		radius: number;
-		border?: {
-			color: string;
-			width: number;
-		};
 	};
 	style?: CSSProperties;
 }> = ({src, roundedRect, width, height, style}) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
+
 	useEffect(() => {
-		if (!canvasRef.current) {
+		const canvas = canvasRef.current;
+		if (!canvas) {
 			return;
 		}
-		const app = new PIXI.Application({
-			view: canvasRef.current,
-			width: width,
-			height: height,
-		});
+		const ctx = canvas.getContext("2d");
+		if (!ctx) {
+			return;
+		}
 
-		const image = PIXI.Sprite.from(src);
+		const drawRoundedRect = () => {
+			const {x, y, width, height, radius} = roundedRect;
+			ctx.beginPath();
+			ctx.moveTo(x + radius, y);
+			ctx.lineTo(x + width - radius, y);
+			ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+			ctx.lineTo(x + width, y + height - radius);
+			ctx.quadraticCurveTo(
+				x + width,
+				y + height,
+				x + width - radius,
+				y + height,
+			);
+			ctx.lineTo(x + radius, y + height);
+			ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+			ctx.lineTo(x, y + radius);
+			ctx.quadraticCurveTo(x, y, x + radius, y);
+			ctx.closePath();
+		};
 
-		const cameraArea = new PIXI.Graphics();
-		cameraArea.beginFill(0x000000);
-		cameraArea.drawRoundedRect(
-			roundedRect.x,
-			roundedRect.y,
-			roundedRect.width,
-			roundedRect.height,
-			roundedRect.radius,
-		);
-		cameraArea.endFill();
-		cameraArea.lineStyle({width: 2, color: 0xffffff});
-		cameraArea.blendMode = PIXI.BLEND_MODES.DST_OUT;
+		const image = new Image(width, height);
 
-		app.stage.addChild(image, cameraArea);
-	}, [
-		height,
-		width,
-		src,
-		roundedRect.x,
-		roundedRect.y,
-		roundedRect.width,
-		roundedRect.height,
-		roundedRect.radius,
-	]);
+		const loadHanlder = () => {
+			canvas.width = image.width;
+			canvas.height = image.height;
+			ctx.drawImage(image, 0, 0);
 
-	return (
-		<div>
-			<canvas style={style} ref={canvasRef}></canvas>
-			{roundedRect.border && (
-				<div
-					style={{
-						position: "absolute",
-						left: `${roundedRect.x}px`,
-						top: `${roundedRect.y}px`,
-						width: `${roundedRect.width}px`,
-						height: `${roundedRect.height}px`,
-						borderRadius: `${roundedRect.radius}px`,
-						border: `${roundedRect.border.width}px solid ${roundedRect.border.color}`,
-					}}
-				></div>
-			)}
-		</div>
-	);
+			ctx.save();
+			drawRoundedRect();
+			ctx.clip();
+			ctx.clearRect(
+				roundedRect.x,
+				roundedRect.y,
+				roundedRect.width,
+				roundedRect.height,
+			);
+			ctx.restore();
+		};
+
+		image.addEventListener("load", loadHanlder);
+		image.src = src;
+
+		return () => {
+			image.removeEventListener("load", loadHanlder);
+			image.remove();
+		};
+	}, [src, roundedRect, width, height]);
+
+	return <canvas ref={canvasRef} style={style} />;
 };
