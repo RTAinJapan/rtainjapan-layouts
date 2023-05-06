@@ -16,7 +16,4 @@ declare global {
 		ReplicantMap,
 		MessageMap
 	>;
-	interface Document {
-		fonts: FontFaceSet;
-	}
 }

@@ -9,7 +9,7 @@
 		"dev:vite": "vite",
 		"format": "npm run test:prettier -- --write",
 		"build": "vite build",
-		"schema-types": "del-cli src/nodecg/generated && nodecg schema-types -o src/nodecg/generated",
+		"schema-types": "del-cli src/nodecg/generated && nodecg schema-types -o src/nodecg/generated && ts-node --esm scripts/rename-schema-types-files.mts",
 		"test": "run-s schema-types test:*",
 		"test:prettier": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --check",
 		"test:lint": "eslint --ext .ts,.tsx .",
@@ -29,8 +29,8 @@
 	},
 	"dependencies": {
 		"@googleapis/sheets": "^4.0.2",
-		"@twurple/api": "^5.3.4",
-		"@twurple/auth": "^5.3.4",
+		"@twurple/api": "^6.2.0",
+		"@twurple/auth": "^6.2.0",
 		"app-root-path": "^3.1.0",
 		"date-fns": "^2.30.0",
 		"express": "^4.18.2",
@@ -88,6 +88,7 @@
 		"simple-git-hooks": "^2.8.1",
 		"sort-package-json": "^2.4.1",
 		"styled-components": "^5.3.10",
+		"ts-node": "^10.9.1",
 		"ts-nodecg": "^0.3.1",
 		"typescript": "~5.0.4",
 		"vite": "^4.3.5"
@@ -109,22 +110,6 @@
 				"width": 3,
 				"headerColor": "#00BEBE",
 				"workspace": "2-misc"
-			},
-			{
-				"name": "edit-tourny",
-				"title": "走者情報入れ替え",
-				"file": "edit-tourny.html",
-				"width": 8,
-				"headerColor": "#00BEBE",
-				"workspace": "1-special"
-			},
-			{
-				"name": "current-runners",
-				"title": "現在のゲームの走者",
-				"file": "current-runners.html",
-				"width": 2,
-				"headerColor": "#00BEBE",
-				"workspace": "1-special"
 			},
 			{
 				"name": "countdown",

@@ -41,13 +41,6 @@ const MiscContainer = styled.div`
 `;
 
 export const RunInfo: FC<{run: Run; label: string}> = ({run, label}) => {
-	const runners = Array.from({length: 4}).map(
-		(_, index) => run.runners[index] ?? null,
-	);
-	const commentators = Array.from({length: 2}).map(
-		(_, index) => run.commentators[index] ?? null,
-	);
-
 	return (
 		<Container>
 			<Label>
@@ -58,8 +51,13 @@ export const RunInfo: FC<{run: Run; label: string}> = ({run, label}) => {
 				<div>{run.title}</div>
 			</LabeledDiv>
 			<Divider />
+			<LabeledDiv>
+				<Typography variant='caption'>カテゴリ</Typography>
+				<div>{run.category}</div>
+			</LabeledDiv>
+			<Divider />
 			<RunnersContainer>
-				{runners.map((runner, index) => (
+				{run.runners.map((runner, index) => (
 					<LabeledDiv key={`runner${runner?.name}${index}`}>
 						<Typography variant='caption'>走者{index + 1}</Typography>
 						<div>{runner && runner.name}</div>
@@ -68,18 +66,13 @@ export const RunInfo: FC<{run: Run; label: string}> = ({run, label}) => {
 			</RunnersContainer>
 			<Divider />
 			<RunnersContainer>
-				{commentators.map((commentator, index) => (
+				{run.commentators.map((commentator, index) => (
 					<LabeledDiv key={`commentator${commentator?.name}${index}`}>
 						<Typography variant='caption'>解説{index + 1}</Typography>
 						<div>{commentator && commentator.name}</div>
 					</LabeledDiv>
 				))}
 			</RunnersContainer>
-			<Divider />
-			<LabeledDiv>
-				<Typography variant='caption'>カテゴリ</Typography>
-				<div>{run.category}</div>
-			</LabeledDiv>
 			<Divider />
 			<MiscContainer>
 				<LabeledDiv>
