@@ -109,7 +109,10 @@ export const tracker = async (nodecg: NodeCG) => {
 				fetchCommentators(),
 			]);
 			scheduleRep.value = runs
-				.filter((run) => run.fields.order !== null)
+				.filter((run) => {
+					// バックアップゲームをスケジュールから除外
+					return run.fields.order !== null;
+				})
 				.map((run, index) => {
 					const prevCompletedChecklist =
 						prevSchedule.find((prevRun) => prevRun.pk === run.pk)
