@@ -111,22 +111,6 @@
 				"workspace": "2-misc"
 			},
 			{
-				"name": "edit-tourny",
-				"title": "走者情報入れ替え",
-				"file": "edit-tourny.html",
-				"width": 8,
-				"headerColor": "#00BEBE",
-				"workspace": "1-special"
-			},
-			{
-				"name": "current-runners",
-				"title": "現在のゲームの走者",
-				"file": "current-runners.html",
-				"width": 2,
-				"headerColor": "#00BEBE",
-				"workspace": "1-special"
-			},
-			{
 				"name": "countdown",
 				"title": "カウントダウン",
 				"file": "countdown.html",
