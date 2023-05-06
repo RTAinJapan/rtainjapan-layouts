@@ -134,15 +134,9 @@ export const tracker = async (nodecg: NodeCG) => {
 						camera: true,
 						runners: run.fields.runners.map((runnerId) => {
 							const runner = runners.find((runner) => runner.pk === runnerId);
-							if (!runner) {
-								return {
-									pk: runnerId,
-									name: "",
-								};
-							}
 							return {
 								pk: runnerId,
-								name: runner?.fields.name || "",
+								name: runner?.fields.name ?? "",
 								twitch: runner?.fields.twitch,
 								nico: runner?.fields.nico,
 								twitter: runner?.fields.twitter,
