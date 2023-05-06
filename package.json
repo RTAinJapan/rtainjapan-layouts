@@ -28,7 +28,7 @@
 		]
 	},
 	"dependencies": {
-		"@googleapis/sheets": "^0.3.0",
+		"@googleapis/sheets": "^4.0.2",
 		"@twurple/api": "^5.3.4",
 		"@twurple/auth": "^5.3.4",
 		"app-root-path": "^3.1.0",
