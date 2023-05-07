@@ -45,8 +45,8 @@ const Social = forwardRef<HTMLDivElement, {icon: string; text?: string}>(
 	},
 );
 
-const NAME_FADEOUT_POS = "+=2";
-const SOCIAL_FADEOUT_POS = "+=1";
+const NAME_FADEOUT_POS = "+=30";
+const SOCIAL_FADEOUT_POS = "+=15";
 
 const NamePlateContent = ({
 	person,
