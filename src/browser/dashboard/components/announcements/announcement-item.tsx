@@ -8,7 +8,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UndoIcon from "@mui/icons-material/Undo";
 import {useEffect, useState} from "react";
-import {Announcements} from "../../../../nodecg/generated";
+import {Announcements} from "../../../../nodecg/generated/announcements";
 
 type Announcement = Announcements[number];
 

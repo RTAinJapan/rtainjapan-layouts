@@ -30,14 +30,16 @@ export const useVerticalGameInfo = (props: {
 				style={{width: props.nameplateWidth, placeSelf: "center"}}
 			></NamePlate>
 		) : (
-			commentators.slice(0, 2).map((commentator, index) => {
+			commentators.map((commentator, index) => {
 				return (
-					<NamePlate
-						key={commentator.name}
-						kind='commentators'
-						index={index}
-						style={{width: props.nameplateWidth, placeSelf: "center"}}
-					></NamePlate>
+					commentator && (
+						<NamePlate
+							key={commentator.name}
+							kind='commentators'
+							index={index}
+							style={{width: props.nameplateWidth, placeSelf: "center"}}
+						></NamePlate>
+					)
 				);
 			})
 		);

@@ -53,13 +53,19 @@ export const twitch = (nodecg: NodeCG) => {
 					accessToken,
 				),
 			});
-			const me = await apiClient.users.getMe();
-			if (me.name !== twitchConfig.channelName) {
-				res.status(400).send(`Not a user to register: ${me.name}`);
+			const {userId} = await apiClient.getTokenInfo();
+			if (!userId) {
+				res.status(500).send("Failed to get user ID");
 				return;
 			}
-			twitchRep.value = accessToken;
-			res.status(200).send(`Successfully registered user ${me.name}`);
+			const me = await apiClient.users.getAuthenticatedUser(userId);
+			if (me.name === twitchConfig.channelName) {
+				twitchRep.value = accessToken;
+				res.status(200).send(`Successfully registered user ${me.name}`);
+				return;
+			}
+			res.status(400).send(`Not a user to register: ${me.name}`);
+			return;
 		} catch (error: unknown) {
 			res.status(500).send("Server error while getting Twitch access token");
 			log.error("Server error while getting Twitch access token", error);
@@ -76,16 +82,14 @@ export const twitch = (nodecg: NodeCG) => {
 				apiClient = undefined;
 				return;
 			}
-			const authProvider = new RefreshingAuthProvider(
-				{
-					clientId: twitchConfig.clientId,
-					clientSecret: twitchConfig.clientSecret,
-					onRefresh: (tokenInfoData) => {
-						twitchRep.value = tokenInfoData;
-					},
+			const authProvider = new RefreshingAuthProvider({
+				clientId: twitchConfig.clientId,
+				clientSecret: twitchConfig.clientSecret,
+				onRefresh: (_, tokenInfoData) => {
+					twitchRep.value = tokenInfoData;
 				},
-				twitchOauth,
-			);
+			});
+			await authProvider.addUserForToken(twitchOauth);
 			apiClient = new ApiClient({authProvider});
 			const res = await apiClient.users.getUserByName(twitchConfig.channelName);
 			if (res) {
