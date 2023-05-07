@@ -7,7 +7,7 @@ import {RoundedHoleImage} from "../../../components/rounded-hole-image";
 import {useFitViewport} from "../../../components/lib/use-fit-viewport";
 
 type Props = PropsWithChildren<{
-	race?: boolean;
+	race: boolean;
 	hideGameInfo?: boolean;
 }>;
 

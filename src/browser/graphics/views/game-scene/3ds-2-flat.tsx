@@ -3,7 +3,7 @@ import {NamePlate} from "../../components/nameplate";
 
 export default () => {
 	return (
-		<TemplateL420>
+		<TemplateL420 race>
 			<NamePlate
 				kind='runners'
 				index={0}

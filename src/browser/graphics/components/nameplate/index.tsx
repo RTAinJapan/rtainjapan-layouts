@@ -6,9 +6,15 @@ import iconTwitch from "../../images/icon/icon_twitch.svg";
 import iconNico from "../../images/icon/icon_nico.svg";
 import iconRunner from "../../images/icon/icon_runner.svg";
 import iconCommentator from "../../images/icon/icon_commentary.svg";
-import {CSSProperties, HTMLAttributes, useEffect, useRef} from "react";
+import {
+	CSSProperties,
+	HTMLAttributes,
+	RefObject,
+	forwardRef,
+	useEffect,
+	useRef,
+} from "react";
 import {background, text} from "../../styles/colors";
-import {filterNonNullable} from "../../../../extension/lib/array";
 import {Commentator, Runner, Timer} from "../../../../nodecg/replicants";
 
 const textPlacement = {
@@ -16,72 +22,267 @@ const textPlacement = {
 	gridRow: "1 / 2",
 };
 
-const useSocial = (icon: string, text?: string) => {
-	const ref = useRef<HTMLDivElement>(null);
-	if (!text) {
-		return [null, null] as const;
-	}
-	return [
-		<ThinText
-			ref={ref}
-			style={{
-				...textPlacement,
-				fontSize: "24px",
-				display: "grid",
-				gap: "5px",
-				gridTemplateColumns: "24px auto",
-				placeContent: "center",
-				placeItems: "center",
-				opacity: 0,
-			}}
-		>
-			<img src={icon} height={24} width={24}></img>
-			<div> {text}</div>
-		</ThinText>,
-		ref,
-	] as const;
-};
+const Social = forwardRef<HTMLDivElement, {icon: string; text?: string}>(
+	({icon, text}, ref) => {
+		return (
+			<ThinText
+				ref={ref}
+				style={{
+					...textPlacement,
+					fontSize: "24px",
+					display: "grid",
+					gap: "5px",
+					gridTemplateColumns: "24px auto",
+					placeContent: "center",
+					placeItems: "center",
+					opacity: 0,
+				}}
+			>
+				<img src={icon} height={24} width={24}></img>
+				<div>{text}</div>
+			</ThinText>
+		);
+	},
+);
+
+const NAME_FADEOUT_POS = "+=2";
+const SOCIAL_FADEOUT_POS = "+=1";
 
 const NamePlateContent = ({
-	runner,
+	person,
 	style,
-	isRaceRunner,
+	race,
+	isRunner,
 }: {
-	runner?: Runner | Commentator;
+	person?: Runner | Commentator;
 	style?: CSSProperties;
-	isRaceRunner?: boolean;
+	race: boolean;
+	isRunner: boolean;
 }) => {
 	const nameRef = useRef<HTMLDivElement>(null);
-	const emptyRef = useRef<HTMLDivElement>(null);
-	const [twitter, twitterRef] = useSocial(iconTwitter, runner?.twitter);
-	const [twitch, twitchRef] = useSocial(iconTwitch, runner?.twitch);
-	const [nico, nicoRef] = useSocial(iconNico, runner?.nico);
+	const twitterRef = useRef<HTMLDivElement>(null);
+	const twitchRef = useRef<HTMLDivElement>(null);
+	const nicoRef = useRef<HTMLDivElement>(null);
+	const currentRun = useCurrentRun();
 
 	useEffect(() => {
-		const refs = filterNonNullable(
-			!isRaceRunner
-				? [nameRef, twitterRef, twitchRef, nicoRef].map(
-						(ref) => ref?.current ?? nameRef.current,
-				  )
-				: [emptyRef, twitterRef, twitchRef, nicoRef].map(
-						(ref) => ref?.current ?? emptyRef.current,
-				  ),
-		);
-		if (!refs[0]) {
+		if (!person || !currentRun) {
 			return;
 		}
 
-		const tl = gsap.timeline({repeat: -1});
-		for (const ref of refs) {
-			tl.fromTo(ref, {opacity: 0}, {opacity: 1, duration: 0.5});
-			tl.to(refs, {opacity: 0, duration: 0.5}, "+=30");
-		}
-		return () => {
-			tl.kill();
-		};
-	}, [nicoRef, twitterRef, twitchRef, isRaceRunner]);
+		const personsSocialLength = [
+			person.nico,
+			person.twitch,
+			person.twitter,
+		].filter(Boolean).length;
 
-	return !isRaceRunner ? (
+		// No socials: no animation
+		if (personsSocialLength === 0) {
+			return;
+		}
+
+		const soloSocialRef = person.nico
+			? nicoRef
+			: person.twitch
+			? twitchRef
+			: twitterRef;
+
+		const rotateOneSocial = () => {
+			const timeline = gsap.timeline({repeat: -1});
+			timeline.fromTo(
+				nameRef.current,
+				{opacity: 0},
+				{opacity: 1, duration: 0.5},
+			);
+			timeline.to(
+				nameRef.current,
+				{opacity: 0, duration: 0.5},
+				NAME_FADEOUT_POS,
+			);
+			timeline.fromTo(
+				soloSocialRef.current,
+				{opacity: 0},
+				{opacity: 1, duration: 0.5},
+			);
+			timeline.to(
+				soloSocialRef.current,
+				{opacity: 0, duration: 0.5},
+				SOCIAL_FADEOUT_POS,
+			);
+			return timeline;
+		};
+
+		const rotateSyncSocials = (
+			syncReference: Array<Runner | Commentator | null>,
+		) => {
+			let showTwitter = false;
+			let showTwitch = false;
+			let showNico = false;
+			for (const participant of syncReference) {
+				if (participant?.twitter) {
+					showTwitter = true;
+				}
+				if (participant?.twitch) {
+					showTwitch = true;
+				}
+				if (participant?.nico) {
+					showNico = true;
+				}
+			}
+
+			const animationOrder: Array<RefObject<HTMLDivElement>> = [];
+			animationOrder.push(nameRef);
+			if (showTwitter) {
+				animationOrder.push(person?.twitter ? twitterRef : nameRef);
+			}
+			if (showTwitch) {
+				animationOrder.push(person?.twitch ? twitchRef : nameRef);
+			}
+			if (showNico) {
+				animationOrder.push(person?.nico ? nicoRef : nameRef);
+			}
+			const timeline = gsap.timeline({repeat: -1});
+			for (let i = 0; i < animationOrder.length; i++) {
+				const element = animationOrder[i]?.current;
+				const prevElement =
+					animationOrder[i - 1]?.current ??
+					animationOrder[animationOrder.length - 1]?.current;
+				const nextElement =
+					animationOrder[i + 1]?.current ?? animationOrder[0]?.current;
+				if (!element || !prevElement || !nextElement) {
+					continue;
+				}
+				if (i === 0 || prevElement !== element) {
+					timeline.fromTo(element, {opacity: 0}, {opacity: 1, duration: 0.5});
+				} else {
+					timeline.to(element, {opacity: 1, duration: 0.5});
+				}
+				timeline.to(
+					element,
+					{opacity: nextElement === element ? 1 : 0, duration: 0.5},
+					i === 0 ? NAME_FADEOUT_POS : SOCIAL_FADEOUT_POS,
+				);
+			}
+
+			return timeline;
+		};
+
+		/**
+		 * Runners socials on race layouts:
+		 * - if only one social: statically show it.
+		 * - if multiple socials: animate socials without sync.
+		 */
+		if (race && isRunner) {
+			if (personsSocialLength === 1) {
+				gsap.set(soloSocialRef.current, {opacity: 1});
+				return () => {
+					gsap.set(soloSocialRef.current, {opacity: 0});
+				};
+			} else {
+				const animationOrder: Array<RefObject<HTMLDivElement>> = [];
+				if (person.twitter) {
+					animationOrder.push(twitterRef);
+				}
+				if (person.twitch) {
+					animationOrder.push(twitchRef);
+				}
+				if (person.nico) {
+					animationOrder.push(nicoRef);
+				}
+				const timeline = gsap.timeline({repeat: -1});
+				for (const ref of animationOrder) {
+					timeline.fromTo(
+						ref.current,
+						{opacity: 0},
+						{opacity: 1, duration: 0.5},
+					);
+					timeline.to(
+						ref.current,
+						{opacity: 0, duration: 0.5},
+						SOCIAL_FADEOUT_POS,
+					);
+				}
+				return () => {
+					timeline.revert();
+				};
+			}
+		}
+
+		/**
+		 * Commentator social animation for race layout.
+		 */
+		if (race && !isRunner) {
+			const everyoneHasOneSocial = currentRun.commentators.every(
+				(c) => [c?.nico, c?.twitch, c?.twitter].filter(Boolean).length <= 1,
+			);
+			if (everyoneHasOneSocial) {
+				const timeline = rotateOneSocial();
+				return () => {
+					timeline.revert();
+				};
+			} else {
+				const timeline = rotateSyncSocials(currentRun.commentators);
+				return () => {
+					timeline.revert();
+				};
+			}
+		}
+
+		// Handle when it's not race layout
+		const everyoneHasOneSocial = [
+			...currentRun.runners,
+			...currentRun.commentators,
+		].every(
+			(p) => [p?.nico, p?.twitch, p?.twitter].filter(Boolean).length <= 1,
+		);
+		if (everyoneHasOneSocial) {
+			const timeline = rotateOneSocial();
+			return () => {
+				timeline.revert();
+			};
+		} else {
+			const timeline = rotateSyncSocials([
+				...currentRun.runners,
+				...currentRun.commentators,
+			]);
+			return () => {
+				timeline.revert();
+			};
+		}
+	}, [person, race, isRunner, currentRun]);
+
+	if (isRunner && race) {
+		return (
+			<div
+				style={{
+					display: "grid",
+					placeSelf: "center start",
+					...style,
+				}}
+			>
+				<ThinText
+					style={{fontSize: "26px", marginLeft: "10px", ...textPlacement}}
+				>
+					{person?.name}
+				</ThinText>
+				<div
+					style={{
+						display: "grid",
+						placeContent: "start",
+						placeItems: "start",
+						marginLeft: "20px",
+						...style,
+					}}
+				>
+					<Social ref={twitterRef} icon={iconTwitter} text={person?.twitter} />
+					<Social ref={twitchRef} icon={iconTwitch} text={person?.twitch} />
+					<Social ref={nicoRef} icon={iconNico} text={person?.nico} />
+				</div>
+			</div>
+		);
+	}
+
+	return (
 		<div
 			style={{
 				display: "grid",
@@ -94,39 +295,11 @@ const NamePlateContent = ({
 				ref={nameRef}
 				style={{fontSize: "26px", opacity: 0, ...textPlacement}}
 			>
-				{runner?.name}
+				{person?.name}
 			</ThinText>
-			{twitter}
-			{twitch}
-			{nico}
-		</div>
-	) : (
-		<div
-			style={{
-				display: "grid",
-				placeSelf: "center start",
-				...style,
-			}}
-		>
-			<ThinText
-				style={{fontSize: "26px", marginLeft: "10px", ...textPlacement}}
-			>
-				{runner?.name}
-			</ThinText>
-			<div
-				style={{
-					display: "grid",
-					placeContent: "center",
-					placeItems: "center",
-					marginLeft: "20px",
-					...style,
-				}}
-			>
-				<div ref={emptyRef}></div>
-				{twitter}
-				{twitch}
-				{nico}
-			</div>
+			<Social ref={twitterRef} icon={iconTwitter} text={person?.twitter} />
+			<Social ref={twitchRef} icon={iconTwitch} text={person?.twitch} />
+			<Social ref={nicoRef} icon={iconNico} text={person?.nico} />
 		</div>
 	);
 };
@@ -136,13 +309,13 @@ export const NamePlate = ({
 	index = 0,
 	cutTop,
 	style,
-	race = false,
+	race,
 }: {
 	kind: "runners" | "commentators";
 	index?: number | [number, number];
 	cutTop?: boolean;
 	style?: HTMLAttributes<HTMLDivElement>["style"];
-	race?: boolean;
+	race: boolean;
 }) => {
 	const currentRun = useCurrentRun();
 	const timer = useTimer();
@@ -159,9 +332,10 @@ export const NamePlate = ({
 	const content =
 		typeof index === "number" ? (
 			<NamePlateContent
-				runner={currentRun[kind][index] ?? undefined}
+				person={currentRun[kind][index] ?? undefined}
 				style={{gridRow: "1 / 2", gridColumn: "3 / 4"}}
-				isRaceRunner={race && kind === "runners"}
+				race={race}
+				isRunner={kind === "runners"}
 			></NamePlateContent>
 		) : (
 			<div
@@ -176,13 +350,17 @@ export const NamePlate = ({
 				}}
 			>
 				<NamePlateContent
-					runner={currentRun[kind][index[0]] ?? undefined}
+					person={currentRun[kind][index[0]] ?? undefined}
+					race={race}
+					isRunner={kind === "runners"}
 				></NamePlateContent>
 				<div
 					style={{background: "white", margin: "5px 0", placeSelf: "stretch"}}
 				></div>
 				<NamePlateContent
-					runner={currentRun[kind][index[1]] ?? undefined}
+					person={currentRun[kind][index[1]] ?? undefined}
+					race={race}
+					isRunner={kind === "runners"}
 				></NamePlateContent>
 			</div>
 		);

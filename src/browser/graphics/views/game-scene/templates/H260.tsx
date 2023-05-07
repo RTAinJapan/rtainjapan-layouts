@@ -9,7 +9,7 @@ import background from "../../../images/background.png";
 import {HorizontalNamePlates} from "./horizontal-nameplates";
 import {useFitViewport} from "../../../components/lib/use-fit-viewport";
 
-type Props = PropsWithChildren<{race?: boolean}>;
+type Props = PropsWithChildren<{race: boolean}>;
 
 export const TemplateH260: FunctionComponent<Props> = ({children, race}) => {
 	const ref = useRef<HTMLDivElement>(null);

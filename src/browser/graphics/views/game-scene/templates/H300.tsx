@@ -9,7 +9,7 @@ import background from "../../../images/background.png";
 import {HorizontalNamePlates} from "./horizontal-nameplates";
 
 type Props = PropsWithChildren<{
-	race?: boolean;
+	race: boolean;
 }>;
 
 export const TemplateH300: FunctionComponent<Props> = ({children, race}) => {
