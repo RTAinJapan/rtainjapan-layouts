@@ -35,7 +35,7 @@ export const Music = () => {
 			);
 		});
 		return () => {
-			tl.kill();
+			tl.revert();
 		};
 	}, [text]);
 

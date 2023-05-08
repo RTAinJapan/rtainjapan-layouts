@@ -132,7 +132,7 @@ const Sponsor = () => {
 			tl.add(swipeExit(imageRef), "<+=40");
 		}
 		return () => {
-			tl.kill();
+			tl.revert();
 		};
 	}, [assets]);
 
