@@ -174,9 +174,14 @@ const NamePlateContent = ({
 		 */
 		if (race && isRunner) {
 			if (personsSocialLength === 1) {
-				gsap.set(soloSocialRef.current, {opacity: 1});
+				const timeline = gsap.timeline();
+				timeline.fromTo(
+					soloSocialRef.current,
+					{opacity: 0},
+					{opacity: 1, duration: 0.5},
+				);
 				return () => {
-					gsap.set(soloSocialRef.current, {opacity: 0});
+					timeline.revert();
 				};
 			} else {
 				const animationOrder: Array<RefObject<HTMLDivElement>> = [];
