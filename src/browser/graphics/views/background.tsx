@@ -1,5 +1,7 @@
 import background from "../../images/background.png";
-export default () => {
+import {render} from "../../render";
+
+const App = () => {
 	return (
 		<div
 			style={{
@@ -12,3 +14,5 @@ export default () => {
 		></div>
 	);
 };
+
+render(<App />);

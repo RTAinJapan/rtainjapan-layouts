@@ -171,10 +171,6 @@ const App = () => {
 					width: 1488,
 					height: 837,
 					radius: 21,
-					border: {
-						color: "white",
-						width: 2,
-					},
 				}}
 				style={{
 					position: "absolute",

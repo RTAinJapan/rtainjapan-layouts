@@ -9,7 +9,7 @@ import background from "../../../images/background.png";
 import {HorizontalNamePlates} from "./horizontal-nameplates";
 import {useFitViewport} from "../../../components/lib/use-fit-viewport";
 
-type Props = PropsWithChildren<{race?: boolean}>;
+type Props = PropsWithChildren<{race: boolean}>;
 
 export const TemplateH260: FunctionComponent<Props> = ({children, race}) => {
 	const ref = useRef<HTMLDivElement>(null);
@@ -23,6 +23,7 @@ export const TemplateH260: FunctionComponent<Props> = ({children, race}) => {
 				width: "1920px",
 				height: "1030px",
 				color: text.normal,
+				backgroundColor: import.meta.env.DEV ? "magenta" : undefined,
 			}}
 		>
 			<RoundedHoleImage
@@ -35,10 +36,6 @@ export const TemplateH260: FunctionComponent<Props> = ({children, race}) => {
 					radius: 7,
 					x: 1030,
 					y: 755,
-					border: {
-						color: "white",
-						width: 2,
-					},
 				}}
 			></RoundedHoleImage>
 			<SemiHorizontalGameInfo

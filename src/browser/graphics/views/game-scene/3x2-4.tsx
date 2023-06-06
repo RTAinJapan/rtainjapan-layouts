@@ -34,6 +34,7 @@ export default () => {
 				kind='runners'
 				index={2}
 				cutTop
+				race
 				style={{
 					position: "absolute",
 					top: "965px",

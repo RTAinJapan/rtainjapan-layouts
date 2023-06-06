@@ -4,7 +4,7 @@ import {NamePlate} from "../../../components/nameplate";
 import {Sponsor} from "../../../components/sponsor";
 
 export const useVerticalGameInfo = (props: {
-	race?: boolean;
+	race: boolean;
 	width: string;
 	height: string;
 	cameraHeight: string;
@@ -20,6 +20,7 @@ export const useVerticalGameInfo = (props: {
 			kind='runners'
 			index={0}
 			style={{width: props.nameplateWidth, placeSelf: "center"}}
+			race={props.race}
 		></NamePlate>
 	);
 	const commentatorNamePlate =
@@ -28,16 +29,20 @@ export const useVerticalGameInfo = (props: {
 				kind='commentators'
 				index={[0, 1]}
 				style={{width: props.nameplateWidth, placeSelf: "center"}}
+				race={props.race}
 			></NamePlate>
 		) : (
-			commentators.slice(0, 2).map((commentator, index) => {
+			commentators.map((commentator, index) => {
 				return (
-					<NamePlate
-						key={commentator.name}
-						kind='commentators'
-						index={index}
-						style={{width: props.nameplateWidth, placeSelf: "center"}}
-					></NamePlate>
+					commentator && (
+						<NamePlate
+							key={commentator.name}
+							kind='commentators'
+							index={index}
+							style={{width: props.nameplateWidth, placeSelf: "center"}}
+							race={props.race}
+						></NamePlate>
+					)
 				);
 			})
 		);

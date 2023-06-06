@@ -1,4 +1,4 @@
-import "../styles/global";
+import "../styles/global.css";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import styled from "@mui/material/styles/styled";

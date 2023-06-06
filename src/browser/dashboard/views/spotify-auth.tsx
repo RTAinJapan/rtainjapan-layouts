@@ -1,4 +1,4 @@
-import "../styles/global";
+import "../styles/global.css";
 
 import Button from "@mui/material/Button";
 import {useReplicant} from "../../use-replicant";
