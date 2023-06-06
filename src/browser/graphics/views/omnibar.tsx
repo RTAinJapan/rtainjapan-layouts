@@ -655,7 +655,7 @@ const Omnibar = () => {
 		initialize(false);
 
 		return () => {
-			tl.kill();
+			tl.revert();
 		};
 	}, []);
 

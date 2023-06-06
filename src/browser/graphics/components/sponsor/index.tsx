@@ -24,15 +24,14 @@ export const Sponsor: FunctionComponent<{
 	const containerRef = useRef<HTMLImageElement>(null);
 	const [user, setUser] = useState("");
 	const [text, setText] = useState("");
-	let tl = gsap.timeline();
 	const [currentSponsor, setCurrentSponsor] = useState(0);
 
 	useEffect(() => {
 		if (!assets) {
 			return;
 		}
+		const tl = gsap.timeline();
 		const initialize = () => {
-			tl = gsap.timeline();
 			const sponsorUrl = assets[currentSponsor]?.url;
 			if (!sponsorUrl) {
 				return;
@@ -82,10 +81,10 @@ export const Sponsor: FunctionComponent<{
 
 		nodecg.listenFor("showTweet", listener);
 		return () => {
-			tl.kill();
+			tl.revert();
 			nodecg.unlisten("showTweet", listener);
 		};
-	}, [assets, tl]);
+	}, [assets, text, currentSponsor]);
 
 	return (
 		<div
