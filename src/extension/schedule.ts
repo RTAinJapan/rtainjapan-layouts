@@ -1,5 +1,5 @@
-import {cloneDeep} from "lodash";
 import {NodeCG} from "./nodecg";
+import {klona as clone} from "klona/json";
 
 export default async (nodecg: NodeCG) => {
 	const scheduleRep = nodecg.Replicant("schedule");
@@ -18,8 +18,8 @@ export default async (nodecg: NodeCG) => {
 		if (!newCurrentRun) {
 			return;
 		}
-		currentRunRep.value = cloneDeep(newCurrentRun);
-		nextRunRep.value = cloneDeep(scheduleRep.value[index + 1]);
+		currentRunRep.value = clone(newCurrentRun);
+		nextRunRep.value = clone(scheduleRep.value[index + 1]);
 	};
 
 	const seekToNextRun = () => {
@@ -37,8 +37,8 @@ export default async (nodecg: NodeCG) => {
 		if (currentIndex >= scheduleRep.value.length - 1) {
 			return;
 		}
-		currentRunRep.value = cloneDeep(nextRunRep.value);
-		nextRunRep.value = cloneDeep(scheduleRep.value[currentIndex + 2]);
+		currentRunRep.value = clone(nextRunRep.value);
+		nextRunRep.value = clone(scheduleRep.value[currentIndex + 2]);
 	};
 
 	const seekToPreviousRun = () => {
@@ -56,8 +56,8 @@ export default async (nodecg: NodeCG) => {
 		if (currentIndex === 0) {
 			return;
 		}
-		nextRunRep.value = cloneDeep(currentRunRep.value);
-		currentRunRep.value = cloneDeep(scheduleRep.value[currentIndex - 1]);
+		nextRunRep.value = clone(currentRunRep.value);
+		currentRunRep.value = clone(scheduleRep.value[currentIndex - 1]);
 	};
 
 	nodecg.listenFor("nextRun", (_, cb) => {
@@ -110,8 +110,8 @@ export default async (nodecg: NodeCG) => {
 		if (isCurrentRunEmpty) {
 			const currentRun = newVal[0];
 			if (currentRun) {
-				currentRunRep.value = cloneDeep(currentRun);
-				nextRunRep.value = cloneDeep(newVal[1]);
+				currentRunRep.value = clone(currentRun);
+				nextRunRep.value = clone(newVal[1]);
 			}
 		}
 	});

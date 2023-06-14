@@ -1,10 +1,7 @@
 import path from "path";
-import fs from "fs";
-import * as cheerio from "cheerio";
+import fs from "fs/promises";
 import {ResolvedConfig, Manifest, Plugin} from "vite";
 import {globbySync} from "globby";
-import {deleteSync} from "del";
-import getPort from "get-port";
 import {
 	rollup,
 	watch as rollupWatch,
@@ -74,6 +71,10 @@ type PluginConfig = {
 	dashboard?: string | string[];
 	extension?: string | RollupOptions;
 	template?: string | {graphics: string; dashboard: string};
+	server?: {
+		host?: string;
+		port?: number;
+	};
 };
 
 export default async ({
@@ -82,11 +83,10 @@ export default async ({
 	dashboard = [],
 	extension,
 	template = "./src/template.html",
+	server,
 }: PluginConfig): Promise<Plugin> => {
 	let config: ResolvedConfig;
-	let protocol: string;
-	let host: string;
-	let port: number;
+	let origin: string;
 
 	const extensionRollup =
 		typeof extension === "string"
@@ -97,44 +97,60 @@ export default async ({
 
 	const graphicsInputs = globbySync(graphics);
 	const dashboardInputs = globbySync(dashboard);
-	const inputs = [...graphicsInputs, ...dashboardInputs];
 
 	const generateHtmlFiles = async () => {
-		const graphicsTemplate =
-			typeof template === "string" ? template : template.graphics;
-		const dashboardTemplate =
-			typeof template === "string" ? template : template.dashboard;
-
-		const graphicsTemplateHtml = fs.readFileSync(
-			path.join(config.root, graphicsTemplate),
-			"utf-8",
-		);
-		const dashboardTemplateHtml = fs.readFileSync(
-			path.join(config.root, dashboardTemplate),
-			"utf-8",
-		);
+		const [graphicsTemplateHtml, dashboardTemplateHtml] = await Promise.all([
+			fs.readFile(
+				path.join(
+					config.root,
+					typeof template === "string" ? template : template.graphics,
+				),
+				"utf-8",
+			),
+			fs.readFile(
+				path.join(
+					config.root,
+					typeof template === "string" ? template : template.dashboard,
+				),
+				"utf-8",
+			),
+		]);
 
 		const graphicsOutdir = path.join(config.root, "graphics");
 		const dashboardOutdir = path.join(config.root, "dashboard");
 
-		deleteSync([`${graphicsOutdir}/**`, `${dashboardOutdir}/**`]);
-		fs.mkdirSync(graphicsOutdir, {recursive: true});
-		fs.mkdirSync(dashboardOutdir, {recursive: true});
+		await Promise.all([
+			fs.rm(graphicsOutdir, {recursive: true, force: true}),
+			fs.rm(dashboardOutdir, {recursive: true, force: true}),
+		]);
+		await Promise.all([
+			fs.mkdir(graphicsOutdir, {recursive: true}),
+			fs.mkdir(dashboardOutdir, {recursive: true}),
+		]);
 
-		for (const input of inputs) {
-			const templateHtml = graphicsInputs.includes(input)
-				? graphicsTemplateHtml
-				: dashboardTemplateHtml;
-			const $ = cheerio.load(templateHtml);
-			const head = $("head");
+		const manifest =
+			config.command === "build"
+				? (JSON.parse(
+						await fs.readFile(
+							path.join(config.build.outDir, "manifest.json"),
+							"utf-8",
+						),
+				  ) as Manifest)
+				: undefined;
+
+		const generateHtml = async (
+			input: string,
+			templateHtml: string,
+			outputDir: string,
+		) => {
+			const head: string[] = [];
 
 			if (config.command === "serve") {
-				const address = `${protocol}://${host}:${port}`;
-				head.append(`
+				head.push(`
 					<script type="module">
 						import RefreshRuntime from '${new URL(
 							path.join(config.base, "@react-refresh"),
-							address,
+							origin,
 						)}'
 						RefreshRuntime.injectIntoGlobalHook(window)
 						window.$RefreshReg$ = () => {}
@@ -142,40 +158,34 @@ export default async ({
 						window.__vite_plugin_react_preamble_installed__ = true
 					</script>
 				`);
-				head.append(
+				head.push(
 					`<script type="module" src="${new URL(
 						path.join(config.base, "@vite/client"),
-						address,
+						origin,
 					)}"></script>`,
 				);
-				head.append(
+				head.push(
 					`<script type="module" src="${new URL(
 						path.join(config.base, input),
-						address,
+						origin,
 					)}"></script>`,
 				);
 			}
 
 			if (config.command === "build") {
 				const inputName = input.replace(/^\.\//, "");
-				const manifest: Manifest = JSON.parse(
-					fs.readFileSync(
-						path.join(config.build.outDir, "manifest.json"),
-						"utf-8",
-					),
-				);
-				const entryChunk = manifest[inputName];
+				const entryChunk = manifest?.[inputName];
 
 				if (entryChunk?.css) {
 					for (const css of entryChunk.css) {
-						head.append(
+						head.push(
 							`<link rel="stylesheet" href="${path.join(config.base, css)}">`,
 						);
 					}
 				}
 
 				if (entryChunk?.file) {
-					head.append(
+					head.push(
 						`<script type="module" src="${path.join(
 							config.base,
 							entryChunk.file,
@@ -184,46 +194,45 @@ export default async ({
 				}
 			}
 
-			const newHtml = $.html();
-			const dir = graphicsInputs.includes(input)
-				? graphicsOutdir
-				: dashboardOutdir;
+			const newHtml = templateHtml.includes("</head>")
+				? templateHtml.replace("</head>", `${head.join("\n")}\n</head>`)
+				: `${head.join("\n")}\n${templateHtml}`;
 			const name = path.basename(input, path.extname(input));
-			fs.writeFileSync(path.join(dir, `${name}.html`), newHtml);
-		}
+			await fs.writeFile(path.join(outputDir, `${name}.html`), newHtml);
+		};
+
+		await Promise.all([
+			...graphicsInputs.map((input) =>
+				generateHtml(input, graphicsTemplateHtml, graphicsOutdir),
+			),
+			...dashboardInputs.map((input) =>
+				generateHtml(input, dashboardTemplateHtml, dashboardOutdir),
+			),
+		]);
 	};
 
 	return {
 		name: "nodecg",
 
-		config: async (baseConfig, {command}) => {
-			protocol = baseConfig.server?.https ? "https" : "http";
-			host =
-				typeof baseConfig.server?.host === "string"
-					? baseConfig.server.host
-					: "localhost";
-			port = baseConfig.server?.port ?? (await getPort());
-
+		config: async (_, {command}) => {
+			const host = server?.host ?? "localhost";
+			const port = server?.port ?? 8080;
+			origin = `http://${host}:${port}`;
 			return {
 				appType: "mpa",
 				base:
 					command === "serve"
 						? `/bundles/${bundleName}`
 						: `/bundles/${bundleName}/shared/dist`,
-				server: {
-					host,
-					port,
-					origin: `${protocol}://${host}:${port}`,
-				},
+				server: {host, port, origin},
 				build: {
 					rollupOptions: {
-						input: inputs,
+						input: [...graphicsInputs, ...dashboardInputs],
 					},
 					manifest: true,
 					outDir: "./shared/dist",
 					assetsDir: ".",
 				},
-				clearScreen: baseConfig.clearScreen ?? false,
 			};
 		},
 
@@ -233,17 +242,14 @@ export default async ({
 
 		buildStart: async () => {
 			if (config.command === "serve") {
-				generateHtmlFiles();
+				void generateHtmlFiles();
 				extensionRollup?.watch();
-			}
-			if (config.command === "build") {
-				await extensionRollup?.build();
 			}
 		},
 
-		writeBundle: () => {
+		writeBundle: async () => {
 			if (config.command === "build") {
-				generateHtmlFiles();
+				await Promise.all([generateHtmlFiles(), extensionRollup?.build()]);
 			}
 		},
 

@@ -29,7 +29,7 @@ import {
 	Donation,
 	DonationQueue,
 } from "../../../nodecg/replicants";
-import cloneDeep from "lodash-es/cloneDeep";
+import {klona as clone} from "klona/json";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
 import {render} from "../../render.js";
 
@@ -544,15 +544,15 @@ const Omnibar = () => {
 			}
 
 			tl.call(() => {
-				const currentBidwars = cloneDeep(bidwars.current).slice(
+				const currentBidwars = clone(bidwars.current).slice(
 					0,
 					MAX_BIDWAR_DISPLAY,
 				);
-				const currentChallenges = cloneDeep(bidChallenges.current).slice(
+				const currentChallenges = clone(bidChallenges.current).slice(
 					0,
 					MAX_CHALLENGE_DISPLAY,
 				);
-				const currentDonations = cloneDeep(donationQueue.current);
+				const currentDonations = clone(donationQueue.current);
 				tl.call(() => {
 					nodecg.sendMessage("donation:clear-queue");
 				});

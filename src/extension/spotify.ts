@@ -1,5 +1,4 @@
 import {setTimeout} from "node:timers";
-import {isEqual} from "lodash";
 import {NodeCG} from "./nodecg";
 
 const defaultWaitMs = 3 * 1000;
@@ -72,7 +71,11 @@ export const spotify = async (nodecg: NodeCG) => {
 				artists: sumArtists(body.item.artists),
 				album: body.item.album.name,
 			};
-			if (!isEqual(newTrack, spotifyRep.value.currentTrack)) {
+			if (
+				newTrack.name !== spotifyRep.value.currentTrack?.name ||
+				newTrack.artists !== spotifyRep.value.currentTrack?.artists ||
+				newTrack.album !== spotifyRep.value.currentTrack?.album
+			) {
 				spotifyRep.value.currentTrack = newTrack;
 			}
 			refreshCurrentTrackTimer(setTimeout(getCurrentTrack, defaultWaitMs));

@@ -6,7 +6,7 @@ import {FitText} from "../components/lib/fit-text";
 import {BoldText, CreditTitleText} from "../components/lib/text";
 import topLogo from "../images/header_rij.png";
 import gsap from "gsap";
-import chunk from "lodash-es/chunk";
+import {chunk} from "../../../extension/lib/array";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
 import {render} from "../../render.js";
 

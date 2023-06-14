@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import clone from "lodash-es/clone";
 import {ReplicantMap} from "../nodecg/replicants";
+import {klona as clone} from "klona/json";
 
 /**
  * Subscribe to a replicant, returns tuple of the replicant value and `setValue` function.

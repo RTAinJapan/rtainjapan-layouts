@@ -1,7 +1,6 @@
 import WebSocket from "ws";
 import {NodeCG} from "./nodecg";
 import {sheets} from "@googleapis/sheets";
-import zipObject from "lodash/zipObject";
 import type EventSample from "./sample-json/tracker/event.json";
 import type RunSample from "./sample-json/tracker/run.json";
 import type RunnerSample from "./sample-json/tracker/runner.json";
@@ -9,7 +8,8 @@ import type BidSample from "./sample-json/tracker/bid.json";
 import type BidTargetSample from "./sample-json/tracker/bidtarget.json";
 import type DonationSample from "./sample-json/tracker/donation.json";
 import {BidChallenge, Donation, Run} from "../nodecg/replicants";
-import {clone, uniqBy} from "lodash";
+import {klona as clone} from "klona/json";
+import {uniqBy, zipObject} from "./lib/array";
 
 type CommentDonation = (typeof DonationSample)[number] & {
 	fields: {comment: string};
@@ -28,7 +28,7 @@ export const tracker = async (nodecg: NodeCG) => {
 	const trackerConfig = nodecg.bundleConfig.tracker;
 	const {googleApiKey, commentatorSheet} = nodecg.bundleConfig;
 
-	if (!trackerConfig || !googleApiKey || !commentatorSheet) {
+	if (!trackerConfig) {
 		log.warn("tracker is not configured in the bundle config");
 		return;
 	}
@@ -71,29 +71,35 @@ export const tracker = async (nodecg: NodeCG) => {
 
 	const sheetsApi = sheets({version: "v4", auth: googleApiKey});
 	const fetchCommentators = async () => {
-		const res = await sheetsApi.spreadsheets.values.batchGet({
-			spreadsheetId: commentatorSheet,
-			ranges: ["解説応募"],
-		});
-		const sheetValues = res.data.valueRanges;
-		if (!sheetValues?.[0]?.values) {
-			throw new Error("Could not get values from spreadsheet");
+		try {
+			const res = await sheetsApi.spreadsheets.values.batchGet({
+				spreadsheetId: commentatorSheet,
+				ranges: ["解説応募"],
+			});
+			const sheetValues = res.data.valueRanges;
+			if (!sheetValues?.[0]?.values) {
+				throw new Error("Could not get values from spreadsheet");
+			}
+			const [labels, ...contents] = sheetValues[0].values;
+			if (!labels) {
+				throw new Error("Could not get values from spreadsheet");
+			}
+			const rawData = contents.map((content) => zipObject(labels, content));
+			return rawData.map((el) => {
+				return {
+					name: el["名前 (ニックネーム)"] as string,
+					twitter: el["Twitter ID"] as string,
+					twitch: el["Twitch ID"] as string,
+					nico: el["ニコニココミュニティ ID"] as string,
+					gameCategory: el["担当ゲームカテゴリ"] as string,
+				};
+			});
+		} catch (error: any) {
+			log.error(error.message);
+			return [];
 		}
-		const [labels, ...contents] = sheetValues[0].values;
-		if (!labels) {
-			throw new Error("Could not get values from spreadsheet");
-		}
-		const rawData = contents.map((content) => zipObject(labels, content));
-		return rawData.map((el) => {
-			return {
-				name: el["名前 (ニックネーム)"] as string,
-				twitter: el["Twitter ID"] as string,
-				twitch: el["Twitch ID"] as string,
-				nico: el["ニコニココミュニティ ID"] as string,
-				gameCategory: el["担当ゲームカテゴリ"] as string,
-			};
-		});
 	};
+
 	const updateRuns = async () => {
 		try {
 			const prevSchedule = scheduleRep.value ? clone(scheduleRep.value) : [];

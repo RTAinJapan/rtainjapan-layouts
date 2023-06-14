@@ -1,4 +1,4 @@
-import {clone} from "lodash";
+import {klona as clone} from "klona/json";
 import {NodeCG} from "./nodecg";
 import {v4 as uuid} from "uuid";
 import {Run} from "../nodecg/generated";

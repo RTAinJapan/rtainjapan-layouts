@@ -2,7 +2,6 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import TypoGraphy from "@mui/material/Typography";
-import max from "lodash/max";
 import React, {FC, useEffect, useState} from "react";
 import styled from "styled-components";
 import {Participant, Run} from "../../../../nodecg/replicants";
@@ -82,7 +81,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 			const newRunner = {name: "", ...oldRunner, [key]: value};
 			const newRunners: Participant[] = [];
 			const iterateLength =
-				(max([updatingIndex, run.runners.length - 1]) || 0) + 1;
+				(Math.max(updatingIndex, run.runners.length - 1) || 0) + 1;
 			for (let i = 0; i < iterateLength; i++) {
 				if (i === updatingIndex) {
 					newRunners.push(newRunner);
@@ -107,7 +106,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 			const newOne = {...oldOne, [key]: value};
 			const newOnes: Participant[] = [];
 			const iterateLength =
-				(max([updatingIndex, run.commentators.length - 1]) || 0) + 1;
+				(Math.max(updatingIndex, run.commentators.length - 1) || 0) + 1;
 			for (let i = 0; i < iterateLength; i++) {
 				if (i === updatingIndex) {
 					newOnes.push(newOne);
