@@ -63,7 +63,13 @@
 			"required": ["clientId", "clientSecret"],
 			"properties": {
 				"clientId": {"type": "string"},
-				"clientSecret": {"type": "string"},
+				"clientSecret": {"type": "string"}
+			}
+		},
+		"music": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
 				"textPrefix": {"type": "string", "default": ""},
 				"textSuffix": {"type": "string", "default": ""}
 			}
