@@ -7,7 +7,7 @@ import iconNico from "../../images/icon/icon_nico.svg";
 import iconRunner from "../../images/icon/icon_runner.svg";
 import iconCommentator from "../../images/icon/icon_commentary.svg";
 import {CSSProperties, HTMLAttributes, useEffect, useRef} from "react";
-import {background, text} from "../../styles/colors";
+import {background, border, text} from "../../styles/colors";
 import {filterNonNullable} from "../../../../extension/lib/array";
 import {Participant, Timer} from "../../../../nodecg/replicants";
 
@@ -179,7 +179,11 @@ export const NamePlate = ({
 					runner={currentRun[kind][index[0]]}
 				></NamePlateContent>
 				<div
-					style={{background: "white", margin: "5px 0", placeSelf: "stretch"}}
+					style={{
+						background: border.name,
+						margin: "5px 0",
+						placeSelf: "stretch",
+					}}
 				></div>
 				<NamePlateContent
 					runner={currentRun[kind][index[1]]}
@@ -192,7 +196,7 @@ export const NamePlate = ({
 			style={{
 				height: "50px",
 				borderRadius: cutTop ? "0 0 7px 7px" : "7px",
-				borderColor: "white",
+				borderColor: border.name,
 				borderStyle: "solid",
 				borderWidth: cutTop ? "0 2px 2px 2px" : "2px",
 				display: "grid",
@@ -210,7 +214,7 @@ export const NamePlate = ({
 			></img>
 			<div
 				style={{
-					background: "white",
+					background: border.name,
 					margin: "5px 0",
 					placeSelf: "stretch",
 				}}

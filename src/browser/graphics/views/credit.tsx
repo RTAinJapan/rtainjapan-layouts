@@ -4,11 +4,12 @@ import "../styles/adobe-fonts.js";
 import {FC, useEffect, useRef, useState} from "react";
 import {FitText} from "../components/lib/fit-text";
 import {BoldText, CreditTitleText} from "../components/lib/text";
-import topLogo from "../images/header_rij.png";
+import topLogo from "../images/header_rij.svg";
 import gsap from "gsap";
 import {chunk} from "../../../extension/lib/array";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
 import {render} from "../../render.js";
+import {background, border} from "../styles/colors";
 
 const NAME_SHOW_DURATION = 5;
 
@@ -119,8 +120,9 @@ const App: FC = () => {
 					width: "1600px",
 					height: "870px",
 					borderRadius: "21px",
-					border: "2px solid white",
-					backgroundColor: "rgba(8, 36, 20, 0.8)",
+					border: "2px solid",
+					borderColor: border.credit,
+					backgroundColor: background.credit,
 				}}
 			>
 				<CreditTitleText

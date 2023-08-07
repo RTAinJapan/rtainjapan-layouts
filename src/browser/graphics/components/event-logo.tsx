@@ -1,5 +1,5 @@
 import {CSSProperties} from "react";
-import rtaijLogo from "../images/header_rij.png";
+import rtaijLogo from "../images/header_rij.svg";
 
 export const EventLogo = (props: {style: CSSProperties}) => {
 	return (

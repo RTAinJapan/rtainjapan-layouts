@@ -2,7 +2,7 @@ import "modern-normalize";
 import "../styles/adobe-fonts.js";
 
 import gsap from "gsap";
-import topLogo from "../images/header_rij.png";
+import topLogo from "../images/header_rij.svg";
 import background from "../images/background.png";
 import {RoundedHoleImage} from "../components/rounded-hole-image";
 import logoR from "../images/speech_nameplate.png";
@@ -14,6 +14,7 @@ import {swipeEnter, swipeExit} from "../components/lib/blur-swipe";
 import {CameraState} from "../../../nodecg/replicants";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
 import {render} from "../../render.js";
+import {border} from "../styles/colors.js";
 
 const BigNameplate = (props: {innerRef?: RefObject<HTMLDivElement>}) => {
 	const camera = useReplicant("camera-name");
@@ -172,7 +173,7 @@ const App = () => {
 					height: 837,
 					radius: 21,
 					border: {
-						color: "white",
+						color: border.speechCamera,
 						width: 2,
 					},
 				}}

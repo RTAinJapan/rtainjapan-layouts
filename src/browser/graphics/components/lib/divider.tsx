@@ -1,5 +1,6 @@
 import {CSSProperties} from "react";
 
+/** 特殊変形時のゲームタイトル枠罫線 */
 const gradientColor = `
 	linear-gradient(
 		to right,

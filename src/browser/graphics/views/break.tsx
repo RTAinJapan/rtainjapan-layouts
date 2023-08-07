@@ -158,7 +158,7 @@ const Sponsor = () => {
 					background: setup.frameBg,
 					borderWidth: "2px 0 2px 2px",
 					borderStyle: "solid",
-					borderColor: "white",
+					borderColor: setup.frameBorder,
 					borderRadius: "7px 0 0 7px",
 				}}
 			>
@@ -168,6 +168,7 @@ const Sponsor = () => {
 	);
 };
 
+/** 画面左側の影 */
 const GradientOverlay = () => {
 	return (
 		<div
@@ -179,9 +180,9 @@ const GradientOverlay = () => {
 				background: `
  					linear-gradient(
  						to right,
- 						rgba(20, 50, 33, 0.5),
- 						rgba(20, 50, 33, 0.4) 75%,
- 						rgba(20, 50, 33, 0) 100%
+ 						rgba(10, 10, 30, 0.5),
+ 						rgba(10, 10, 30, 0.4) 75%,
+ 						rgba(10, 10, 30, 0) 100%
  					)`,
 			}}
 		></div>
@@ -252,11 +253,11 @@ const TweetContainer = () => {
 					alignSelf: "start",
 					justifySelf: "stretch",
 					padding: "50px",
-					borderColor: "white",
+					borderColor: setup.frameBorder,
 					borderStyle: "solid",
 					borderWidth: "2px 0 2px 2px",
 					borderRadius: "7px 0 0 7px",
-					background: "rgba(8, 36, 20, 0.6)",
+					background: setup.frameBg,
 					willChange: "transform",
 				}}
 			>
@@ -277,7 +278,7 @@ const App = () => {
 				width: "1920px",
 				height: "1030px",
 				overflow: "hidden",
-				color: "white",
+				color: setup.text,
 			}}
 		>
 			<GradientOverlay></GradientOverlay>
