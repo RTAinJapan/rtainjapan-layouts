@@ -44,7 +44,7 @@ export const background = {
 	/** Twitter枠 背景 */
 	tweet: "rgba(40, 15, 20, 0.5)",
 	/** エンドロール枠 背景 */
-	credit: "rgba(37, 48, 58, 0.6)",
+	credit: "rgba(37, 48, 58, 0.8)",
 };
 
 export const bidwar = {
