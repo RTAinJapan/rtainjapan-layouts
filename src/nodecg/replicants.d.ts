@@ -22,6 +22,7 @@ import {Donations} from "./generated/donations";
 import {DonationQueue} from "./generated/donation-queue";
 import {VideoControl} from "./generated/video-control";
 import {Announcements} from "./generated/announcements";
+import {PlayingMusic} from "./generated/playing-music";
 
 type Run = NonNullable<CurrentRun>;
 type Participant = Run["runners"][number];
@@ -70,6 +71,7 @@ type ReplicantMap = {
 	"video-control": VideoControl;
 	"assets:interval-video": Assets[];
 	announcements: Announcements;
+	"playing-music": PlayingMusic;
 };
 
 export type {
@@ -97,4 +99,5 @@ export type {
 	DonationQueue,
 	BidChallenge,
 	Announcements,
+	PlayingMusic,
 };

@@ -6,9 +6,10 @@ import {setup} from "../styles/colors";
 import {ThinText} from "./lib/text";
 
 export const Music = () => {
-	const spotify = useReplicant("spotify");
-	// prettier-ignore
-	const text = `${nodecg.bundleConfig.spotify?.textPrefix ?? ""} ${spotify?.currentTrack?.name} - ${spotify?.currentTrack?.artists} ${nodecg.bundleConfig.spotify?.textSuffix ?? ""}`;
+	const playingMusic = useReplicant("playing-music");
+	const text = `${
+		nodecg.bundleConfig.music?.textPrefix ?? ""
+	} ${playingMusic} ${nodecg.bundleConfig.music?.textSuffix ?? ""}`;
 	const ref = useRef<HTMLDivElement>(null);
 	const [shownText, setShownText] = useState("");
 

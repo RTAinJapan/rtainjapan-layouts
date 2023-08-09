@@ -1,16 +1,16 @@
 import {checklist} from "./checklist";
 import schedule from "./schedule";
-import {spotify} from "./spotify";
 import {timekeeping} from "./timekeeping";
 import {NodeCG} from "./nodecg";
 import {twitch} from "./twitch";
 import {setupObs} from "./obs";
 import {tracker} from "./tracker";
+import {music} from "./music";
 
 export default (nodecg: NodeCG) => {
 	checklist(nodecg);
 	schedule(nodecg);
-	spotify(nodecg);
+	music(nodecg);
 	timekeeping(nodecg);
 	twitch(nodecg);
 	setupObs(nodecg);
