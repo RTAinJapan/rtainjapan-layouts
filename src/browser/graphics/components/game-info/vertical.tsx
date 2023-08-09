@@ -5,14 +5,15 @@ import {CSSProperties} from "react";
 import {FitText} from "../lib/fit-text";
 import {GameTimer} from "../lib/timer";
 
+/** 特殊変形時のゲームタイトル枠背景 */
 const gradientBackground = `
 	linear-gradient(
 		to right,
-		rgba(20, 50, 33, 0),
-		rgba(20, 50, 33, 0.4) 20%,
-		rgba(20, 50, 33, 0.5) 50%,
-		rgba(20, 50, 33, 0.4) 80%,
-		rgba(20, 50, 33, 0) 100%
+		rgba(40, 15, 20, 0),
+		rgba(40, 15, 20, 0.4) 20%,
+		rgba(40, 15, 20, 0.5) 50%,
+		rgba(40, 15, 20, 0.4) 80%,
+		rgba(40, 15, 20, 0) 100%
 	)
 `;
 

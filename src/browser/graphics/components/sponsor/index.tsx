@@ -7,7 +7,7 @@ import {
 	useState,
 } from "react";
 import {useReplicant} from "../../../use-replicant";
-import {background} from "../../styles/colors";
+import {background, border} from "../../styles/colors";
 import {swipeEnter, swipeExit} from "../lib/blur-swipe";
 import {Tweets} from "../../../../nodecg/generated/tweets";
 import iconTwitter from "../../images/icon/icon_twitter.svg";
@@ -92,7 +92,7 @@ export const Sponsor: FunctionComponent<{
 				borderRadius: "7px",
 				borderWidth: "2px",
 				borderStyle: "solid",
-				borderColor: "white",
+				borderColor: border.sponsor,
 				background: background.sponsor,
 				display: "grid",
 				placeContent: "stretch",

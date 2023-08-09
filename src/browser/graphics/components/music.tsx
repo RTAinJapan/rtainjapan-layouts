@@ -2,7 +2,7 @@ import gsap, {Power2} from "gsap";
 import {useEffect, useRef, useState} from "react";
 import {useReplicant} from "../../use-replicant";
 import musicIcon from "../images/icon/icon_music.svg";
-import {setup} from "../styles/colors";
+import {border, setup} from "../styles/colors";
 import {ThinText} from "./lib/text";
 
 export const Music = () => {
@@ -51,7 +51,7 @@ export const Music = () => {
 				top: "50px",
 				background: setup.frameBg,
 				borderStyle: "solid",
-				borderColor: "white",
+				borderColor: border.music,
 				borderWidth: "2px 0 2px 2px",
 				borderRadius: "7px 0 0 7px",
 				display: "grid",

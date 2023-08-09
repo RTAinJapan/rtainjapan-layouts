@@ -21,7 +21,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import {text} from "../styles/colors";
+import {text, background, bidwar} from "../styles/colors";
 import {
 	Announcements,
 	BidChallenge,
@@ -200,7 +200,7 @@ const BidwarTarget = ({
 			</ThinText>
 			<div
 				style={{
-					backgroundColor: "rgb(180,180,180)",
+					backgroundColor: bidwar.progressFrame,
 					gridColumn: "1 / 4",
 					gridRow: "4 / 5",
 					placeSelf: "stretch",
@@ -208,7 +208,7 @@ const BidwarTarget = ({
 			></div>
 			<div
 				style={{
-					backgroundColor: "rgb(60,60,60)",
+					backgroundColor: bidwar.progress,
 					gridColumn: "1 / 4",
 					gridRow: "4 / 5",
 					alignSelf: "stretch",
@@ -372,7 +372,7 @@ const BidChallengeRow = forwardRef<
 				</div>
 				<div
 					style={{
-						backgroundColor: "rgb(180,180,180)",
+						backgroundColor: bidwar.progressFrame,
 						gridColumn: "1 / 6",
 						gridRow: "4 / 5",
 						placeSelf: "stretch",
@@ -380,7 +380,7 @@ const BidChallengeRow = forwardRef<
 				></div>
 				<div
 					style={{
-						backgroundColor: "rgb(60,60,60)",
+						backgroundColor: bidwar.progress,
 						gridColumn: "1 / 6",
 						gridRow: "4 / 5",
 						alignSelf: "stretch",
@@ -678,7 +678,7 @@ const Omnibar = () => {
 				placeContent: "stretch",
 				alignItems: "center",
 				color: text.omnibar,
-				backgroundColor: "rgb(230,230,230)",
+				backgroundColor: background.omnibar,
 			}}
 		>
 			<Row header={announceA?.title || ""} ref={announceRowA}>

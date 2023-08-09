@@ -1,5 +1,5 @@
 import {CSSProperties, FunctionComponent} from "react";
-import {background} from "../styles/colors";
+import {background, border} from "../styles/colors";
 import iconNoCamera from "../images/icon/icon_nocamera.svg";
 import {useCurrentRun} from "./lib/hooks";
 
@@ -26,7 +26,7 @@ const SingleCamera = ({
 			<div
 				style={{
 					background: background.camera,
-					borderColor: "white",
+					borderColor: border.camera,
 					borderStyle: "solid",
 					borderWidth,
 					borderRadius,
@@ -41,7 +41,7 @@ const SingleCamera = ({
 			<div
 				style={{
 					background: background.camera,
-					borderColor: "white",
+					borderColor: border.camera,
 					borderStyle: "solid",
 					borderWidth,
 					borderRadius,
@@ -59,7 +59,7 @@ const SingleCamera = ({
 	return (
 		<div
 			style={{
-				borderColor: "white",
+				borderColor: border.camera,
 				borderStyle: "solid",
 				borderWidth,
 				borderRadius,
@@ -171,7 +171,7 @@ export const Camera: FunctionComponent<{
 	return (
 		<div
 			style={{
-				border: "2px white solid",
+				border: `2px ${border.camera} solid`,
 				borderRadius: "7px",
 				display: "grid",
 				gridAutoFlow: "column",
