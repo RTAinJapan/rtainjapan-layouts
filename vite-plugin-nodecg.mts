@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs/promises";
-import {ResolvedConfig, Manifest, Plugin} from "vite";
+import {ResolvedConfig, Manifest, ManifestChunk, Plugin} from "vite";
 import {globbySync} from "globby";
 import {
 	rollup,
@@ -176,12 +176,26 @@ export default async ({
 				const inputName = input.replace(/^\.\//, "");
 				const entryChunk = manifest?.[inputName];
 
-				if (entryChunk?.css) {
-					for (const css of entryChunk.css) {
-						head.push(
-							`<link rel="stylesheet" href="${path.join(config.base, css)}">`,
-						);
+				const checkCss = (chunk: ManifestChunk) => {
+					if (chunk.css) {
+						for (const css of chunk.css) {
+							head.push(
+								`<link rel="stylesheet" href="${path.join(config.base, css)}">`,
+							);
+						}
 					}
+					if (chunk.imports) {
+						for (const importName of chunk.imports) {
+							const childChunk = manifest?.[importName];
+							if (childChunk) {
+								checkCss(childChunk);
+							}
+						}
+					}
+				};
+
+				if (entryChunk) {
+					checkCss(entryChunk);
 				}
 
 				if (entryChunk?.file) {
