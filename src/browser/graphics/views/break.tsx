@@ -12,7 +12,7 @@ import {useReplicant} from "../../use-replicant";
 import {useCurrentRun, useSchedule} from "../components/lib/hooks";
 import {Run} from "../../../nodecg/replicants";
 import moment from "moment";
-import {Fragment, useCallback, useEffect, useRef} from "react";
+import {Fragment, useCallback, useEffect, useRef, useState} from "react";
 import {EventLogo} from "../components/event-logo";
 import {Tweet} from "../components/tweet";
 import {Music} from "../components/music";
@@ -120,21 +120,44 @@ const Upcoming = () => {
 const Sponsor = () => {
 	const assets = useReplicant(`assets:sponsor-setup`);
 	const imageRef = useRef<HTMLImageElement>(null);
+	const [currentSponsor, setCurrentSponsor] = useState(0);
 
 	useEffect(() => {
 		if (!assets) {
 			return;
 		}
-		const tl = gsap.timeline({repeat: -1});
-		for (const asset of assets) {
-			tl.set(imageRef.current, {attr: {src: asset.url}});
+		const tl = gsap.timeline();
+		const initialize = () => {
+			const sponsorUrl = assets[currentSponsor]?.url;
+			if (!sponsorUrl) {
+				return;
+			}
+
+			tl.set(imageRef.current, {
+				maskImage:
+					"linear-gradient(to right, rgba(0,0,0,0) 100%, rgba(0,0,0,1) 120%)",
+			});
+
+			tl.set(imageRef.current, {opacity: 1});
+
+			tl.set(imageRef.current, {attr: {src: sponsorUrl}});
 			tl.add(swipeEnter(imageRef), "<+=0.3");
 			tl.add(swipeExit(imageRef), "<+=40");
-		}
+
+			tl.set(imageRef.current, {opacity: 0});
+
+			tl.call(() => {
+				setCurrentSponsor((currentSponsor) =>
+					assets.length - 1 <= currentSponsor ? 0 : currentSponsor + 1,
+				);
+			});
+		};
+
+		initialize();
 		return () => {
 			tl.revert();
 		};
-	}, [assets]);
+	}, [assets, currentSponsor]);
 
 	return (
 		<div
