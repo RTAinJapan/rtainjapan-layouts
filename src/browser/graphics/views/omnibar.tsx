@@ -731,7 +731,12 @@ const Omnibar = () => {
 
 					<img
 						src={sponsorAssets?.[0]?.url}
-						style={{gridColumn: "5 / 6", gridRow: "1 / 2"}}
+						style={{
+							gridColumn: "5 / 6",
+							gridRow: "1 / 2",
+							width: "100%",
+							height: "100%",
+						}}
 					></img>
 				</>
 			)}
