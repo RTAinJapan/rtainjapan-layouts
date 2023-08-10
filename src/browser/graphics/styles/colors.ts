@@ -49,9 +49,9 @@ export const background = {
 
 export const bidwar = {
 	/** Bid War 進捗バー背景 */
-	progressFrame: "rgba(255,255,255, 0.3)",
+	progressFrame: "rgb(180,180,180)",
 	/** Bid War 進捗バー本体 */
-	progress: "rgb(255,255,255)",
+	progress: "rgb(60,60,60)",
 };
 
 /** セットアップ画面の色 */
