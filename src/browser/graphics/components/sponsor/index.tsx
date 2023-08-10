@@ -66,7 +66,6 @@ export const Sponsor: FunctionComponent<{
 				setCurrentSponsor((currentSponsor) =>
 					assets.length - 1 <= currentSponsor ? 0 : currentSponsor + 1,
 				);
-				initialize();
 			});
 		};
 
