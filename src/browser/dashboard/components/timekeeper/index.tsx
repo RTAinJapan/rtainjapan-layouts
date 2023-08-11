@@ -9,7 +9,6 @@ import Refresh from "@mui/icons-material/Refresh";
 import {FC, useEffect, useState} from "react";
 import styled from "styled-components";
 import {v4 as uuidv4} from "uuid";
-import {Participant, type Timer} from "../../../../nodecg/replicants";
 import {useTimer} from "../../../graphics/components/lib/hooks";
 import {useReplicant} from "../../../use-replicant";
 import {BorderedBox} from "../lib/bordered-box";
