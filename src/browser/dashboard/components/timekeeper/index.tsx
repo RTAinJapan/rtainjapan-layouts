@@ -6,10 +6,10 @@ import Edit from "@mui/icons-material/Edit";
 import Pause from "@mui/icons-material/Pause";
 import PlayArrow from "@mui/icons-material/PlayArrow";
 import Refresh from "@mui/icons-material/Refresh";
-import {FC, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import styled from "styled-components";
 import {v4 as uuidv4} from "uuid";
-import {type Timer} from "../../../../nodecg/replicants";
+import {Participant, type Timer} from "../../../../nodecg/replicants";
 import {useTimer} from "../../../graphics/components/lib/hooks";
 import {useReplicant} from "../../../use-replicant";
 import {BorderedBox} from "../lib/bordered-box";
@@ -65,6 +65,11 @@ const resetTimer = () => {
 	}
 };
 
+type Runner = {
+	id: string;
+	name: string;
+};
+
 export const Timekeeper: FC = () => {
 	const timer = useTimer();
 	const currentRun = useReplicant("current-run");
@@ -72,14 +77,21 @@ export const Timekeeper: FC = () => {
 
 	const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
+	const [runners, setRunners] = useState<Runner[]>([]);
+
+	useEffect(() => {
+		setRunners(
+			Array.from({length: 4}).map((_, index) => ({
+				name: currentRun?.runners[index]?.name || "",
+				id: uuidv4(),
+			})),
+		);
+	}, [currentRun]);
+
 	if (!currentRun || !checklist || !timer) {
 		return null;
 	}
 
-	const runners = Array.from({length: 4}).map((_, index) => ({
-		name: currentRun.runners[index]?.name,
-		id: uuidv4(),
-	}));
 	const checklistPks = checklist.map((check) => check.pk);
 	const completedChecklist = currentRun.completedChecklist;
 	const checklistComplete = checklistPks.every((pk) =>
