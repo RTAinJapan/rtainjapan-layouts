@@ -50,6 +50,9 @@ const App = () => {
 	const partners = sortNames(nodecg.bundleConfig.endCredit?.partners ?? []);
 	const volunteers = sortNames(nodecg.bundleConfig.endCredit?.volunteers ?? []);
 	const text = nodecg.bundleConfig.endCredit?.text ?? [];
+	const specialThanks = sortNames(
+		nodecg.bundleConfig.endCredit?.specialThanks ?? [],
+	);
 
 	return (
 		<div
@@ -74,6 +77,7 @@ const App = () => {
 			<Credit title='Partners' names={partners} />
 			<Credit title='Volunteers' names={volunteers} />
 			<Credit title='Text' names={text} />
+			<Credit title='Special Thanks' names={specialThanks} />
 		</div>
 	);
 };

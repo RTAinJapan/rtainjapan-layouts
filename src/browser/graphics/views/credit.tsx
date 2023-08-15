@@ -40,6 +40,9 @@ const App: FC = () => {
 				const volunteers = [...nodecg.bundleConfig.endCredit.volunteers].sort(
 					(a, b) => a.localeCompare(b, "ja"),
 				);
+				const specialThanks = [
+					...(nodecg.bundleConfig.endCredit?.specialThanks ?? []),
+				].sort((a, b) => a.localeCompare(b, "ja"));
 
 				const $title = titleRef.current;
 				const $names = namesRef.current;
@@ -86,6 +89,11 @@ const App: FC = () => {
 				// Partners
 				toggleTitle("Partners");
 				showNames(partners);
+				toggleTitle();
+
+				// Special Thanks
+				toggleTitle("Special Thanks");
+				showNames(specialThanks);
 				toggleTitle();
 
 				// Text

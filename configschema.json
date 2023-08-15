@@ -95,6 +95,11 @@
 					"items": {"type": "string"},
 					"default": []
 				},
+				"specialThanks": {
+					"type": "array",
+					"items": {"type": "string"},
+					"default": []
+				},
 				"text": {
 					"type": "array",
 					"items": {"type": "string"},
