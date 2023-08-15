@@ -92,9 +92,11 @@ const App: FC = () => {
 				toggleTitle();
 
 				// Special Thanks
-				toggleTitle("Special Thanks");
-				showNames(specialThanks);
-				toggleTitle();
+				if (specialThanks.length > 0) {
+					toggleTitle("Special Thanks");
+					showNames(specialThanks);
+					toggleTitle();
+				}
 
 				// Text
 				if (nodecg.bundleConfig.endCredit.text) {
