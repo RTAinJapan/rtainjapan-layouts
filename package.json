@@ -215,6 +215,11 @@
 				"width": 1920,
 				"height": 1080,
 				"singleInstance": true
+			},
+			{
+				"file": "setup-idol.html",
+				"width": 1920,
+				"height": 1030
 			}
 		],
 		"assetCategories": [
