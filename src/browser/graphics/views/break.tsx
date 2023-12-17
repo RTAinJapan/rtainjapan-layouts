@@ -193,6 +193,7 @@ const Sponsor = () => {
 
 /** 画面左側の影 */
 /** Winter2023では未使用 */
+/*
 const GradientOverlay = () => {
 	return (
 		<div
@@ -212,6 +213,7 @@ const GradientOverlay = () => {
 		></div>
 	);
 };
+*/
 
 const TweetContainer = () => {
 	const tweetTag = useRef(null);
