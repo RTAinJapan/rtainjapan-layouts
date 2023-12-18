@@ -6,7 +6,7 @@ import {
 	useState,
 } from "react";
 import {useElementResize} from "./use-element-resize";
-import {BoldText, ThinText, CreditText} from "./text";
+import {BoldText, ThinText, CreditText, HeavyText} from "./text";
 import {newlineString} from "./util";
 
 export const FitText: FunctionComponent<{
@@ -14,6 +14,7 @@ export const FitText: FunctionComponent<{
 	children: string | undefined | null;
 	thin?: boolean;
 	credit?: boolean;
+	heavy?: boolean;
 	style?: CSSProperties;
 	horizontalAlign?: "left" | "right" | "center";
 	verticalAlign?: "top" | "bottom" | "center";
@@ -51,6 +52,8 @@ export const FitText: FunctionComponent<{
 		? CreditText
 		: props.thin
 		? ThinText
+		: props.heavy
+		? HeavyText
 		: BoldText;
 
 	return (

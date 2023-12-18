@@ -9,7 +9,7 @@ import {useReplicant} from "../../use-replicant";
 import {useCurrentRun, useSchedule} from "../components/lib/hooks";
 import {Run} from "../../../nodecg/replicants";
 import moment from "moment";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {Fragment, useCallback, useEffect, useRef, useState} from "react";
 import {Tweet} from "../components/tweet";
 import {Music} from "../components/music";
 import {setup} from "../styles/colors";
@@ -52,7 +52,8 @@ const Upcoming = () => {
 				left: "240px",
 				top: "240px",
 				display: "grid",
-				gridTemplateRows: "60px 50px 60px 40px 85px repeat(auto-fill, 30px)",
+				gridTemplateRows:
+					"60px 50px 60px 40px 85px repeat(auto-fill, 30px 5px)",
 				gridTemplateColumns: "820px",
 				alignContent: "start",
 				justifyContent: "stretch",
@@ -67,13 +68,7 @@ const Upcoming = () => {
 				次のゲーム
 			</BoldText>
 			<div>{/* empty */}</div>
-			<FitText
-				defaultSize={50}
-				horizontalAlign='center'
-				style={{
-					fontWeight: 900,
-				}}
-			>
+			<FitText defaultSize={50} horizontalAlign='center' heavy>
 				{nextRun.title.replace(/\\n/g, "")}
 			</FitText>
 			<BoldText
@@ -92,27 +87,29 @@ const Upcoming = () => {
 			<div>{/* empty */}</div>
 			{upcomingRuns.map((run) => {
 				return (
-					<div
-						key={run.pk}
-						style={{
-							fontSize: "22px",
-							display: "grid",
-							gridTemplateColumns: "100px 1fr",
-						}}
-					>
-						<BoldText>{calcStartTime(run)} ~</BoldText>
-						<BoldText
+					<Fragment key={run.pk}>
+						<div
 							style={{
-								overflow: "hidden",
-								whiteSpace: "nowrap",
-								textOverflow: "ellipsis",
+								fontSize: "22px",
+								display: "grid",
+								gridTemplateColumns: "100px 1fr",
 							}}
 						>
-							{/* Trackerの段階で改行文字を入れてもいいようにしておく */}
-							{run.title.replace(/\\n/g, "")} -{" "}
-							{run.category?.replace(/\\n/g, "")}
-						</BoldText>
-					</div>
+							<BoldText>{calcStartTime(run)} ~</BoldText>
+							<BoldText
+								style={{
+									overflow: "hidden",
+									whiteSpace: "nowrap",
+									textOverflow: "ellipsis",
+								}}
+							>
+								{/* Trackerの段階で改行文字を入れてもいいようにしておく */}
+								{run.title.replace(/\\n/g, "")} -{" "}
+								{run.category?.replace(/\\n/g, "")}
+							</BoldText>
+						</div>
+						<div>{/* empty */}</div>
+					</Fragment>
 				);
 			})}
 		</div>
