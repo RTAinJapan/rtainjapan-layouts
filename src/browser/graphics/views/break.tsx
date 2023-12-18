@@ -192,8 +192,6 @@ const Sponsor = () => {
 };
 
 /** 画面左側の影 */
-/** Winter2023では未使用 */
-/*
 const GradientOverlay = () => {
 	return (
 		<div
@@ -213,7 +211,6 @@ const GradientOverlay = () => {
 		></div>
 	);
 };
-*/
 
 const TweetContainer = () => {
 	const tweetTag = useRef(null);
@@ -307,6 +304,7 @@ const App = () => {
 				color: setup.text,
 			}}
 		>
+			<GradientOverlay></GradientOverlay>
 			<EventLogo
 				style={{position: "absolute", left: "30px", top: "20px"}}
 			></EventLogo>
