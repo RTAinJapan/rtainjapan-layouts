@@ -1,8 +1,14 @@
 import styled from "styled-components";
 
+export const HeavyText = styled.div`
+	font-family: m-plus-1p, sans-serif;
+	font-weight: 900; /* heavy */
+	font-style: normal;
+	white-space: nowrap;
+`;
 export const BoldText = styled.div`
 	font-family: m-plus-1p, sans-serif;
-	font-weight: 800; /* heavy */
+	font-weight: 800; /* extra-bold */
 	font-style: normal;
 	white-space: nowrap;
 `;
