@@ -23,7 +23,7 @@ export const useCommentators = () => {
 	}
 	const commentators: Commentator[] = [];
 	for (const commentator of currentRun.commentators) {
-		if (commentator) {
+		if (commentator && commentator.name) {
 			commentators.push(commentator);
 		}
 	}
