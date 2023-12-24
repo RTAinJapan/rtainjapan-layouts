@@ -286,8 +286,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 
 					{/* 解説 */}
 					{run.commentators.map((maybeCommentator, index) => {
-						const commentator: Commentator = maybeCommentator ?? {
-							pk: -1,
+						const commentator = maybeCommentator ?? {
 							name: "",
 						};
 						return (

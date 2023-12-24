@@ -26,7 +26,7 @@ import {PlayingMusic} from "./generated/playing-music";
 
 type Run = NonNullable<CurrentRun>;
 type Runner = Run["runners"][number];
-type Commentator = Runner["commentators"][number];
+type Commentator = NonNullable<Run["commentators"][number]>;
 
 type Tweet = Tweets[number];
 type Donation = Donations[number];
