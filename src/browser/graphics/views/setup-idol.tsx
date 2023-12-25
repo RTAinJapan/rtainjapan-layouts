@@ -19,6 +19,9 @@ import {render} from "../../render";
 import maskUpcomingImage from "../images/chalk_texture.png";
 import {FitText} from "../components/lib/fit-text";
 
+const params = new URLSearchParams(location.search);
+const layer = params.get("layer");
+
 const Upcoming = () => {
 	const currentRun = useCurrentRun();
 	const schedule = useSchedule();
@@ -282,10 +285,14 @@ const App = () => {
 				color: setup.text,
 			}}
 		>
-			<Upcoming></Upcoming>
-			<Music></Music>
-			<Sponsor></Sponsor>
-			<TweetContainer></TweetContainer>
+			{(!layer || layer === "back") && <Upcoming></Upcoming>}
+			{(!layer || layer === "front") && (
+				<Fragment>
+					<Music></Music>
+					<Sponsor></Sponsor>
+					<TweetContainer></TweetContainer>
+				</Fragment>
+			)}
 		</div>
 	);
 };
