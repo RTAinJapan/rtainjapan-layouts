@@ -20,7 +20,7 @@ import maskUpcomingImage from "../images/chalk_texture.png";
 import {FitText} from "../components/lib/fit-text";
 
 const params = new URLSearchParams(location.search);
-const layer = params.get("layer") ?? "";
+const layer = params.get("layer");
 
 const Upcoming = () => {
 	const currentRun = useCurrentRun();
