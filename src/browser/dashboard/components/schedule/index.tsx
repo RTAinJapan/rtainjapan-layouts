@@ -63,6 +63,8 @@ export const Schedule: FC = () => {
 
 	const disablePrevNextButtons = timer.timerState === "Running";
 
+	const edittingRun = editting === "current" ? currentRun : nextRun;
+
 	return (
 		<Container>
 			<SelectionContainer>
@@ -105,13 +107,13 @@ export const Schedule: FC = () => {
 					編集：次のゲーム
 				</ColoredButton>
 			</EditControls>
-			<EditRun
-				edit={editting}
-				defaultValue={
-					(editting === "current" ? currentRun : nextRun) || undefined
-				}
-				onFinish={() => setEditting(undefined)}
-			/>
+			{edittingRun && (
+				<EditRun
+					edit={editting}
+					defaultValue={edittingRun}
+					onFinish={() => setEditting(undefined)}
+				/>
+			)}
 		</Container>
 	);
 };
