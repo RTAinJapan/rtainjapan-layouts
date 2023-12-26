@@ -4,7 +4,6 @@ import "../styles/adobe-fonts.js";
 import {useEffect} from "react";
 import {useReplicant} from "../../use-replicant";
 import {render} from "../../render.js";
-import styled from "styled-components";
 
 const videoControlRep = nodecg.Replicant("video-control");
 
