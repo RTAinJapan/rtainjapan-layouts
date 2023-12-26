@@ -13,6 +13,8 @@ import {green, lightBlue, orange, pink} from "@mui/material/colors";
 import {VideoControl} from "../../../nodecg/generated";
 import {render} from "../../render";
 import CssBaseline from "@mui/material/CssBaseline";
+import {Fragment, useEffect, useState} from "react";
+import {coreNodecg} from "../../nodecg-core";
 
 const parseDuration = (seconds: number) => {
 	return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(
@@ -132,6 +134,22 @@ const App = () => {
 	const control = useReplicant("video-control");
 	const videos = useReplicant("assets:interval-video");
 
+	const [isGraphicOpened, setIsGraphicOpened] = useState<boolean>(false);
+
+	useEffect(() => {
+		coreNodecg
+			.Replicant("graphics:instances", "nodecg")
+			.on("change", (instances) => {
+				const pathnameEndsWith = `/${nodecg.bundleName}/graphics/interval-video.html`;
+
+				setIsGraphicOpened(
+					instances.some((instance) =>
+						instance.pathName.endsWith(pathnameEndsWith),
+					),
+				);
+			});
+	}, []);
+
 	return (
 		<ThemeProvider theme={theme}>
 			<div
@@ -139,39 +157,44 @@ const App = () => {
 					padding: "8px",
 				}}
 			>
-				<label>動画選択</label>
+				{!isGraphicOpened && <div>interval-video が表示されていません</div>}
+				{isGraphicOpened && (
+					<Fragment>
+						<label>動画選択</label>
 
-				<select
-					onChange={(e) => {
-						nodecg.sendMessage(
-							"video:init",
-							e.currentTarget.value !== SELECT_DEFAULT
-								? e.currentTarget.value
-								: null,
-						);
-					}}
-					disabled={control?.status === "play"}
-					style={{
-						width: "100%",
-					}}
-					value={control?.path || SELECT_DEFAULT}
-				>
-					<option value={SELECT_DEFAULT}>-</option>
-					{[...(videos || [])]
-						.sort((a, b) => a.name.localeCompare(b.name))
-						.map((v, idx) => (
-							<option key={idx} value={v.url}>
-								{v.name}
-							</option>
-						))}
-				</select>
-				<div
-					style={{
-						margin: "8px",
-					}}
-				>
-					<Control control={control} />
-				</div>
+						<select
+							onChange={(e) => {
+								nodecg.sendMessage(
+									"video:init",
+									e.currentTarget.value !== SELECT_DEFAULT
+										? e.currentTarget.value
+										: null,
+								);
+							}}
+							disabled={control?.status === "play"}
+							style={{
+								width: "100%",
+							}}
+							value={control?.path || SELECT_DEFAULT}
+						>
+							<option value={SELECT_DEFAULT}>-</option>
+							{[...(videos || [])]
+								.sort((a, b) => a.name.localeCompare(b.name))
+								.map((v, idx) => (
+									<option key={idx} value={v.url}>
+										{v.name}
+									</option>
+								))}
+						</select>
+						<div
+							style={{
+								margin: "8px",
+							}}
+						>
+							<Control control={control} />
+						</div>
+					</Fragment>
+				)}
 			</div>
 		</ThemeProvider>
 	);
