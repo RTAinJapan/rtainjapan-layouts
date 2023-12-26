@@ -88,7 +88,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 		}
 		stop();
 		setSeconds(timerRep.value, 0);
-		timerRep.value.results = [];
+		timerRep.value.results = [null, null, null, null];
 	};
 
 	/**
