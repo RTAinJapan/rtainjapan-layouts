@@ -90,8 +90,9 @@ const App = () => {
 			ref={onVideoRendered}
 			src={videoControl?.path}
 			style={{
-				minWidth: "100vw",
-				minHeight: "100vh",
+				width: "100vw",
+				height: "100vh",
+				objectFit: "contain",
 			}}
 		/>
 	);
