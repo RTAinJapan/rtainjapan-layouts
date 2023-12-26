@@ -4,8 +4,17 @@ import "../styles/adobe-fonts.js";
 import {useEffect} from "react";
 import {useReplicant} from "../../use-replicant";
 import {render} from "../../render.js";
+import styled from "styled-components";
 
 const videoControlRep = nodecg.Replicant("video-control");
+
+const VideoContainer = styled.div`
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
 
 const App = () => {
 	const videoControl = useReplicant("video-control");
@@ -86,14 +95,16 @@ const App = () => {
 	}, []);
 
 	return (
-		<video
-			ref={onVideoRendered}
-			src={videoControl?.path}
-			style={{
-				minWidth: "100vw",
-				minHeight: "100vh",
-			}}
-		/>
+		<VideoContainer>
+			<video
+				ref={onVideoRendered}
+				src={videoControl?.path}
+				style={{
+					maxWidth: "100%",
+					maxHeight: "100%",
+				}}
+			/>
+		</VideoContainer>
 	);
 };
 
