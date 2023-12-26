@@ -8,14 +8,6 @@ import styled from "styled-components";
 
 const videoControlRep = nodecg.Replicant("video-control");
 
-const VideoContainer = styled.div`
-	width: 100vw;
-	height: 100vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
-
 const App = () => {
 	const videoControl = useReplicant("video-control");
 
@@ -95,16 +87,15 @@ const App = () => {
 	}, []);
 
 	return (
-		<VideoContainer>
-			<video
-				ref={onVideoRendered}
-				src={videoControl?.path}
-				style={{
-					maxWidth: "100%",
-					maxHeight: "100%",
-				}}
-			/>
-		</VideoContainer>
+		<video
+			ref={onVideoRendered}
+			src={videoControl?.path}
+			style={{
+				width: "100vw",
+				height: "100vh",
+				objectFit: "contain",
+			}}
+		/>
 	);
 };
 
