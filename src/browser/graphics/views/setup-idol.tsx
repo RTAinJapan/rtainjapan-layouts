@@ -11,6 +11,7 @@ import {Run} from "../../../nodecg/replicants";
 import moment from "moment";
 import {Fragment, useCallback, useEffect, useRef, useState} from "react";
 import {Tweet} from "../components/tweet";
+import {FanArtTweet} from "../components/fan-art-tweet";
 import {Music} from "../components/music";
 import {setup} from "../styles/colors";
 import {swipeEnter, swipeExit} from "../components/lib/blur-swipe";
@@ -197,6 +198,7 @@ const TweetContainer = () => {
 	const tweetTag = useRef(null);
 	const fanartTag = useRef(null);
 	const tweetRef = useRef(null);
+	const fanArtRef = useRef(null);
 	const transitionTimeline = useCallback(() => {
 		const tl = gsap.timeline();
 		tl.to([tweetTag.current, tweetRef.current], {
@@ -207,7 +209,21 @@ const TweetContainer = () => {
 		tl.to(
 			[tweetTag.current, tweetRef.current],
 			{x: 0, duration: 1, ease: Power2.easeOut},
-			"+=10",
+			"+=15",
+		);
+		return tl;
+	}, []);
+	const transitionFanArtTimeline = useCallback((width: number) => {
+		const tl = gsap.timeline();
+		tl.to([fanartTag.current, fanArtRef.current], {
+			x: (width + 490) * -1,
+			duration: 1,
+			ease: Power2.easeOut,
+		});
+		tl.to(
+			[fanartTag.current, fanArtRef.current],
+			{x: 0, duration: 1, ease: Power2.easeOut},
+			"+=20",
 		);
 		return tl;
 	}, []);
@@ -218,9 +234,8 @@ const TweetContainer = () => {
 				position: "absolute",
 				top: "150px",
 				left: "1890px",
-				width: "470px",
 				display: "grid",
-				gridTemplateColumns: "30px 440px",
+				gridTemplateColumns: "30px 440px auto",
 				gridTemplateRows: "81px 1fr",
 			}}
 		>
@@ -242,7 +257,6 @@ const TweetContainer = () => {
 				width={30}
 				height={98}
 				style={{
-					display: "none", // TODO: remove after adding fanart
 					gridRow: "2 / 3",
 					gridColumn: "1 / 2",
 					alignSelf: "start",
@@ -266,6 +280,24 @@ const TweetContainer = () => {
 				}}
 			>
 				<Tweet onShow={transitionTimeline}></Tweet>
+			</div>
+			<div
+				ref={fanArtRef}
+				style={{
+					gridRow: "1 / 3",
+					gridColumn: "2 / 4",
+					alignSelf: "start",
+					justifySelf: "stretch",
+					padding: "50px",
+					borderColor: setup.frameBorder,
+					borderStyle: "solid",
+					borderWidth: "2px 0 2px 2px",
+					borderRadius: "7px 0 0 7px",
+					background: setup.frameBg,
+					willChange: "transform",
+				}}
+			>
+				<FanArtTweet onShow={transitionFanArtTimeline} />
 			</div>
 		</div>
 	);

@@ -1,8 +1,11 @@
-import {Tweets, Run} from "./replicants";
+import {Tweets, Run, TweetsTemp} from "./replicants";
 
 export type MessageMap = {
 	showTweet: {
-		data: Tweets[number];
+		data: TweetsTemp[number];
+	};
+	showFanArtTweet: {
+		data: TweetsTemp[number];
 	};
 	"twitter:logout": {};
 	"twitter:startLogin": {

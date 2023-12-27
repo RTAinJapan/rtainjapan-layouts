@@ -9,7 +9,7 @@ import {
 import {useReplicant} from "../../../use-replicant";
 import {background, border} from "../../styles/colors";
 import {swipeEnter, swipeExit} from "../lib/blur-swipe";
-import {Tweets} from "../../../../nodecg/generated/tweets";
+import {TweetsTemp} from "../../../../nodecg/generated/tweets-temp";
 import iconTwitter from "../../images/icon/icon_twitter.svg";
 import {ThinText} from "../lib/text";
 
@@ -69,9 +69,9 @@ export const Sponsor: FunctionComponent<{
 			});
 		};
 
-		const listener = (tweet: Tweets[number]) => {
+		const listener = (tweet: TweetsTemp[number]) => {
 			tl.call(() => {
-				setUser(tweet.user.screenName);
+				setUser(tweet.name);
 				setText(tweet.text);
 			});
 		};

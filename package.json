@@ -143,7 +143,15 @@
 				"file": "donations.html",
 				"width": 6,
 				"headerColor": "#00BEBE",
-				"workspace": "3-donations"
+				"workspace": "3-reactions"
+			},
+			{
+				"name": "twitter",
+				"title": "Twitter投稿/ファンアート",
+				"file": "twitter.html",
+				"width": 6,
+				"headerColor": "#00BEBE",
+				"workspace": "3-reactions"
 			},
 			{
 				"name": "video-control",
