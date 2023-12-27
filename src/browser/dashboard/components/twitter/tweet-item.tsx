@@ -1,10 +1,10 @@
 import IconButton, {IconButtonProps} from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 import ListItem from "@mui/material/ListItem";
 import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import CheckIcon from "@mui/icons-material/Check";
-import Favorite from "@mui/icons-material/Favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useEffect, useState} from "react";
 import {TweetsTemp} from "../../../../nodecg/generated";
@@ -22,24 +22,21 @@ type ButtonProps = Pick<IconButtonProps, "onClick">;
 
 const DeleteButton = (props: ButtonProps) => {
 	return (
-		<IconButton {...props}>
-			<DeleteIcon />
-		</IconButton>
+		<Tooltip title='ツイートを削除'>
+			<IconButton {...props}>
+				<DeleteIcon />
+			</IconButton>
+		</Tooltip>
 	);
 };
 
 const SubmitButton = (props: ButtonProps) => {
 	return (
-		<IconButton {...props}>
-			<CheckIcon />
-		</IconButton>
-	);
-};
-const SubmitFanArtButton = (props: ButtonProps) => {
-	return (
-		<IconButton {...props}>
-			<Favorite />
-		</IconButton>
+		<Tooltip title='ツイート表示/ファンアート表示を実行'>
+			<IconButton {...props}>
+				<CheckIcon />
+			</IconButton>
+		</Tooltip>
 	);
 };
 
@@ -88,20 +85,12 @@ export const TweetItem = ({
 				<>
 					<SubmitButton
 						onClick={() => {
-							onSubmit(tweet, () => {});
+							tweet.image
+								? onSubmitFanArt(tweet, () => {})
+								: onSubmit(tweet, () => {});
 						}}
 					/>
 					/
-					{tweet.image && (
-						<>
-							<SubmitFanArtButton
-								onClick={() => {
-									onSubmitFanArt(tweet, () => {});
-								}}
-							/>
-							/
-						</>
-					)}
 					<DeleteButton
 						onClick={() => {
 							onDelete(() => {});
