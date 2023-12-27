@@ -134,7 +134,10 @@ export const timekeeping = (nodecg: NodeCG) => {
 					!runner.name || (timerRep.value && timerRep.value.results[index]),
 				),
 		);
-		if (allRunnersFinished) {
+		const onSlotRunnersAreFinished = timerRep.value.results.every(
+			(result) => result !== null,
+		);
+		if (allRunnersFinished || onSlotRunnersAreFinished) {
 			stop();
 			timerRep.value.timerState = "Finished";
 		}
