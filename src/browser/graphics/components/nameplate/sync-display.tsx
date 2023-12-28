@@ -13,14 +13,12 @@ export const SyncDisplayProvider = ({children}: {children: ReactNode}) => {
 	const currentRun = useReplicant("current-run");
 	const participants = [
 		...(currentRun?.runners ?? []),
-		...(currentRun?.commentators.filter(
-			(c): c is NonNullable<Commentator> => c !== null,
-		) ?? []),
+		...(currentRun?.commentators ?? []),
 	];
 
-	const displayTwitter = participants.some((p) => Boolean(p.twitter));
-	const displayTwitch = participants.some((p) => Boolean(p.twitch));
-	const displayNico = participants.some((p) => Boolean(p.nico));
+	const displayTwitter = participants.some((p) => Boolean(p?.twitter));
+	const displayTwitch = participants.some((p) => Boolean(p?.twitch));
+	const displayNico = participants.some((p) => Boolean(p?.nico));
 
 	useEffect(() => {
 		const tl = gsap.timeline({repeat: -1});
