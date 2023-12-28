@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import {ReactNode, createContext, useEffect, useState} from "react";
 import {useReplicant} from "../../../use-replicant";
+import {Commentator} from "../../../../nodecg/replicants";
 
 type DisplayLabel = "name" | "twitter" | "twitch" | "nico";
 
@@ -10,33 +11,16 @@ export const SyncDisplayProvider = ({children}: {children: ReactNode}) => {
 	const [display, setDisplay] = useState<DisplayLabel>("name");
 
 	const currentRun = useReplicant("current-run");
-
-	const participantSocials = [
-		...(currentRun?.runners.map((runner) =>
-			[
-				runner.twitter ? "twitter" : null,
-				runner.twitch ? "twitch" : null,
-				runner.nico ? "nico" : null,
-			].filter((v): v is DisplayLabel => v !== null),
-		) ?? []),
-		...(currentRun?.commentators.map((commentator) =>
-			[
-				commentator?.twitter ? "twitter" : null,
-				commentator?.twitch ? "twitch" : null,
-				commentator?.nico ? "nico" : null,
-			].filter((v): v is DisplayLabel => v !== null),
+	const participants = [
+		...(currentRun?.runners ?? []),
+		...(currentRun?.commentators.filter(
+			(c): c is NonNullable<Commentator> => c !== null,
 		) ?? []),
 	];
 
-	const displayTwitter = participantSocials.some((socials) =>
-		socials.includes("twitter"),
-	);
-	const displayTwitch = participantSocials.some((socials) =>
-		socials.includes("twitch"),
-	);
-	const displayNico = participantSocials.some((socials) =>
-		socials.includes("nico"),
-	);
+	const displayTwitter = participants.some((p) => Boolean(p.twitter));
+	const displayTwitch = participants.some((p) => Boolean(p.twitch));
+	const displayNico = participants.some((p) => Boolean(p.nico));
 
 	useEffect(() => {
 		const tl = gsap.timeline({repeat: -1});
