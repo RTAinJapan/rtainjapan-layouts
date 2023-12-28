@@ -1,4 +1,3 @@
-import gsap from "gsap";
 import {ThinText, TimerText} from "../lib/text";
 import {useCurrentRun, useTimer} from "../lib/hooks";
 import iconTwitter from "../../images/icon/icon_twitter.svg";
@@ -6,24 +5,32 @@ import iconTwitch from "../../images/icon/icon_twitch.svg";
 import iconNico from "../../images/icon/icon_nico.svg";
 import iconRunner from "../../images/icon/icon_runner.svg";
 import iconCommentator from "../../images/icon/icon_commentary.svg";
-import {CSSProperties, HTMLAttributes, useEffect, useRef} from "react";
+import {CSSProperties, HTMLAttributes, useContext, useRef} from "react";
 import {background, border, text} from "../../styles/colors";
-import {filterNonNullable} from "../../../../extension/lib/array";
 import {Commentator, Runner, Timer} from "../../../../nodecg/replicants";
+import {SyncDisplayContext} from "./sync-display";
+import styled from "styled-components";
+import {
+	SwitchTransition,
+	Transition,
+	TransitionStatus,
+} from "react-transition-group";
 
 const textPlacement = {
 	gridColumn: "1 / 2",
 	gridRow: "1 / 2",
 };
 
-const useSocial = (icon: string, text?: string) => {
-	const ref = useRef<HTMLDivElement>(null);
-	if (!text) {
-		return [null, null] as const;
-	}
-	return [
+const FadeContainer = styled.div<{state: TransitionStatus}>`
+	transition: all 0.5s;
+	opacity: 0;
+	opacity: ${(props) =>
+		["entered", "existing"].includes(props.state) ? "1" : "0"};
+`;
+
+const SocialText = ({icon, text}: {icon: string; text?: string}) => {
+	return text ? (
 		<ThinText
-			ref={ref}
 			style={{
 				...textPlacement,
 				fontSize: "24px",
@@ -32,14 +39,12 @@ const useSocial = (icon: string, text?: string) => {
 				gridTemplateColumns: "24px auto",
 				placeContent: "center",
 				placeItems: "center",
-				opacity: 0,
 			}}
 		>
 			<img src={icon} height={24} width={24}></img>
-			<div> {text}</div>
-		</ThinText>,
-		ref,
-	] as const;
+			<div>{text}</div>
+		</ThinText>
+	) : null;
 };
 
 const NamePlateContent = ({
@@ -51,35 +56,10 @@ const NamePlateContent = ({
 	style?: CSSProperties;
 	isRaceRunner?: boolean;
 }) => {
-	const nameRef = useRef<HTMLDivElement>(null);
-	const emptyRef = useRef<HTMLDivElement>(null);
-	const [twitter, twitterRef] = useSocial(iconTwitter, runner?.twitter);
-	const [twitch, twitchRef] = useSocial(iconTwitch, runner?.twitch);
-	const [nico, nicoRef] = useSocial(iconNico, runner?.nico);
+	const contextDisplay = useContext(SyncDisplayContext);
+	const display = runner?.[contextDisplay] ? contextDisplay : "name";
 
-	useEffect(() => {
-		const refs = filterNonNullable(
-			!isRaceRunner
-				? [nameRef, twitterRef, twitchRef, nicoRef].map(
-						(ref) => ref?.current ?? nameRef.current,
-				  )
-				: [emptyRef, twitterRef, twitchRef, nicoRef].map(
-						(ref) => ref?.current ?? emptyRef.current,
-				  ),
-		);
-		if (!refs[0]) {
-			return;
-		}
-
-		const tl = gsap.timeline({repeat: -1});
-		for (const ref of refs) {
-			tl.fromTo(ref, {opacity: 0}, {opacity: 1, duration: 0.5});
-			tl.to(refs, {opacity: 0, duration: 0.5}, "+=30");
-		}
-		return () => {
-			tl.kill();
-		};
-	}, [nicoRef, twitterRef, twitchRef, isRaceRunner]);
+	const fadeNodeRef = useRef(null);
 
 	return !isRaceRunner ? (
 		<div
@@ -90,15 +70,28 @@ const NamePlateContent = ({
 				...style,
 			}}
 		>
-			<ThinText
-				ref={nameRef}
-				style={{fontSize: "26px", opacity: 0, ...textPlacement}}
-			>
-				{runner?.name}
-			</ThinText>
-			{twitter}
-			{twitch}
-			{nico}
+			<SwitchTransition>
+				<Transition ref={fadeNodeRef} key={display} timeout={500}>
+					{(state) => (
+						<FadeContainer state={state}>
+							{display === "name" && (
+								<ThinText style={{fontSize: "26px", ...textPlacement}}>
+									{runner?.name}
+								</ThinText>
+							)}
+							{display === "twitter" && (
+								<SocialText icon={iconTwitter} text={runner?.twitter} />
+							)}
+							{display === "twitch" && (
+								<SocialText icon={iconTwitch} text={runner?.twitch} />
+							)}
+							{display === "nico" && (
+								<SocialText icon={iconNico} text={runner?.nico} />
+							)}
+						</FadeContainer>
+					)}
+				</Transition>
+			</SwitchTransition>
 		</div>
 	) : (
 		<div
@@ -122,10 +115,24 @@ const NamePlateContent = ({
 					...style,
 				}}
 			>
-				<div ref={emptyRef}></div>
-				{twitter}
-				{twitch}
-				{nico}
+				<SwitchTransition>
+					<Transition ref={fadeNodeRef} key={display} timeout={500}>
+						{(state) => (
+							<FadeContainer state={state}>
+								{display === "name" && <div></div>}
+								{display === "twitter" && (
+									<SocialText icon={iconTwitter} text={runner?.twitter} />
+								)}
+								{display === "twitch" && (
+									<SocialText icon={iconTwitch} text={runner?.twitch} />
+								)}
+								{display === "nico" && (
+									<SocialText icon={iconNico} text={runner?.nico} />
+								)}
+							</FadeContainer>
+						)}
+					</Transition>
+				</SwitchTransition>
 			</div>
 		</div>
 	);

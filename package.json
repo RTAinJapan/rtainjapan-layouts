@@ -39,6 +39,7 @@
 		"klona": "^2.0.6",
 		"moment": "^2.29.4",
 		"obs-websocket-js": "^5.0.2",
+		"react-transition-group": "^4.4.5",
 		"tslib": "^2.5.0",
 		"uuid": "^9.0.0",
 		"ws": "^8.13.0"
