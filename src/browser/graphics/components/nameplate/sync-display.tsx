@@ -1,7 +1,6 @@
 import gsap from "gsap";
 import {ReactNode, createContext, useEffect, useState} from "react";
 import {useReplicant} from "../../../use-replicant";
-import {Commentator} from "../../../../nodecg/replicants";
 
 type DisplayLabel = "name" | "twitter" | "twitch" | "nico";
 
