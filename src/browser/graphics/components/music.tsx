@@ -7,9 +7,15 @@ import {ThinText} from "./lib/text";
 
 export const Music = () => {
 	const playingMusic = useReplicant("playing-music");
+	const isRemoveMusicSuffix =
+		nodecg.bundleConfig.music?.removeMusicSuffix?.some((music) =>
+			playingMusic?.includes(music),
+		);
 	const text = `${
 		nodecg.bundleConfig.music?.textPrefix ?? ""
-	} ${playingMusic} ${nodecg.bundleConfig.music?.textSuffix ?? ""}`;
+	} ${playingMusic} ${
+		!isRemoveMusicSuffix ? nodecg.bundleConfig.music?.textSuffix ?? "" : ""
+	}`;
 	const ref = useRef<HTMLDivElement>(null);
 	const [shownText, setShownText] = useState("");
 
