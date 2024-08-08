@@ -1,6 +1,6 @@
 import {TemplateH300} from "./templates/H300";
 import {ThinText} from "../../components/lib/text";
-import {background, border, text} from "../../styles/colors";
+import {background, border} from "../../styles/colors";
 import {useReplicant} from "../../../use-replicant";
 
 export default () => {
