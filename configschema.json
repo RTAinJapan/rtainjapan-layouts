@@ -71,7 +71,12 @@
 			"additionalProperties": false,
 			"properties": {
 				"textPrefix": {"type": "string", "default": ""},
-				"textSuffix": {"type": "string", "default": ""}
+				"textSuffix": {"type": "string", "default": ""},
+				"removeMusicSuffix": {
+					"type": "array",
+					"items": {"type": "string"},
+					"default": []
+				}
 			}
 		},
 		"googleApiKey": {"type": "string"},
