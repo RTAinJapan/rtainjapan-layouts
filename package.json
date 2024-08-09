@@ -115,6 +115,14 @@
 				"workspace": "2-misc"
 			},
 			{
+				"name": "poke",
+				"title": "ポケモン捕獲数",
+				"file": "poke.html",
+				"width": 2,
+				"headerColor": "#00BEBE",
+				"workspace": "2-misc"
+			},
+			{
 				"name": "camera",
 				"title": "カメラ",
 				"file": "camera.html",

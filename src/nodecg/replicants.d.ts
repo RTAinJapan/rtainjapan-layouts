@@ -16,6 +16,7 @@ import {CameraName} from "./generated/camera-name";
 import {CameraState} from "./generated/camera-state";
 import {BidWar} from "./generated/bid-war";
 import {BidChallenge} from "./generated/bid-challenge";
+import {Poke} from "./generated/poke";
 
 import type {AccessToken} from "@twurple/auth";
 import {Runners} from "./generated/runners";
@@ -75,6 +76,7 @@ type ReplicantMap = {
 	"assets:interval-video": Assets[];
 	announcements: Announcements;
 	"playing-music": PlayingMusic;
+	poke: Poke;
 };
 
 export type {
@@ -105,4 +107,5 @@ export type {
 	BidChallenge,
 	Announcements,
 	PlayingMusic,
+	Poke,
 };
