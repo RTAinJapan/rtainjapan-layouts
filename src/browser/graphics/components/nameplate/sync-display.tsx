@@ -2,7 +2,7 @@ import gsap from "gsap";
 import {ReactNode, createContext, useEffect, useState} from "react";
 import {useReplicant} from "../../../use-replicant";
 
-type DisplayLabel = "name" | "twitter" | "twitch" | "nico";
+type DisplayLabel = "name" | "twitter" | "twitch" | "youtube";
 
 export const SyncDisplayContext = createContext<DisplayLabel>("name");
 
@@ -17,14 +17,14 @@ export const SyncDisplayProvider = ({children}: {children: ReactNode}) => {
 
 	const displayTwitter = participants.some((p) => Boolean(p?.twitter));
 	const displayTwitch = participants.some((p) => Boolean(p?.twitch));
-	const displayNico = participants.some((p) => Boolean(p?.nico));
+	const displayYoutube = participants.some((p) => Boolean(p?.youtube));
 
 	useEffect(() => {
 		const tl = gsap.timeline({repeat: -1});
 		const displays: DisplayLabel[] = [
 			displayTwitter ? "twitter" : null,
 			displayTwitch ? "twitch" : null,
-			displayNico ? "nico" : null,
+			displayYoutube ? "youtube" : null,
 			"name",
 		].filter((v): v is DisplayLabel => v !== null);
 		for (const social of displays) {
@@ -39,7 +39,7 @@ export const SyncDisplayProvider = ({children}: {children: ReactNode}) => {
 		return () => {
 			tl.kill();
 		};
-	}, [displayTwitter, displayTwitch, displayNico]);
+	}, [displayTwitter, displayTwitch, displayYoutube]);
 
 	return (
 		<SyncDisplayContext.Provider value={display}>

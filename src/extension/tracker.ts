@@ -91,6 +91,7 @@ export const tracker = async (nodecg: NodeCG) => {
 					twitter: el["Twitter ID"] as string,
 					twitch: el["Twitch ID"] as string,
 					nico: el["ニコニココミュニティ ID"] as string,
+					youtube: el["YouTube ハンドル"] as string,
 					gameCategory: el["担当ゲームカテゴリ"] as string,
 				};
 			});
@@ -145,6 +146,7 @@ export const tracker = async (nodecg: NodeCG) => {
 								name: runner?.fields.name ?? "",
 								twitch: runner?.fields.twitch,
 								nico: runner?.fields.nico,
+								youtube: runner?.fields.youtube,
 								twitter: runner?.fields.twitter,
 								camera: true,
 							};

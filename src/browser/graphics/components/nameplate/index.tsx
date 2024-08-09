@@ -2,7 +2,7 @@ import {ThinText, TimerText} from "../lib/text";
 import {useCurrentRun, useTimer} from "../lib/hooks";
 import iconTwitter from "../../images/icon/icon_twitter.svg";
 import iconTwitch from "../../images/icon/icon_twitch.svg";
-import iconNico from "../../images/icon/icon_nico.svg";
+import iconYoutube from "../../images/icon/icon_youtube.svg";
 import iconRunner from "../../images/icon/icon_runner.svg";
 import iconCommentator from "../../images/icon/icon_commentary.svg";
 import {CSSProperties, HTMLAttributes, useContext, useRef} from "react";
@@ -85,8 +85,8 @@ const NamePlateContent = ({
 							{display === "twitch" && (
 								<SocialText icon={iconTwitch} text={runner?.twitch} />
 							)}
-							{display === "nico" && (
-								<SocialText icon={iconNico} text={runner?.nico} />
+							{display === "youtube" && (
+								<SocialText icon={iconYoutube} text={runner?.youtube} />
 							)}
 						</FadeContainer>
 					)}
@@ -126,8 +126,8 @@ const NamePlateContent = ({
 								{display === "twitch" && (
 									<SocialText icon={iconTwitch} text={runner?.twitch} />
 								)}
-								{display === "nico" && (
-									<SocialText icon={iconNico} text={runner?.nico} />
+								{display === "youtube" && (
+									<SocialText icon={iconYoutube} text={runner?.youtube} />
 								)}
 							</FadeContainer>
 						)}
