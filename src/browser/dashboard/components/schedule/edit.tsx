@@ -215,17 +215,17 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 									}}
 								/>
 								<TextField
-									label={`走者${index + 1} ニコ生`}
-									value={runner.nico}
-									onChange={(e) => {
-										updateRunnerInfo(index, "nico", e.currentTarget.value);
-									}}
-								/>
-								<TextField
 									label={`走者${index + 1} Twitter`}
 									value={runner.twitter}
 									onChange={(e) => {
 										updateRunnerInfo(index, "twitter", e.currentTarget.value);
+									}}
+								/>
+								<TextField
+									label={`走者${index + 1} YouTube`}
+									value={runner.youtube}
+									onChange={(e) => {
+										updateRunnerInfo(index, "youtube", e.currentTarget.value);
 									}}
 								/>
 								<FormControl>
@@ -310,19 +310,23 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 									}}
 								/>
 								<TextField
-									label={`解説${index + 1} ニコ生`}
-									defaultValue={commentator.nico}
-									onChange={(e) => {
-										updateCommentatorInfo(index, "nico", e.currentTarget.value);
-									}}
-								/>
-								<TextField
 									label={`解説${index + 1} Twitter`}
 									defaultValue={commentator.twitter}
 									onChange={(e) => {
 										updateCommentatorInfo(
 											index,
 											"twitter",
+											e.currentTarget.value,
+										);
+									}}
+								/>
+								<TextField
+									label={`解説${index + 1} YouTube`}
+									defaultValue={commentator.youtube}
+									onChange={(e) => {
+										updateCommentatorInfo(
+											index,
+											"youtube",
 											e.currentTarget.value,
 										);
 									}}

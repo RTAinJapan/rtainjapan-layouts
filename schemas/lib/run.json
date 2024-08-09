@@ -28,6 +28,7 @@
 					"twitch": {"type": "string"},
 					"nico": {"type": "string"},
 					"twitter": {"type": "string"},
+					"youtube": {"type": "string"},
 					"camera": {
 						"type": "boolean",
 						"description": "人ごとのカメラ使用有無"
@@ -47,7 +48,8 @@
 							"name": {"type": "string"},
 							"twitch": {"type": "string"},
 							"nico": {"type": "string"},
-							"twitter": {"type": "string"}
+							"twitter": {"type": "string"},
+							"youtube": {"type": "string"}
 						},
 						"required": ["name"]
 					},
