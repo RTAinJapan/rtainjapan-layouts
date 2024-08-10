@@ -71,11 +71,13 @@ const App = () => {
 				onChange={(e) => {
 					setPoke(Number(e.target.value));
 				}}
+				disabled={pokeControl?.enableScraping}
 			/>
 			<button
 				onClick={() => {
 					pokeRep.value = pokeState;
 				}}
+				disabled={pokeControl?.enableScraping}
 			>
 				更新
 			</button>
