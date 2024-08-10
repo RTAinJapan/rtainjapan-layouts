@@ -25,6 +25,7 @@ import {DonationQueue} from "./generated/donation-queue";
 import {VideoControl} from "./generated/video-control";
 import {Announcements} from "./generated/announcements";
 import {PlayingMusic} from "./generated/playing-music";
+import {PokemonControl} from "./generated/pokemon-control";
 
 type Run = NonNullable<CurrentRun>;
 type Runner = Run["runners"][number];
@@ -77,6 +78,7 @@ type ReplicantMap = {
 	announcements: Announcements;
 	"playing-music": PlayingMusic;
 	poke: Poke;
+	"pokemon-control": PokemonControl;
 };
 
 export type {
@@ -108,4 +110,5 @@ export type {
 	Announcements,
 	PlayingMusic,
 	Poke,
+	PokemonControl,
 };
