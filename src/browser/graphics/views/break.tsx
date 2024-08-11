@@ -21,6 +21,7 @@ import {swipeEnter, swipeExit} from "../components/lib/blur-swipe";
 import {newlineString} from "../components/lib/util";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
 import {render} from "../../render.js";
+import {FanArtTweet} from "../components/fan-art-tweet.js";
 
 const Spacer = () => <img src={nextGameSpacer} width={50} height={60}></img>;
 
@@ -216,6 +217,7 @@ const TweetContainer = () => {
 	const tweetTag = useRef(null);
 	const fanartTag = useRef(null);
 	const tweetRef = useRef(null);
+	const fanArtRef = useRef(null);
 	const transitionTimeline = useCallback(() => {
 		const tl = gsap.timeline();
 		tl.to([tweetTag.current, tweetRef.current], {
@@ -226,7 +228,22 @@ const TweetContainer = () => {
 		tl.to(
 			[tweetTag.current, tweetRef.current],
 			{x: 0, duration: 1, ease: Power2.easeOut},
-			"+=10",
+			"+=15",
+		);
+		return tl;
+	}, []);
+
+	const transitionFanArtTimeline = useCallback((width: number) => {
+		const tl = gsap.timeline();
+		tl.to([fanartTag.current, fanArtRef.current], {
+			x: (width + 490) * -1,
+			duration: 1,
+			ease: Power2.easeOut,
+		});
+		tl.to(
+			[fanartTag.current, fanArtRef.current],
+			{x: 0, duration: 1, ease: Power2.easeOut},
+			"+=20",
 		);
 		return tl;
 	}, []);
@@ -261,7 +278,6 @@ const TweetContainer = () => {
 				width={30}
 				height={98}
 				style={{
-					display: "none", // TODO: remove after adding fanart
 					gridRow: "2 / 3",
 					gridColumn: "1 / 2",
 					alignSelf: "start",
@@ -285,6 +301,24 @@ const TweetContainer = () => {
 				}}
 			>
 				<Tweet onShow={transitionTimeline}></Tweet>
+			</div>
+			<div
+				ref={fanArtRef}
+				style={{
+					gridRow: "1 / 3",
+					gridColumn: "2 / 4",
+					alignSelf: "start",
+					justifySelf: "stretch",
+					padding: "50px",
+					borderColor: setup.frameBorder,
+					borderStyle: "solid",
+					borderWidth: "2px 0 2px 2px",
+					borderRadius: "7px 0 0 7px",
+					background: setup.frameBg,
+					willChange: "transform",
+				}}
+			>
+				<FanArtTweet onShow={transitionFanArtTimeline} />
 			</div>
 		</div>
 	);
