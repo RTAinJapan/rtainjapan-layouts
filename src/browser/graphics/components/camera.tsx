@@ -25,7 +25,6 @@ const SingleCamera = ({
 		return (
 			<div
 				style={{
-					background: background.camera,
 					borderColor: border.camera,
 					borderStyle: "solid",
 					borderWidth,
