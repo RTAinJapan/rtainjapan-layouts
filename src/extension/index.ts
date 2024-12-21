@@ -6,7 +6,6 @@ import {twitch} from "./twitch";
 import {setupObs} from "./obs";
 import {tracker} from "./tracker";
 import {music} from "./music";
-import {pokemon} from "./pokemon";
 
 export default (nodecg: NodeCG) => {
 	checklist(nodecg);
@@ -31,6 +30,4 @@ export default (nodecg: NodeCG) => {
 			cameraStateRep.value = "hidden";
 		}
 	});
-
-	pokemon(nodecg);
 };
