@@ -34,17 +34,17 @@ export const border = {
 
 export const background = {
 	/** カメラ枠 背景 */
-	camera: "rgba(0, 20, 60, 0.4)",
+	camera: "rgba(0, 0, 0, 0.45)",
 	/** スポンサー枠 背景 */
-	sponsor: "rgba(0, 20, 60, 0.4)",
+	sponsor: "rgba(0, 0, 0, 0.45)",
+	/** Twitter枠 背景 */
+	tweet: "rgba(0, 0, 0, 0.45)",
 	/** 走者名枠、解説者名枠 背景 */
-	name: "rgba(0, 20, 60, 0.2)",
+	name: "rgba(0, 0, 0, 0.25)",
 	/** 下部帯 背景 */
 	omnibar: "rgb(230,230,230)",
-	/** Twitter枠 背景 */
-	tweet: "rgba(0, 20, 60, 0.4)",
 	/** エンドロール枠 背景 */
-	credit: "rgba(37, 48, 58, 0.8)",
+	credit: "rgba(0, 0, 0, 0.45)",
 };
 
 export const bidwar = {

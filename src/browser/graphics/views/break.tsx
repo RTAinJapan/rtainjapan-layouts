@@ -192,7 +192,7 @@ const Sponsor = () => {
 	);
 };
 
-/** 画面左側の影 */
+/** 背景左側の影 */
 const GradientOverlay = () => {
 	return (
 		<div
@@ -204,9 +204,9 @@ const GradientOverlay = () => {
 				background: `
  					linear-gradient(
  						to right,
- 						rgba(10, 10, 30, 0.5),
- 						rgba(10, 10, 30, 0.4) 75%,
- 						rgba(10, 10, 30, 0) 100%
+ 						rgba(0, 0, 0, 0.45),
+ 						rgba(0, 0, 0, 0.2) 75%,
+ 						rgba(0, 0, 0, 0) 100%
  					)`,
 			}}
 		></div>
