@@ -67,7 +67,7 @@ export default async (nodecg: NodeCG) => {
 		}
 		const index = targetRep.value.index;
 		const freshRun = scheduleRep.value?.find((r) => r.index === index);
-		currentRunRep.value = clone(freshRun);
+		targetRep.value = clone(freshRun);
 	};
 
 	nodecg.listenFor("nextRun", (_, cb) => {
