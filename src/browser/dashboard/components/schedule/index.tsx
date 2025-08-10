@@ -11,6 +11,7 @@ import {ColoredButton} from "../lib/colored-button";
 import {EditRun} from "./edit";
 import {RunInfo} from "./run-info";
 import {Typeahead} from "./typeahead";
+import {green} from "@mui/material/colors";
 
 const Container = styled(BorderedBox)`
 	height: calc(100vh - 32px);
@@ -48,6 +49,18 @@ const moveNextRun = () => {
 
 const movePreviousRun = () => {
 	nodecg.sendMessage("previousRun");
+};
+
+const refreshCurrentRun = () => {
+	if (confirm("編集した内容は破棄されます。現在のゲームを更新しますか？")) {
+		nodecg.sendMessage("refreshRun", "current");
+	}
+};
+
+const refreshNextRun = () => {
+	if (confirm("編集した内容は破棄されます。次のゲームを更新しますか？")) {
+		nodecg.sendMessage("refreshRun", "next");
+	}
 };
 
 export const Schedule: FC = () => {
@@ -105,6 +118,12 @@ export const Schedule: FC = () => {
 					ButtonProps={{onClick: () => setEditting("next")}}
 				>
 					編集：次のゲーム
+				</ColoredButton>
+				<ColoredButton color={green} ButtonProps={{onClick: refreshCurrentRun}}>
+					現在のゲームを再読み込み
+				</ColoredButton>
+				<ColoredButton color={green} ButtonProps={{onClick: refreshNextRun}}>
+					次のゲームを再読み込み
 				</ColoredButton>
 			</EditControls>
 			{edittingRun && (

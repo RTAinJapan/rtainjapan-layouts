@@ -29,6 +29,7 @@ export type MessageMap = {
 	nextRun: {};
 	previousRun: {};
 	modifyRun: {data: Run; error: string};
+	refreshRun: {data: "current" | "next"};
 	toggleCheckbox: {data: {runPk: number; checkPk: string; checked: boolean}};
 	resetChecklist: {};
 	"obs:connect": {};

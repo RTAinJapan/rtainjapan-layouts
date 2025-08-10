@@ -60,6 +60,16 @@ export default async (nodecg: NodeCG) => {
 		currentRunRep.value = clone(scheduleRep.value[currentIndex - 1]);
 	};
 
+	const refreshRun = (deck: "current" | "next") => {
+		const targetRep = deck === "current" ? currentRunRep : nextRunRep;
+		if (!targetRep.value) {
+			return;
+		}
+		const index = targetRep.value.index;
+		const freshRun = scheduleRep.value?.find((r) => r.index === index);
+		currentRunRep.value = clone(freshRun);
+	};
+
 	nodecg.listenFor("nextRun", (_, cb) => {
 		seekToNextRun();
 		if (cb && !cb.handled) {
@@ -101,6 +111,13 @@ export default async (nodecg: NodeCG) => {
 			if (cb && !cb.handled) {
 				cb(error instanceof Error ? error.message : "error");
 			}
+		}
+	});
+
+	nodecg.listenFor("refreshRun", (deck, cb) => {
+		refreshRun(deck);
+		if (cb && !cb.handled) {
+			cb(null);
 		}
 	});
 
