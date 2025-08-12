@@ -55,7 +55,17 @@ export const FanArtTweet = ({
 					width={30}
 					style={{margin: "0 10px"}}
 				></img>
-				<ThinText style={{fontSize: "20px"}}>{user}</ThinText>
+				<ThinText
+					style={{
+						fontSize: "20px",
+						overflow: "hidden",
+						textOverflow: "ellipsis",
+						whiteSpace: "nowrap",
+						maxWidth: "280px",
+					}}
+				>
+					{user}
+				</ThinText>
 			</div>
 			<ThinText
 				style={{
@@ -65,6 +75,12 @@ export const FanArtTweet = ({
 					wordBreak: "break-all",
 					gridRow: "2 / 3",
 					gridColumn: "1 / 2",
+					maxHeight: "280px",
+					textOverflow: "ellipsis",
+					overflow: "hidden",
+					display: "-webkit-box",
+					WebkitBoxOrient: "vertical",
+					WebkitLineClamp: 9, // 最大行数を指定
 				}}
 			>
 				{text}
