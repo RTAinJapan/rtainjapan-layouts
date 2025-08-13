@@ -19,15 +19,16 @@ export const Twitter = () => {
 					onSubmit={(tweets, onSuccess) => {
 						if (tweetsTempRep.value && tweets.text && tweets.name) {
 							if (
-								tweetsTempImagesRep.value?.some(
-									(image) => image === tweets.image,
-								)
+								tweets.image &&
+								tweetsTempImagesRep.value?.includes(tweets.image)
 							) {
 								alert("該当の画像URLは登録済です。");
 								return;
 							}
 							tweetsTempRep.value.push(tweets);
-							tweetsTempImagesRep.value?.push(tweets?.image ?? "");
+							if (tweets.image) {
+								tweetsTempImagesRep.value?.push(tweets.image);
+							}
 							onSuccess();
 						}
 					}}
