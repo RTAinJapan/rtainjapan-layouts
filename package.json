@@ -11,6 +11,7 @@
 		"format": "npm run test:prettier -- --write",
 		"build": "vite build",
 		"schema-types": "del-cli src/nodecg/generated && nodecg schema-types -o src/nodecg/generated",
+		"start": "nodecg start",
 		"test": "run-s schema-types test:*",
 		"test:prettier": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --check",
 		"test:lint": "eslint --ext .ts,.tsx .",
