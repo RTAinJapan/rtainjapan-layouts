@@ -1,34 +1,32 @@
 import "../styles/global";
 
-import createTheme from "@mui/material/styles/createTheme";
-import ThemeProvider from "@mui/material/styles/ThemeProvider";
+import {createTheme, ThemeProvider, styled} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import styled from "styled-components";
 import {Checklist} from "../components/checklist";
 import {Schedule} from "../components/schedule";
 import {Timekeeper} from "../components/timekeeper";
 import {render} from "../../render";
 
-const Container = styled.div`
-	color: #000;
-	height: 100vh;
-	width: 100vw;
-	padding: 16px;
-	box-sizing: border-box;
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	grid-gap: 20px;
-`;
+const Container = styled("div")({
+	color: "#000",
+	height: "100vh",
+	width: "100vw",
+	padding: "16px",
+	boxSizing: "border-box",
+	display: "grid",
+	gridTemplateColumns: "repeat(2, 1fr)",
+	gridGap: "20px",
+});
 
-const Column = styled.div`
-	display: grid;
-	grid-gap: 16px;
-`;
+const Column = styled("div")({
+	display: "grid",
+	gridGap: "16px",
+});
 
-const LeftColumn = styled(Column)`
-	height: calc(100vh - 32px);
-	grid-template-rows: 1fr auto;
-`;
+const LeftColumn = styled(Column)({
+	height: "calc(100vh - 32px)",
+	gridTemplateRows: "1fr auto",
+});
 
 const appTheme = createTheme({
 	components: {

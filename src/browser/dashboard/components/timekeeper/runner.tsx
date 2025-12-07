@@ -1,60 +1,54 @@
-import blueGrey from "@mui/material/colors/blueGrey";
-import green from "@mui/material/colors/green";
-import grey from "@mui/material/colors/grey";
+import {blueGrey, green, grey} from "@mui/material/colors";
 import Cancel from "@mui/icons-material/Cancel";
 import Edit from "@mui/icons-material/Edit";
 import Flag from "@mui/icons-material/Flag";
 import Undo from "@mui/icons-material/Undo";
+import {styled} from "@mui/material/styles";
 import {FC, useState} from "react";
-import styled, {css} from "styled-components";
 import {Timer} from "../../../../nodecg/replicants";
 import {ColoredButton} from "../lib/colored-button";
 import {EditTimeModal} from "./edit";
 
-const Container = styled.div`
-	padding: 0 16px;
-	display: grid;
-	align-items: center;
-	${(props: {index: number}) =>
-		props.index % 2 === 0 &&
-		css`
-			background-color: #dedede;
-		`};
-`;
+const Container = styled("div")<{index: number}>(({index}) => ({
+	padding: "0 16px",
+	display: "grid",
+	alignItems: "center",
+	...(index % 2 === 0 && {
+		backgroundColor: "#dedede",
+	}),
+}));
 
-const RunnerContainer = styled.div`
-	display: grid;
-	grid-template-columns: 1fr auto;
-	grid-template-areas: "runner button";
-`;
+const RunnerContainer = styled("div")({
+	display: "grid",
+	gridTemplateColumns: "1fr auto",
+	gridTemplateAreas: '"runner button"',
+});
 
-const RunnerName = styled.div`
-	font-size: 24px;
-`;
+const RunnerName = styled("div")({
+	fontSize: "24px",
+});
 
-const RunnerStatus = styled.div`
-	font-size: 24px;
-	color: #adadad;
-	${(props: {finished: boolean}) =>
-		props.finished &&
-		css`
-			color: #43ac6a;
-		`};
-`;
+const RunnerStatus = styled("div")<{finished: boolean}>(({finished}) => ({
+	fontSize: "24px",
+	color: "#adadad",
+	...(finished && {
+		color: "#43ac6a",
+	}),
+}));
 
-const ButtonContainer = styled.div`
-	display: grid;
-	grid-template-columns: repeat(3, 80px);
-	grid-gap: 8px;
-	justify-items: stretch;
-	align-items: center;
-`;
+const ButtonContainer = styled("div")({
+	display: "grid",
+	gridTemplateColumns: "repeat(3, 80px)",
+	gridGap: "8px",
+	justifyItems: "stretch",
+	alignItems: "center",
+});
 
-const EmptySlot = styled.div`
-	font-size: 24px;
-	color: #adadad;
-	text-align: center;
-`;
+const EmptySlot = styled("div")({
+	fontSize: "24px",
+	color: "#adadad",
+	textAlign: "center",
+});
 
 type Props = {
 	runner: string | undefined;

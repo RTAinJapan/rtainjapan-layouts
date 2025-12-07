@@ -1,21 +1,21 @@
 import {ListItemText, Typography} from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import styled from "styled-components";
+import {styled} from "@mui/material/styles";
 import {Donation} from "../../../../nodecg/replicants";
 import {useReplicant} from "../../../use-replicant";
 import {DonationItem} from "./donation-item";
 
-const Container = styled.div`
-	display: grid;
-	grid-template-columns: calc(50% - 0.5px) 1px calc(50% - 0.5px);
-	height: 720px;
-	overflow-y: scroll;
-`;
+const Container = styled("div")({
+	display: "grid",
+	gridTemplateColumns: "calc(50% - 0.5px) 1px calc(50% - 0.5px)",
+	height: "720px",
+	overflowY: "scroll",
+});
 
-const Border = styled.div`
-	background-color: #7a7a7a;
-`;
+const Border = styled("div")({
+	backgroundColor: "#7a7a7a",
+});
 
 export const Donations = () => {
 	const donations = useReplicant("donations");

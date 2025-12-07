@@ -1,7 +1,9 @@
 import Button, {ButtonProps} from "@mui/material/Button";
-import createTheme from "@mui/material/styles/createTheme";
-import {PaletteColorOptions} from "@mui/material/styles/createPalette";
-import ThemeProvider from "@mui/material/styles/ThemeProvider";
+import {
+	createTheme,
+	ThemeProvider,
+	PaletteColorOptions,
+} from "@mui/material/styles";
 import {FC, PropsWithChildren} from "react";
 
 type Props = PropsWithChildren<{

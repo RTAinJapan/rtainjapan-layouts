@@ -4,7 +4,7 @@ import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import ListItemText from "@mui/material/ListItemText";
 import AddIcon from "@mui/icons-material/Add";
 import {useState} from "react";
-import {TweetsTemp} from "../../../../nodecg/generated";
+import {TweetsTemp} from "../../../../nodecg/generated/tweets-temp";
 
 type Tweet = TweetsTemp[number];
 

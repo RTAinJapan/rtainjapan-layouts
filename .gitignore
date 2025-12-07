@@ -6,6 +6,8 @@ generated/
 /bundle-analyzer
 /cfg
 /shared/dist
+/assets
+/db
 
 # Logs
 logs
@@ -95,3 +97,6 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Claude local files
+.claude/settings.local.json

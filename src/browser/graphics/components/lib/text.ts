@@ -1,38 +1,38 @@
-import styled from "styled-components";
+import {styled} from "@mui/material/styles";
 
-export const HeavyText = styled.div`
-	font-family: m-plus-1p, sans-serif;
-	font-weight: 900; /* heavy */
-	font-style: normal;
-	white-space: nowrap;
-`;
-export const BoldText = styled.div`
-	font-family: m-plus-1p, sans-serif;
-	font-weight: 800; /* extra-bold */
-	font-style: normal;
-	white-space: nowrap;
-`;
-export const ThinText = styled.div`
-	font-family: m-plus-1p, sans-serif;
-	font-weight: 500; /* medium */
-	font-style: normal;
-	white-space: nowrap;
-`;
-export const TimerText = styled.div`
-	font-family: bio-sans, sans-serif;
-	font-weight: 700; /* bold */
-	font-style: normal;
-	white-space: nowrap;
-`;
-export const CreditText = styled.div`
-	font-family: fot-chiaro-std, sans-serif;
-	font-weight: 500; /* medium */
-	font-style: normal;
-	white-space: nowrap;
-`;
-export const CreditTitleText = styled.div`
-	font-family: minion-3, serif;
-	font-weight: 700; /* bold */
-	font-style: normal;
-	white-space: nowrap;
-`;
+export const HeavyText = styled("div")({
+	fontFamily: "m-plus-1p, sans-serif",
+	fontWeight: 900 /* heavy */,
+	fontStyle: "normal",
+	whiteSpace: "nowrap",
+});
+export const BoldText = styled("div")({
+	fontFamily: "m-plus-1p, sans-serif",
+	fontWeight: 800 /* extra-bold */,
+	fontStyle: "normal",
+	whiteSpace: "nowrap",
+});
+export const ThinText = styled("div")({
+	fontFamily: "m-plus-1p, sans-serif",
+	fontWeight: 500 /* medium */,
+	fontStyle: "normal",
+	whiteSpace: "nowrap",
+});
+export const TimerText = styled("div")({
+	fontFamily: "bio-sans, sans-serif",
+	fontWeight: 700 /* bold */,
+	fontStyle: "normal",
+	whiteSpace: "nowrap",
+});
+export const CreditText = styled("div")({
+	fontFamily: "fot-chiaro-std, sans-serif",
+	fontWeight: 500 /* medium */,
+	fontStyle: "normal",
+	whiteSpace: "nowrap",
+});
+export const CreditTitleText = styled("div")({
+	fontFamily: "minion-3, serif",
+	fontWeight: 700 /* bold */,
+	fontStyle: "normal",
+	whiteSpace: "nowrap",
+});

@@ -19,7 +19,9 @@ const useViewportSize = () => {
 	return {height, width};
 };
 
-export const useFitViewport = <T extends HTMLElement>(ref: RefObject<T>) => {
+export const useFitViewport = <T extends HTMLElement>(
+	ref: RefObject<T | null>,
+) => {
 	const windowSize = useViewportSize();
 
 	const [refSize, setRefSize] = useState({height: 0, width: 0});

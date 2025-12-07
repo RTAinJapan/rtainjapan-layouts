@@ -1,10 +1,10 @@
 import List from "@mui/material/List";
-import styled from "styled-components";
+import {styled} from "@mui/material/styles";
 import {useReplicant} from "../../../use-replicant";
 import {AnnouncementAdd} from "./announcement-add";
 import {AnnouncementItem} from "./announcement-item";
 
-const Container = styled.div``;
+const Container = styled("div")({});
 
 const announcementsRep = nodecg.Replicant("announcements");
 

@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useEffect, useState} from "react";
-import {TweetsTemp} from "../../../../nodecg/generated";
+import {TweetsTemp} from "../../../../nodecg/generated/tweets-temp";
 
 type Tweet = TweetsTemp[number];
 

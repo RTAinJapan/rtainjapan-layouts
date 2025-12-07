@@ -1,7 +1,7 @@
 import "../styles/global";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import styled from "@mui/material/styles/styled";
+import {styled} from "@mui/material/styles";
 import Accordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";

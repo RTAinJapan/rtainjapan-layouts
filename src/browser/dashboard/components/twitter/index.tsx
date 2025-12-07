@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import {styled} from "@mui/material/styles";
 import List from "@mui/material/List";
 import {TweetAdd} from "./tweet-add";
 import {TweetItem} from "./tweet-item";
 import {useReplicant} from "../../../use-replicant";
 
-const Container = styled.div``;
+const Container = styled("div")({});
 
 const tweetsTempRep = nodecg.Replicant("tweets-temp");
 

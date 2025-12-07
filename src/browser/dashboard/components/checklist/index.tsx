@@ -1,24 +1,24 @@
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {FC} from "react";
-import styled from "styled-components";
+import {styled} from "@mui/material/styles";
 import {useCurrentRun} from "../../../graphics/components/lib/hooks";
 import {useReplicant} from "../../../use-replicant";
 import {BorderedBox} from "../lib/bordered-box";
 import {Checkbox} from "./Checkbox";
 
-const Container = styled(BorderedBox)`
-	padding: 16px;
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	grid-template-rows: 1fr;
-	grid-gap: 8px;
-	user-select: none;
-`;
+const Container = styled(BorderedBox)({
+	padding: "16px",
+	display: "grid",
+	gridTemplateColumns: "repeat(2, 1fr)",
+	gridTemplateRows: "1fr",
+	gridGap: "8px",
+	userSelect: "none",
+});
 
-const CurrentRunNameRow = styled.div`
-	text-align: center;
-	grid-column: 1 / 3;
-`;
+const CurrentRunNameRow = styled("div")({
+	textAlign: "center",
+	gridColumn: "1 / 3",
+});
 
 export const Checklist: FC = () => {
 	const currentRun = useCurrentRun();

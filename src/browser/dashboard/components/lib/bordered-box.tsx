@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import {styled} from "@mui/material/styles";
 
-export const BorderedBox = styled.div`
-	box-sizing: border-box;
-	background: white;
-	border: 1px solid black;
-`;
+export const BorderedBox = styled("div")({
+	boxSizing: "border-box",
+	background: "white",
+	border: "1px solid black",
+});

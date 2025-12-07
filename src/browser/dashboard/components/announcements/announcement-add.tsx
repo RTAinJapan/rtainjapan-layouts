@@ -4,7 +4,7 @@ import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import ListItemText from "@mui/material/ListItemText";
 import AddIcon from "@mui/icons-material/Add";
 import {useState} from "react";
-import {Announcements} from "../../../../nodecg/generated";
+import {Announcements} from "../../../../nodecg/generated/announcements";
 
 type Announcement = Announcements[number];
 
