@@ -16,7 +16,7 @@ import {useFitViewport} from "../components/lib/use-fit-viewport";
 import {render} from "../../render.js";
 import {border} from "../styles/colors.js";
 
-const BigNameplate = (props: {innerRef?: RefObject<HTMLDivElement>}) => {
+const BigNameplate = (props: {innerRef?: RefObject<HTMLDivElement | null>}) => {
 	const camera = useReplicant("camera-name");
 	return (
 		<div
@@ -76,7 +76,9 @@ const BigNameplate = (props: {innerRef?: RefObject<HTMLDivElement>}) => {
 	);
 };
 
-const SmallNameplate = (props: {innerRef?: RefObject<HTMLDivElement>}) => {
+const SmallNameplate = (props: {
+	innerRef?: RefObject<HTMLDivElement | null>;
+}) => {
 	const camera = useReplicant("camera-name");
 
 	return (

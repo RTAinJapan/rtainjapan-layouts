@@ -6,40 +6,34 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import TypoGraphy from "@mui/material/Typography";
 import React, {FC, useCallback, useEffect, useState} from "react";
-import styled from "@emotion/styled";
+import {createTheme, styled, ThemeProvider} from "@mui/material/styles";
 import {Commentator, Run, Runner} from "../../../../nodecg/replicants";
 import MuiSwitch from "@mui/material/Switch";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 import IconUp from "@mui/icons-material/KeyboardArrowUp";
 import IconDown from "@mui/icons-material/KeyboardArrowDown";
-import createTheme from "@mui/material/styles/createTheme";
-import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import {cloneDeep} from "lodash";
 
-const Container = styled.div`
-	position: absolute;
+const Container = styled("div")({
+	position: "absolute",
+	overflow: "auto",
+	top: "50%",
+	left: "50%",
+	transform: "translate(-50%, -50%)",
+	backgroundColor: "white",
+	boxSizing: "border-box",
+	padding: "16px",
+	display: "grid",
+	gridAutoFlow: "row",
+	gap: "8px",
+});
 
-	overflow: auto;
-
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-
-	background-color: white;
-	box-sizing: border-box;
-	padding: 16px;
-
-	display: grid;
-	grid-auto-flow: row;
-	gap: 8px;
-`;
-
-const RunnerRow = styled.div`
-	display: grid;
-	grid-auto-flow: column;
-	gap: 8px;
-`;
+const RunnerRow = styled("div")({
+	display: "grid",
+	gridAutoFlow: "column",
+	gap: "8px",
+});
 
 const Switch: React.FC<{defaultValue: boolean; onChange: Function}> = (
 	props,

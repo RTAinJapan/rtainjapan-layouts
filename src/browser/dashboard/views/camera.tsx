@@ -1,7 +1,7 @@
 import "../styles/global";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import styled from "styled-components";
+import {styled} from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import IconButton, {IconButtonProps} from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -17,9 +17,9 @@ import {useEffect, useState} from "react";
 import {useReplicant} from "../../use-replicant";
 import {render} from "../../render";
 
-const Container = styled.div`
-	padding: 8px;
-`;
+const Container = styled("div")({
+	padding: "8px",
+});
 
 type ButtonProps = Pick<IconButtonProps, "onClick">;
 

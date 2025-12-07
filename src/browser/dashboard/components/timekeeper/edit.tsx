@@ -3,27 +3,27 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import styled from "styled-components";
+import {styled} from "@mui/material/styles";
 
-const Container = styled.div`
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: white;
-	box-sizing: border-box;
-	padding: 16px;
-	display: flex;
-	flex-flow: column nowrap;
-`;
+const Container = styled("div")({
+	position: "absolute",
+	top: "50%",
+	left: "50%",
+	transform: "translate(-50%, -50%)",
+	backgroundColor: "white",
+	boxSizing: "border-box",
+	padding: "16px",
+	display: "flex",
+	flexFlow: "column nowrap",
+});
 
-const Inputs = styled.div`
-	align-self: center;
-`;
+const Inputs = styled("div")({
+	alignSelf: "center",
+});
 
-const Buttons = styled.div`
-	align-self: flex-end;
-`;
+const Buttons = styled("div")({
+	alignSelf: "flex-end",
+});
 
 const timeFormat = /^(\d+:)?[0-5]?\d:[0-5]?\d$/;
 

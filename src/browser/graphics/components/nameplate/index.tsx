@@ -9,7 +9,7 @@ import {CSSProperties, HTMLAttributes, useContext, useRef} from "react";
 import {background, border, text} from "../../styles/colors";
 import {Commentator, Runner, Timer} from "../../../../nodecg/replicants";
 import {SyncDisplayContext} from "./sync-display";
-import styled from "styled-components";
+import {styled} from "@mui/material/styles";
 import {
 	SwitchTransition,
 	Transition,
@@ -21,12 +21,10 @@ const textPlacement = {
 	gridRow: "1 / 2",
 };
 
-const FadeContainer = styled.div<{state: TransitionStatus}>`
-	transition: all 0.5s;
-	opacity: 0;
-	opacity: ${(props) =>
-		["entered", "existing"].includes(props.state) ? "1" : "0"};
-`;
+const FadeContainer = styled("div")<{state: TransitionStatus}>(({state}) => ({
+	transition: "all 0.5s",
+	opacity: ["entered", "existing"].includes(state) ? 1 : 0,
+}));
 
 const SocialText = ({icon, text}: {icon: string; text?: string}) => {
 	return text ? (

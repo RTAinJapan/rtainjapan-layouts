@@ -37,7 +37,7 @@ const addCallback = (element: Element, callback: ResizeObserverCallback) => {
 };
 
 export const useElementResize = <T extends HTMLElement>(
-	ref: React.RefObject<T>,
+	ref: React.RefObject<T | null>,
 	callback: (size: {width: number; height: number}) => void,
 ) => {
 	useEffect(() => {

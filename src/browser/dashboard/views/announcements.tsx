@@ -1,7 +1,6 @@
 import "../styles/global";
 
-import createTheme from "@mui/material/styles/createTheme";
-import ThemeProvider from "@mui/material/styles/ThemeProvider";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {Announcements} from "../components/announcements";
 import {render} from "../../render";
 import CssBaseline from "@mui/material/CssBaseline";

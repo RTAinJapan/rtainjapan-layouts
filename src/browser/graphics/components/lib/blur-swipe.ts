@@ -12,7 +12,10 @@ export const blurSwipe = {
 	},
 };
 
-export const swipeEnter = (element: RefObject<HTMLElement>, duration = 0.5) => {
+export const swipeEnter = (
+	element: RefObject<HTMLElement | null>,
+	duration = 0.5,
+) => {
 	return gsap.fromTo(
 		element.current,
 		{maskImage: blurSwipe.enter.from},
@@ -20,7 +23,10 @@ export const swipeEnter = (element: RefObject<HTMLElement>, duration = 0.5) => {
 	);
 };
 
-export const swipeExit = (element: RefObject<HTMLElement>, duration = 0.5) => {
+export const swipeExit = (
+	element: RefObject<HTMLElement | null>,
+	duration = 0.5,
+) => {
 	return gsap.fromTo(
 		element.current,
 		{maskImage: blurSwipe.exit.from},

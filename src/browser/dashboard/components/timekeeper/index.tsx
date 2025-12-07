@@ -1,13 +1,9 @@
-import green from "@mui/material/colors/green";
-import grey from "@mui/material/colors/grey";
-import orange from "@mui/material/colors/orange";
-import pink from "@mui/material/colors/pink";
 import Edit from "@mui/icons-material/Edit";
 import Pause from "@mui/icons-material/Pause";
 import PlayArrow from "@mui/icons-material/PlayArrow";
 import Refresh from "@mui/icons-material/Refresh";
+import {styled} from "@mui/material/styles";
 import {FC, useEffect, useState} from "react";
-import styled from "styled-components";
 import {v4 as uuidv4} from "uuid";
 import {useTimer} from "../../../graphics/components/lib/hooks";
 import {useReplicant} from "../../../use-replicant";
@@ -15,40 +11,41 @@ import {BorderedBox} from "../lib/bordered-box";
 import {ColoredButton} from "../lib/colored-button";
 import {EditTimeModal} from "./edit";
 import {Runner} from "./runner";
+import {green, grey, orange, pink} from "@mui/material/colors";
 
-const Container = styled(BorderedBox)`
-	display: grid;
-	grid-template-columns: 1fr auto;
-	grid-template-rows: 105px 1fr;
-	grid-template-areas: "timer ctrls" "runners runners";
-	justify-items: center;
-	align-items: center;
-`;
+const Container = styled(BorderedBox)({
+	display: "grid",
+	gridTemplateColumns: "1fr auto",
+	gridTemplateRows: "105px 1fr",
+	gridTemplateAreas: '"timer ctrls" "runners runners"',
+	justifyItems: "center",
+	alignItems: "center",
+});
 
-const Timer = styled.div`
-	grid-area: timer;
-	padding: 0 16px;
-	font-size: 55px;
-`;
+const Timer = styled("div")({
+	gridArea: "timer",
+	padding: "0 16px",
+	fontSize: "55px",
+});
 
-const CtrlsContainer = styled.div`
-	padding-right: 16px;
-	grid-area: ctrls;
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	grid-template-rows: repeat(2, 1fr);
-	grid-gap: 8px;
-	justify-items: center;
-	align-items: center;
-`;
+const CtrlsContainer = styled("div")({
+	paddingRight: "16px",
+	gridArea: "ctrls",
+	display: "grid",
+	gridTemplateColumns: "repeat(2, 1fr)",
+	gridTemplateRows: "repeat(2, 1fr)",
+	gridGap: "8px",
+	justifyItems: "center",
+	alignItems: "center",
+});
 
-const RunnersContainer = styled.div`
-	justify-self: stretch;
-	align-self: stretch;
-	grid-area: runners;
-	display: grid;
-	grid-template-rows: repeat(4, 1fr);
-`;
+const RunnersContainer = styled("div")({
+	justifySelf: "stretch",
+	alignSelf: "stretch",
+	gridArea: "runners",
+	display: "grid",
+	gridTemplateRows: "repeat(4, 1fr)",
+});
 
 const startTimer = () => {
 	nodecg.sendMessage("startTimer", undefined);

@@ -1,44 +1,44 @@
 import Typography from "@mui/material/Typography";
 import {FC} from "react";
-import styled from "styled-components";
+import {styled} from "@mui/material/styles";
 import {Run} from "../../../../nodecg/replicants";
 
-const Container = styled.div`
-	display: grid;
-	grid-auto-flow: row;
-	align-content: start;
-	align-items: start;
-	grid-gap: 16px;
-`;
+const Container = styled("div")({
+	display: "grid",
+	gridAutoFlow: "row",
+	alignContent: "start",
+	alignItems: "start",
+	gridGap: "16px",
+});
 
-const Divider = styled.div`
-	border-top: 1px dashed black;
-`;
+const Divider = styled("div")({
+	borderTop: "1px dashed black",
+});
 
-const Label = styled.div`
-	text-align: center;
-`;
+const Label = styled("div")({
+	textAlign: "center",
+});
 
-const LabeledDiv = styled.div`
-	white-space: nowrap;
-	overflow: hidden;
-`;
+const LabeledDiv = styled("div")({
+	whiteSpace: "nowrap",
+	overflow: "hidden",
+});
 
-const RunnersContainer = styled.div`
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	grid-template-rows: repeat(2, 1fr);
-	align-items: start;
-	justify-content: center;
-	grid-gap: 8px;
-`;
+const RunnersContainer = styled("div")({
+	display: "grid",
+	gridTemplateColumns: "repeat(2, 1fr)",
+	gridTemplateRows: "repeat(2, 1fr)",
+	alignItems: "start",
+	justifyContent: "center",
+	gridGap: "8px",
+});
 
-const MiscContainer = styled.div`
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	align-items: start;
-	justify-content: center;
-`;
+const MiscContainer = styled("div")({
+	display: "grid",
+	gridTemplateColumns: "repeat(2, 1fr)",
+	alignItems: "start",
+	justifyContent: "center",
+});
 
 export const RunInfo: FC<{run: Run; label: string}> = ({run, label}) => {
 	return (

@@ -2,15 +2,15 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import Autocomplete from "@mui/material/Autocomplete";
+import {styled} from "@mui/material/styles";
 import {FC, useState} from "react";
-import styled from "styled-components";
 import {Run} from "../../../../nodecg/replicants";
 
-const TypeaheadContainer = styled.div`
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-`;
+const TypeaheadContainer = styled("div")({
+	display: "flex",
+	flexFlow: "column nowrap",
+	justifyContent: "center",
+});
 
 interface Props {
 	runs: Run[];

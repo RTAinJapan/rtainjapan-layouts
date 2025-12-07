@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
-import styled from "styled-components";
+import {styled} from "@mui/material/styles";
 
-export const NoWrapButton = styled(Button)`
-	white-space: nowrap;
-`;
+export const NoWrapButton = styled(Button)({
+	whiteSpace: "nowrap",
+});
