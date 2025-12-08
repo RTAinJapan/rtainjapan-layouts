@@ -69,7 +69,7 @@ const NamePlateContent = ({
 			}}
 		>
 			<SwitchTransition>
-				<Transition ref={fadeNodeRef} key={display} timeout={500}>
+				<Transition nodeRef={fadeNodeRef} key={display} timeout={500}>
 					{(state) => (
 						<FadeContainer state={state}>
 							{display === "name" && (
@@ -114,7 +114,7 @@ const NamePlateContent = ({
 				}}
 			>
 				<SwitchTransition>
-					<Transition ref={fadeNodeRef} key={display} timeout={500}>
+					<Transition nodeRef={fadeNodeRef} key={display} timeout={500}>
 						{(state) => (
 							<FadeContainer state={state}>
 								{display === "name" && <div></div>}

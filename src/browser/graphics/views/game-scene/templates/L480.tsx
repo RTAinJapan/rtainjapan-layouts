@@ -59,10 +59,10 @@ export const TemplateL480: FunctionComponent<Props> = ({
 				<HorizontalGameInfo
 					style={{
 						position: "absolute",
-						left: "510px",
-						top: "930px",
-						width: "1395px",
-						height: "85px",
+						left: "458px",
+						top: "895px",
+						width: "1447px",
+						height: "120px",
 					}}
 				></HorizontalGameInfo>
 			)}

@@ -51,8 +51,8 @@ export default () => {
 					position: "absolute",
 					left: "450px",
 					top: "150px",
-					width: "720px",
-					height: "238px",
+					width: "428px",
+					height: "245px",
 				}}
 			></VerticalGameInfo>
 		</TemplateL420>

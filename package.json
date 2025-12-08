@@ -7,7 +7,7 @@
 		"dev:schema-types": "onchange schemas configschema.json -i -- npm run schema-types",
 		"dev:tsc": "tsc -b src/browser src/extension -w --preserveWatchOutput",
 		"dev:vite": "vite",
-		"dev:nodecg": "onchange extension schema configschema.json -ik -- node --enable-source-maps ../..",
+		"dev:nodecg": "onchange extension schema configschema.json -ik -- npm start",
 		"format": "npm run test:prettier -- --write",
 		"build": "vite build",
 		"schema-types": "del-cli src/nodecg/generated && nodecg schema-types -o src/nodecg/generated",

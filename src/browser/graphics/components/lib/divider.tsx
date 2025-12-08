@@ -22,7 +22,7 @@ export const Divider = ({
 		style={{
 			alignSelf: "stretch",
 			justifySelf: "stretch",
-			background: gradient ? gradientColor : "rgb(255, 255, 82)",
+			background: gradient ? gradientColor : "rgb(255, 255, 255)",
 			...style,
 		}}
 	></div>
