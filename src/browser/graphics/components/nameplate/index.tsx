@@ -5,26 +5,29 @@ import iconTwitch from "../../images/icon/icon_twitch.svg";
 import iconYoutube from "../../images/icon/icon_youtube.svg";
 import iconRunner from "../../images/icon/icon_runner.svg";
 import iconCommentator from "../../images/icon/icon_commentary.svg";
-import {CSSProperties, HTMLAttributes, useContext, useRef} from "react";
+import {CSSProperties, HTMLAttributes, useContext} from "react";
 import {background, border, text} from "../../styles/colors";
 import {Commentator, Runner, Timer} from "../../../../nodecg/replicants";
 import {SyncDisplayContext} from "./sync-display";
 import {styled} from "@mui/material/styles";
 import {
-	SwitchTransition,
+	TransitionGroup,
 	Transition,
-	TransitionStatus,
-} from "react-transition-group";
+	TransitionState,
+} from "react-transitioning";
 
 const textPlacement = {
 	gridColumn: "1 / 2",
 	gridRow: "1 / 2",
 };
 
-const FadeContainer = styled("div")<{state: TransitionStatus}>(({state}) => ({
+const FadeContainer = styled("div")<{state: TransitionState}>(({state}) => ({
 	transition: "all 0.5s",
-	opacity: ["entered", "existing"].includes(state) ? 1 : 0,
+	opacity: state.appearDone ? 1 : 0,
 }));
+
+const isExist = (state: TransitionState) =>
+	state.appearDone || state.exitActive;
 
 const SocialText = ({icon, text}: {icon: string; text?: string}) => {
 	return text ? (
@@ -57,8 +60,6 @@ const NamePlateContent = ({
 	const contextDisplay = useContext(SyncDisplayContext);
 	const display = runner?.[contextDisplay] ? contextDisplay : "name";
 
-	const fadeNodeRef = useRef(null);
-
 	return !isRaceRunner ? (
 		<div
 			style={{
@@ -68,28 +69,28 @@ const NamePlateContent = ({
 				...style,
 			}}
 		>
-			<SwitchTransition>
-				<Transition ref={fadeNodeRef} key={display} timeout={500}>
-					{(state) => (
-						<FadeContainer state={state}>
-							{display === "name" && (
+			<TransitionGroup duration={500} exit>
+				<Transition key={display}>
+					{(transitionState) => (
+						<FadeContainer state={transitionState}>
+							{display === "name" && isExist(transitionState) && (
 								<ThinText style={{fontSize: "26px", ...textPlacement}}>
 									{runner?.name}
 								</ThinText>
 							)}
-							{display === "twitter" && (
+							{display === "twitter" && isExist(transitionState) && (
 								<SocialText icon={iconTwitter} text={runner?.twitter} />
 							)}
-							{display === "twitch" && (
+							{display === "twitch" && isExist(transitionState) && (
 								<SocialText icon={iconTwitch} text={runner?.twitch} />
 							)}
-							{display === "youtube" && (
+							{display === "youtube" && isExist(transitionState) && (
 								<SocialText icon={iconYoutube} text={runner?.youtube} />
 							)}
 						</FadeContainer>
 					)}
 				</Transition>
-			</SwitchTransition>
+			</TransitionGroup>
 		</div>
 	) : (
 		<div
@@ -113,24 +114,24 @@ const NamePlateContent = ({
 					...style,
 				}}
 			>
-				<SwitchTransition>
-					<Transition ref={fadeNodeRef} key={display} timeout={500}>
-						{(state) => (
-							<FadeContainer state={state}>
-								{display === "name" && <div></div>}
-								{display === "twitter" && (
+				<TransitionGroup duration={500} exit>
+					<Transition key={display}>
+						{(transitionState) => (
+							<FadeContainer state={transitionState}>
+								{display === "name" && isExist(transitionState) && <div></div>}
+								{display === "twitter" && isExist(transitionState) && (
 									<SocialText icon={iconTwitter} text={runner?.twitter} />
 								)}
-								{display === "twitch" && (
+								{display === "twitch" && isExist(transitionState) && (
 									<SocialText icon={iconTwitch} text={runner?.twitch} />
 								)}
-								{display === "youtube" && (
+								{display === "youtube" && isExist(transitionState) && (
 									<SocialText icon={iconYoutube} text={runner?.youtube} />
 								)}
 							</FadeContainer>
 						)}
 					</Transition>
-				</SwitchTransition>
+				</TransitionGroup>
 			</div>
 		</div>
 	);
