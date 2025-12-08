@@ -11,10 +11,14 @@ import {Commentator, Runner, Timer} from "../../../../nodecg/replicants";
 import {SyncDisplayContext} from "./sync-display";
 import {styled} from "@mui/material/styles";
 import {
-	TransitionGroup,
-	Transition,
+	TransitionGroup as TransitionGroupComponent,
+	Transition as TransitionComponent,
 	TransitionState,
 } from "react-transitioning";
+
+// Type assertion to fix JSX component type issues
+const TransitionGroup = TransitionGroupComponent as any;
+const Transition = TransitionComponent as any;
 
 const textPlacement = {
 	gridColumn: "1 / 2",
@@ -71,7 +75,7 @@ const NamePlateContent = ({
 		>
 			<TransitionGroup duration={500} exit>
 				<Transition key={display}>
-					{(transitionState) => (
+					{(transitionState: any) => (
 						<FadeContainer state={transitionState}>
 							{display === "name" && isExist(transitionState) && (
 								<ThinText style={{fontSize: "26px", ...textPlacement}}>
@@ -116,7 +120,7 @@ const NamePlateContent = ({
 			>
 				<TransitionGroup duration={500} exit>
 					<Transition key={display}>
-						{(transitionState) => (
+						{(transitionState: any) => (
 							<FadeContainer state={transitionState}>
 								{display === "name" && isExist(transitionState) && <div></div>}
 								{display === "twitter" && isExist(transitionState) && (
