@@ -120,6 +120,21 @@
 				"type": "string"
 			}
 		},
-		"donationEnabled": {"type": "boolean", "default": true}
+		"donationEnabled": {"type": "boolean", "default": true},
+		"event": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"beginAt": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"endAt": {
+					"type": "string",
+					"format": "date-time"
+				}
+			},
+			"required": ["beginAt", "endAt"]
+		}
 	}
 }
