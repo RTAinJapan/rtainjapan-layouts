@@ -41,10 +41,6 @@ export const TemplateV480: FunctionComponent<PropsWithChildren> = ({
 					radius: 7,
 					x: 15,
 					y: 150,
-					border: {
-						color: "white",
-						width: 2,
-					},
 				}}
 			></RoundedHoleImage>
 			<EventLogo style={{position: "absolute", top: 0, left: 0}}></EventLogo>

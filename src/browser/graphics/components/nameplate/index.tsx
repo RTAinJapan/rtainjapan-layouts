@@ -199,7 +199,7 @@ export const NamePlate = ({
 	return (
 		<div
 			style={{
-				height: "50px",
+				height: "80px",
 				borderRadius: cutTop ? "0 0 7px 7px" : "7px",
 				borderColor: border.name,
 				borderStyle: "solid",

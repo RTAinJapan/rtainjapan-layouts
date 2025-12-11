@@ -47,10 +47,6 @@ export const TemplateL480: FunctionComponent<Props> = ({
 					radius: 7,
 					x: 15,
 					y: 150,
-					border: {
-						color: "white",
-						width: 2,
-					},
 				}}
 			></RoundedHoleImage>
 			<EventLogo style={{top: 0, left: 0, position: "absolute"}}></EventLogo>

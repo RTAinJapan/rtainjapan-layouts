@@ -34,7 +34,7 @@ export const border = {
 
 export const background = {
 	/** カメラ枠 背景 */
-	camera: "rgba(0, 0, 0, 0.45)",
+	camera: "rgba(0, 0, 0, 0.4)",
 	/** スポンサー枠 背景 */
 	sponsor: "rgba(0, 0, 0, 0.45)",
 	/** Twitter枠 背景 */

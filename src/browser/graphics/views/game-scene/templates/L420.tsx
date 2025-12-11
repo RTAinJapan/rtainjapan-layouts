@@ -48,10 +48,6 @@ export const TemplateL420: FunctionComponent<Props> = ({
 					radius: 7,
 					x: 15,
 					y: 150,
-					border: {
-						color: "white",
-						width: 2,
-					},
 				}}
 			></RoundedHoleImage>
 

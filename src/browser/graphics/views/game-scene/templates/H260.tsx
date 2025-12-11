@@ -35,10 +35,6 @@ export const TemplateH260: FunctionComponent<Props> = ({children, race}) => {
 					radius: 7,
 					x: 1030,
 					y: 755,
-					border: {
-						color: "white",
-						width: 2,
-					},
 				}}
 			></RoundedHoleImage>
 			<SemiHorizontalGameInfo
