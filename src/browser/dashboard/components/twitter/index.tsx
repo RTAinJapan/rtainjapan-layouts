@@ -7,6 +7,7 @@ import {useReplicant} from "../../../use-replicant";
 const Container = styled("div")({});
 
 const tweetsTempRep = nodecg.Replicant("tweets-temp");
+const tweetsTempImagesRep = nodecg.Replicant("tweets-temp-images");
 
 export const Twitter = () => {
 	const tweets = useReplicant("tweets-temp");
@@ -17,7 +18,17 @@ export const Twitter = () => {
 				<TweetAdd
 					onSubmit={(tweets, onSuccess) => {
 						if (tweetsTempRep.value && tweets.text && tweets.name) {
+							if (
+								tweets.image &&
+								tweetsTempImagesRep.value?.includes(tweets.image)
+							) {
+								alert("該当の画像URLは登録済です。");
+								return;
+							}
 							tweetsTempRep.value.push(tweets);
+							if (tweets.image) {
+								tweetsTempImagesRep.value?.push(tweets.image);
+							}
 							onSuccess();
 						}
 					}}
