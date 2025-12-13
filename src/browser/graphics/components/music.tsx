@@ -2,8 +2,9 @@ import gsap, {Power2} from "gsap";
 import {useEffect, useRef, useState} from "react";
 import {useReplicant} from "../../use-replicant";
 import musicIcon from "../images/icon/icon_music.svg";
-import {border, setup} from "../styles/colors";
+import {setup} from "../styles/colors";
 import {ThinText} from "./lib/text";
+import {Divider} from "./lib/divider";
 
 export const Music = () => {
 	const playingMusic = useReplicant("playing-music");
@@ -11,65 +12,88 @@ export const Music = () => {
 		nodecg.bundleConfig.music?.removeMusicSuffix?.some((music) =>
 			playingMusic?.includes(music),
 		);
-	const text = `${
-		nodecg.bundleConfig.music?.textPrefix ?? ""
-	} ${playingMusic} ${
-		!isRemoveMusicSuffix ? nodecg.bundleConfig.music?.textSuffix ?? "" : ""
+	const musicTitle = `${nodecg.bundleConfig.music?.textPrefix ?? ""} ${
+		playingMusic?.split(nodecg.bundleConfig.music?.splitText ?? "\\n")[0]
 	}`;
+	const musicArtist = `${
+		playingMusic?.split(nodecg.bundleConfig.music?.splitText ?? "\\n")[1]
+	} ${!isRemoveMusicSuffix ? nodecg.bundleConfig.music?.textSuffix ?? "" : ""}`;
 	const ref = useRef<HTMLDivElement>(null);
-	const [shownText, setShownText] = useState("");
+	const [shownTitle, setShownTitle] = useState("");
+	const [shownArtist, setShownArtist] = useState("");
 
 	useEffect(() => {
 		const tl = gsap.timeline();
 		tl.to(ref.current, {
-			x: ref.current?.getBoundingClientRect().width ?? 0,
+			opacity: 0,
 			duration: 1,
 			ease: Power2.easeOut,
 		});
-		tl.set(ref.current, {opacity: 0});
 		tl.call(() => {
-			setShownText(text);
-			tl.set(ref.current, {opacity: 1});
-			tl.fromTo(
-				ref.current,
-				{x: ref.current?.getBoundingClientRect().width ?? 0},
-				{
-					x: 0,
-					duration: 1,
-					ease: Power2.easeOut,
-				},
-				"+=0.2",
-			);
+			setShownTitle(musicTitle);
+			setShownArtist(musicArtist);
+			tl.to(ref.current, {
+				opacity: 1,
+				duration: 1,
+				ease: Power2.easeOut,
+			});
 		});
 		return () => {
 			tl.revert();
 		};
-	}, [text]);
+	}, [musicTitle, musicArtist]);
 
 	return (
 		<div
 			ref={ref}
 			style={{
 				position: "absolute",
-				height: "50px",
-				padding: "0 50px",
-				right: 0,
-				top: "50px",
+				height: "70px",
+				paddingRight: "30px",
+				right: "30px",
+				top: "930px",
 				background: setup.frameBg,
-				borderStyle: "solid",
-				borderColor: border.music,
-				borderWidth: "2px 0 2px 2px",
-				borderRadius: "7px 0 0 7px",
+				borderRadius: "20px",
 				display: "grid",
-				gridTemplateColumns: "24px auto",
-				gap: "10px",
+				gridTemplateColumns: "36px 2px auto",
+				gap: "16px",
 				placeItems: "center",
 				placeContent: "center",
-				minWidth: "440px",
 			}}
 		>
-			<img src={musicIcon} height={24} width={24}></img>
-			<ThinText style={{fontSize: "22px"}}>{shownText}</ThinText>
+			<img
+				src={musicIcon}
+				height={22}
+				width={22}
+				style={{justifySelf: "end"}}
+			></img>
+			<Divider></Divider>
+			<div>
+				<ThinText
+					style={{
+						fontSize: "22px",
+						overflow: "hidden",
+						whiteSpace: "nowrap",
+						textOverflow: "ellipsis",
+						minWidth: "200px",
+						maxWidth: "520px",
+					}}
+				>
+					{shownTitle}
+				</ThinText>
+				<ThinText
+					style={{
+						fontSize: "22px",
+						overflow: "hidden",
+						whiteSpace: "nowrap",
+						textOverflow: "ellipsis",
+						minWidth: "200px",
+						maxWidth: "520px",
+					}}
+				>
+					{shownArtist}
+				</ThinText>
+			</div>
 		</div>
 	);
 };

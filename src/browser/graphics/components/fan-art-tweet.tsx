@@ -1,5 +1,6 @@
 import gsap from "gsap";
-import iconTwitter from "../images/icon/icon_twitter.svg";
+import headerFanArt from "../images/header_fanart.svg";
+import iconX from "../images/icon/icon_x.svg";
 import {useEffect, useMemo, useRef, useState} from "react";
 import {TweetsTemp} from "../../../nodecg/generated/tweets-temp";
 import {ThinText} from "./lib/text";
@@ -7,11 +8,11 @@ import {ThinText} from "./lib/text";
 export const FanArtTweet = ({
 	onShow,
 }: {
-	onShow?: (width: number) => gsap.core.Tween | gsap.core.Timeline;
+	onShow?: () => gsap.core.Tween | gsap.core.Timeline;
 }) => {
 	const [user, setUser] = useState("");
 	const [text, setText] = useState("");
-	const [image, setImage] = useState("");
+	const [image, setImage] = useState<string | undefined>(undefined);
 	const tl = useMemo(() => gsap.timeline(), []);
 	const imgRef = useRef<HTMLImageElement>(null);
 
@@ -31,66 +32,66 @@ export const FanArtTweet = ({
 		<div
 			style={{
 				display: "grid",
-				rowGap: "20px",
-				gridTemplateRows: "30px auto",
-				gridTemplateColumns: "340px 50px 1fr",
+				gridTemplateRows: "55px 25px auto 17px auto 56px",
+				paddingBottom: "10px",
 				alignContent: "center",
 				justifyContent: "stretch",
 			}}
 		>
-			<div
-				style={{
-					display: "grid",
-					gridTemplateColumns: "auto auto",
-					gridRow: "1 / 2",
-					gridColumn: "1 / 2",
-					justifyContent: "start",
-					alignItems: "end",
-					justifyItems: "start",
+			<img src={headerFanArt} height={55} width={420}></img>
+			<div></div>
+			<img
+				ref={imgRef}
+				src={image}
+				onLoad={() => {
+					if (onShow) {
+						tl.add(onShow(), "+=0.2");
+					}
 				}}
-			>
-				<img
-					src={iconTwitter}
-					height={30}
-					width={30}
-					style={{margin: "0 10px"}}
-				></img>
-				<ThinText style={{fontSize: "20px"}}>{user}</ThinText>
-			</div>
+				style={{
+					maxWidth: "360px",
+					maxHeight: "360px",
+					objectFit: "cover",
+					justifySelf: "center",
+				}}
+			></img>
+			<div></div>
 			<ThinText
 				style={{
 					fontSize: "18px",
 					lineHeight: "30px",
 					whiteSpace: "normal",
 					wordBreak: "break-all",
-					gridRow: "2 / 3",
-					gridColumn: "1 / 2",
+					display: "-webkit-box",
+					WebkitBoxOrient: "vertical",
+					WebkitLineClamp: 6,
+					overflow: "hidden",
+					textOverflow: "ellipsis",
 				}}
 			>
 				{text}
 			</ThinText>
 			<div
 				style={{
-					gridRow: "1 / 3",
-					gridColumn: "2 / 3",
+					display: "grid",
+					gridTemplateColumns: "auto auto",
+					alignSelf: "center",
+					justifySelf: "end",
+					gap: "8px",
 				}}
-			></div>
-			<img
-				ref={imgRef}
-				src={image}
-				onLoad={() => {
-					if (onShow) {
-						tl.add(onShow(imgRef.current?.clientWidth ?? 0), "+=0.2");
-					}
-				}}
-				style={{
-					gridRow: "1 / 3",
-					gridColumn: "3 / 4",
-					maxWidth: "340px",
-					maxHeight: "340px",
-					objectFit: "cover",
-				}}
-			></img>
+			>
+				<img ref={imgRef} src={iconX} width={18} height={18}></img>
+				<ThinText
+					style={{
+						fontSize: "18px",
+						overflow: "hidden",
+						whiteSpace: "nowrap",
+						textOverflow: "ellipsis",
+					}}
+				>
+					{user}
+				</ThinText>
+			</div>
 		</div>
 	);
 };
