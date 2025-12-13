@@ -12,10 +12,10 @@ export const Music = () => {
 		nodecg.bundleConfig.music?.removeMusicSuffix?.some((music) =>
 			playingMusic?.includes(music),
 		);
-	const musicTitle = `${nodecg.bundleConfig.music?.textPrefix ?? ""} ${
+	const musicArtist = `${nodecg.bundleConfig.music?.textPrefix ?? ""} ${
 		playingMusic?.split(nodecg.bundleConfig.music?.splitText ?? "\\n")[0]
 	}`;
-	const musicArtist = `${
+	const musicTitle = `${
 		playingMusic?.split(nodecg.bundleConfig.music?.splitText ?? "\\n")[1]
 	} ${!isRemoveMusicSuffix ? nodecg.bundleConfig.music?.textSuffix ?? "" : ""}`;
 	const ref = useRef<HTMLDivElement>(null);

@@ -1,7 +1,6 @@
 import IconButton, {IconButtonProps} from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import ListItem from "@mui/material/ListItem";
-import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import CheckIcon from "@mui/icons-material/Check";
@@ -53,14 +52,39 @@ export const TweetItem = ({
 	}, [propTweet]);
 
 	return (
-		<ListItem>
+		<ListItem
+			secondaryAction={
+				<>
+					<SubmitButton
+						onClick={() => {
+							tweet.image
+								? onSubmitFanArt(tweet, () => {})
+								: onSubmit(tweet, () => {});
+						}}
+					/>
+					/
+					<DeleteButton
+						onClick={() => {
+							onDelete(() => {});
+						}}
+					/>
+				</>
+			}
+		>
 			<ListItemText
-				primary={tweet.name}
+				disableTypography
+				primary={
+					<Typography component='div' variant='body1'>
+						{`${tweet.name} (@${tweet.userId}) - ${tweet.service}`}
+					</Typography>
+				}
 				secondary={
-					<>
+					<div>
 						<Typography
+							component='span'
 							variant='body2'
 							style={{
+								display: "block",
 								maxWidth: "500px",
 							}}
 						>
@@ -77,28 +101,9 @@ export const TweetItem = ({
 								/>
 							</a>
 						)}
-					</>
+					</div>
 				}
 			/>
-			<ListItemSecondaryAction>
-				(
-				<>
-					<SubmitButton
-						onClick={() => {
-							tweet.image
-								? onSubmitFanArt(tweet, () => {})
-								: onSubmit(tweet, () => {});
-						}}
-					/>
-					/
-					<DeleteButton
-						onClick={() => {
-							onDelete(() => {});
-						}}
-					/>
-				</>
-				)
-			</ListItemSecondaryAction>
 		</ListItem>
 	);
 };

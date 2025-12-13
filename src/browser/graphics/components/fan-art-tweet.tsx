@@ -3,7 +3,7 @@ import headerFanArt from "../images/header_fanart.svg";
 import iconX from "../images/icon/icon_x.svg";
 import {useEffect, useMemo, useRef, useState} from "react";
 import {TweetsTemp} from "../../../nodecg/generated/tweets-temp";
-import {ThinText} from "./lib/text";
+import {LongText} from "./lib/text";
 
 export const FanArtTweet = ({
 	onShow,
@@ -11,16 +11,20 @@ export const FanArtTweet = ({
 	onShow?: () => gsap.core.Tween | gsap.core.Timeline;
 }) => {
 	const [user, setUser] = useState("");
+	const [userId, setUserId] = useState("");
 	const [text, setText] = useState("");
 	const [image, setImage] = useState<string | undefined>(undefined);
+	const [service, setService] = useState("X(twitter)");
 	const tl = useMemo(() => gsap.timeline(), []);
 	const imgRef = useRef<HTMLImageElement>(null);
 
 	useEffect(() => {
 		const listener = (tweet: TweetsTemp[number]) => {
 			setUser(tweet.name);
+			setUserId(tweet.userId);
 			setText(tweet.text);
 			setImage(tweet.image ?? "");
+			setService(tweet.service);
 		};
 		nodecg.listenFor("showFanArtTweet", listener);
 		return () => {
@@ -56,7 +60,7 @@ export const FanArtTweet = ({
 				}}
 			></img>
 			<div></div>
-			<ThinText
+			<LongText
 				style={{
 					fontSize: "18px",
 					lineHeight: "30px",
@@ -67,10 +71,11 @@ export const FanArtTweet = ({
 					WebkitLineClamp: 6,
 					overflow: "hidden",
 					textOverflow: "ellipsis",
+					letterSpacing: "-1px",
 				}}
 			>
 				{text}
-			</ThinText>
+			</LongText>
 			<div
 				style={{
 					display: "grid",
@@ -80,8 +85,10 @@ export const FanArtTweet = ({
 					gap: "8px",
 				}}
 			>
-				<img ref={imgRef} src={iconX} width={18} height={18}></img>
-				<ThinText
+				{service === "X(twitter)" && (
+					<img ref={imgRef} src={iconX} width={18} height={18}></img>
+				)}
+				<LongText
 					style={{
 						fontSize: "18px",
 						overflow: "hidden",
@@ -89,8 +96,8 @@ export const FanArtTweet = ({
 						textOverflow: "ellipsis",
 					}}
 				>
-					{user}
-				</ThinText>
+					{user} @{userId}
+				</LongText>
 			</div>
 		</div>
 	);

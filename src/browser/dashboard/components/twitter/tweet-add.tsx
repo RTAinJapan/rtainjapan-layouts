@@ -26,14 +26,18 @@ export const TweetAdd = ({onSubmit}: Props) => {
 	const [tweet, setTweet] = useState<Tweet>({
 		text: "",
 		name: "",
+		userId: "",
 		image: "",
+		service: "X(twitter)",
 	});
 
 	const clearInputs = () => {
 		setTweet({
 			text: "",
 			name: "",
+			userId: "",
 			image: "",
+			service: "X(twitter)",
 		});
 	};
 
@@ -42,6 +46,19 @@ export const TweetAdd = ({onSubmit}: Props) => {
 			<ListItemText
 				primary={
 					<>
+						<input
+							value={tweet.userId}
+							onChange={({currentTarget: {value}}) => {
+								setTweet((tweet) => ({
+									...tweet,
+									userId: value,
+								}));
+							}}
+							placeholder='ユーザーID'
+							style={{
+								marginRight: "10px",
+							}}
+						/>
 						<input
 							value={tweet.name}
 							onChange={({currentTarget: {value}}) => {
@@ -55,6 +72,21 @@ export const TweetAdd = ({onSubmit}: Props) => {
 								marginRight: "10px",
 							}}
 						/>
+						<select
+							value={tweet.service}
+							onChange={({currentTarget: {value}}) => {
+								setTweet((tweet) => ({
+									...tweet,
+									service: value as Tweet["service"],
+								}));
+							}}
+							style={{
+								marginRight: "10px",
+							}}
+						>
+							<option value='X(twitter)'>X(twitter)</option>
+							<option value='Bluesky'>Bluesky</option>
+						</select>
 						<input
 							value={tweet.image}
 							onChange={({currentTarget: {value}}) => {

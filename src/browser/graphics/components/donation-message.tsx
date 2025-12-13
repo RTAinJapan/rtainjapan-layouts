@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import headerMessageSetup from "../images/header_message_setup.svg";
 import {useEffect, useMemo, useState} from "react";
-import {ThinText} from "./lib/text";
+import {LongText} from "./lib/text";
 import {useReplicant} from "../../use-replicant";
 
 // TODO: ゲーム画面版の寄付メッセージ表示対応
@@ -42,7 +42,7 @@ export const DonationMessage = ({
 		>
 			<img src={headerMessageSetup} height={55} width={420}></img>
 			<div></div>
-			<ThinText
+			<LongText
 				style={{
 					fontSize: "18px",
 					lineHeight: "30px",
@@ -56,7 +56,7 @@ export const DonationMessage = ({
 				}}
 			>
 				{text}
-			</ThinText>
+			</LongText>
 			<div
 				style={{
 					display: "grid",
@@ -66,7 +66,7 @@ export const DonationMessage = ({
 					gap: "8px",
 				}}
 			>
-				<ThinText
+				<LongText
 					style={{
 						fontSize: "18px",
 						overflow: "hidden",
@@ -75,14 +75,14 @@ export const DonationMessage = ({
 					}}
 				>
 					{user}
-				</ThinText>
-				<ThinText
+				</LongText>
+				<LongText
 					style={{
 						fontSize: "18px",
 					}}
 				>
 					{amount}
-				</ThinText>
+				</LongText>
 			</div>
 		</div>
 	);
