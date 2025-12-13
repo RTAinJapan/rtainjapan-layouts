@@ -72,7 +72,7 @@
 			"properties": {
 				"textPrefix": {"type": "string", "default": ""},
 				"textSuffix": {"type": "string", "default": ""},
-				"splitText": {"type": "string", "default": "\n"},
+				"splitText": {"type": "string", "default": "\\n"},
 				"removeMusicSuffix": {
 					"type": "array",
 					"items": {"type": "string"},
