@@ -15,6 +15,12 @@ export const EventLogo = (props: {style: CSSProperties; setup?: boolean}) => {
 		return () => clearInterval(interval);
 	}, []);
 
+	const formatDate = (date: Date): string => {
+		const month = (date.getMonth() + 1).toString().padStart(2, "0");
+		const day = date.getDate().toString().padStart(2, "0");
+		return `${month}/${day}`;
+	};
+
 	const formatTime = (date: Date): string => {
 		const hours = date.getHours().toString().padStart(2, "0");
 		const minutes = date.getMinutes().toString().padStart(2, "0");
@@ -73,7 +79,8 @@ export const EventLogo = (props: {style: CSSProperties; setup?: boolean}) => {
 						fontSize: "18px",
 					}}
 				>
-					{getDateLabel(currentTime)} - {formatTime(currentTime)}
+					{getDateLabel(currentTime)} - {formatDate(currentTime)}{" "}
+					{formatTime(currentTime)}
 				</HeavyText>
 			</div>
 		</div>
