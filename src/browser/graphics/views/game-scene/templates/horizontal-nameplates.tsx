@@ -41,7 +41,7 @@ const NamePlateGroup = ({race}: {race?: boolean}) => {
 			<NamePlate kind='runners' style={{width: "400px"}}></NamePlate>
 			<NamePlate
 				kind='commentators'
-				index={[0, 1]}
+				index={0}
 				style={{width: "515px"}}
 			></NamePlate>
 		</>

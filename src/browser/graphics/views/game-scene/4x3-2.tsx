@@ -5,9 +5,9 @@ export default () => {
 	return (
 		<TemplateH260 race>
 			<NamePlate
+				variant='single'
 				kind='runners'
 				index={0}
-				cutTop
 				style={{
 					position: "absolute",
 					top: "690px",
@@ -18,9 +18,9 @@ export default () => {
 				race
 			></NamePlate>
 			<NamePlate
+				variant='single'
 				kind='runners'
 				index={1}
-				cutTop
 				style={{
 					position: "absolute",
 					top: "690px",

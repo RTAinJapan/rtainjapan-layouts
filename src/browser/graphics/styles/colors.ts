@@ -40,7 +40,7 @@ export const background = {
 	/** Twitter枠 背景 */
 	tweet: "rgba(0, 0, 0, 0.45)",
 	/** 走者名枠、解説者名枠 背景 */
-	name: "rgba(0, 0, 0, 0.25)",
+	name: "rgba(0, 0, 0, 0.4)",
 	/** 下部帯 背景 */
 	omnibar: "rgb(230,230,230)",
 	/** エンドロール枠 背景 */

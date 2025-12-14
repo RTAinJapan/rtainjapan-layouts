@@ -12,7 +12,6 @@ export default () => {
 					top: "498px",
 					left: "120px",
 					width: "441px",
-					height: "50px",
 				}}
 				race
 			></NamePlate>
@@ -24,7 +23,6 @@ export default () => {
 					top: "498px",
 					left: "1020px",
 					width: "441px",
-					height: "50px",
 				}}
 				race
 			></NamePlate>

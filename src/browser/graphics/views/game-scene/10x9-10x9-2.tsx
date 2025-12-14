@@ -7,7 +7,6 @@ export default () => {
 			<NamePlate
 				kind='runners'
 				index={0}
-				cutTop
 				style={{
 					position: "absolute",
 					top: "621px",
@@ -20,7 +19,6 @@ export default () => {
 			<NamePlate
 				kind='runners'
 				index={1}
-				cutTop
 				style={{
 					position: "absolute",
 					top: "621px",

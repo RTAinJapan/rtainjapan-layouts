@@ -15,21 +15,18 @@ export default () => {
 			<NamePlate
 				kind='runners'
 				index={0}
-				cutTop
 				style={{top: "458px", left: "1215px", ...namePlateStyle}}
 				race
 			></NamePlate>
 			<NamePlate
 				kind='runners'
 				index={1}
-				cutTop
 				style={{top: "965px", left: "610px", ...namePlateStyle}}
 				race
 			></NamePlate>
 			<NamePlate
 				kind='runners'
 				index={2}
-				cutTop
 				style={{top: "965px", left: "1215px", ...namePlateStyle}}
 				race
 			></NamePlate>

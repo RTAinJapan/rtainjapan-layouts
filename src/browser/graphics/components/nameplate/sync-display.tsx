@@ -2,12 +2,12 @@ import gsap from "gsap";
 import {ReactNode, createContext, useEffect, useState} from "react";
 import {useReplicant} from "../../../use-replicant";
 
-type DisplayLabel = "name" | "twitter" | "twitch" | "youtube";
+type DisplayLabel = "twitter" | "twitch" | "youtube";
 
-export const SyncDisplayContext = createContext<DisplayLabel>("name");
+export const SyncDisplayContext = createContext<DisplayLabel>("twitter");
 
 export const SyncDisplayProvider = ({children}: {children: ReactNode}) => {
-	const [display, setDisplay] = useState<DisplayLabel>("name");
+	const [display, setDisplay] = useState<DisplayLabel>("twitter");
 
 	const currentRun = useReplicant("current-run");
 	const participants = [
@@ -25,7 +25,6 @@ export const SyncDisplayProvider = ({children}: {children: ReactNode}) => {
 			displayTwitter ? "twitter" : null,
 			displayTwitch ? "twitch" : null,
 			displayYoutube ? "youtube" : null,
-			"name",
 		].filter((v): v is DisplayLabel => v !== null);
 		for (const social of displays) {
 			tl.call(
@@ -33,7 +32,7 @@ export const SyncDisplayProvider = ({children}: {children: ReactNode}) => {
 					setDisplay(s);
 				},
 				[social],
-				"+=31", // 表示時間の30秒と切り替え時間の1秒
+				"+=61", // 表示時間の60秒と切り替え時間の1秒
 			);
 		}
 		return () => {
