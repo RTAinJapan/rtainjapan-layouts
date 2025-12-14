@@ -61,5 +61,5 @@ export const setup = {
 	/** 各種枠の線 */
 	frameBorder: "rgb(255,255,255)",
 	/** 各種枠の背景 */
-	frameBg: "rgba(37, 48, 58, 0.6)",
+	frameBg: "rgba(0, 0, 0, 0.5)",
 };

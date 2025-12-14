@@ -7,10 +7,12 @@
 		"properties": {
 			"text": {"type": "string"},
 			"name": {"type": "string"},
-			"image": {"type": "string"}
+			"userId": {"type": "string"},
+			"image": {"type": "string"},
+			"service": {"type": "string"}
 		},
 		"additionalProperties": false,
-		"required": ["text", "name"]
+		"required": ["text", "name", "userId", "service"]
 	},
 	"default": []
 }

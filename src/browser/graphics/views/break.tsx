@@ -1,23 +1,18 @@
 import "modern-normalize";
-import "../styles/adobe-fonts.js";
 
 import gsap, {Power2} from "gsap";
 import {BoldText, ThinText} from "../components/lib/text";
 import nextGameBar from "../images/next_line.svg";
 import nextGameSpacer from "../images/next_spacer.svg";
-// import tagSponsor from "../images/tag_sponsor.svg";
-import tagFanart from "../images/tag_fanart.svg";
-import tagTweet from "../images/tag_tweet.svg";
-import {useReplicant} from "../../use-replicant";
+import setupShade from "../images/setup_shade.svg";
 import {useCurrentRun, useSchedule} from "../components/lib/hooks";
 import {Run} from "../../../nodecg/replicants";
 import moment from "moment";
-import {Fragment, useCallback, useEffect, useRef, useState} from "react";
+import {Fragment, useCallback, useRef} from "react";
 import {EventLogo} from "../components/event-logo";
-import {Tweet} from "../components/tweet";
+import {DonationMessage} from "../components/donation-message";
 import {Music} from "../components/music";
 import {setup} from "../styles/colors";
-import {swipeEnter, swipeExit} from "../components/lib/blur-swipe";
 import {newlineString} from "../components/lib/util";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
 import {render} from "../../render.js";
@@ -56,7 +51,7 @@ const Upcoming = () => {
 			style={{
 				position: "absolute",
 				left: "100px",
-				top: nodecg.bundleConfig.isOnsite ? "220px" : "250px",
+				top: "230px",
 				display: "grid",
 				gridTemplateRows: "30px 10px 100px repeat(auto-fill, 60px 30px)",
 				alignContent: "start",
@@ -118,6 +113,28 @@ const Upcoming = () => {
 	);
 };
 
+const Camera = () => {
+	return (
+		<div
+			style={{
+				width: "520px",
+				height: "320px",
+				position: "absolute",
+				left: "34px",
+				top: "676px",
+				borderStyle: "solid",
+				borderWidth: "4px",
+				borderRadius: "0",
+				placeSelf: "stretch",
+				display: "grid",
+				placeContent: "stretch",
+				placeItems: "stretch",
+			}}
+		></div>
+	);
+};
+
+/*
 const Sponsor = () => {
 	const assets = useReplicant(`assets:sponsor-setup`);
 	const imageRef = useRef<HTMLImageElement>(null);
@@ -191,58 +208,60 @@ const Sponsor = () => {
 		</div>
 	);
 };
+*/
 
 /** 背景左側の影 */
 const GradientOverlay = () => {
 	return (
-		<div
+		<img
+			src={setupShade}
 			style={{
 				position: "absolute",
-				width: "1920px",
-				height: "1030px",
+				width: "800px",
+				height: "1080px",
 				overflow: "hidden",
-				background: `
- 					linear-gradient(
- 						to right,
- 						rgba(0, 0, 0, 0.45),
- 						rgba(0, 0, 0, 0.2) 75%,
- 						rgba(0, 0, 0, 0) 100%
- 					)`,
 			}}
-		></div>
+		></img>
 	);
 };
 
-const TweetContainer = () => {
-	const tweetTag = useRef(null);
-	const fanartTag = useRef(null);
-	const tweetRef = useRef(null);
+const PopupContainer = () => {
+	const donationRef = useRef(null);
 	const fanArtRef = useRef(null);
-	const transitionTimeline = useCallback(() => {
+
+	const transitionDonationTimeline = useCallback(() => {
 		const tl = gsap.timeline();
-		tl.to([tweetTag.current, tweetRef.current], {
-			x: -440,
+		tl.to(donationRef.current, {
+			opacity: 1,
 			duration: 1,
 			ease: Power2.easeOut,
 		});
 		tl.to(
-			[tweetTag.current, tweetRef.current],
-			{x: 0, duration: 1, ease: Power2.easeOut},
-			"+=15",
+			donationRef.current,
+			{
+				opacity: 0,
+				duration: 1,
+				ease: Power2.easeOut,
+			},
+			"+=20",
 		);
 		return tl;
 	}, []);
 
-	const transitionFanArtTimeline = useCallback((width: number) => {
+	const transitionFanArtTimeline = useCallback(() => {
 		const tl = gsap.timeline();
-		tl.to([fanartTag.current, fanArtRef.current], {
-			x: (width + 490) * -1,
+		tl.to(fanArtRef.current, {
+			opacity: 1,
 			duration: 1,
 			ease: Power2.easeOut,
 		});
 		tl.to(
-			[fanartTag.current, fanArtRef.current],
-			{x: 0, duration: 1, ease: Power2.easeOut},
+			fanArtRef.current,
+			{
+				opacity: 0,
+				duration: 1,
+				ease: Power2.easeOut,
+			},
 			"+=20",
 		);
 		return tl;
@@ -252,70 +271,36 @@ const TweetContainer = () => {
 		<div
 			style={{
 				position: "absolute",
-				top: "150px",
-				left: "1890px",
-				width: "470px",
+				top: "80px",
+				left: "1340px",
+				width: "480px",
 				display: "grid",
-				gridTemplateColumns: "30px 440px",
-				gridTemplateRows: "81px 1fr",
 			}}
 		>
-			<img
-				ref={tweetTag}
-				src={tagTweet}
-				width={30}
-				height={88}
-				style={{
-					gridRow: "1 / 2",
-					gridColumn: "1 / 2",
-					alignSelf: "start",
-					willChange: "transform",
-				}}
-			></img>
-			<img
-				ref={fanartTag}
-				src={tagFanart}
-				width={30}
-				height={98}
-				style={{
-					gridRow: "2 / 3",
-					gridColumn: "1 / 2",
-					alignSelf: "start",
-					willChange: "transform",
-				}}
-			></img>
 			<div
-				ref={tweetRef}
+				ref={donationRef}
 				style={{
-					gridRow: "1 / 3",
-					gridColumn: "2 / 3",
-					alignSelf: "start",
-					justifySelf: "stretch",
-					padding: "50px",
+					position: "absolute",
+					padding: "0px 30px",
 					borderColor: setup.frameBorder,
-					borderStyle: "solid",
-					borderWidth: "2px 0 2px 2px",
-					borderRadius: "7px 0 0 7px",
+					borderRadius: "20px",
 					background: setup.frameBg,
 					willChange: "transform",
+					opacity: 0,
 				}}
 			>
-				<Tweet onShow={transitionTimeline}></Tweet>
+				<DonationMessage onShow={transitionDonationTimeline}></DonationMessage>
 			</div>
 			<div
 				ref={fanArtRef}
 				style={{
-					gridRow: "1 / 3",
-					gridColumn: "2 / 4",
-					alignSelf: "start",
-					justifySelf: "stretch",
-					padding: "50px",
+					position: "absolute",
+					padding: "0px 30px",
 					borderColor: setup.frameBorder,
-					borderStyle: "solid",
-					borderWidth: "2px 0 2px 2px",
-					borderRadius: "7px 0 0 7px",
+					borderRadius: "20px",
 					background: setup.frameBg,
 					willChange: "transform",
+					opacity: 0,
 				}}
 			>
 				<FanArtTweet onShow={transitionFanArtTimeline} />
@@ -340,12 +325,12 @@ const App = () => {
 		>
 			<GradientOverlay></GradientOverlay>
 			<EventLogo
-				style={{position: "absolute", left: "30px", top: "20px"}}
+				style={{position: "absolute", left: "15px", top: "15px"}}
 			></EventLogo>
 			<Upcoming></Upcoming>
+			<Camera></Camera>
 			<Music></Music>
-			<Sponsor></Sponsor>
-			<TweetContainer></TweetContainer>
+			<PopupContainer></PopupContainer>
 		</div>
 	);
 };
