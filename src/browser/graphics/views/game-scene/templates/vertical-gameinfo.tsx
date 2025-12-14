@@ -1,7 +1,6 @@
 import {Camera} from "../../../components/camera";
 import {useCommentators} from "../../../components/lib/hooks";
 import {NamePlate} from "../../../components/nameplate";
-import {Sponsor} from "../../../components/sponsor";
 
 export const useVerticalGameInfo = (props: {
 	race?: boolean;
