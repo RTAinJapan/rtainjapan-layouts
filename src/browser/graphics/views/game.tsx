@@ -1,5 +1,4 @@
 import "modern-normalize";
-import "../styles/adobe-fonts.js";
 
 import {render} from "../../render.js";
 import {SyncDisplayProvider} from "../components/nameplate/sync-display.js";

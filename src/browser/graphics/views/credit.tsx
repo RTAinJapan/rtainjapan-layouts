@@ -1,5 +1,4 @@
 import "modern-normalize";
-import "../styles/adobe-fonts.js";
 
 import {FC, useEffect, useRef, useState} from "react";
 import {FitText} from "../components/lib/fit-text";

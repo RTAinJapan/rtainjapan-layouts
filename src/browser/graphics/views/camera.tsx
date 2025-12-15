@@ -1,5 +1,4 @@
 import "modern-normalize";
-import "../styles/adobe-fonts.js";
 
 import background from "../images/background.png";
 import {RoundedHoleImage} from "../components/rounded-hole-image";
