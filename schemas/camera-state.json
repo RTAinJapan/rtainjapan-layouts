@@ -2,6 +2,6 @@
 	"$schema": "http://json-schema.org/draft-04/schema",
 
 	"type": "string",
-	"enum": ["hidden", "big", "small"],
+	"enum": ["hidden", "small"],
 	"default": "hidden"
 }

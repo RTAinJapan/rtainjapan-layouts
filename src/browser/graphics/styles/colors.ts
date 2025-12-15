@@ -30,6 +30,8 @@ export const border = {
 	credit: "rgb(255, 255, 255)",
 	/** スピーチ映像枠 */
 	speechCamera: "rgb(255, 255, 255)",
+	/** スピーチ名前欄 */
+	speechName: "rgb(255, 255, 82)",
 };
 
 export const background = {
