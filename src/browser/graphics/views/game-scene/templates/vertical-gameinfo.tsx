@@ -1,6 +1,7 @@
 import {Camera} from "../../../components/camera";
 import {useCommentators} from "../../../components/lib/hooks";
 import {NamePlate} from "../../../components/nameplate";
+import {NameplateContainer} from "../../../components/nameplate/container";
 
 export const useVerticalGameInfo = (props: {
 	race?: boolean;
@@ -67,8 +68,12 @@ export const useVerticalGameInfo = (props: {
 			}}
 		>
 			<Camera style={{placeSelf: "stretch"}}></Camera>
-			{runnerNamePlate}
-			{commentatorNamePlate}
+			<NameplateContainer variant='runner'>
+				{runnerNamePlate}
+			</NameplateContainer>
+			<NameplateContainer variant='commentator'>
+				{commentatorNamePlate}
+			</NameplateContainer>
 		</div>
 	);
 };

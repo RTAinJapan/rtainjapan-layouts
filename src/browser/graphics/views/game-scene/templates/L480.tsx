@@ -20,11 +20,11 @@ export const TemplateL480: FunctionComponent<Props> = ({
 	useFitViewport(ref);
 	const gameInfo = useVerticalGameInfo({
 		race,
-		width: "480px",
-		height: "865px",
+		width: "428px",
+		height: "545px",
 		cameraHeight: "270px",
 		cameraHeightRace: "335px",
-		nameplateWidth: "450px",
+		nameplateWidth: "398px",
 	});
 	return (
 		<div
