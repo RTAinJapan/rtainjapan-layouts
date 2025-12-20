@@ -131,7 +131,7 @@ const bidwarHold = 10;
 const MAX_BIDWAR_DISPLAY = 4;
 const MAX_CHALLENGE_DISPLAY = 2;
 
-const Row = forwardRef<HTMLDivElement, PropsWithChildren<{header: string}>>(
+const Row = forwardRef<HTMLDivElement, PropsWithChildren<{header?: string}>>(
 	(props, ref) => {
 		return (
 			<div
@@ -144,8 +144,12 @@ const Row = forwardRef<HTMLDivElement, PropsWithChildren<{header: string}>>(
 					gridTemplateColumns: "auto auto 1fr",
 				}}
 			>
-				<ThinText style={{fontSize: "24px"}}>{props.header}</ThinText>
-				<img src={arrowImage}></img>
+				{props.header && (
+					<>
+						<ThinText style={{fontSize: "24px"}}>{props.header}</ThinText>
+						<img src={arrowImage}></img>
+					</>
+				)}
 				{props.children}
 			</div>
 		);
