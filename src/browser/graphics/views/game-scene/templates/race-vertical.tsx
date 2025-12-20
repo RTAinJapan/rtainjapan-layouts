@@ -15,12 +15,12 @@ import {VerticalGameInfo} from "../../../components/game-info/vertical";
 
 type Props = PropsWithChildren;
 
-export const SplitSoloTemplate: FunctionComponent<Props> = ({children}) => {
+export const VerticalRaceTemplate: FunctionComponent<Props> = ({children}) => {
 	const ref = useRef<HTMLDivElement>(null);
 	useFitViewport(ref);
 	const commentators = useCommentators();
 
-	const cameraInsetPos = [1481, 731, 420, 280] as const;
+	const cameraInsetPos = [19, 756, 420, 255] as const;
 
 	return (
 		<div
@@ -42,29 +42,26 @@ export const SplitSoloTemplate: FunctionComponent<Props> = ({children}) => {
 			<VerticalGameInfo
 				style={{
 					position: "absolute",
-					top: "300px",
+					top: "240px",
 					left: "15px",
 					width: "428px",
-					height: "245px",
+					height: "240px",
 				}}
 			/>
 			<EventLogo style={{position: "absolute", top: 0, left: 0}}></EventLogo>
 			<div
 				style={{
 					position: "absolute",
-					bottom: "15px",
+					bottom: "298px",
 					left: "15px",
 					width: "428px",
-					height: "345px",
+					height: "210px",
 					display: "flex",
 					flexDirection: "column",
 					justifyContent: "end",
 					gap: "10px",
 				}}
 			>
-				<NameplateContainer variant='runner' style={{}}>
-					<NamePlate kind='runners' index={0}></NamePlate>
-				</NameplateContainer>
 				{commentators.length > 0 && (
 					<NameplateContainer variant='commentator'>
 						{commentators.map(

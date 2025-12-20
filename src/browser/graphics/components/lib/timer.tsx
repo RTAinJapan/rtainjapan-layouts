@@ -34,7 +34,7 @@ export const GameTimer = (props: {fontSize: number; style?: CSSProperties}) => {
 			style={{
 				fontSize: `${props.fontSize}px`,
 				lineHeight: `${props.fontSize}px`,
-				// transform: `translateY(-${props.fontSize / 24}px)`,
+				transform: `translateY(-${props.fontSize / 24}px)`,
 				color,
 				...props.style,
 			}}
