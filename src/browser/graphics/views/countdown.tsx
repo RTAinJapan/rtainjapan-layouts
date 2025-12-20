@@ -89,7 +89,7 @@ const App = () => {
 				src={rchan}
 				style={{
 					position: "absolute",
-					top: "680px",
+					top: "690px",
 					left: "0px",
 					width: "1920px",
 					height: "300px",
