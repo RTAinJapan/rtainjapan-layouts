@@ -4,7 +4,8 @@ import {LShapedSoloTemplate} from "./templates/solo-l-shape";
 export default () => {
 	return (
 		<LShapedSoloTemplate>
-			<VideoFrame xInset={538} yInset={19} wInset={1286} hInset={857} />
+			<VideoFrame xInset={462} yInset={116} wInset={884} hInset={663} />
+			<VideoFrame xInset={1350} yInset={116} wInset={550} hInset={330} />
 		</LShapedSoloTemplate>
 	);
 };
