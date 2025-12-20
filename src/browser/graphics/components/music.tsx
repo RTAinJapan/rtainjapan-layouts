@@ -79,7 +79,8 @@ export const Music = () => {
 						maxWidth: "520px",
 					}}
 				>
-					{shownTitle}
+					{/* {shownTitle} */}
+					hogehoge
 				</ThinText>
 				<ThinText
 					style={{
@@ -91,7 +92,8 @@ export const Music = () => {
 						maxWidth: "520px",
 					}}
 				>
-					{shownArtist}
+					{/* {shownArtist} */}
+					artist
 				</ThinText>
 			</div>
 		</div>
