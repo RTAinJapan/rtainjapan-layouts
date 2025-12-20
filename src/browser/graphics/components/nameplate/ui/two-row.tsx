@@ -1,4 +1,4 @@
-import {useEffect, useRef} from "react";
+import {useRef} from "react";
 import {ThinText, TimerText} from "../../lib/text";
 import {background, border, text} from "../../../styles/colors";
 import {Commentator, Runner} from "../../../../../nodecg/replicants";
