@@ -48,7 +48,7 @@ export const background = {
 	/** 下部帯 背景 */
 	omnibar: "rgb(230,230,230)",
 	/** エンドロール枠 背景 */
-	credit: "rgba(0, 0, 0, 0.45)",
+	credit: "rgba(0, 0, 0, 0.5)",
 };
 
 export const bidwar = {
