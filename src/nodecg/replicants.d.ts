@@ -4,6 +4,7 @@ import {NextRun} from "./generated/next-run";
 import {Schedule} from "./generated/schedule";
 import {Tweets} from "./generated/tweets";
 import {TweetsTemp} from "./generated/tweets-temp";
+import {TweetsTempImages} from "./generated/tweets-temp-images";
 import {Timer} from "./generated/timer";
 import {Spotify} from "./generated/spotify";
 import {Spreadsheet} from "./generated/spreadsheet";
@@ -53,6 +54,7 @@ type ReplicantMap = {
 	timer: Timer;
 	tweets: Tweets;
 	"tweets-temp": TweetsTemp;
+	"tweets-temp-images": TweetsTempImages;
 	"obs-status": ObsStatus;
 	obs: Obs;
 	"obs-crop-inputs": ObsCropInputs;
