@@ -77,7 +77,7 @@ const App = () => {
 					placeContent: "center",
 					placeItems: "center",
 					fontSize: "440px",
-					textShadow: "0 0 6px black, 0 0 9px black",
+					textShadow: "0 0 4px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 0, 0, 0.5)",
 				}}
 			>
 				{text}
