@@ -90,6 +90,18 @@ const useCameraSettings = (): CameraSettings => {
 	return [calcCameraSetting(cameras[0])];
 };
 
+export const makeCameraPosition = (
+	xInset: number,
+	yInset: number,
+	wInset: number,
+	hInset: number,
+) => ({
+	top: `${yInset - 4}px`,
+	left: `${xInset - 4}px`,
+	width: `${wInset + 8}px`,
+	height: `${hInset + 8}px`,
+});
+
 export const Camera: FunctionComponent<{
 	style?: CSSProperties;
 }> = (props) => {

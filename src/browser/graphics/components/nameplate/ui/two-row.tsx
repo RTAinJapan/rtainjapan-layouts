@@ -1,4 +1,4 @@
-import {useRef} from "react";
+import {useEffect, useRef} from "react";
 import {ThinText, TimerText} from "../../lib/text";
 import {background, border, text} from "../../../styles/colors";
 import {Commentator, Runner} from "../../../../../nodecg/replicants";
@@ -58,7 +58,7 @@ const SocialText = ({icon, text}: {icon: string; text?: string}) => {
 const SocialContent = ({runner}: {runner?: Runner | Commentator}) => {
 	const contextDisplay = useContext(SyncDisplayContext);
 	const display =
-		contextDisplay && runner?.[contextDisplay] ? contextDisplay : undefined;
+		contextDisplay && runner?.[contextDisplay] ? contextDisplay : "none";
 
 	const fadeNodeRef = useRef(null);
 
@@ -71,7 +71,7 @@ const SocialContent = ({runner}: {runner?: Runner | Commentator}) => {
 			}}
 		>
 			<SwitchTransition>
-				<Transition nodeRef={fadeNodeRef} key={display} timeout={500}>
+				<Transition nodeRef={fadeNodeRef} key={display} timeout={1000}>
 					{(state) => (
 						<FadeContainer state={state}>
 							{display === "twitter" && (
@@ -83,7 +83,7 @@ const SocialContent = ({runner}: {runner?: Runner | Commentator}) => {
 							{display === "youtube" && (
 								<SocialText icon={iconYoutube} text={runner?.youtube} />
 							)}
-							{!display && (
+							{display === "none" && (
 								<ThinText style={{fontSize: "22px", ...textPlacement}}>
 									-
 								</ThinText>

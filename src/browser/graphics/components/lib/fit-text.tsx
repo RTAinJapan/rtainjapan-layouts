@@ -87,7 +87,12 @@ export const FitText: FunctionComponent<{
 					textAlign: props.horizontalAlign ?? "center",
 				}}
 			>
-				<TextComponent ref={textRef}>
+				<TextComponent
+					ref={textRef}
+					style={{
+						transform: "rotate(0.03deg)",
+					}}
+				>
 					{newlineString(props.children)}
 				</TextComponent>
 			</div>

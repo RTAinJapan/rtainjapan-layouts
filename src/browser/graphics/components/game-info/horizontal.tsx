@@ -38,7 +38,7 @@ export const HorizontalGameInfo = (props: {style?: CSSProperties}) => {
 				placeContent: "stretch",
 				placeItems: "center",
 				gridTemplateColumns: "1fr 4px 290px",
-				gap: "30px",
+				gap: "10px",
 				lineHeight: "normal",
 				backgroundColor: "rgba(0, 0, 0, 0.4)",
 				borderRadius: "20px",

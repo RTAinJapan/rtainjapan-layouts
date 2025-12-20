@@ -77,6 +77,7 @@ export const EventLogo = (props: {style: CSSProperties; setup?: boolean}) => {
 				<HeavyText
 					style={{
 						fontSize: "18px",
+						transform: "rotate(0.03deg)",
 					}}
 				>
 					{getDateLabel(currentTime)} - {formatDate(currentTime)}{" "}

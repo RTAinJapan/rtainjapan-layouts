@@ -56,8 +56,8 @@ export const HorizontalNamePlates = (props: {
 		<div
 			style={{
 				position: "absolute",
-				left: "500px",
-				top: "900px",
+				right: "458px",
+				top: "895px",
 				width: "515px",
 				height: "115px",
 				display: "grid",

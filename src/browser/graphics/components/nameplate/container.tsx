@@ -6,10 +6,12 @@ export const NameplateContainer = ({
 	children,
 	variant = "none",
 	direction = "column",
+	style,
 }: {
 	children: React.ReactNode;
 	variant?: "runner" | "commentator" | "none";
 	direction?: "row" | "column";
+	style?: React.CSSProperties;
 }) => {
 	const headerImage =
 		variant === "runner"
@@ -24,6 +26,7 @@ export const NameplateContainer = ({
 				display: "grid",
 				gridTemplateColumns: "200px 1fr",
 				gridTemplateRows: `${variant === "none" ? "0" : "30px"} 10px auto`,
+				...style,
 			}}
 		>
 			{variant !== "none" && headerImage && (

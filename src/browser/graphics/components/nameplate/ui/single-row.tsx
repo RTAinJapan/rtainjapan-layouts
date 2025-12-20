@@ -112,9 +112,9 @@ export const SingleRowNameplate = ({
 			style={{
 				borderRadius: "0 0 10px 10px",
 				display: "grid",
-				columnGap: "10px",
-				padding: "0 10px",
-				gridTemplateColumns: "37px 2px auto 1fr auto",
+				padding: "5px 9px",
+				gridTemplateRows: "40px",
+				gridTemplateColumns: "32px 9px 2px 10px auto 1fr auto",
 				placeContent: "stretch",
 				alignItems: "center",
 				justifyItems: "stretch",
@@ -129,16 +129,24 @@ export const SingleRowNameplate = ({
 				style={{
 					justifySelf: "start",
 					margin: "9px 0",
+					gridColumn: "1 / 2",
 				}}
 			></img>
 			<div
 				style={{
 					background: border.name,
-					margin: "9px 0",
 					placeSelf: "stretch",
+					gridColumn: "3 / 4",
 				}}
 			></div>
-			<ThinText style={{fontSize: "26px", lineHeight: "26px"}}>
+			<ThinText
+				style={{
+					fontSize: "26px",
+					lineHeight: "26px",
+					gridColumn: "5 / 6",
+					paddingRight: "10px",
+				}}
+			>
 				{person?.name}
 			</ThinText>
 			<RaceSocialContent runner={person} />
@@ -154,6 +162,7 @@ export const SingleRowNameplate = ({
 						textAlign: "right",
 						fontSize: "36px",
 						color: result?.forfeit ? text.timerPaused : text.timerFinished,
+						gridColumn: "7 / 8",
 					}}
 				>
 					{result?.formatted}

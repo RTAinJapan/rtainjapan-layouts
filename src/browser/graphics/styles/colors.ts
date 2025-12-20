@@ -32,6 +32,8 @@ export const border = {
 	speechCamera: "rgb(255, 255, 255)",
 	/** スピーチ名前欄 */
 	speechName: "rgb(255, 255, 82)",
+	/** ゲーム映像 */
+	game: "rgb(255, 255, 255)",
 };
 
 export const background = {
