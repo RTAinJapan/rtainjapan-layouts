@@ -117,8 +117,8 @@ const Camera = () => {
 	return (
 		<div
 			style={{
-				width: "520px",
-				height: "320px",
+				width: "528px",
+				height: "328px",
 				position: "absolute",
 				left: "34px",
 				top: "676px",
