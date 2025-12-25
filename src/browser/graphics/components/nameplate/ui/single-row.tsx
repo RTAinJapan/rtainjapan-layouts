@@ -22,7 +22,7 @@ const textPlacement = {
 
 const FadeContainer = styled("div")<{state: TransitionStatus}>(({state}) => ({
 	transition: "all 0.5s",
-	opacity: ["entered", "entering"].includes(state) ? 1 : 0,
+	opacity: ["entered"].includes(state) ? 1 : 0,
 }));
 
 const SocialText = ({icon, text}: {icon: string; text?: string}) => {
