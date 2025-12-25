@@ -24,7 +24,7 @@ const textPlacement = {
 
 const FadeContainer = styled("div")<{state: TransitionStatus}>(({state}) => ({
 	transition: "all 0.5s",
-	opacity: ["entered", "existing"].includes(state) ? 1 : 0,
+	opacity: ["entered", "entering"].includes(state) ? 1 : 0,
 }));
 
 const SocialText = ({icon, text}: {icon: string; text?: string}) => {
@@ -73,7 +73,7 @@ const SocialContent = ({runner}: {runner?: Runner | Commentator}) => {
 			<SwitchTransition>
 				<Transition nodeRef={fadeNodeRef} key={display} timeout={1000}>
 					{(state) => (
-						<FadeContainer state={state}>
+						<FadeContainer ref={fadeNodeRef} state={state}>
 							{display === "twitter" && (
 								<SocialText icon={iconTwitter} text={runner?.twitter} />
 							)}
