@@ -20,6 +20,8 @@ export const LShapedSoloTemplate: FunctionComponent<Props> = ({children}) => {
 	useFitViewport(ref);
 	const commentators = useCommentators();
 
+	const cameraInsetPos = [19, 731, 420, 280] as const;
+
 	return (
 		<div
 			ref={ref}
@@ -35,7 +37,7 @@ export const LShapedSoloTemplate: FunctionComponent<Props> = ({children}) => {
 				src={background}
 				height={1080}
 				width={1920}
-				roundedRect={makeRoundedRect(19, 731, 420, 280, 0, 4)}
+				roundedRect={makeRoundedRect(...cameraInsetPos, 0, 4)}
 			></RoundedHoleImage>
 			<HorizontalGameInfo
 				style={{
@@ -81,7 +83,7 @@ export const LShapedSoloTemplate: FunctionComponent<Props> = ({children}) => {
 			<Camera
 				style={{
 					position: "absolute",
-					...makeCameraPosition(19, 731, 420, 280),
+					...makeCameraPosition(...cameraInsetPos),
 				}}
 			></Camera>
 			{children}

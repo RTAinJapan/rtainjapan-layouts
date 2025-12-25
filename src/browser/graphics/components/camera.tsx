@@ -96,10 +96,14 @@ export const makeCameraPosition = (
 	wInset: number,
 	hInset: number,
 ) => ({
-	top: `${yInset - 4}px`,
-	left: `${xInset - 4}px`,
-	width: `${wInset + 8}px`,
-	height: `${hInset + 8}px`,
+	// top: `${yInset - 4}px`,
+	// left: `${xInset - 4}px`,
+	// width: `${wInset + 8}px`,
+	// height: `${hInset + 8}px`,
+	top: `${yInset}px`,
+	left: `${xInset}px`,
+	width: `${wInset}px`,
+	height: `${hInset}px`,
 });
 
 export const Camera: FunctionComponent<{

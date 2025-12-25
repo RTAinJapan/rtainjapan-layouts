@@ -9,10 +9,14 @@ export const makeRoundedRect = (
 	radius: number,
 	borderWidth?: number,
 ) => ({
-	x: xInset - (borderWidth || 0),
-	y: yInset - (borderWidth || 0),
-	width: wInset + (borderWidth || 0) * 2,
-	height: hInset + (borderWidth || 0) * 2,
+	// x: xInset - (borderWidth || 0),
+	// y: yInset - (borderWidth || 0),
+	// width: wInset + (borderWidth || 0) * 2,
+	// height: hInset + (borderWidth || 0) * 2,
+	x: xInset,
+	y: yInset,
+	width: wInset,
+	height: hInset,
 	radius,
 });
 

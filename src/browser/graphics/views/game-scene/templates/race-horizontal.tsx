@@ -22,6 +22,8 @@ export const HorizontalRaceTemplate: FunctionComponent<Props> = ({
 	useFitViewport(ref);
 	const commentators = useCommentators();
 
+	const cameraInsetPos = [1477, 752, 428, 263] as const;
+
 	return (
 		<div
 			ref={ref}
@@ -37,7 +39,7 @@ export const HorizontalRaceTemplate: FunctionComponent<Props> = ({
 				src={background}
 				height={1080}
 				width={1920}
-				roundedRect={makeRoundedRect(1477, 752, 428, 263, 0, 4)}
+				roundedRect={makeRoundedRect(...cameraInsetPos, 0, 4)}
 			></RoundedHoleImage>
 			<HorizontalGameInfo
 				style={{
@@ -77,7 +79,7 @@ export const HorizontalRaceTemplate: FunctionComponent<Props> = ({
 			<Camera
 				style={{
 					position: "absolute",
-					...makeCameraPosition(1481, 756, 420, 255),
+					...makeCameraPosition(...cameraInsetPos),
 				}}
 			></Camera>
 			{children}
