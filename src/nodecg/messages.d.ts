@@ -48,7 +48,12 @@ export type MessageMap = {
 	"video:pause": {};
 	"video:reset": {};
 	"video:stop": {};
-	"donation:feature": {data: number};
-	"donation:cancel": {data: number};
-	"donation:clear-queue": {};
+	"donation:push": {
+		data: {
+			pk: number;
+			name: string | null;
+			comment: string;
+			amount: number;
+		};
+	};
 };

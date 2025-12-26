@@ -233,14 +233,14 @@ const PopupContainer = () => {
 		const tl = gsap.timeline();
 		tl.to(donationRef.current, {
 			opacity: 1,
-			duration: 1,
+			duration: 0.6,
 			ease: Power2.easeOut,
 		});
 		tl.to(
 			donationRef.current,
 			{
 				opacity: 0,
-				duration: 1,
+				duration: 0.6,
 				ease: Power2.easeOut,
 			},
 			"+=20",
@@ -289,7 +289,10 @@ const PopupContainer = () => {
 					opacity: 0,
 				}}
 			>
-				<DonationMessage onShow={transitionDonationTimeline}></DonationMessage>
+				<DonationMessage
+					setup
+					onShow={transitionDonationTimeline}
+				></DonationMessage>
 			</div>
 			<div
 				ref={fanArtRef}

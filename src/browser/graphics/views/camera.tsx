@@ -13,6 +13,7 @@ import {render} from "../../render.js";
 import {border} from "../styles/colors.js";
 import {EventLogo} from "../components/event-logo.js";
 import frame from "../images/speech_frame.png";
+import {InGameDonationPopup} from "../components/donation-message/in-game-popup";
 
 const SmallNameplate = (props: {
 	innerRef?: RefObject<HTMLDivElement | null>;
@@ -144,6 +145,16 @@ const App = () => {
 				}}
 			/>
 			<SmallNameplate innerRef={smallNameRef}></SmallNameplate>
+			<InGameDonationPopup
+				rows={6}
+				style={{
+					position: "absolute",
+					top: "35px",
+					left: "133px",
+					width: "325px",
+					maxHeight: "263px",
+				}}
+			/>
 		</div>
 	);
 };

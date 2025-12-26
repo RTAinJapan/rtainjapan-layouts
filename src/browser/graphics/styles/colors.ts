@@ -13,6 +13,8 @@ export const text = {
 	timerRunning: "rgb(255, 255, 255)",
 	/** タイマー色 クリア後 */
 	timerFinished: "rgb(255, 255, 82)",
+	/** 寄付額メッセージ */
+	donation: "rgb(0, 0, 0)",
 };
 
 export const border = {
@@ -49,6 +51,8 @@ export const background = {
 	omnibar: "rgb(230,230,230)",
 	/** エンドロール枠 背景 */
 	credit: "rgba(0, 0, 0, 0.5)",
+	/** ゲーム中寄付額メッセージ 背景 */
+	donation: "rgba(255, 255, 255)",
 };
 
 export const bidwar = {

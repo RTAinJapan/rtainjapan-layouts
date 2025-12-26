@@ -12,6 +12,7 @@ import {NameplateContainer} from "../../../components/nameplate/container";
 import {useCommentators} from "../../../components/lib/hooks";
 import {NamePlate} from "../../../components/nameplate";
 import {VerticalGameInfo} from "../../../components/game-info/vertical";
+import {InGameDonationPopup} from "../../../components/donation-message/in-game-popup";
 
 type Props = PropsWithChildren;
 
@@ -86,6 +87,16 @@ export const SplitSoloTemplate: FunctionComponent<Props> = ({children}) => {
 					...makeCameraPosition(...cameraInsetPos),
 				}}
 			></Camera>
+			<InGameDonationPopup
+				rows={6}
+				style={{
+					position: "absolute",
+					top: "20px",
+					left: "118px",
+					width: "325px",
+					maxHeight: "263px",
+				}}
+			/>
 			{children}
 		</div>
 	);

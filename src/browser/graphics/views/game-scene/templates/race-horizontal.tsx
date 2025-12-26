@@ -12,6 +12,7 @@ import {HorizontalGameInfo} from "../../../components/game-info/horizontal";
 import {NameplateContainer} from "../../../components/nameplate/container";
 import {useCommentators} from "../../../components/lib/hooks";
 import {NamePlate} from "../../../components/nameplate";
+import {InGameDonationPopup} from "../../../components/donation-message/in-game-popup";
 
 type Props = PropsWithChildren;
 
@@ -82,6 +83,17 @@ export const HorizontalRaceTemplate: FunctionComponent<Props> = ({
 					...makeCameraPosition(...cameraInsetPos),
 				}}
 			></Camera>
+			<InGameDonationPopup
+				rows={2}
+				middleCursor
+				style={{
+					position: "absolute",
+					top: "872px",
+					left: "118px",
+					width: "523px",
+					maxHeight: "143px",
+				}}
+			/>
 			{children}
 		</div>
 	);

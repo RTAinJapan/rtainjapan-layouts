@@ -10,6 +10,7 @@ import {useFitViewport} from "../components/lib/use-fit-viewport";
 import {render} from "../../render.js";
 import rchan from "../images/countdown_anime.webm";
 import {EventLogo} from "../components/event-logo";
+import {InGameDonationPopup} from "../components/donation-message/in-game-popup";
 
 const App = () => {
 	const countdown = useReplicant("countdown");
@@ -96,6 +97,16 @@ const App = () => {
 				}}
 			></video>
 			<Music></Music>
+			<InGameDonationPopup
+				rows={6}
+				style={{
+					position: "absolute",
+					top: "35px",
+					left: "133px",
+					width: "325px",
+					maxHeight: "263px",
+				}}
+			/>
 		</div>
 	);
 };
