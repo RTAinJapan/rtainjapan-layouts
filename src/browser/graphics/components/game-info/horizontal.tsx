@@ -50,7 +50,7 @@ export const HorizontalGameInfo = (props: {style?: CSSProperties}) => {
 				main={<FitText defaultSize={50}>{currentRun?.title}</FitText>}
 				sub={
 					<FitText defaultSize={22} thin>
-						{`${currentRun?.category}\n${currentRun?.platform} - ${currentRun?.releaseYear}`}
+						{`${currentRun?.category} - ${currentRun?.platform} - ${currentRun?.releaseYear}`}
 					</FitText>
 				}
 			></InfoCell>
