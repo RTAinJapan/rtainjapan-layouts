@@ -8,7 +8,7 @@ import {GameTimer} from "../lib/timer";
 const SubInfoCell = (props: {
 	category: string;
 	platform: string;
-	releaseYear: number;
+	releaseYear: string;
 }) => {
 	return (
 		<div
@@ -66,7 +66,7 @@ export const VerticalGameInfo = ({
 			<SubInfoCell
 				category={currentRun?.category ?? ""}
 				platform={currentRun?.platform ?? ""}
-				releaseYear={currentRun?.releaseYear ?? 0}
+				releaseYear={currentRun?.releaseYear?.toString() ?? ""}
 			/>
 
 			<Divider></Divider>

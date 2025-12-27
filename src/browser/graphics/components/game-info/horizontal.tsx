@@ -50,7 +50,9 @@ export const HorizontalGameInfo = (props: {style?: CSSProperties}) => {
 				main={<FitText defaultSize={50}>{currentRun?.title}</FitText>}
 				sub={
 					<FitText defaultSize={22} thin>
-						{`${currentRun?.category} - ${currentRun?.platform} - ${currentRun?.releaseYear}`}
+						{`${currentRun?.category ?? ""} - ${currentRun?.platform ?? ""} - ${
+							currentRun?.releaseYear ?? ""
+						}`}
 					</FitText>
 				}
 			></InfoCell>
@@ -59,7 +61,7 @@ export const HorizontalGameInfo = (props: {style?: CSSProperties}) => {
 				main={<GameTimer fontSize={65}></GameTimer>}
 				sub={
 					<ThinText style={{fontSize: "22px"}}>
-						予定タイム {currentRun?.runDuration}
+						予定タイム {currentRun?.runDuration ?? ""}
 					</ThinText>
 				}
 			></InfoCell>
