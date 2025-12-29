@@ -71,7 +71,7 @@ const RaceSocialContent = ({runner}: {runner?: Runner | Commentator}) => {
 			}}
 		>
 			<SwitchTransition>
-				<Transition nodeRef={fadeNodeRef} key={display} timeout={500}>
+				<Transition nodeRef={fadeNodeRef} key={display} timeout={250}>
 					{(state) => (
 						<FadeContainer ref={fadeNodeRef} state={state}>
 							{display === "twitter" && (
