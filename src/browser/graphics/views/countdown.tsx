@@ -1,15 +1,16 @@
 import "modern-normalize";
-import "../styles/adobe-fonts.js";
 
 import {TimerText} from "../components/lib/text";
 import {Music} from "../components/music";
-import rchan from "../images/rchan_count.webm";
 import bg from "../images/background.png";
 import {useReplicant} from "../../use-replicant";
 import {useEffect, useRef, useState} from "react";
 import moment from "moment";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
 import {render} from "../../render.js";
+import rchan from "../images/countdown_anime.webm";
+import {EventLogo} from "../components/event-logo";
+import {InGameDonationPopup} from "../components/donation-message/in-game-popup";
 
 const App = () => {
 	const countdown = useReplicant("countdown");
@@ -59,18 +60,25 @@ const App = () => {
 				color: "white",
 			}}
 		>
+			<EventLogo
+				style={{
+					position: "absolute",
+					top: "15px",
+					left: "15px",
+				}}
+			/>
 			<TimerText
 				style={{
 					position: "absolute",
-					top: "200px",
-					left: "200px",
-					width: "1520px",
-					height: "320px",
+					top: "240px",
+					left: "240px",
+					width: "1440px",
+					height: "440px",
 					display: "grid",
 					placeContent: "center",
 					placeItems: "center",
-					fontSize: "300px",
-					textShadow: "0 0 10px black",
+					fontSize: "440px",
+					textShadow: "0 0 4px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 0, 0, 0.5)",
 				}}
 			>
 				{text}
@@ -82,13 +90,23 @@ const App = () => {
 				src={rchan}
 				style={{
 					position: "absolute",
-					top: "520px",
-					left: "560px",
-					width: "800px",
-					height: "560px",
+					top: "690px",
+					left: "0px",
+					width: "1920px",
+					height: "300px",
 				}}
 			></video>
 			<Music></Music>
+			<InGameDonationPopup
+				rows={6}
+				style={{
+					position: "absolute",
+					top: "35px",
+					left: "133px",
+					width: "325px",
+					maxHeight: "263px",
+				}}
+			/>
 		</div>
 	);
 };

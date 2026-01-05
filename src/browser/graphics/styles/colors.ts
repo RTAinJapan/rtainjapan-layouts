@@ -13,6 +13,8 @@ export const text = {
 	timerRunning: "rgb(255, 255, 255)",
 	/** タイマー色 クリア後 */
 	timerFinished: "rgb(255, 255, 82)",
+	/** 寄付額メッセージ */
+	donation: "rgb(0, 0, 0)",
 };
 
 export const border = {
@@ -30,21 +32,27 @@ export const border = {
 	credit: "rgb(255, 255, 255)",
 	/** スピーチ映像枠 */
 	speechCamera: "rgb(255, 255, 255)",
+	/** スピーチ名前欄 */
+	speechName: "rgb(255, 255, 82)",
+	/** ゲーム映像 */
+	game: "rgb(255, 255, 255)",
 };
 
 export const background = {
 	/** カメラ枠 背景 */
-	camera: "rgba(0, 0, 0, 0.45)",
+	camera: "rgba(0, 0, 0, 0.4)",
 	/** スポンサー枠 背景 */
 	sponsor: "rgba(0, 0, 0, 0.45)",
 	/** Twitter枠 背景 */
 	tweet: "rgba(0, 0, 0, 0.45)",
 	/** 走者名枠、解説者名枠 背景 */
-	name: "rgba(0, 0, 0, 0.25)",
+	name: "rgba(0, 0, 0, 0.4)",
 	/** 下部帯 背景 */
 	omnibar: "rgb(230,230,230)",
 	/** エンドロール枠 背景 */
-	credit: "rgba(0, 0, 0, 0.45)",
+	credit: "rgba(0, 0, 0, 0.5)",
+	/** ゲーム中寄付額メッセージ 背景 */
+	donation: "rgba(255, 255, 255)",
 };
 
 export const bidwar = {
@@ -61,5 +69,5 @@ export const setup = {
 	/** 各種枠の線 */
 	frameBorder: "rgb(255,255,255)",
 	/** 各種枠の背景 */
-	frameBg: "rgba(37, 48, 58, 0.6)",
+	frameBg: "rgba(0, 0, 0, 0.5)",
 };

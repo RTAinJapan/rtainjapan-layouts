@@ -72,6 +72,7 @@
 			"properties": {
 				"textPrefix": {"type": "string", "default": ""},
 				"textSuffix": {"type": "string", "default": ""},
+				"splitText": {"type": "string", "default": "\\n"},
 				"removeMusicSuffix": {
 					"type": "array",
 					"items": {"type": "string"},
@@ -120,6 +121,21 @@
 				"type": "string"
 			}
 		},
-		"donationEnabled": {"type": "boolean", "default": true}
+		"donationEnabled": {"type": "boolean", "default": true},
+		"event": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"beginAt": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"endAt": {
+					"type": "string",
+					"format": "date-time"
+				}
+			},
+			"required": ["beginAt", "endAt"]
+		}
 	}
 }

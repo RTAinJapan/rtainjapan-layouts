@@ -17,7 +17,13 @@ export const Twitter = () => {
 			<List>
 				<TweetAdd
 					onSubmit={(tweets, onSuccess) => {
-						if (tweetsTempRep.value && tweets.text && tweets.name) {
+						if (
+							tweetsTempRep.value &&
+							tweets.text &&
+							tweets.name &&
+							tweets.userId &&
+							tweets.service
+						) {
 							if (
 								tweets.image &&
 								tweetsTempImagesRep.value?.includes(tweets.image)

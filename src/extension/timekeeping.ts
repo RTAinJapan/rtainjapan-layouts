@@ -20,7 +20,7 @@ export const timekeeping = (nodecg: NodeCG) => {
 	/**
 	 * Keeps the timeout object
 	 */
-	let tickInterval: NodeJS.Timer;
+	let tickInterval: NodeJS.Timeout;
 
 	/**
 	 * Increments the timer by one second if at least one second

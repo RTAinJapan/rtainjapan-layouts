@@ -22,10 +22,7 @@ export default (nodecg: NodeCG) => {
 	}
 	nodecg.listenFor("toggleCameraName", () => {
 		if (cameraStateRep.value === "hidden") {
-			cameraStateRep.value = "big";
-			setTimeout(() => {
-				cameraStateRep.value = "small";
-			}, 10 * 1000);
+			cameraStateRep.value = "small";
 		} else {
 			cameraStateRep.value = "hidden";
 		}

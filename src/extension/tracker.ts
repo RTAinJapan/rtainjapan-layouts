@@ -9,7 +9,7 @@ import type BidTargetSample from "./sample-json/tracker/bidtarget.json";
 import type DonationSample from "./sample-json/tracker/donation.json";
 import {BidChallenge, Donation, Run} from "../nodecg/replicants";
 import {klona as clone} from "klona/json";
-import {uniqBy, zipObject} from "./lib/array";
+import {zipObject} from "./lib/array";
 
 type CommentDonation = (typeof DonationSample)[number] & {
 	fields: {comment: string};
@@ -39,9 +39,6 @@ export const tracker = async (nodecg: NodeCG) => {
 	const bidChallengeRep = nodecg.Replicant("bid-challenge");
 	const runnersRep = nodecg.Replicant("runners");
 	const donationsRep = nodecg.Replicant("donations");
-	const donationQueueRep = nodecg.Replicant("donation-queue", {
-		defaultValue: [],
-	});
 	const checklistRep = nodecg.Replicant("checklist");
 
 	const requestSearch = async <T>(type: string) => {
@@ -315,7 +312,7 @@ export const tracker = async (nodecg: NodeCG) => {
 		});
 	};
 
-	const pushDonationToQueue = (pk: number) => {
+	const setFeaturedToDonation = (pk: number) => {
 		const donation = donationsRep.value?.find((d) => d.pk === pk);
 
 		if (!donation) {
@@ -323,21 +320,10 @@ export const tracker = async (nodecg: NodeCG) => {
 		}
 
 		donation.featured = true;
-
-		donationQueueRep.value = uniqBy(
-			[...donationQueueRep.value, {...donation}],
-			(d) => d.pk,
-		);
 	};
 
-	const removeDonationFromQueue = (pk: number) => {
-		donationQueueRep.value = donationQueueRep.value.filter((d) => d.pk !== pk);
-	};
-
-	nodecg.listenFor("donation:feature", pushDonationToQueue);
-	nodecg.listenFor("donation:cancel", removeDonationFromQueue);
-	nodecg.listenFor("donation:clear-queue", () => {
-		donationQueueRep.value = [];
+	nodecg.listenFor("donation:push", (donation) => {
+		setFeaturedToDonation(donation.pk);
 	});
 
 	connectWebSocket();

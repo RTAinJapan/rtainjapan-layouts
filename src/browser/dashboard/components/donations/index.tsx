@@ -8,25 +8,15 @@ import {DonationItem} from "./donation-item";
 
 const Container = styled("div")({
 	display: "grid",
-	gridTemplateColumns: "calc(50% - 0.5px) 1px calc(50% - 0.5px)",
 	height: "720px",
 	overflowY: "scroll",
 });
 
-const Border = styled("div")({
-	backgroundColor: "#7a7a7a",
-});
-
 export const Donations = () => {
 	const donations = useReplicant("donations");
-	const donationQueue = useReplicant("donation-queue");
 
-	const pushDonationToQueue = (donation: Donation) => {
-		nodecg.sendMessage("donation:feature", donation.pk);
-	};
-
-	const removeDonationFromQueue = (pk: number) => {
-		nodecg.sendMessage("donation:cancel", pk);
+	const pushDonation = (donation: Donation) => {
+		nodecg.sendMessage("donation:push", donation);
 	};
 
 	return (
@@ -52,34 +42,9 @@ export const Donations = () => {
 								<DonationItem
 									key={donation.pk}
 									donation={donation}
-									onActivate={pushDonationToQueue}
+									onActivate={pushDonation}
 								/>
 							))}
-				</List>
-			</div>
-			<Border />
-			<div>
-				<List>
-					<ListItem dense>
-						<ListItemText>
-							<Typography
-								variant='body1'
-								style={{
-									textAlign: "center",
-								}}
-							>
-								配信表示待ち
-							</Typography>
-						</ListItemText>
-					</ListItem>
-					{donationQueue &&
-						donationQueue.map((donation) => (
-							<DonationItem
-								key={donation.pk}
-								donation={donation}
-								onDeactivate={removeDonationFromQueue}
-							/>
-						))}
 				</List>
 			</div>
 		</Container>

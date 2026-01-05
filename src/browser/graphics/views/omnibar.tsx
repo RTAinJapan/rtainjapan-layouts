@@ -1,5 +1,4 @@
 import "modern-normalize";
-import "../styles/adobe-fonts.js";
 
 import gsap from "gsap";
 import {BoldText, ThinText, TimerText} from "../components/lib/text";
@@ -22,13 +21,7 @@ import {
 	useState,
 } from "react";
 import {text, background, bidwar} from "../styles/colors";
-import {
-	Announcements,
-	BidChallenge,
-	BidWar,
-	Donation,
-	DonationQueue,
-} from "../../../nodecg/replicants";
+import {Announcements, BidChallenge, BidWar} from "../../../nodecg/replicants";
 import {klona as clone} from "klona/json";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
 import {render} from "../../render.js";
@@ -135,11 +128,10 @@ const below = 50;
 const duration = 0.5;
 const oshiraseHold = 30;
 const bidwarHold = 10;
-const donationHold = 20;
 const MAX_BIDWAR_DISPLAY = 4;
 const MAX_CHALLENGE_DISPLAY = 2;
 
-const Row = forwardRef<HTMLDivElement, PropsWithChildren<{header: string}>>(
+const Row = forwardRef<HTMLDivElement, PropsWithChildren<{header?: string}>>(
 	(props, ref) => {
 		return (
 			<div
@@ -152,8 +144,12 @@ const Row = forwardRef<HTMLDivElement, PropsWithChildren<{header: string}>>(
 					gridTemplateColumns: "auto auto 1fr",
 				}}
 			>
-				<ThinText style={{fontSize: "24px"}}>{props.header}</ThinText>
-				<img src={arrowImage}></img>
+				{props.header && (
+					<>
+						<ThinText style={{fontSize: "24px"}}>{props.header}</ThinText>
+						<img src={arrowImage}></img>
+					</>
+				)}
 				{props.children}
 			</div>
 		);
@@ -393,37 +389,6 @@ const BidChallengeRow = forwardRef<
 	);
 });
 
-const DonationRow = forwardRef<HTMLDivElement, {donation?: Donation}>(
-	({donation}, ref) => {
-		return (
-			<div
-				ref={ref}
-				style={{
-					gridColumn: "1 / 2",
-					gridRow: "1 / 2",
-					display: "grid",
-					gridTemplateColumns: `auto auto`,
-					alignContent: "stretch",
-					justifyContent: "start",
-					fontSize: "22px",
-				}}
-			>
-				<ThinText
-					style={{
-						overflow: "hidden",
-						textOverflow: "ellipsis",
-						whiteSpace: "nowrap",
-					}}
-				>
-					{donation?.name && `${donation?.name}：`}
-					{donation?.comment}
-				</ThinText>
-				<ThinText>（￥{donation?.amount?.toLocaleString()}）</ThinText>
-			</div>
-		);
-	},
-);
-
 const Omnibar = () => {
 	const sponsorAssets = useReplicant("assets:charity-logo");
 
@@ -443,14 +408,6 @@ const Omnibar = () => {
 		}
 	}, [rawBidChallenge]);
 
-	const rawDonationQueue = useReplicant("donation-queue");
-	const donationQueue = useRef<DonationQueue>([]);
-	useEffect(() => {
-		if (rawDonationQueue) {
-			donationQueue.current = rawDonationQueue;
-		}
-	}, [rawDonationQueue]);
-
 	const rawAnnouncements = useReplicant("announcements");
 	const announcements = useRef<Announcements>([]);
 	useEffect(() => {
@@ -461,8 +418,6 @@ const Omnibar = () => {
 
 	const bidwarRef = useRef<HTMLDivElement>(null);
 	const bidChallengeRef = useRef<HTMLDivElement>(null);
-	const donationCommentRef = useRef<HTMLDivElement>(null);
-
 	const announceRowA = useRef<HTMLDivElement>(null);
 	const announceRowB = useRef<HTMLDivElement>(null);
 	const [announceA, setAnnounceA] = useState<Announcements[number]>();
@@ -477,11 +432,6 @@ const Omnibar = () => {
 	const challengeRowB = useRef<HTMLDivElement>(null);
 	const [challengeA, setChallengeA] = useState<BidChallenge[number]>();
 	const [challengeB, setChallengeB] = useState<BidChallenge[number]>();
-
-	const donationRowA = useRef<HTMLDivElement>(null);
-	const donationRowB = useRef<HTMLDivElement>(null);
-	const [donationA, setDonationA] = useState<Donation>();
-	const [donationB, setDonationB] = useState<Donation>();
 
 	useEffect(() => {
 		let tl: gsap.core.Timeline;
@@ -552,14 +502,9 @@ const Omnibar = () => {
 					0,
 					MAX_CHALLENGE_DISPLAY,
 				);
-				const currentDonations = clone(donationQueue.current);
-				tl.call(() => {
-					nodecg.sendMessage("donation:clear-queue");
-				});
 				if (
 					(!currentBidwars || currentBidwars.length === 0) &&
-					(!currentChallenges || currentChallenges.length === 0) &&
-					(!currentDonations || currentDonations.length === 0)
+					(!currentChallenges || currentChallenges.length === 0)
 				) {
 					initialize(false);
 					return;
@@ -618,29 +563,6 @@ const Omnibar = () => {
 					}
 					tl.to(bidChallengeRef.current, {y: above});
 				}
-				if (currentDonations && currentDonations.length > 0) {
-					tl.call(() => {
-						setDonationA(currentDonations[0]);
-					});
-					tl.set(donationRowA.current, {y: 0});
-					tl.set(donationRowB.current, {y: below});
-					tl.set(donationCommentRef.current, {y: below});
-					tl.to(donationCommentRef.current, {y: 0, duration}, "<");
-					tl.to({}, {}, `+=${donationHold}`);
-					tl.set(donationRowB.current, {y: above});
-					for (let i = 1; i < currentDonations.length; i++) {
-						tl.call(() => {
-							(i % 2 === 1 ? setDonationB : setDonationA)(currentDonations[i]);
-						});
-						const showing = (i % 2 === 1 ? donationRowB : donationRowA).current;
-						const hiding = (i % 2 === 1 ? donationRowA : donationRowB).current;
-						tl.set(showing, {y: below});
-						tl.to(hiding, {y: above, duration});
-						tl.to(showing, {y: 0, duration}, "<");
-						tl.to({}, {}, `+=${donationHold}`);
-					}
-					tl.to(donationCommentRef.current, {y: above});
-				}
 				tl.call(() => {
 					initialize(true);
 				});
@@ -651,7 +573,6 @@ const Omnibar = () => {
 		gsap.set(announceRowB.current, {y: below});
 		gsap.set(bidwarRef.current, {y: below});
 		gsap.set(bidChallengeRef.current, {y: below});
-		gsap.set(donationCommentRef.current, {y: below});
 		initialize(false);
 
 		return () => {
@@ -709,12 +630,6 @@ const Omnibar = () => {
 				<div style={{display: "grid"}}>
 					<BidChallengeRow ref={challengeRowA} challenge={challengeA} />
 					<BidChallengeRow ref={challengeRowB} challenge={challengeB} />
-				</div>
-			</Row>
-			<Row header='寄付コメント' ref={donationCommentRef}>
-				<div style={{display: "grid"}}>
-					<DonationRow ref={donationRowA} donation={donationA} />
-					<DonationRow ref={donationRowB} donation={donationB} />
 				</div>
 			</Row>
 

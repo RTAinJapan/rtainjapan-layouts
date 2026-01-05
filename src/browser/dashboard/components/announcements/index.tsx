@@ -37,11 +37,7 @@ export const Announcements = () => {
 				))}
 				<AnnouncementAdd
 					onSubmit={(announcement, onSuccess) => {
-						if (
-							announcementsRep.value &&
-							announcement.title &&
-							announcement.content
-						) {
+						if (announcementsRep.value && announcement.content) {
 							announcementsRep.value.push(announcement);
 							onSuccess();
 						}

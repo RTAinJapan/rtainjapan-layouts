@@ -24,16 +24,16 @@ export const spotify = async (nodecg: NodeCG) => {
 	const spotifyRep = nodecg.Replicant("spotify");
 	const redirectUrl = `http://${nodecg.config.baseURL}/bundles/${nodecg.bundleName}/spotify-callback/index.html`;
 
-	let currentTrackTimer: NodeJS.Timer | undefined;
-	const refreshCurrentTrackTimer = (timer: NodeJS.Timer) => {
+	let currentTrackTimer: NodeJS.Timeout | undefined;
+	const refreshCurrentTrackTimer = (timer: NodeJS.Timeout) => {
 		if (currentTrackTimer) {
 			clearTimeout(currentTrackTimer);
 		}
 		currentTrackTimer = timer;
 	};
 
-	let authorizeTimer: NodeJS.Timer | undefined;
-	const refreshAuthorizeTimer = (timer: NodeJS.Timer) => {
+	let authorizeTimer: NodeJS.Timeout | undefined;
+	const refreshAuthorizeTimer = (timer: NodeJS.Timeout) => {
 		if (authorizeTimer) {
 			clearTimeout(authorizeTimer);
 		}

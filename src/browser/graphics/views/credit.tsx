@@ -1,15 +1,15 @@
 import "modern-normalize";
-import "../styles/adobe-fonts.js";
 
 import {FC, useEffect, useRef, useState} from "react";
 import {FitText} from "../components/lib/fit-text";
 import {BoldText, CreditTitleText} from "../components/lib/text";
-import topLogo from "../images/header_rij.svg";
 import gsap from "gsap";
 import {chunk} from "../../../extension/lib/array";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
 import {render} from "../../render.js";
 import {background, border} from "../styles/colors";
+import {EventLogo} from "../components/event-logo";
+import {InGameDonationPopup} from "../components/donation-message/in-game-popup";
 
 const NAME_SHOW_DURATION = 5;
 
@@ -54,7 +54,7 @@ const App: FC = () => {
 						timeline.add(() => {
 							setTitle(title);
 						});
-						timeline.to($title, {opacity: 1, dutation: 0.7});
+						timeline.to($title, {opacity: 1, duration: 0.7});
 					} else {
 						timeline.to($title, {opacity: 0, duration: 0.7});
 					}
@@ -125,12 +125,11 @@ const App: FC = () => {
 			<div
 				style={{
 					position: "absolute",
-					top: "80px",
-					left: "160px",
-					width: "1600px",
-					height: "870px",
-					borderRadius: "21px",
-					border: "2px solid",
+					top: "115px",
+					left: "180px",
+					width: "1560px",
+					height: "860px",
+					borderRadius: "20px",
 					borderColor: border.credit,
 					backgroundColor: background.credit,
 				}}
@@ -158,16 +157,17 @@ const App: FC = () => {
 						top: "260px",
 						left: "80px",
 						right: "80px",
-						bottom: "60px",
+						bottom: "90px",
 						display: "grid",
-						gridTemplateRows: "repeat(5, 1fr)",
-						gridTemplateColumns: "repeat(3, 1fr)",
-						gap: "30px",
+						gridTemplateRows: "repeat(5, 70px)",
+						gridTemplateColumns: "repeat(3, 440px)",
+						gap: "40px",
 						opacity: 0,
+						placeItems: "stretch",
 					}}
 				>
 					{names.map((name) => (
-						<FitText defaultSize={40} credit>
+						<FitText key={name} defaultSize={40} credit>
 							{name}
 						</FitText>
 					))}
@@ -202,10 +202,24 @@ const App: FC = () => {
 					))}
 				</div>
 			</div>
-			<img
-				src={topLogo}
-				style={{position: "absolute", top: "20px", left: "30px"}}
-			></img>
+			<EventLogo
+				setup
+				style={{
+					position: "absolute",
+					top: "15px",
+					left: "15px",
+				}}
+			/>
+			<InGameDonationPopup
+				rows={6}
+				style={{
+					position: "absolute",
+					top: "35px",
+					left: "133px",
+					width: "325px",
+					maxHeight: "263px",
+				}}
+			/>
 		</div>
 	);
 };

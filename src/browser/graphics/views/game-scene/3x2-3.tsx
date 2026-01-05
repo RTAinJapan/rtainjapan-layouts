@@ -1,60 +1,52 @@
-import {TemplateL480} from "./templates/L480";
 import {NamePlate} from "../../components/nameplate";
-import {VerticalGameInfo} from "../../components/game-info/vertical";
+import {VideoFrame} from "../../components/video-frame";
+import {VerticalRaceTemplate} from "./templates/race-vertical";
 
 export default () => {
 	return (
-		<TemplateL480 race hideGameInfo>
+		<VerticalRaceTemplate>
+			<VideoFrame xInset={856} yInset={19} wInset={651} hInset={434} />
 			<NamePlate
+				variant='single'
 				kind='runners'
 				index={0}
-				cutTop
 				style={{
 					position: "absolute",
-					top: "458px",
-					left: "1215px",
-					width: "663px",
+					top: "457px",
+					left: "852px",
+					width: "659px",
 					height: "50px",
 				}}
 				race
 			></NamePlate>
+			<VideoFrame xInset={519} yInset={527} wInset={651} hInset={434} />
 			<NamePlate
+				variant='single'
 				kind='runners'
 				index={1}
-				cutTop
 				style={{
 					position: "absolute",
 					top: "965px",
-					left: "523px",
-					width: "663px",
+					left: "515px",
+					width: "659px",
 					height: "50px",
 				}}
 				race
 			></NamePlate>
+			<VideoFrame xInset={1193} yInset={527} wInset={651} hInset={434} />
 			<NamePlate
+				variant='single'
 				kind='runners'
 				index={2}
-				cutTop
 				style={{
 					position: "absolute",
 					top: "965px",
-					left: "1215px",
-					width: "663px",
+					left: "1189px",
+					width: "659px",
 					height: "50px",
 				}}
 				race
 			></NamePlate>
-			<VerticalGameInfo
-				wide
-				bg
-				style={{
-					position: "absolute",
-					left: "510px",
-					top: "150px",
-					width: "690px",
-					height: "238px",
-				}}
-			></VerticalGameInfo>
-		</TemplateL480>
+		</VerticalRaceTemplate>
 	);
 };

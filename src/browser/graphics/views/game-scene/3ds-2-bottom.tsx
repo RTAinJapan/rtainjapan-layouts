@@ -1,29 +1,40 @@
-import {TemplateL420} from "./templates/L420";
 import {NamePlate} from "../../components/nameplate";
-import {CSSProperties} from "react";
-
-const nameplateStyle: CSSProperties = {
-	position: "absolute",
-	top: "200px",
-	width: "335px",
-	height: "50px",
-};
+import {VideoFrame} from "../../components/video-frame";
+import {VerticalRaceTemplate} from "./templates/race-vertical";
 
 export default () => {
 	return (
-		<TemplateL420 race>
+		<VerticalRaceTemplate>
+			<VideoFrame xInset={816} yInset={142} wInset={354} hInset={212} />
+			<VideoFrame xInset={462} yInset={358} wInset={708} hInset={531} />
 			<NamePlate
 				kind='runners'
 				index={0}
-				style={{left: "463px", ...nameplateStyle}}
+				style={{
+					position: "absolute",
+					top: "154px",
+					left: "458px",
+					width: "344px",
+					height: "190px",
+				}}
 				race
+				invert
 			></NamePlate>
+			<VideoFrame xInset={1547} yInset={142} wInset={354} hInset={212} />
+			<VideoFrame xInset={1193} yInset={358} wInset={708} hInset={531} />
 			<NamePlate
 				kind='runners'
 				index={1}
-				style={{left: "1192px", ...nameplateStyle}}
+				style={{
+					position: "absolute",
+					top: "154px",
+					left: "1189px",
+					width: "344px",
+					height: "190px",
+				}}
 				race
+				invert
 			></NamePlate>
-		</TemplateL420>
+		</VerticalRaceTemplate>
 	);
 };

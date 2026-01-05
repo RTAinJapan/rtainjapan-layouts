@@ -40,7 +40,9 @@ export const SemiHorizontalGameInfo = ({
 				</FitText>
 				<Divider></Divider>
 				<FitText style={{padding: "0 15px"}} thin defaultSize={22}>
-					{`${currentRun?.category} - ${currentRun?.platform} - ${currentRun?.releaseYear}`}
+					{`${currentRun?.category ?? ""} - ${currentRun?.platform ?? ""} - ${
+						currentRun?.releaseYear ?? ""
+					}`}
 				</FitText>
 			</div>
 
@@ -57,7 +59,7 @@ export const SemiHorizontalGameInfo = ({
 				<GameTimer fontSize={60}></GameTimer>
 				<Divider></Divider>
 				<ThinText style={{fontSize: "22px"}}>
-					予定タイム {currentRun?.runDuration}
+					予定タイム {currentRun?.runDuration ?? ""}
 				</ThinText>
 			</div>
 		</div>

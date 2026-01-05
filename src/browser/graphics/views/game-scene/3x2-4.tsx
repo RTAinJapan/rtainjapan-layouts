@@ -1,60 +1,66 @@
-import {TemplateV480} from "./templates/V480";
 import {NamePlate} from "../../components/nameplate";
+import {VideoFrame} from "../../components/video-frame";
+import {VerticalRaceTemplate} from "./templates/race-vertical";
 
 export default () => {
 	return (
-		<TemplateV480>
+		<VerticalRaceTemplate>
+			<VideoFrame xInset={519} yInset={19} wInset={651} hInset={434} />
 			<NamePlate
+				variant='single'
 				kind='runners'
 				index={0}
-				cutTop
 				style={{
 					position: "absolute",
-					top: "458px",
-					left: "537px",
-					width: "663px",
+					top: "457px",
+					left: "515px",
+					width: "659px",
 					height: "50px",
 				}}
 				race
 			></NamePlate>
+			<VideoFrame xInset={1193} yInset={19} wInset={651} hInset={434} />
 			<NamePlate
+				variant='single'
 				kind='runners'
 				index={1}
-				cutTop
 				style={{
 					position: "absolute",
-					top: "458px",
-					left: "1215px",
-					width: "663px",
+					top: "457px",
+					left: "1189px",
+					width: "659px",
 					height: "50px",
 				}}
 				race
 			></NamePlate>
+			<VideoFrame xInset={519} yInset={527} wInset={651} hInset={434} />
 			<NamePlate
+				variant='single'
 				kind='runners'
 				index={2}
-				cutTop
 				style={{
 					position: "absolute",
 					top: "965px",
-					left: "537px",
-					width: "663px",
-					height: "50px",
-				}}
-			></NamePlate>
-			<NamePlate
-				kind='runners'
-				index={3}
-				cutTop
-				style={{
-					position: "absolute",
-					top: "965px",
-					left: "1215px",
-					width: "663px",
+					left: "515px",
+					width: "659px",
 					height: "50px",
 				}}
 				race
 			></NamePlate>
-		</TemplateV480>
+			<VideoFrame xInset={1193} yInset={527} wInset={651} hInset={434} />
+			<NamePlate
+				variant='single'
+				kind='runners'
+				index={3}
+				style={{
+					position: "absolute",
+					top: "965px",
+					left: "1189px",
+					width: "659px",
+					height: "50px",
+				}}
+				race
+			></NamePlate>
+		</VerticalRaceTemplate>
 	);
 };

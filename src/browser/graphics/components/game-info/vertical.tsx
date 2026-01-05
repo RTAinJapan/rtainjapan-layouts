@@ -5,21 +5,33 @@ import {CSSProperties} from "react";
 import {FitText} from "../lib/fit-text";
 import {GameTimer} from "../lib/timer";
 
-/** 特殊変形時のゲームタイトル枠背景 */
-const gradientBackground = `
-	linear-gradient(
-		to right,
-		rgba(0, 0, 0, 0),
-		rgba(0, 0, 0, 0.4) 20%,
-		rgba(0, 0, 0, 0.5) 50%,
-		rgba(0, 0, 0, 0.4) 80%,
-		rgba(0, 0, 0, 0) 100%
-	)
-`;
+const SubInfoCell = (props: {
+	category: string;
+	platform: string;
+	releaseYear: string;
+}) => {
+	return (
+		<div
+			style={{
+				display: "grid",
+				gridTemplateRows: "23px 23px",
+				width: "100%",
+				alignItems: "center",
+			}}
+		>
+			<FitText defaultSize={18} style={{lineHeight: "22px"}} thin>
+				{props.category}
+			</FitText>
+			<ThinText
+				style={{fontSize: "18px", lineHeight: "22px", textAlign: "center"}}
+			>
+				{`${props.platform} - ${props.releaseYear}`}
+			</ThinText>
+		</div>
+	);
+};
 
 export const VerticalGameInfo = ({
-	wide,
-	bg,
 	style,
 }: {
 	wide?: boolean;
@@ -31,46 +43,41 @@ export const VerticalGameInfo = ({
 		<div
 			style={{
 				display: "grid",
-				gridTemplateRows: wide
-					? "95px 4px 50px 4px 85px"
-					: "85px 4px 40px 4px 67px",
+				gridTemplateRows: "90px 46px 4px 70px",
 				placeContent: "stretch",
 				placeItems: "center",
-				background: bg ? gradientBackground : "",
+				background: "rgba(0, 0, 0, 0.4)",
+				borderRadius: "20px",
+				padding: "15px 10px",
+				rowGap: "5px",
 				...style,
 			}}
 		>
 			<FitText
+				defaultSize={50}
 				style={{
-					padding: wide ? "0 40px" : "0 15px",
+					padding: "0 10px",
+					lineHeight: "1.1",
 				}}
-				defaultSize={wide ? 60 : 50}
 			>
 				{currentRun?.title}
 			</FitText>
-			<Divider gradient={bg}></Divider>
 
-			<FitText
-				style={{
-					padding: wide ? "0 40px" : "0 15px",
-				}}
-				defaultSize={22}
-				thin
-			>
-				{`${currentRun?.category} - ${currentRun?.platform} - ${currentRun?.releaseYear}`}
-			</FitText>
+			<SubInfoCell
+				category={currentRun?.category ?? ""}
+				platform={currentRun?.platform ?? ""}
+				releaseYear={currentRun?.releaseYear?.toString() ?? ""}
+			/>
 
-			<Divider gradient={bg}></Divider>
+			<Divider></Divider>
 
 			<div
 				style={{
 					display: "grid",
-					gridTemplateColumns: "auto auto",
+					gridTemplateColumns: "104px 284px",
 					alignContent: "stretch",
 					justifyContent: "center",
 					placeItems: "center",
-					gap: "15px",
-					padding: wide ? "0 40px" : "0 15px",
 				}}
 			>
 				<ThinText
@@ -81,12 +88,12 @@ export const VerticalGameInfo = ({
 						placeItems: "center",
 					}}
 				>
-					<div style={{fontSize: wide ? "22px" : "18px"}}>予定タイム</div>
-					<div style={{fontSize: wide ? "24px" : "22px"}}>
+					<div style={{fontSize: "18px", lineHeight: "22px"}}>予定タイム</div>
+					<div style={{fontSize: "22px", lineHeight: "22px"}}>
 						{currentRun?.runDuration}
 					</div>
 				</ThinText>
-				<GameTimer fontSize={60}></GameTimer>
+				<GameTimer fontSize={65}></GameTimer>
 			</div>
 		</div>
 	);

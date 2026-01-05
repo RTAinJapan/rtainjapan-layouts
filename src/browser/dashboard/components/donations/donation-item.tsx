@@ -1,21 +1,36 @@
-import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import ClearIcon from "@mui/icons-material/Clear";
-import IconButton from "@mui/material/IconButton";
 import ListItem from "@mui/material/ListItem";
-import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import {Donation} from "../../../../nodecg/replicants";
+import {useState} from "react";
+import {IconButton} from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
 
 type Props = {
 	donation: Donation;
 	onActivate?: (donation: Donation) => void;
-	onDeactivate?: (pk: number) => void;
 };
 
-export const DonationItem = ({donation, onActivate, onDeactivate}: Props) => {
+export const DonationItem = ({donation, onActivate}: Props) => {
+	const [activated, setActivated] = useState(false);
+
 	return (
-		<ListItem>
+		<ListItem
+			secondaryAction={
+				onActivate && (
+					<IconButton
+						onClick={() => {
+							setActivated(true);
+							onActivate(donation);
+						}}
+						disabled={activated}
+						aria-label='配信に表示'
+					>
+						<CheckIcon />
+					</IconButton>
+				)
+			}
+		>
 			<ListItemText
 				primary={donation.name || "(匿名)"}
 				secondary={
@@ -27,28 +42,6 @@ export const DonationItem = ({donation, onActivate, onDeactivate}: Props) => {
 					overflowX: "hidden",
 				}}
 			/>
-			{onActivate && (
-				<ListItemSecondaryAction>
-					<IconButton
-						title='配信に表示'
-						edge='end'
-						onClick={() => onActivate(donation)}
-					>
-						<ArrowRightAltIcon />
-					</IconButton>
-				</ListItemSecondaryAction>
-			)}
-			{onDeactivate && (
-				<ListItemSecondaryAction>
-					<IconButton
-						title='表示待ちから削除'
-						edge='end'
-						onClick={() => onDeactivate(donation.pk)}
-					>
-						<ClearIcon />
-					</IconButton>
-				</ListItemSecondaryAction>
-			)}
 		</ListItem>
 	);
 };

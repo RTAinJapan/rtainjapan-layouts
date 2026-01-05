@@ -7,7 +7,7 @@
 		"dev:schema-types": "onchange schemas configschema.json -i -- npm run schema-types",
 		"dev:tsc": "tsc -b src/browser src/extension -w --preserveWatchOutput",
 		"dev:vite": "vite",
-		"dev:nodecg": "onchange extension schema configschema.json -ik -- node --enable-source-maps ../..",
+		"dev:nodecg": "onchange extension schema configschema.json -ik -- npm start",
 		"format": "npm run test:prettier -- --write",
 		"build": "vite build",
 		"schema-types": "del-cli src/nodecg/generated && nodecg schema-types -o src/nodecg/generated",
@@ -16,6 +16,7 @@
 		"test:prettier": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --check",
 		"test:lint": "eslint --ext .ts,.tsx .",
 		"test:types": "tsc -b src/browser src/extension",
+		"test:screenshot": "tsx test/screenshot-graphics.ts",
 		"prepare": "simple-git-hooks || true"
 	},
 	"simple-git-hooks": {
@@ -78,6 +79,7 @@
 		"onchange": "^7.1.0",
 		"pixi.js": "^6.5.9",
 		"prettier": "^2.8.8",
+		"puppeteer": "^24.34.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-highlight-words": "^0.21.0",
@@ -86,6 +88,7 @@
 		"simple-git-hooks": "^2.8.1",
 		"sort-package-json": "^2.4.1",
 		"ts-nodecg": "^0.3.1",
+		"tsx": "^4.21.0",
 		"typescript": "~5.0.4",
 		"vite": "^4.3.9"
 	},
@@ -209,11 +212,6 @@
 				"width": 1920,
 				"height": 1080,
 				"singleInstance": true
-			},
-			{
-				"file": "setup-idol.html",
-				"width": 1920,
-				"height": 1030
 			}
 		],
 		"assetCategories": [

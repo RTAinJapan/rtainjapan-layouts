@@ -139,14 +139,9 @@ const App = () => {
 				onClick={() => {
 					nodecg.sendMessage("toggleCameraName");
 				}}
-				disabled={cameraState === "big"}
 				variant='outlined'
 			>
-				{cameraState === "hidden"
-					? "表示する"
-					: cameraState === "big"
-					? "表示中(大)"
-					: "隠す"}
+				{cameraState === "hidden" ? "表示する" : "隠す"}
 			</Button>
 		</Container>
 	);

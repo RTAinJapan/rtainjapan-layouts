@@ -1,7 +1,7 @@
 import {Camera} from "../../../components/camera";
 import {useCommentators} from "../../../components/lib/hooks";
 import {NamePlate} from "../../../components/nameplate";
-import {Sponsor} from "../../../components/sponsor";
+import {NameplateContainer} from "../../../components/nameplate/container";
 
 export const useVerticalGameInfo = (props: {
 	race?: boolean;
@@ -26,7 +26,7 @@ export const useVerticalGameInfo = (props: {
 		props.limitOneCommentator && commentators.length >= 2 ? (
 			<NamePlate
 				kind='commentators'
-				index={[0, 1]}
+				index={0}
 				style={{width: props.nameplateWidth, placeSelf: "center"}}
 			></NamePlate>
 		) : (
@@ -48,7 +48,7 @@ export const useVerticalGameInfo = (props: {
 		(runnerNamePlate ? 1 : 0) +
 		(Array.isArray(commentatorNamePlate) ? commentatorNamePlate.length : 1);
 
-	const gridTemplateRepeat = "50px ".repeat(nameplateLength);
+	const gridTemplateRepeat = "75px ".repeat(nameplateLength);
 
 	return (
 		<div
@@ -68,13 +68,12 @@ export const useVerticalGameInfo = (props: {
 			}}
 		>
 			<Camera style={{placeSelf: "stretch"}}></Camera>
-			{runnerNamePlate}
-			{commentatorNamePlate}
-			<Sponsor
-				kind='vertical'
-				style={{placeSelf: "stretch"}}
-				twitterSmall={props.twitterSmall}
-			></Sponsor>
+			<NameplateContainer variant='runner'>
+				{runnerNamePlate}
+			</NameplateContainer>
+			<NameplateContainer variant='commentator'>
+				{commentatorNamePlate}
+			</NameplateContainer>
 		</div>
 	);
 };

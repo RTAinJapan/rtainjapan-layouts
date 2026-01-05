@@ -9,7 +9,7 @@
 			"content": {"type": "string"}
 		},
 		"additionalProperties": false,
-		"required": ["title", "content"]
+		"required": ["content"]
 	},
 	"default": []
 }

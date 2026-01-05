@@ -12,13 +12,9 @@ type CameraSettings =
 
 const SingleCamera = ({
 	camera,
-	borderWidth,
-	borderRadius,
 	style,
 }: {
 	camera: CameraSetting;
-	borderWidth: string;
-	borderRadius: string;
 	style?: CSSProperties;
 }) => {
 	if (camera === "empty") {
@@ -27,8 +23,8 @@ const SingleCamera = ({
 				style={{
 					borderColor: border.camera,
 					borderStyle: "solid",
-					borderWidth,
-					borderRadius,
+					borderWidth: "0",
+					borderRadius: "0",
 					placeSelf: "stretch",
 					...style,
 				}}
@@ -42,8 +38,8 @@ const SingleCamera = ({
 					background: background.camera,
 					borderColor: border.camera,
 					borderStyle: "solid",
-					borderWidth,
-					borderRadius,
+					borderWidth: "0",
+					borderRadius: "20px",
 					placeSelf: "stretch",
 					display: "grid",
 					placeContent: "stretch",
@@ -60,8 +56,8 @@ const SingleCamera = ({
 			style={{
 				borderColor: border.camera,
 				borderStyle: "solid",
-				borderWidth,
-				borderRadius,
+				borderWidth: "4px",
+				borderRadius: "0",
 				placeSelf: "stretch",
 				display: "grid",
 				placeContent: "stretch",
@@ -73,61 +69,11 @@ const SingleCamera = ({
 };
 
 const CameraContent = ({cameras}: {cameras: CameraSettings}) => {
-	if (cameras.length === 1) {
-		return (
-			<SingleCamera
-				camera={cameras[0]}
-				borderWidth='0'
-				borderRadius='7px'
-				style={{gridColumn: "1 / 3", gridRow: "1 / 3"}}
-			></SingleCamera>
-		);
-	}
-	if (cameras.length === 2) {
-		return (
-			<>
-				<SingleCamera
-					camera={cameras[0]}
-					borderWidth='0'
-					borderRadius='7px 0 0 7px'
-					style={{gridColumn: "1 / 2", gridRow: "1 / 3"}}
-				></SingleCamera>
-				<SingleCamera
-					camera={cameras[1]}
-					borderWidth='0'
-					borderRadius='0 7px 7px 0'
-					style={{gridColumn: "2 / 3", gridRow: "1 / 3"}}
-				></SingleCamera>
-			</>
-		);
-	}
 	return (
-		<>
-			<SingleCamera
-				camera={cameras[0]}
-				borderWidth='0'
-				borderRadius='7px 0 0 0'
-				style={{gridColumn: "1 / 2", gridRow: "1 / 2"}}
-			></SingleCamera>
-			<SingleCamera
-				camera={cameras[1]}
-				borderWidth='0'
-				borderRadius='0 7px 0 0'
-				style={{gridColumn: "2 / 3", gridRow: "1 / 2"}}
-			></SingleCamera>
-			<SingleCamera
-				camera={cameras[2]}
-				borderWidth='0'
-				borderRadius='0 0 0 7px'
-				style={{gridColumn: "1 / 2", gridRow: "2 / 3"}}
-			></SingleCamera>
-			<SingleCamera
-				camera={cameras[3]}
-				borderWidth='0'
-				borderRadius='0 0 7px 0'
-				style={{gridColumn: "2 / 3", gridRow: "2 / 3"}}
-			></SingleCamera>
-		</>
+		<SingleCamera
+			camera={cameras[0]}
+			style={{gridColumn: "1 / 3", gridRow: "1 / 3"}}
+		></SingleCamera>
 	);
 };
 
@@ -138,30 +84,27 @@ const useCameraSettings = (): CameraSettings => {
 	const cameras = currentRun?.runners.map((runner) => runner.camera);
 
 	if (!cameras) {
-		return ["empty"];
+		return ["no-camera"];
 	}
 
-	if (cameras.length === 4) {
-		return [
-			calcCameraSetting(cameras[0]),
-			calcCameraSetting(cameras[1]),
-			calcCameraSetting(cameras[2]),
-			calcCameraSetting(cameras[3]),
-		];
-	}
-	if (cameras.length === 3) {
-		return [
-			"empty",
-			calcCameraSetting(cameras[0]),
-			calcCameraSetting(cameras[1]),
-			calcCameraSetting(cameras[2]),
-		];
-	}
-	if (cameras.length === 2) {
-		return [calcCameraSetting(cameras[0]), calcCameraSetting(cameras[1])];
-	}
 	return [calcCameraSetting(cameras[0])];
 };
+
+export const makeCameraPosition = (
+	xInset: number,
+	yInset: number,
+	wInset: number,
+	hInset: number,
+) => ({
+	top: `${yInset - 4}px`,
+	left: `${xInset - 4}px`,
+	width: `${wInset + 8}px`,
+	height: `${hInset + 8}px`,
+	// top: `${yInset}px`,
+	// left: `${xInset}px`,
+	// width: `${wInset}px`,
+	// height: `${hInset}px`,
+});
 
 export const Camera: FunctionComponent<{
 	style?: CSSProperties;
@@ -170,8 +113,7 @@ export const Camera: FunctionComponent<{
 	return (
 		<div
 			style={{
-				border: `2px ${border.camera} solid`,
-				borderRadius: "7px",
+				borderRadius: "0px",
 				display: "grid",
 				gridAutoFlow: "column",
 				gridTemplateColumns: "1fr 1fr",

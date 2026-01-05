@@ -1,6 +1,21 @@
 import {CSSProperties, useEffect, useRef} from "react";
 import * as PIXI from "pixi.js";
 
+export const makeRoundedRect = (
+	xInset: number,
+	yInset: number,
+	wInset: number,
+	hInset: number,
+	radius: number,
+	borderWidth?: number,
+) => ({
+	x: xInset - (borderWidth || 0),
+	y: yInset - (borderWidth || 0),
+	width: wInset + (borderWidth || 0) * 2,
+	height: hInset + (borderWidth || 0) * 2,
+	radius,
+});
+
 export const RoundedHoleImage: React.FunctionComponent<{
 	src: string;
 	width: number;

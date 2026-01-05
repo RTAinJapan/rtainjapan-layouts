@@ -1,61 +1,66 @@
-import {TemplateL480} from "./templates/L480";
 import {NamePlate} from "../../components/nameplate";
-import {CSSProperties} from "react";
-
-const nameplateStyle: CSSProperties = {
-	position: "absolute",
-	width: "690px",
-	height: "50px",
-};
+import {VideoFrame} from "../../components/video-frame";
+import {VerticalRaceTemplate} from "./templates/race-vertical";
 
 export default () => {
 	return (
-		<TemplateL480 race>
+		<VerticalRaceTemplate>
+			<VideoFrame xInset={462} yInset={56} wInset={708} hInset={398} />
 			<NamePlate
+				variant='single'
 				kind='runners'
 				index={0}
-				cutTop
-				style={{
-					top: "407px",
-					left: "510px",
-					...nameplateStyle,
-				}}
-				race
-			></NamePlate>
-			<NamePlate
-				kind='runners'
-				index={1}
-				cutTop
-				style={{
-					top: "407px",
-					left: "1215px",
-					...nameplateStyle,
-				}}
-				race
-			></NamePlate>
-			<NamePlate
-				kind='runners'
-				index={2}
-				cutTop
-				style={{
-					top: "861px",
-					left: "510px",
-					...nameplateStyle,
-				}}
-				race
-			></NamePlate>
-			<NamePlate
-				kind='runners'
-				index={3}
-				cutTop
 				style={{
 					position: "absolute",
-					top: "861px",
-					left: "1215px",
-					...nameplateStyle,
+					top: "458px",
+					left: "458px",
+					width: "716px",
+					height: "50px",
 				}}
 				race
 			></NamePlate>
-		</TemplateL480>
+			<VideoFrame xInset={1193} yInset={56} wInset={708} hInset={398} />
+			<NamePlate
+				variant='single'
+				kind='runners'
+				index={1}
+				style={{
+					position: "absolute",
+					top: "458px",
+					left: "1189px",
+					width: "716px",
+					height: "50px",
+				}}
+				race
+			></NamePlate>
+			<VideoFrame xInset={462} yInset={527} wInset={708} hInset={398} />
+			<NamePlate
+				variant='single'
+				kind='runners'
+				index={2}
+				style={{
+					position: "absolute",
+					top: "929px",
+					left: "458px",
+					width: "716px",
+					height: "50px",
+				}}
+				race
+			></NamePlate>
+			<VideoFrame xInset={1193} yInset={527} wInset={708} hInset={398} />
+			<NamePlate
+				variant='single'
+				kind='runners'
+				index={3}
+				style={{
+					position: "absolute",
+					top: "929px",
+					left: "1189px",
+					width: "716px",
+					height: "50px",
+				}}
+				race
+			></NamePlate>
+		</VerticalRaceTemplate>
 	);
 };

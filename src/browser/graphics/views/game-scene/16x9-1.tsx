@@ -1,5 +1,10 @@
-import {TemplateL420} from "./templates/L420";
+import {VideoFrame} from "../../components/video-frame";
+import {LShapedSoloTemplate} from "./templates/solo-l-shape";
 
 export default () => {
-	return <TemplateL420></TemplateL420>;
+	return (
+		<LShapedSoloTemplate>
+			<VideoFrame xInset={462} yInset={43} wInset={1440} hInset={810} />
+		</LShapedSoloTemplate>
+	);
 };
