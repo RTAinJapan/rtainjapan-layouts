@@ -101,11 +101,13 @@ export const SingleRowNameplate = ({
 	person,
 	result,
 	style,
+	glow,
 }: {
 	kind: "runners" | "commentators";
 	person?: Runner | Commentator;
 	result?: Timer;
 	style?: HTMLAttributes<HTMLDivElement>["style"];
+	glow?: boolean;
 }) => {
 	return (
 		<div
@@ -119,6 +121,12 @@ export const SingleRowNameplate = ({
 				alignItems: "center",
 				justifyItems: "stretch",
 				background: background.name,
+				boxShadow: glow
+					? "0 0 16px 2px #7fd6ff, 0 0 4px 1px #7fd6ff inset"
+					: undefined,
+				transition: glow
+					? "box-shadow 0.12s ease-out"
+					: "box-shadow 0.25s ease-out",
 				...style,
 			}}
 		>

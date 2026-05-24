@@ -37,26 +37,14 @@ export const NamePlate = ({
 	const nameplate =
 		variant === "two-row" ? TwoRowNameplate : SingleRowNameplate;
 
-	// 音量が一定以上なら発光させるスタイル
-	const glowStyle: React.CSSProperties =
-		kind === "runners" && active
-			? {
-					boxShadow: "0 0 16px 2px #7fd6ff, 0 0 4px 1px #7fd6ff inset",
-					transition: "box-shadow 0.12s ease-out",
-			  }
-			: {transition: "box-shadow 0.25s ease-out"};
-
-	const mergedStyle = {
-		...glowStyle,
-		...(props as {style?: React.CSSProperties}).style,
-	};
-
 	return nameplate({
 		kind,
 		person: currentRun[kind][index] ?? undefined,
 		result: result ?? undefined,
 		race,
 		...props,
-		style: mergedStyle,
+		// 発光は実際の枠 (single-row では outer div、two-row では inner pill) に
+		// 適用するため、各 UI 側で boxShadow を当てる。
+		glow: kind === "runners" && active,
 	});
 };

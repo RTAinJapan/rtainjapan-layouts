@@ -107,6 +107,7 @@ export const TwoRowNameplate = ({
 	style,
 	race = false,
 	invert = false,
+	glow = false,
 }: NameplateProps<TwoRowProps>) => {
 	return (
 		<div
@@ -128,6 +129,12 @@ export const TwoRowNameplate = ({
 					placeContent: "stretch",
 					placeItems: "center",
 					background: background.name,
+					boxShadow: glow
+						? "0 0 16px 2px #7fd6ff, 0 0 4px 1px #7fd6ff inset"
+						: undefined,
+					transition: glow
+						? "box-shadow 0.12s ease-out"
+						: "box-shadow 0.25s ease-out",
 				}}
 			>
 				<img
