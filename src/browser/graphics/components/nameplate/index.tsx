@@ -46,7 +46,10 @@ export const NamePlate = ({
 			  }
 			: {transition: "box-shadow 0.25s ease-out"};
 
-	const mergedStyle = {...glowStyle, ...(props as {style?: React.CSSProperties}).style};
+	const mergedStyle = {
+		...glowStyle,
+		...(props as {style?: React.CSSProperties}).style,
+	};
 
 	return nameplate({
 		kind,

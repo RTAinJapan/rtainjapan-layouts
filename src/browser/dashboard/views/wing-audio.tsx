@@ -144,9 +144,7 @@ const ConnectionSettings = () => {
 						borderRadius: "50%",
 						background: indicator.color,
 						boxShadow:
-							state === "receiving"
-								? `0 0 6px ${indicator.color}`
-								: "none",
+							state === "receiving" ? `0 0 6px ${indicator.color}` : "none",
 						display: "inline-block",
 						flexShrink: 0,
 					}}
@@ -164,7 +162,6 @@ const ConnectionSettings = () => {
 		</div>
 	);
 };
-
 
 // ランナー1人分の行（名前・ch入力・レベルバー）
 const RunnerRow = ({
@@ -322,9 +319,7 @@ const DeckSection = ({
 				</span>
 				<select
 					value={deck ?? ""}
-					onChange={(e) =>
-						selectDeck(e.currentTarget.value as "A" | "B" | "")
-					}
+					onChange={(e) => selectDeck(e.currentTarget.value as "A" | "B" | "")}
 				>
 					<option value=''>（未選択）</option>
 					<option value='A'>A卓</option>
@@ -343,8 +338,7 @@ const DeckSection = ({
 			) : (
 				runners.map((runner: {name?: string} | undefined, i: number) => {
 					const a = channels[i] ?? -1;
-					const level =
-						a >= 0 && a < meters.length ? meters[a] : null;
+					const level = a >= 0 && a < meters.length ? meters[a] ?? null : null;
 					return (
 						<RunnerRow
 							key={i}
@@ -380,8 +374,8 @@ const DeckTemplates = () => {
 				卓テンプレート編集（プルダウン選択時の初期値）
 			</summary>
 			<div style={{marginTop: 8, fontSize: 12, opacity: 0.7}}>
-				runner 0,1,2... の順に WING メーター index をカンマ区切りで入力。
-				A卓は ch1-16（index 0-15）、B卓は ch17-32（index 16-31）が目安。
+				runner 0,1,2... の順に WING メーター index をカンマ区切りで入力。 A卓は
+				ch1-16（index 0-15）、B卓は ch17-32（index 16-31）が目安。
 			</div>
 			{(["A", "B"] as const).map((d) => (
 				<div key={d} style={{marginTop: 6}}>

@@ -147,11 +147,7 @@ export const wing = (nodecg: NodeCG) => {
 		const prevIndex = lastRunIndex;
 		lastRunIndex = newIndex;
 
-		if (
-			prevIndex == null ||
-			newIndex == null ||
-			newIndex !== prevIndex + 1
-		) {
+		if (prevIndex == null || newIndex == null || newIndex !== prevIndex + 1) {
 			return; // 「次へ」以外（初期化・前へ・ジャンプ）は追従しない
 		}
 
@@ -194,11 +190,12 @@ export const wing = (nodecg: NodeCG) => {
 				return;
 			}
 			const db = values[meterIdx];
+			if (db === undefined) return;
 
 			if (state[runnerIdx]) {
 				if (db >= thresholdDb - hysteresisDb) {
 					lastOver[runnerIdx] = now;
-				} else if (now - lastOver[runnerIdx] > holdMs) {
+				} else if (now - (lastOver[runnerIdx] ?? 0) > holdMs) {
 					state[runnerIdx] = false;
 					changed = true;
 				}
