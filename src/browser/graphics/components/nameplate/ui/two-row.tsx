@@ -3,7 +3,9 @@ import {ThinText, TimerText} from "../../lib/text";
 import {background, border, text} from "../../../styles/colors";
 import {Commentator, Runner} from "../../../../../nodecg/replicants";
 import iconRunner from "../../../images/icon/icon_runner.svg";
+import iconRunnerLit from "../../../images/icon/icon_runner_lit.svg";
 import iconCommentator from "../../../images/icon/icon_commentary.svg";
+import iconCommentatorLit from "../../../images/icon/icon_commentary_lit.svg";
 import iconTwitter from "../../../images/icon/icon_twitter.svg";
 import iconTwitch from "../../../images/icon/icon_twitch.svg";
 import iconYoutube from "../../../images/icon/icon_youtube.svg";
@@ -129,21 +131,24 @@ export const TwoRowNameplate = ({
 					placeContent: "stretch",
 					placeItems: "center",
 					background: background.name,
-					boxShadow: glow
-						? "0 0 16px 2px #7fd6ff, 0 0 4px 1px #7fd6ff inset"
-						: undefined,
-					transition: glow
-						? "box-shadow 0.12s ease-out"
-						: "box-shadow 0.25s ease-out",
 				}}
 			>
 				<img
-					src={kind === "runners" ? iconRunner : iconCommentator}
+					src={
+						glow
+							? kind === "runners"
+								? iconRunnerLit
+								: iconCommentatorLit
+							: kind === "runners"
+							? iconRunner
+							: iconCommentator
+					}
 					height={32}
 					width={32}
 					style={{
 						gridRow: "1 / 3",
 						justifySelf: "start",
+						transition: "filter 0.12s ease-out",
 					}}
 				></img>
 				<div

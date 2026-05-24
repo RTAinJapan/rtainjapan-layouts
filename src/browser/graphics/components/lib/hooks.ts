@@ -16,12 +16,15 @@ export const useTimer = () => {
 	return timer;
 };
 
-export const useAudioActive = (index: number) => {
+export const useAudioActive = (
+	kind: "runners" | "commentators",
+	index: number,
+) => {
 	const audioActive = useReplicant("audio-active");
 	if (!audioActive) {
 		return false;
 	}
-	return audioActive[index] ?? false;
+	return audioActive[kind]?.[index] ?? false;
 };
 
 export const useCommentators = () => {

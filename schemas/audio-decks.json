@@ -3,23 +3,32 @@
 
 	"type": "object",
 	"additionalProperties": false,
-	"description": "Per-deck channel templates. Selecting a deck in the panel copies its template into the current/next assignment as a starting point.",
+	"description": "A卓/B卓ごとのテンプレート。プルダウンで卓を選んだときに current/next の channels に流し込まれる。runners は runner index → WING meter index、commentators は commentator index → WING meter index。",
 	"properties": {
-		"A": {
-			"type": "array",
-			"description": "Deck A: element i = WING meter index for runner i (-1 = unassigned)",
-			"items": {"type": "number"},
-			"default": [0, 1, 2, 3]
-		},
-		"B": {
-			"type": "array",
-			"description": "Deck B: element i = WING meter index for runner i (-1 = unassigned)",
-			"items": {"type": "number"},
-			"default": [16, 17, 18, 19]
+		"A": {"$ref": "#/definitions/deckTemplate"},
+		"B": {"$ref": "#/definitions/deckTemplate"}
+	},
+	"definitions": {
+		"deckTemplate": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"runners": {
+					"type": "array",
+					"items": {"type": "number"},
+					"description": "runner index → WING meter index"
+				},
+				"commentators": {
+					"type": "array",
+					"items": {"type": "number"},
+					"description": "commentator index → WING meter index"
+				}
+			},
+			"required": ["runners", "commentators"]
 		}
 	},
 	"default": {
-		"A": [0, 1, 2, 3],
-		"B": [16, 17, 18, 19]
+		"A": {"runners": [0, 1, 2, 3], "commentators": [4, 5]},
+		"B": {"runners": [16, 17, 18, 19], "commentators": [20, 21]}
 	}
 }

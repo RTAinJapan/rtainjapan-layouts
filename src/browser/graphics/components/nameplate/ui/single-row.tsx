@@ -3,7 +3,9 @@ import {ThinText, TimerText} from "../../lib/text";
 import {background, border, text} from "../../../styles/colors";
 import {Commentator, Runner, Timer} from "../../../../../nodecg/replicants";
 import iconRunner from "../../../images/icon/icon_runner.svg";
+import iconRunnerLit from "../../../images/icon/icon_runner_lit.svg";
 import iconCommentator from "../../../images/icon/icon_commentary.svg";
+import iconCommentatorLit from "../../../images/icon/icon_commentary_lit.svg";
 import iconTwitter from "../../../images/icon/icon_twitter.svg";
 import iconTwitch from "../../../images/icon/icon_twitch.svg";
 import iconYoutube from "../../../images/icon/icon_youtube.svg";
@@ -109,6 +111,8 @@ export const SingleRowNameplate = ({
 	style?: HTMLAttributes<HTMLDivElement>["style"];
 	glow?: boolean;
 }) => {
+	const litIcon = kind === "runners" ? iconRunnerLit : iconCommentatorLit;
+	const normalIcon = kind === "runners" ? iconRunner : iconCommentator;
 	return (
 		<div
 			style={{
@@ -121,23 +125,18 @@ export const SingleRowNameplate = ({
 				alignItems: "center",
 				justifyItems: "stretch",
 				background: background.name,
-				boxShadow: glow
-					? "0 0 16px 2px #7fd6ff, 0 0 4px 1px #7fd6ff inset"
-					: undefined,
-				transition: glow
-					? "box-shadow 0.12s ease-out"
-					: "box-shadow 0.25s ease-out",
 				...style,
 			}}
 		>
 			<img
-				src={kind === "runners" ? iconRunner : iconCommentator}
+				src={glow ? litIcon : normalIcon}
 				height={32}
 				width={32}
 				style={{
 					justifySelf: "start",
 					margin: "9px 0",
 					gridColumn: "1 / 2",
+					transition: "filter 0.12s ease-out",
 				}}
 			></img>
 			<div

@@ -22,8 +22,9 @@ export const NamePlate = ({
 }: Props) => {
 	const currentRun = useCurrentRun();
 	const timer = useTimer();
-	// runner の場合のみ、その index の音量アクティブ状態を見る
-	const active = useAudioActive(kind === "runners" ? index : -1);
+	// runners / commentators 共通で「対象の人物が喋っているか」を取り、
+	// 各 UI 側で nameplate 全体ではなくアイコンの色を切り替える。
+	const active = useAudioActive(kind, index);
 
 	if (!currentRun || !timer) {
 		return null;
@@ -43,8 +44,6 @@ export const NamePlate = ({
 		result: result ?? undefined,
 		race,
 		...props,
-		// 発光は実際の枠 (single-row では outer div、two-row では inner pill) に
-		// 適用するため、各 UI 側で boxShadow を当てる。
-		glow: kind === "runners" && active,
+		glow: active,
 	});
 };

@@ -1,7 +1,20 @@
 {
 	"$schema": "http://json-schema.org/draft-04/schema",
 
-	"type": "array",
-	"items": {"type": "boolean"},
-	"default": []
+	"type": "object",
+	"additionalProperties": false,
+	"description": "音量で発光中の対象。runners は runner index に対応、commentators は commentator index に対応。",
+	"properties": {
+		"runners": {
+			"type": "array",
+			"items": {"type": "boolean"},
+			"default": []
+		},
+		"commentators": {
+			"type": "array",
+			"items": {"type": "boolean"},
+			"default": []
+		}
+	},
+	"default": {"runners": [], "commentators": []}
 }

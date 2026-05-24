@@ -163,8 +163,8 @@ const ConnectionSettings = () => {
 	);
 };
 
-// ランナー1人分の行（名前・ch入力・レベルバー）
-const RunnerRow = ({
+// 1人分の行（名前・ch入力・レベルバー）。走者にも解説にも使う。
+const PersonRow = ({
 	name,
 	assigned,
 	level,
@@ -237,7 +237,8 @@ const RunnerRow = ({
 	</div>
 );
 
-// current か next いずれかの卓割り当てセクション
+// current か next いずれかの卓割り当てセクション。
+// 走者と解説で別々に ch を持つので2つのテーブルを出す。
 const DeckSection = ({
 	slot,
 	title,
@@ -255,41 +256,95 @@ const DeckSection = ({
 
 	const run = slot === "current" ? currentRun : nextRun;
 	const runners = run?.runners ?? [];
-	const slotData = assignment?.[slot] ?? {deck: null, channels: []};
+	const commentators: {name?: string}[] = (run?.commentators ?? []).flatMap(
+		(c) => (c ? [c] : []),
+	);
+	const slotData = assignment?.[slot] ?? {
+		deck: null,
+		runners: [],
+		commentators: [],
+	};
 	const deck = slotData.deck ?? null;
-	const channels = slotData.channels ?? [];
+	const runnerCh = slotData.runners ?? [];
+	const commentatorCh = slotData.commentators ?? [];
 
-	const writeSlot = (patch: {deck?: "A" | "B" | null; channels?: number[]}) => {
+	const writeSlot = (patch: {
+		deck?: "A" | "B" | null;
+		runners?: number[];
+		commentators?: number[];
+	}) => {
 		const cur = assignment ?? {};
-		const base = cur[slot] ?? {deck: null, channels: []};
+		const base = cur[slot] ?? {deck: null, runners: [], commentators: []};
 		assignmentRep.value = {
 			...cur,
 			[slot]: {...base, ...patch},
 		};
 	};
 
-	// 卓を選ぶとテンプレートを channels に流し込む（runner 数に合わせて埋める）
+	// 卓を選ぶとテンプレートを channels に流し込む（人数に合わせて埋める）
 	const selectDeck = (d: "A" | "B" | "") => {
 		if (d === "") {
 			writeSlot({deck: null});
 			return;
 		}
-		const tmpl = (decks?.[d] ?? []) as number[];
-		const filled: number[] = [];
+		const tmpl = decks?.[d] ?? {runners: [], commentators: []};
+		const fillRunners: number[] = [];
 		for (let i = 0; i < runners.length; i++) {
-			filled[i] = tmpl[i] ?? -1;
+			fillRunners[i] = tmpl.runners?.[i] ?? -1;
 		}
-		writeSlot({deck: d, channels: filled});
+		const fillCommentators: number[] = [];
+		for (let i = 0; i < commentators.length; i++) {
+			fillCommentators[i] = tmpl.commentators?.[i] ?? -1;
+		}
+		writeSlot({
+			deck: d,
+			runners: fillRunners,
+			commentators: fillCommentators,
+		});
 	};
 
-	const setChannel = (runnerIdx: number, meterIdx: number) => {
+	const setChannel = (
+		kind: "runners" | "commentators",
+		idx: number,
+		meterIdx: number,
+	) => {
+		const len = (kind === "runners" ? runners : commentators).length;
+		const cur = kind === "runners" ? runnerCh : commentatorCh;
 		const next: number[] = [];
-		for (let i = 0; i < runners.length; i++) {
-			next[i] = channels[i] ?? -1;
-		}
-		next[runnerIdx] = meterIdx;
-		writeSlot({channels: next});
+		for (let i = 0; i < len; i++) next[i] = cur[i] ?? -1;
+		next[idx] = meterIdx;
+		writeSlot({[kind]: next});
 	};
+
+	const renderSection = (
+		label: string,
+		people: {name?: string}[],
+		channels: number[],
+		kind: "runners" | "commentators",
+	) => (
+		<div style={{marginTop: 6}}>
+			<div style={{fontSize: 11, opacity: 0.6, marginBottom: 2}}>{label}</div>
+			{people.length === 0 ? (
+				<div style={{opacity: 0.5, fontSize: 12, padding: "4px 0"}}>
+					（不在）
+				</div>
+			) : (
+				people.map((p, i) => {
+					const a = channels[i] ?? -1;
+					const level = a >= 0 && a < meters.length ? meters[a] ?? null : null;
+					return (
+						<PersonRow
+							key={i}
+							name={p?.name || `(${kind} ${i})`}
+							assigned={a}
+							level={level}
+							onChange={(v) => setChannel(kind, i, v)}
+						/>
+					);
+				})
+			)}
+		</div>
+	);
 
 	return (
 		<div
@@ -333,22 +388,11 @@ const DeckSection = ({
 						? "current run がありません。"
 						: "next run がありません。"}
 				</div>
-			) : runners.length === 0 ? (
-				<div style={{opacity: 0.6, fontSize: 13}}>ランナーがいません。</div>
 			) : (
-				runners.map((runner: {name?: string} | undefined, i: number) => {
-					const a = channels[i] ?? -1;
-					const level = a >= 0 && a < meters.length ? meters[a] ?? null : null;
-					return (
-						<RunnerRow
-							key={i}
-							name={runner?.name || `(runner ${i})`}
-							assigned={a}
-							level={level}
-							onChange={(v) => setChannel(i, v)}
-						/>
-					);
-				})
+				<>
+					{renderSection("走者", runners, runnerCh, "runners")}
+					{renderSection("解説", commentators, commentatorCh, "commentators")}
+				</>
 			)}
 		</div>
 	);
@@ -358,12 +402,22 @@ const DeckSection = ({
 const DeckTemplates = () => {
 	const decks = useReplicant("audio-decks");
 
-	const setTemplate = (d: "A" | "B", csv: string) => {
-		const arr = csv
+	const parseCsv = (csv: string): number[] =>
+		csv
 			.split(",")
 			.map((s) => parseInt(s.trim(), 10))
 			.filter((n) => !Number.isNaN(n));
-		decksRep.value = {...(decks ?? {}), [d]: arr};
+
+	const setTemplate = (
+		d: "A" | "B",
+		kind: "runners" | "commentators",
+		csv: string,
+	) => {
+		const cur = decks?.[d] ?? {runners: [], commentators: []};
+		decksRep.value = {
+			...(decks ?? {}),
+			[d]: {...cur, [kind]: parseCsv(csv)},
+		};
 	};
 
 	const fmt = (arr?: number[]) => (arr ?? []).join(", ");
@@ -374,19 +428,38 @@ const DeckTemplates = () => {
 				卓テンプレート編集（プルダウン選択時の初期値）
 			</summary>
 			<div style={{marginTop: 8, fontSize: 12, opacity: 0.7}}>
-				runner 0,1,2... の順に WING メーター index をカンマ区切りで入力。 A卓は
+				走者と解説それぞれの WING メーター index をカンマ区切りで入力。 A卓は
 				ch1-16（index 0-15）、B卓は ch17-32（index 16-31）が目安。
 			</div>
 			{(["A", "B"] as const).map((d) => (
 				<div key={d} style={{marginTop: 6}}>
 					<label style={labelStyle}>{d}卓テンプレート</label>
-					<input
-						type='text'
-						defaultValue={fmt(decks?.[d])}
-						placeholder='0, 1, 2, 3'
-						style={{width: "100%"}}
-						onBlur={(e) => setTemplate(d, e.currentTarget.value)}
-					/>
+					<div
+						style={{display: "grid", gridTemplateColumns: "60px 1fr", gap: 6}}
+					>
+						<div style={{fontSize: 11, opacity: 0.6, alignSelf: "center"}}>
+							走者
+						</div>
+						<input
+							type='text'
+							defaultValue={fmt(decks?.[d]?.runners)}
+							placeholder='0, 1, 2, 3'
+							style={{width: "100%"}}
+							onBlur={(e) => setTemplate(d, "runners", e.currentTarget.value)}
+						/>
+						<div style={{fontSize: 11, opacity: 0.6, alignSelf: "center"}}>
+							解説
+						</div>
+						<input
+							type='text'
+							defaultValue={fmt(decks?.[d]?.commentators)}
+							placeholder='4, 5'
+							style={{width: "100%"}}
+							onBlur={(e) =>
+								setTemplate(d, "commentators", e.currentTarget.value)
+							}
+						/>
+					</div>
 				</div>
 			))}
 		</details>

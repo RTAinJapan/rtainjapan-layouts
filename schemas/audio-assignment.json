@@ -3,7 +3,7 @@
 
 	"type": "object",
 	"additionalProperties": false,
-	"description": "Channel assignment for the current and next runs. deck is the selected table (A/B); channels is the actual per-runner WING meter index, editable on-site.",
+	"description": "Channel assignment for current and next runs. deck はテンプレート選択用、runners/commentators は実 ch 割り当て (-1 = 未割当)。",
 	"properties": {
 		"current": {"$ref": "#/definitions/deckAssignment"},
 		"next": {"$ref": "#/definitions/deckAssignment"}
@@ -15,20 +15,24 @@
 			"properties": {
 				"deck": {
 					"type": ["string", "null"],
-					"enum": ["A", "B", null],
-					"description": "Selected deck, or null if not chosen yet"
+					"enum": ["A", "B", null]
 				},
-				"channels": {
+				"runners": {
 					"type": "array",
-					"description": "Element i = WING meter index for runner i (-1 = unassigned)",
-					"items": {"type": "number"}
+					"items": {"type": "number"},
+					"description": "runner index → WING meter index (-1 = 未割当)"
+				},
+				"commentators": {
+					"type": "array",
+					"items": {"type": "number"},
+					"description": "commentator index → WING meter index (-1 = 未割当)"
 				}
 			},
-			"default": {"deck": null, "channels": []}
+			"required": ["deck", "runners", "commentators"]
 		}
 	},
 	"default": {
-		"current": {"deck": null, "channels": []},
-		"next": {"deck": null, "channels": []}
+		"current": {"deck": null, "runners": [], "commentators": []},
+		"next": {"deck": null, "runners": [], "commentators": []}
 	}
 }

@@ -69,7 +69,9 @@ export const wing = (nodecg: NodeCG) => {
 	const configRep = nodecg.Replicant("audio-config");
 	const assignmentRep = nodecg.Replicant("audio-assignment");
 	const currentRunRep = nodecg.Replicant("current-run");
-	const audioActiveRep = nodecg.Replicant("audio-active", {defaultValue: []});
+	const audioActiveRep = nodecg.Replicant("audio-active", {
+		defaultValue: {runners: [], commentators: []},
+	});
 	const metersRep = nodecg.Replicant("audio-meters", {defaultValue: []});
 	const statusRep = nodecg.Replicant("audio-status");
 
@@ -82,7 +84,7 @@ export const wing = (nodecg: NodeCG) => {
 	//   audio-meters : 前回のレベルが残る→未接続なのに古いバーが出る
 	//   audio-status : 前回 receiving のまま終了→未接続なのに緑表示
 	// 一方、audio-config / audio-assignment / audio-decks は「設定」なので残す。
-	audioActiveRep.value = [];
+	audioActiveRep.value = {runners: [], commentators: []};
 	metersRep.value = [];
 	statusRep.value = {
 		state: "unconfigured",
@@ -113,26 +115,37 @@ export const wing = (nodecg: NodeCG) => {
 		};
 	};
 
-	// runner ごとの内部状態
-	let lastOver: number[] = [];
-	let state: boolean[] = [];
+	// runners / commentators ごとに状態を分けて管理する。
+	type Kind = "runners" | "commentators";
+	const kinds: Kind[] = ["runners", "commentators"];
+	const lastOver: Record<Kind, number[]> = {runners: [], commentators: []};
+	const stateMap: Record<Kind, boolean[]> = {runners: [], commentators: []};
 
-	// マッピング変更時は状態を完全リセット（前の点灯を引き継がない）
-	const resetState = (len: number) => {
-		lastOver = Array(len).fill(0);
-		state = Array(len).fill(false);
-		audioActiveRep.value = [...state];
+	const writeActive = () => {
+		audioActiveRep.value = {
+			runners: [...stateMap.runners],
+			commentators: [...stateMap.commentators],
+		};
+	};
+
+	// マッピング変更時は対象 kind の状態を完全リセット（前の点灯を引き継がない）
+	const resetState = (kind: Kind, len: number) => {
+		lastOver[kind] = Array(len).fill(0);
+		stateMap[kind] = Array(len).fill(false);
+		writeActive();
 	};
 
 	// 発光判定に使うのは current の卓のチャンネル割り当てだけ
 	// （画面に出ているのは current のため）。
-	const currentChannels = (): number[] =>
-		assignmentRep.value?.current?.channels ?? [];
+	const currentChannels = (kind: Kind): number[] =>
+		assignmentRep.value?.current?.[kind] ?? [];
 
-	resetState(currentChannels().length);
+	for (const k of kinds) resetState(k, currentChannels(k).length);
 	// current の割り当てが変わったら状態をリセット（前の点灯を引き継がない）
 	assignmentRep.on("change", (newVal) => {
-		resetState(newVal?.current?.channels?.length ?? 0);
+		for (const k of kinds) {
+			resetState(k, newVal?.current?.[k]?.length ?? 0);
+		}
 	});
 
 	// --- 「次へ」で run が進んだら ch 割り当てを繰り上げる ---
@@ -152,13 +165,14 @@ export const wing = (nodecg: NodeCG) => {
 		}
 
 		const asg = assignmentRep.value;
-		const promoted = asg?.next ?? {deck: null, channels: []};
+		const promoted = asg?.next ?? {deck: null, runners: [], commentators: []};
 		assignmentRep.value = {
 			current: {
 				deck: promoted.deck ?? null,
-				channels: [...(promoted.channels ?? [])],
+				runners: [...(promoted.runners ?? [])],
+				commentators: [...(promoted.commentators ?? [])],
 			},
-			next: {deck: null, channels: []},
+			next: {deck: null, runners: [], commentators: []},
 		};
 		log.info(
 			`Run advanced (#${prevIndex}->#${newIndex}); promoted next deck "${
@@ -176,39 +190,45 @@ export const wing = (nodecg: NodeCG) => {
 		const thresholdDb = cfg?.thresholdDb ?? -40;
 		const hysteresisDb = cfg?.hysteresisDb ?? 3;
 		const holdMs = cfg?.holdMs ?? 300;
-		const channels = currentChannels();
 
-		if (state.length !== channels.length) resetState(channels.length);
-
-		let changed = false;
-		channels.forEach((meterIdx, runnerIdx) => {
-			if (meterIdx < 0 || meterIdx >= values.length) {
-				if (state[runnerIdx]) {
-					state[runnerIdx] = false;
-					changed = true;
-				}
-				return;
+		let anyChanged = false;
+		for (const kind of kinds) {
+			const channels = currentChannels(kind);
+			const state = stateMap[kind];
+			const over = lastOver[kind];
+			if (state.length !== channels.length) {
+				resetState(kind, channels.length);
 			}
-			const db = values[meterIdx];
-			if (db === undefined) return;
 
-			if (state[runnerIdx]) {
-				if (db >= thresholdDb - hysteresisDb) {
-					lastOver[runnerIdx] = now;
-				} else if (now - (lastOver[runnerIdx] ?? 0) > holdMs) {
-					state[runnerIdx] = false;
-					changed = true;
+			channels.forEach((meterIdx, idx) => {
+				if (meterIdx < 0 || meterIdx >= values.length) {
+					if (state[idx]) {
+						state[idx] = false;
+						anyChanged = true;
+					}
+					return;
 				}
-			} else {
-				if (db >= thresholdDb) {
-					state[runnerIdx] = true;
-					lastOver[runnerIdx] = now;
-					changed = true;
-				}
-			}
-		});
+				const db = values[meterIdx];
+				if (db === undefined) return;
 
-		if (changed) audioActiveRep.value = [...state];
+				if (state[idx]) {
+					if (db >= thresholdDb - hysteresisDb) {
+						over[idx] = now;
+					} else if (now - (over[idx] ?? 0) > holdMs) {
+						state[idx] = false;
+						anyChanged = true;
+					}
+				} else {
+					if (db >= thresholdDb) {
+						state[idx] = true;
+						over[idx] = now;
+						anyChanged = true;
+					}
+				}
+			});
+		}
+
+		if (anyChanged) writeActive();
 
 		if (now - lastMeterPush > METER_PUSH_INTERVAL) {
 			lastMeterPush = now;
@@ -309,8 +329,13 @@ export const wing = (nodecg: NodeCG) => {
 				if (metersRep.value && metersRep.value.length > 0) {
 					metersRep.value = [];
 				}
-				if (audioActiveRep.value.some((v) => v)) {
-					resetState(currentChannels().length);
+				const v = audioActiveRep.value;
+				if (
+					v &&
+					((v.runners ?? []).some((x) => x) ||
+						(v.commentators ?? []).some((x) => x))
+				) {
+					for (const k of kinds) resetState(k, currentChannels(k).length);
 				}
 				// 受信が途絶えたので「接続待ち」に戻す
 				// （lastReceivedAt は最後に受けた時刻として残す）
