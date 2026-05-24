@@ -1,0 +1,46 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"address": {
+			"type": "string",
+			"description": "WING console IP address",
+			"default": ""
+		},
+		"port": {
+			"type": "number",
+			"description": "WING OSC UDP port",
+			"default": 2223
+		},
+		"metersId": {
+			"type": "number",
+			"description": "Which /meters/<id> bank to subscribe to",
+			"default": 1
+		},
+		"thresholdDb": {
+			"type": "number",
+			"description": "Level (dBFS) at or above which a channel counts as active",
+			"default": -40
+		},
+		"hysteresisDb": {
+			"type": "number",
+			"description": "dB the level must drop below threshold before turning off",
+			"default": 3
+		},
+		"holdMs": {
+			"type": "number",
+			"description": "Keep ON for at least this many ms after last over-threshold sample",
+			"default": 300
+		}
+	},
+	"default": {
+		"address": "",
+		"port": 2223,
+		"metersId": 1,
+		"thresholdDb": -40,
+		"hysteresisDb": 3,
+		"holdMs": 300
+	}
+}

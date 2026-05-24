@@ -1,0 +1,34 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "object",
+	"additionalProperties": false,
+	"description": "Channel assignment for the current and next runs. deck is the selected table (A/B); channels is the actual per-runner WING meter index, editable on-site.",
+	"properties": {
+		"current": {"$ref": "#/definitions/deckAssignment"},
+		"next": {"$ref": "#/definitions/deckAssignment"}
+	},
+	"definitions": {
+		"deckAssignment": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"deck": {
+					"type": ["string", "null"],
+					"enum": ["A", "B", null],
+					"description": "Selected deck, or null if not chosen yet"
+				},
+				"channels": {
+					"type": "array",
+					"description": "Element i = WING meter index for runner i (-1 = unassigned)",
+					"items": {"type": "number"}
+				}
+			},
+			"default": {"deck": null, "channels": []}
+		}
+	},
+	"default": {
+		"current": {"deck": null, "channels": []},
+		"next": {"deck": null, "channels": []}
+	}
+}

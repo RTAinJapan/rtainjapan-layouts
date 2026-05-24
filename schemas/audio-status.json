@@ -1,0 +1,29 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"state": {
+			"type": "string",
+			"enum": ["unconfigured", "connecting", "receiving"],
+			"description": "unconfigured: no IP set / connecting: subscribing but no meter packets yet / receiving: meter packets arriving",
+			"default": "unconfigured"
+		},
+		"lastReceivedAt": {
+			"type": ["number", "null"],
+			"description": "Epoch ms of the last meter packet, or null if never",
+			"default": null
+		},
+		"address": {
+			"type": "string",
+			"description": "Address currently being used",
+			"default": ""
+		}
+	},
+	"default": {
+		"state": "unconfigured",
+		"lastReceivedAt": null,
+		"address": ""
+	}
+}

@@ -6,6 +6,7 @@ import {twitch} from "./twitch";
 import {setupObs} from "./obs";
 import {tracker} from "./tracker";
 import {music} from "./music";
+import {wing} from "./wing";
 
 export default (nodecg: NodeCG) => {
 	checklist(nodecg);
@@ -15,6 +16,7 @@ export default (nodecg: NodeCG) => {
 	twitch(nodecg);
 	setupObs(nodecg);
 	tracker(nodecg);
+	wing(nodecg);
 
 	const cameraStateRep = nodecg.Replicant("camera-state");
 	if (cameraStateRep.value !== "hidden") {

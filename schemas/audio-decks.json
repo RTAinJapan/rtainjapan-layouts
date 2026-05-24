@@ -1,0 +1,25 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "object",
+	"additionalProperties": false,
+	"description": "Per-deck channel templates. Selecting a deck in the panel copies its template into the current/next assignment as a starting point.",
+	"properties": {
+		"A": {
+			"type": "array",
+			"description": "Deck A: element i = WING meter index for runner i (-1 = unassigned)",
+			"items": {"type": "number"},
+			"default": [0, 1, 2, 3]
+		},
+		"B": {
+			"type": "array",
+			"description": "Deck B: element i = WING meter index for runner i (-1 = unassigned)",
+			"items": {"type": "number"},
+			"default": [16, 17, 18, 19]
+		}
+	},
+	"default": {
+		"A": [0, 1, 2, 3],
+		"B": [16, 17, 18, 19]
+	}
+}

@@ -16,6 +16,14 @@ export const useTimer = () => {
 	return timer;
 };
 
+export const useAudioActive = (index: number) => {
+	const audioActive = useReplicant("audio-active");
+	if (!audioActive) {
+		return false;
+	}
+	return audioActive[index] ?? false;
+};
+
 export const useCommentators = () => {
 	const currentRun = useCurrentRun();
 	if (!currentRun) {
