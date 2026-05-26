@@ -1,4 +1,7 @@
 /.nodecg
+/.nodecg-host
+/.nodecg-host.log
+/test/screenshots
 generated/
 /dashboard
 /graphics

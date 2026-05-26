@@ -13,18 +13,39 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        os: [ubuntu-latest, windows-latest]
-      fail-fast: false
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 24.x
           cache: "npm"
       - run: npm ci
-      - run: npm test
+      - run: npm run test:prettier
+      - run: npm run schema-types
+      - run: npm run test:lint
+      - run: npm run test:types
       - run: npm run build
+
+  screenshot:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: "npm"
+      - run: npm ci
+      - run: npm run schema-types
+      - run: npm run build
+      - run: npx puppeteer browsers install chrome
+      - name: Set up NodeCG host and run screenshot regression
+        run: bash test/run-screenshot.sh
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: test/screenshots
+          if-no-files-found: warn
