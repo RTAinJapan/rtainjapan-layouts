@@ -1,9 +1,7 @@
-// Sample replicant data used by the screenshot regression harness.
-// All shapes are aligned with /schemas/*.json — keep them in sync when the
-// schemas evolve, otherwise NodeCG will silently reject the value during seed.
+// スクリーンショット撮影に用いるReplicant
 
-// game-scene のレイアウトは最大4人の runner を扱うので、サンプルは常に4人分。
-// レイアウトが N 人用なら先頭 N 人だけ描画される（残りはコンテナが消費しない）。
+// 各game-scene のレイアウトは最大4人の runner を扱うので、サンプルは常に4人分。
+// レイアウトが N 人用なら先頭 N 人だけ描画される
 const sampleRunners = [
 	{
 		pk: 1,
@@ -51,7 +49,7 @@ const sampleRun = {
 	title: "サンプルゲーム デラックス",
 	englishTitle: "Sample Game Deluxe",
 	category: "Any%",
-	platform: "Switch",
+	platform: "PC",
 	releaseYear: 2023,
 	runDuration: "0:30:00",
 	setupDuration: "0:05:00",
@@ -62,10 +60,7 @@ const sampleRun = {
 	completedChecklist: [],
 };
 
-// 解説者数のバリエーション。default = 2人。
-// game-scene の race-vertical / solo-split テンプレートが解説者を描画するので、
-// それらを使うレイアウトでバリエーション撮影することで 0/1/2 人の表示確認に
-// なる。
+// 解説者数のバリエーション
 export const commentatorVariations: Array<{
 	label: string;
 	commentators: unknown[];
@@ -80,6 +75,107 @@ export const commentatorVariations: Array<{
 export const commentatorVariationLayouts: string[] = [
 	"16x9-1", // LShapedSolo: 1 runner
 	"16x9-4", // VerticalRace: 4 runner race
+];
+
+// game-scene を「start (= 走行中)」状態と「finished (= 完走後)」状態の両方で
+// 撮るための timer fixture。
+//
+// startTimer はデフォルトの fixtures.timer と同等で、グローバルが Running、
+// results は全 null。各走者 nameplate のタイム表示は (race=true でも) 非表示
+// になる。
+//
+// finishedTimer はグローバルが Finished、results[0..2] が完走、results[3] が
+// リタイア (forfeit=true) の状態。
+// - 1人 layout (race=false) では global timer が Finished 色で表示される
+// - 2〜4人 layout (race=true) では各走者の results[i] に応じて完走タイム /
+//   リタイア表示が出る
+// この1つの fixture で全 game-scene layout の完走後表示をカバーする。
+const finishedTimestamp = Date.now();
+
+export const startTimer = {
+	raw: 754,
+	hours: 0,
+	minutes: 12,
+	seconds: 34,
+	formatted: "0:12:34",
+	timestamp: finishedTimestamp,
+	timerState: "Running",
+	forfeit: false,
+	results: [null, null, null, null],
+};
+
+export const finishedTimer = {
+	// 全走者が完走 or リタイアした状態のグローバルタイマー。
+	// 経過時間は最遅走者のタイムに合わせる。
+	raw: 2285,
+	hours: 0,
+	minutes: 38,
+	seconds: 5,
+	formatted: "0:38:05",
+	timestamp: finishedTimestamp,
+	timerState: "Finished",
+	forfeit: false,
+	results: [
+		// 1着
+		{
+			raw: 1931,
+			hours: 0,
+			minutes: 32,
+			seconds: 11,
+			formatted: "0:32:11",
+			timestamp: finishedTimestamp,
+			timerState: "Finished",
+			forfeit: false,
+			place: 1,
+		},
+		// 2着
+		{
+			raw: 2142,
+			hours: 0,
+			minutes: 35,
+			seconds: 42,
+			formatted: "0:35:42",
+			timestamp: finishedTimestamp,
+			timerState: "Finished",
+			forfeit: false,
+			place: 2,
+		},
+		// 3着
+		{
+			raw: 2285,
+			hours: 0,
+			minutes: 38,
+			seconds: 5,
+			formatted: "0:38:05",
+			timestamp: finishedTimestamp,
+			timerState: "Finished",
+			forfeit: false,
+			place: 3,
+		},
+		// リタイア
+		{
+			raw: 1500,
+			hours: 0,
+			minutes: 25,
+			seconds: 0,
+			formatted: "0:25:00",
+			timestamp: finishedTimestamp,
+			timerState: "Stopped",
+			forfeit: true,
+		},
+	],
+};
+
+// game.html?layout=X を撮るときの timer 状態セット。screenshot-graphics.ts は
+// game-scene の全 layout についてこの2状態を撮影し、graphics/ 直下に
+//   game--layout-<layout>-<label>.png
+// として出力する。
+export const gameSceneStates: Array<{
+	label: string;
+	timer: Record<string, unknown>;
+}> = [
+	{label: "start", timer: startTimer},
+	{label: "finished", timer: finishedTimer},
 ];
 
 const sampleNextRun = {
@@ -103,6 +199,7 @@ const sampleNextRun = {
 
 const now = Date.now();
 
+// 最終的にできあがるreplicant全体
 export const fixtures: Record<string, unknown> = {
 	"current-run": sampleRun,
 	"next-run": sampleNextRun,
@@ -119,19 +216,9 @@ export const fixtures: Record<string, unknown> = {
 			englishTitle: "Last Sample Game",
 		},
 	],
-	timer: {
-		raw: 754,
-		hours: 0,
-		minutes: 12,
-		seconds: 34,
-		formatted: "0:12:34",
-		timestamp: now,
-		timerState: "Running",
-		forfeit: false,
-		results: [null, null],
-	},
+	timer: startTimer,
 	runners: ["speedy_taro", "ranner_jiro", "next_runner_1"],
-	"camera-name": "サンプルカメラ表示",
+	"camera-name": {title: "サンプルカメラ", name: "サンプルカメラ表示"},
 	"camera-state": "small",
 	checklist: [
 		{pk: "ck-1", name: "ゲーム機の電源を入れる"},
@@ -208,11 +295,11 @@ export const fixtures: Record<string, unknown> = {
 	"tweets-temp-images": [],
 };
 
-// Dashboard panels. `id` is the panel name registered in package.json under
-// nodecg.dashboardPanels (it forms the DOM id `<bundle>_<id>`). `workspace`
-// matches the workspace the panel is registered under (the dashboard uses
-// hash-based routing `#workspace/<name>` so we have to navigate explicitly).
-// `name` is the label used for the output file name.
+// -----------------------------------------------------
+// package.jsonに定義している各パネル、画面の分の定義
+// -----------------------------------------------------
+
+// Dashboard
 export const dashboardPanels: Array<{
 	name: string;
 	id: string;
@@ -232,7 +319,7 @@ export const dashboardPanels: Array<{
 	{name: "announcements", id: "announcements", hash: "workspace/2-misc"},
 ];
 
-// Graphics defined in package.json's nodecg.graphics block.
+// Graphics
 export const graphics: Array<{
 	file: string;
 	width: number;

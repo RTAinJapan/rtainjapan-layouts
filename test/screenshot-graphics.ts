@@ -1,8 +1,14 @@
-// Regression screenshot harness.
+// screenshot harness.
+//
 // Assumes NodeCG is already running at BASE_URL with this bundle installed.
 //   1. Seed replicants via a graphics URL (graphics pages embed the full NodeCG client).
-//   2. Screenshot every graphics URL (including each game-scene layout variation).
+//   2. Screenshot every graphics URL. game.html is shot once per layout in
+//      both "start" (timer Running) and "finished" (timer Finished + results
+//      populated) states so the regression covers the pre-run and post-run
+//      display for every game-scene layout.
 //   3. Screenshot every dashboard panel by locating its iframe in the dashboard root.
+//   4. Re-seed commentator-count variations and re-shoot representative
+//      game-scene layouts (0 / 1 commentator).
 // PNGs are written under test/screenshots/.
 
 import puppeteer, {Page} from "puppeteer";
@@ -16,6 +22,8 @@ import {
 	graphics,
 	commentatorVariations,
 	commentatorVariationLayouts,
+	gameSceneStates,
+	startTimer,
 } from "./fixtures/sample-data";
 
 const BASE_URL = process.env["BASE_URL"] || "http://127.0.0.1:9090";
@@ -108,6 +116,21 @@ const seedReplicants = async (
 	}
 };
 
+// Re-open break.html so we have a fresh NodeCG client, then re-seed the given
+// replicants. Used between variation shots so the new replicant values are
+// applied before opening the target graphics URL.
+const reseed = async (page: Page, data: Record<string, unknown>) => {
+	await page.goto(`${BASE_URL}/bundles/${BUNDLE}/graphics/break.html`, {
+		waitUntil: "domcontentloaded",
+		timeout: 30000,
+	});
+	await page.waitForFunction(
+		() => typeof (window as {nodecg?: unknown}).nodecg !== "undefined",
+		{timeout: 15000},
+	);
+	await seedReplicants(page, data);
+};
+
 const shootUrl = async (
 	page: Page,
 	url: string,
@@ -192,19 +215,51 @@ async function main() {
 
 	const failures: string[] = [];
 
-	// Graphics
+	// Graphics. For game.html, shoot every layout once per timer state
+	// (start / finished) so the regression covers both the pre-run and post-run
+	// display of every game-scene layout. Other graphics files are timer-state
+	// agnostic and are shot once.
 	for (const g of graphics) {
 		const base = path.basename(g.file, ".html");
 		const variations =
 			g.variations && g.variations.length > 0 ? g.variations : [""];
-		for (const v of variations) {
-			const tag = v ? v.replace(/[?&=]/g, "-") : "default";
-			const url = `${BASE_URL}/bundles/${BUNDLE}/graphics/${g.file}${v}`;
-			const out = path.join(SCREENSHOT_DIR, "graphics", `${base}-${tag}.png`);
-			try {
-				await shootUrl(page, url, out, g.width, g.height);
-			} catch (e) {
-				failures.push(`graphics/${g.file}${v}: ${(e as Error).message}`);
+
+		if (g.file === "game.html") {
+			for (const state of gameSceneStates) {
+				console.log(`seeding game-scene state: ${state.label}`);
+				await reseed(page, {timer: state.timer});
+				for (const v of variations) {
+					const tag = v ? v.replace(/[?&=]/g, "-") : "default";
+					const url = `${BASE_URL}/bundles/${BUNDLE}/graphics/${g.file}${v}`;
+					const out = path.join(
+						SCREENSHOT_DIR,
+						"graphics",
+						`${base}-${tag}-${state.label}.png`,
+					);
+					try {
+						await shootUrl(page, url, out, g.width, g.height);
+					} catch (e) {
+						failures.push(
+							`graphics/${g.file}${v} (${state.label}): ${
+								(e as Error).message
+							}`,
+						);
+					}
+				}
+			}
+			// Reset timer back to start so subsequent (non-game) shots & variation
+			// loops start from a known baseline.
+			await reseed(page, {timer: startTimer});
+		} else {
+			for (const v of variations) {
+				const tag = v ? v.replace(/[?&=]/g, "-") : "default";
+				const url = `${BASE_URL}/bundles/${BUNDLE}/graphics/${g.file}${v}`;
+				const out = path.join(SCREENSHOT_DIR, "graphics", `${base}-${tag}.png`);
+				try {
+					await shootUrl(page, url, out, g.width, g.height);
+				} catch (e) {
+					failures.push(`graphics/${g.file}${v}: ${(e as Error).message}`);
+				}
 			}
 		}
 	}
@@ -246,16 +301,7 @@ async function main() {
 	for (const variation of commentatorVariations) {
 		console.log(`seeding commentator variation: ${variation.label}`);
 		const variantRun = {...baseRun, commentators: variation.commentators};
-		// Re-open break.html so we have a fresh nodecg client to set the value.
-		await page.goto(`${BASE_URL}/bundles/${BUNDLE}/graphics/break.html`, {
-			waitUntil: "domcontentloaded",
-			timeout: 30000,
-		});
-		await page.waitForFunction(
-			() => typeof (window as {nodecg?: unknown}).nodecg !== "undefined",
-			{timeout: 15000},
-		);
-		await seedReplicants(page, {"current-run": variantRun});
+		await reseed(page, {"current-run": variantRun});
 		for (const layout of commentatorVariationLayouts) {
 			const url = `${BASE_URL}/bundles/${BUNDLE}/graphics/game.html?layout=${layout}`;
 			const out = path.join(
