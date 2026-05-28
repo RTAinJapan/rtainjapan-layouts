@@ -44,7 +44,11 @@ jobs:
           PUPPETEER_SKIP_DOWNLOAD: "true"
       - run: npm run schema-types
       - run: npm run build
-      - run: npx puppeteer browsers install chrome
+      # ロック版 puppeteer 自身のインストーラを実行し、pin された版の Chrome を確実に取得する。
+      # `npx puppeteer ...` は npx が別バージョンの puppeteer を解決することがあり、
+      # 取得した Chrome の版が puppeteer-core の要求する版とずれて
+      # 「Could not find Chrome (ver. ...)」で起動に失敗するため使わない。
+      - run: node node_modules/puppeteer/install.mjs
       - name: Set up NodeCG host and run screenshot regression
         run: npm run screenshot:ci
       - name: Upload screenshots
