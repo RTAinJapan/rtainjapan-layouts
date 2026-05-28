@@ -37,6 +37,11 @@ jobs:
           node-version: 24.x
           cache: "npm"
       - run: npm ci
+        env:
+          # postinstall の自動 Chrome DL を無効化し、ブラウザ取得は下の明示ステップに一本化する。
+          # 自動DLはフォルダだけ作って本体DLが未完になることがあり、その後の install が
+          # 「フォルダは在るが実行ファイルが無い」で失敗するため。
+          PUPPETEER_SKIP_DOWNLOAD: "true"
       - run: npm run schema-types
       - run: npm run build
       - run: npx puppeteer browsers install chrome
