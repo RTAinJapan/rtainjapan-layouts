@@ -16,7 +16,9 @@
 		"test:prettier": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --check",
 		"test:lint": "eslint --ext .ts,.tsx .",
 		"test:types": "tsc -b src/browser src/extension",
-		"test:screenshot": "tsx test/screenshot-graphics.ts",
+		"screenshot": "tsx test/run-screenshot.ts",
+		"screenshot:capture": "tsx test/screenshot-graphics.ts",
+		"screenshot:ci": "tsx test/run-screenshot.ts --ci",
 		"prepare": "simple-git-hooks || true"
 	},
 	"simple-git-hooks": {

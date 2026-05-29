@@ -13,18 +13,59 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        os: [ubuntu-latest, windows-latest]
-      fail-fast: false
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 24.x
           cache: "npm"
       - run: npm ci
-      - run: npm test
+      - run: npm run test:prettier
+      - run: npm run schema-types
+      - run: npm run test:lint
+      - run: npm run test:types
       - run: npm run build
+
+  screenshot:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: "npm"
+      # ダッシュボードは MUI 既定フォント＋システムフォントで日本語を描画するため、
+      # ランナーに日本語フォントが無いと豆腐(□)になる。実運用の操作端末を模して
+      # 日本語フォントを導入する。グラフィクスは Web フォント(@import)を使うので影響しない。
+      - name: Install Japanese fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends fonts-noto-cjk
+          fc-cache -f
+      - run: npm ci
+        env:
+          # ランナー同梱の Chrome を使うので puppeteer の Chrome 自動DLは無効化する。
+          PUPPETEER_SKIP_DOWNLOAD: "true"
+      - run: npm run schema-types
+      - run: npm run build
+      # GitHub ランナーにプリインストールされた Google Chrome を puppeteer に使わせる。
+      # puppeteer は PUPPETEER_EXECUTABLE_PATH があれば DL 版キャッシュを探さず
+      # その実行ファイルで launch するため、Chrome の DL/版ずれ問題を回避できる。
+      - name: Use pre-installed Chrome
+        run: |
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium-browser || command -v chromium)"
+          if [ -z "$CHROME" ]; then echo "No pre-installed Chrome found" >&2; exit 1; fi
+          echo "Using Chrome at: $CHROME"
+          "$CHROME" --version
+          echo "PUPPETEER_EXECUTABLE_PATH=$CHROME" >> "$GITHUB_ENV"
+      - name: Set up NodeCG host and run screenshot regression
+        run: npm run screenshot:ci
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: test/screenshots
+          if-no-files-found: warn
