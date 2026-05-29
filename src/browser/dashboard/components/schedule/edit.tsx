@@ -43,9 +43,9 @@ const RunnerRow = styled("div")({
 // 解説行はカメラ・ゲーム音ch のセルを空 div で埋めて縦位置を揃える。
 const PERSON_GRID_COLUMNS = "repeat(4, minmax(0, 1fr)) 120px 44px 100px 100px";
 
-// 走者=青枠 / 解説=緑枠の枠線色
-const ACCENT_RUNNER = "#1976d2";
-const ACCENT_COMMENTATOR = "#2e7d32";
+// 走者=青枠 / 解説=緑枠の枠線色 (パステル寄りの淡い色)
+const ACCENT_RUNNER = "#90caf9";
+const ACCENT_COMMENTATOR = "#a5d6a7";
 
 // 各人の情報を Paper で囲って 1 行の塊を明確にする。accent で枠色を出し分ける。
 const PersonRow = styled(Paper, {
