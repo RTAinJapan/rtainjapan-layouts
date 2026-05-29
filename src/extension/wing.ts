@@ -20,7 +20,6 @@ import {NodeCG} from "./nodecg";
  *   - audio-config     : 接続先 / ポート / 閾値 / 配信 Main bus
  *   - audio-assignment : current/next run の ch 割り当て (判定は current のみ)
  *   - audio-active     : runners/commentators/games の ON/OFF (nameplate が購読)
- *   - audio-meters     : 監視 ch の最新 dBFS (dashboard 補助表示用、ch 番号 index)
  *   - audio-status     : 接続状態
  *
  * audio-assignment の「次へ」繰り上げは schedule.ts の seekToNextRun() が行う。
@@ -155,14 +154,12 @@ export const wing = (nodecg: NodeCG) => {
 	const audioActiveRep = nodecg.Replicant("audio-active", {
 		defaultValue: {runners: [], commentators: [], games: []},
 	});
-	const metersRep = nodecg.Replicant("audio-meters", {defaultValue: []});
 	const statusRep = nodecg.Replicant("audio-status");
 
 	// --- 起動時リセット ---
-	// 実行時状態 (active/meters/status) は前回値が残ると誤表示の元なのでクリア。
-	// 設定 (config/assignment/decks) は永続値を維持する。
+	// 実行時状態 (active/status) は前回値が残ると誤表示の元なのでクリア。
+	// 設定 (config/assignment) は永続値を維持する。
 	audioActiveRep.value = {runners: [], commentators: [], games: []};
-	metersRep.value = [];
 	statusRep.value = {state: "unconfigured", address: "", lastReceivedAt: null};
 
 	let lastMeterRecv = 0;
@@ -230,9 +227,6 @@ export const wing = (nodecg: NodeCG) => {
 	let subscribedChannels: number[] = [];
 
 	// ---- active 再計算 ----
-	let lastMeterPush = 0;
-	const METER_PUSH_INTERVAL = 100;
-
 	const recomputeActive = () => {
 		const cfg = configRep.value;
 		const thresholdDb = cfg?.thresholdDb ?? -40;
@@ -283,17 +277,6 @@ export const wing = (nodecg: NodeCG) => {
 			commentators: [...micOn.commentators],
 			games,
 		};
-
-		// dashboard 補助: 監視 ch の最新 dBFS を ch 番号 index で公開 (throttle)
-		if (now - lastMeterPush > METER_PUSH_INTERVAL) {
-			lastMeterPush = now;
-			const arr: number[] = [];
-			for (const ch of subscribedChannels) {
-				const m = meterState[ch];
-				if (m) arr[ch] = Math.round(Math.max(m.inputL, m.inputR) * 10) / 10;
-			}
-			metersRep.value = arr;
-		}
 	};
 
 	// ============ 接続マネージャ ============
@@ -505,7 +488,6 @@ export const wing = (nodecg: NodeCG) => {
 				for (const k of micKinds) {
 					micOn[k] = Array(currentAssignment()[k].length).fill(false);
 				}
-				metersRep.value = [];
 				recomputeActive();
 				setStatus("connecting", address);
 			}

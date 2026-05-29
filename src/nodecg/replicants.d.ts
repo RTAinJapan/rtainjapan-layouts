@@ -27,9 +27,7 @@ import {Announcements} from "./generated/announcements";
 import {PlayingMusic} from "./generated/playing-music";
 import {CurrentEvent} from "./generated/current-event";
 import {AudioActive} from "./generated/audio-active";
-import {AudioDecks} from "./generated/audio-decks";
 import {AudioAssignment} from "./generated/audio-assignment";
-import {AudioMeters} from "./generated/audio-meters";
 import {AudioConfig} from "./generated/audio-config";
 import {AudioStatus} from "./generated/audio-status";
 
@@ -86,9 +84,7 @@ type ReplicantMap = {
 	"playing-music": PlayingMusic;
 	"current-event": CurrentEvent;
 	"audio-active": AudioActive;
-	"audio-decks": AudioDecks;
 	"audio-assignment": AudioAssignment;
-	"audio-meters": AudioMeters;
 	"audio-config": AudioConfig;
 	"audio-status": AudioStatus;
 };

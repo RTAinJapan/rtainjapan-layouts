@@ -121,7 +121,8 @@ const emptySlot = (): AudioSlot => ({
 // audio-assignment の current/next スロットを読み書きするフック。
 // 走者/解説の行に統合された ch 入力と、上部の卓セレクターから共有する。
 const useAudioSlot = (edit: "current" | "next" | undefined) => {
-	const decks = useReplicant("audio-decks");
+	const config = useReplicant("audio-config");
+	const decks = config?.decks;
 	const assignment = useReplicant("audio-assignment");
 	const slot = edit ? assignment?.[edit] : undefined;
 	const writeSlot = (patch: Partial<AudioSlot>) => {

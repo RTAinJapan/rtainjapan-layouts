@@ -11,7 +11,6 @@ import {render} from "../../render";
 // 各 run の卓選択・走者/解説 ch 入力は配信担当ダッシュボード (tech) の
 // 「編集：現在/次のゲーム」モーダル側で行う (schedule/edit.tsx の AudioSection)。
 
-const decksRep = nodecg.Replicant("audio-decks");
 const configRep = nodecg.Replicant("audio-config");
 
 const labelStyle: React.CSSProperties = {
@@ -184,7 +183,8 @@ const ConnectionSettings = () => {
 
 // 卓テンプレートの編集（モーダルで卓を選んだときに流し込む初期値）
 const DeckTemplates = () => {
-	const decks = useReplicant("audio-decks");
+	const config = useReplicant("audio-config");
+	const decks = config?.decks;
 
 	const parseCsv = (csv: string): number[] =>
 		csv
@@ -198,9 +198,9 @@ const DeckTemplates = () => {
 		csv: string,
 	) => {
 		const cur = decks?.[d] ?? {runners: [], commentators: [], games: []};
-		decksRep.value = {
-			...(decks ?? {}),
-			[d]: {...cur, [kind]: parseCsv(csv)},
+		configRep.value = {
+			...(config ?? {}),
+			decks: {...(decks ?? {}), [d]: {...cur, [kind]: parseCsv(csv)}},
 		};
 	};
 
