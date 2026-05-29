@@ -303,8 +303,19 @@ const App = () => {
 		setDecksText((t) => ({...t, [d]: {...t[d], [kind]: value}}));
 
 	const confirm = () => {
-		configRep.value = {
-			...draft,
+		// 既知のキーだけで構築して書き込む。draft をそのまま展開すると、
+		// 旧スキーマ時代の残存キーが混ざった場合に additionalProperties:false の
+		// 検証で例外になり確定が中断してしまうため、ホワイトリストで組み立てる。
+		const cleaned: AudioConfig = {
+			address: draft.address ?? "",
+			tcpPort: draft.tcpPort ?? 2222,
+			oscPort: draft.oscPort ?? 2223,
+			meterRecvPort: draft.meterRecvPort ?? 14135,
+			streamingMainIndex: draft.streamingMainIndex ?? 1,
+			thresholdDb: draft.thresholdDb ?? -40,
+			hysteresisDb: draft.hysteresisDb ?? 3,
+			holdMs: draft.holdMs ?? 300,
+			mainSendThresholdDb: draft.mainSendThresholdDb ?? -60,
 			decks: {
 				A: {
 					runners: parseCsv(decksText.A.runners),
@@ -318,6 +329,7 @@ const App = () => {
 				},
 			},
 		};
+		configRep.value = cleaned;
 		setEdit(false);
 	};
 
