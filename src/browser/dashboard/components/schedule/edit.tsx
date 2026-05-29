@@ -36,6 +36,16 @@ const RunnerRow = styled("div")({
 	gap: "8px",
 });
 
+// 走者・解説で列幅を揃えるための共通グリッド行。
+// 列: 名前 / Twitch / Twitter / YouTube (4×等幅) / カメラ / マイクch / ゲーム音ch / 並べ替え
+// 解説行はカメラ・ゲーム音ch のセルを空 div で埋めて縦位置を揃える。
+const PersonRow = styled("div")({
+	display: "grid",
+	gridTemplateColumns: "repeat(4, minmax(0, 1fr)) 120px 100px 100px 44px",
+	gap: "8px",
+	alignItems: "center",
+});
+
 const Switch: React.FC<{defaultValue: boolean; onChange: Function}> = (
 	props,
 ) => {
@@ -164,6 +174,21 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 		});
 	}, []);
 
+	const swapCommentator = useCallback((index1: number, index2: number) => {
+		setRun((run) => {
+			const cs: [Commentator | null, Commentator | null] = [
+				run.commentators[0],
+				run.commentators[1],
+			];
+			if (index1 >= 0 && index1 < 2 && index2 >= 0 && index2 < 2) {
+				const tmp = cs[index1] ?? null;
+				cs[index1] = cs[index2] ?? null;
+				cs[index2] = tmp;
+			}
+			return {...run, commentators: cs};
+		});
+	}, []);
+
 	const updateClicked = useCallback(async () => {
 		if (run) {
 			await nodecg.sendMessage("modifyRun", run);
@@ -225,8 +250,8 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 			label={label}
 			type='number'
 			size='small'
+			fullWidth
 			value={value}
-			style={{width: 96}}
 			onChange={(e) => {
 				const n = parseInt(e.currentTarget.value, 10);
 				onValue(Number.isNaN(n) ? -1 : n);
@@ -308,7 +333,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 					)}
 					{run.runners.map((runner, index) => {
 						return (
-							<RunnerRow key={runner.pk}>
+							<PersonRow key={runner.pk}>
 								<TextField
 									label={`走者${index + 1} 名前`}
 									value={runner.name}
@@ -361,18 +386,16 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 										<VideocamIcon color={"secondary"} />
 									</div>
 								</FormControl>
-								{edit &&
-									audioChField(
-										"マイク ch",
-										audioSlot?.runners?.[index] ?? -1,
-										(v) => setAudioCh("runners", index, v),
-									)}
-								{edit &&
-									audioChField(
-										"ゲーム音 ch",
-										audioSlot?.games?.[index] ?? -1,
-										(v) => setAudioCh("games", index, v),
-									)}
+								{audioChField(
+									"マイク ch",
+									audioSlot?.runners?.[index] ?? -1,
+									(v) => setAudioCh("runners", index, v),
+								)}
+								{audioChField(
+									"ゲーム音 ch",
+									audioSlot?.games?.[index] ?? -1,
+									(v) => setAudioCh("games", index, v),
+								)}
 								<div
 									style={{
 										placeSelf: "center",
@@ -401,7 +424,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 										</IconButton>
 									)}
 								</div>
-							</RunnerRow>
+							</PersonRow>
 						);
 					})}
 
@@ -411,7 +434,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 							name: "",
 						};
 						return (
-							<RunnerRow key={index}>
+							<PersonRow key={index}>
 								<TextField
 									label={`解説${index + 1} 名前`}
 									defaultValue={commentator.name}
@@ -452,14 +475,45 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 										);
 									}}
 								/>
-								{edit &&
-									commentator.name &&
-									audioChField(
-										"マイク ch",
-										audioSlot?.commentators?.[index] ?? -1,
-										(v) => setAudioCh("commentators", index, v),
+								{/* カメラ列は解説に無いので空セルで揃える */}
+								<div />
+								{/* 解説不在でもマイク ch 欄は常に表示し、走者と縦位置を揃える */}
+								{audioChField(
+									"マイク ch",
+									audioSlot?.commentators?.[index] ?? -1,
+									(v) => setAudioCh("commentators", index, v),
+								)}
+								{/* ゲーム音 ch 列は解説に無いので空セル */}
+								<div />
+								<div
+									style={{
+										placeSelf: "center",
+										display: "grid",
+										gridTemplateRows: "1fr 1fr",
+									}}
+								>
+									{index !== 0 && (
+										<IconButton
+											style={{gridRow: "1 / 2"}}
+											onClick={() => {
+												swapCommentator(index, index - 1);
+											}}
+										>
+											<IconUp />
+										</IconButton>
 									)}
-							</RunnerRow>
+									{index !== run.commentators.length - 1 && (
+										<IconButton
+											style={{gridRow: "2 / 3"}}
+											onClick={() => {
+												swapCommentator(index, index + 1);
+											}}
+										>
+											<IconDown />
+										</IconButton>
+									)}
+								</div>
+							</PersonRow>
 						);
 					})}
 
