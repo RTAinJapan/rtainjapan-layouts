@@ -2,14 +2,23 @@ import "../styles/global";
 
 import {useState, useEffect} from "react";
 import CssBaseline from "@mui/material/CssBaseline";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import CheckIcon from "@mui/icons-material/Check";
+import UndoIcon from "@mui/icons-material/Undo";
 import {useReplicant} from "../../use-replicant";
 import {render} from "../../render";
+import type {AudioConfig} from "../../../nodecg/generated/audio-config";
 
 // このパネルは「大会開始前に1回だけ設定して放置」する内容に限定する。
 //   - WING 接続情報 (IP / ポート / 閾値 / 配信 Main bus)
-//   - 卓 (A/B) テンプレートのデフォルト ch
+//   - 卓 (A/B) プリセットのデフォルト ch
 // 各 run の卓選択・走者/解説 ch 入力は配信担当ダッシュボード (tech) の
-// 「編集：現在/次のゲーム」モーダル側で行う (schedule/edit.tsx の AudioSection)。
+// 「編集：現在/次のゲーム」モーダル側で行う (schedule/edit.tsx)。
+//
+// イベント中の誤操作で設定を書き換えないよう、鉛筆アイコンで編集開始 →
+// チェックで確定 (replicant 反映) / Undo で破棄、という編集ロックを設ける。
+// 編集中の入力はすべてローカルのドラフトに溜め、確定時のみ audio-config へ書く。
 
 const configRep = nodecg.Replicant("audio-config");
 
@@ -20,8 +29,38 @@ const labelStyle: React.CSSProperties = {
 	marginBottom: 2,
 };
 
-const ConnectionSettings = () => {
-	const config = useReplicant("audio-config");
+const fmtCsv = (arr?: number[]) => (arr ?? []).join(", ");
+const parseCsv = (csv: string): number[] =>
+	csv
+		.split(",")
+		.map((s) => parseInt(s.trim(), 10))
+		.filter((n) => !Number.isNaN(n));
+
+type DeckText = {runners: string; commentators: string; games: string};
+type DecksText = {A: DeckText; B: DeckText};
+
+const decksToText = (decks?: AudioConfig["decks"]): DecksText => ({
+	A: {
+		runners: fmtCsv(decks?.A?.runners),
+		commentators: fmtCsv(decks?.A?.commentators),
+		games: fmtCsv(decks?.A?.games),
+	},
+	B: {
+		runners: fmtCsv(decks?.B?.runners),
+		commentators: fmtCsv(decks?.B?.commentators),
+		games: fmtCsv(decks?.B?.games),
+	},
+});
+
+const ConnectionSettings = ({
+	value,
+	edit,
+	onPatch,
+}: {
+	value: AudioConfig;
+	edit: boolean;
+	onPatch: (patch: Partial<AudioConfig>) => void;
+}) => {
 	const status = useReplicant("audio-status");
 
 	// 「最終受信から何秒」を動かすため1秒ごとに再描画
@@ -42,13 +81,9 @@ const ConnectionSettings = () => {
 			? {color: "#f59e0b", label: "接続待ち（応答なし）"}
 			: {color: "#9ca3af", label: "未設定"};
 
-	const update = (patch: Partial<NonNullable<typeof config>>) => {
-		configRep.value = {...(config ?? {}), ...patch};
-	};
-
 	const numInput = (
 		label: string,
-		value: number,
+		val: number,
 		fallback: number,
 		onValue: (n: number) => void,
 		parse: (s: string) => number = (s) => parseInt(s, 10),
@@ -57,7 +92,8 @@ const ConnectionSettings = () => {
 			<label style={labelStyle}>{label}</label>
 			<input
 				type='number'
-				value={value}
+				value={val}
+				disabled={!edit}
 				style={{width: "100%"}}
 				onChange={(e) => {
 					const n = parse(e.currentTarget.value);
@@ -84,28 +120,30 @@ const ConnectionSettings = () => {
 				<input
 					type='text'
 					placeholder='192.168.x.x'
-					value={config?.address ?? ""}
+					value={value.address ?? ""}
+					disabled={!edit}
 					style={{width: "100%"}}
-					onChange={(e) => update({address: e.currentTarget.value})}
+					onChange={(e) => onPatch({address: e.currentTarget.value})}
 				/>
 			</div>
-			{numInput("TCP ポート", config?.tcpPort ?? 2222, 2222, (n) =>
-				update({tcpPort: n}),
+			{numInput("TCP ポート", value.tcpPort ?? 2222, 2222, (n) =>
+				onPatch({tcpPort: n}),
 			)}
-			{numInput("OSC ポート", config?.oscPort ?? 2223, 2223, (n) =>
-				update({oscPort: n}),
+			{numInput("OSC ポート", value.oscPort ?? 2223, 2223, (n) =>
+				onPatch({oscPort: n}),
 			)}
 
-			{numInput("受信ポート", config?.meterRecvPort ?? 14135, 14135, (n) =>
-				update({meterRecvPort: n}),
+			{numInput("受信ポート", value.meterRecvPort ?? 14135, 14135, (n) =>
+				onPatch({meterRecvPort: n}),
 			)}
 			<div>
 				<label style={labelStyle}>配信用 Main bus</label>
 				<select
-					value={config?.streamingMainIndex ?? 1}
+					value={value.streamingMainIndex ?? 1}
+					disabled={!edit}
 					style={{width: "100%"}}
 					onChange={(e) =>
-						update({
+						onPatch({
 							streamingMainIndex: parseInt(e.currentTarget.value, 10) || 1,
 						})
 					}
@@ -121,27 +159,27 @@ const ConnectionSettings = () => {
 
 			{numInput(
 				"閾値 mic (dBFS)",
-				config?.thresholdDb ?? -40,
+				value.thresholdDb ?? -40,
 				-40,
-				(n) => update({thresholdDb: n}),
+				(n) => onPatch({thresholdDb: n}),
 				parseFloat,
 			)}
 			{numInput(
 				"ヒステリシス",
-				config?.hysteresisDb ?? 3,
+				value.hysteresisDb ?? 3,
 				3,
-				(n) => update({hysteresisDb: n}),
+				(n) => onPatch({hysteresisDb: n}),
 				parseFloat,
 			)}
-			{numInput("hold (ms)", config?.holdMs ?? 300, 300, (n) =>
-				update({holdMs: n}),
+			{numInput("hold (ms)", value.holdMs ?? 300, 300, (n) =>
+				onPatch({holdMs: n}),
 			)}
 
 			{numInput(
 				"閾値 game (dB)",
-				config?.mainSendThresholdDb ?? -60,
+				value.mainSendThresholdDb ?? -60,
 				-60,
-				(n) => update({mainSendThresholdDb: n}),
+				(n) => onPatch({mainSendThresholdDb: n}),
 				parseFloat,
 			)}
 			<div style={{gridColumn: "2 / 4"}} />
@@ -181,33 +219,21 @@ const ConnectionSettings = () => {
 	);
 };
 
-// 卓テンプレートの編集（モーダルで卓を選んだときに流し込む初期値）
-const DeckTemplates = () => {
-	const config = useReplicant("audio-config");
-	const decks = config?.decks;
-
-	const parseCsv = (csv: string): number[] =>
-		csv
-			.split(",")
-			.map((s) => parseInt(s.trim(), 10))
-			.filter((n) => !Number.isNaN(n));
-
-	const setTemplate = (
-		d: "A" | "B",
-		kind: "runners" | "commentators" | "games",
-		csv: string,
-	) => {
-		const cur = decks?.[d] ?? {runners: [], commentators: [], games: []};
-		configRep.value = {
-			...(config ?? {}),
-			decks: {...(decks ?? {}), [d]: {...cur, [kind]: parseCsv(csv)}},
-		};
-	};
-
-	const fmt = (arr?: number[]) => (arr ?? []).join(", ");
-
+// 卓 (A/B) プリセットの編集。編集中は decksText(文字列バッファ)を表示、
+// 非編集中は replicant の値をそのまま表示する。
+const DeckTemplates = ({
+	readDecks,
+	decksText,
+	edit,
+	onText,
+}: {
+	readDecks: AudioConfig["decks"];
+	decksText: DecksText;
+	edit: boolean;
+	onText: (d: "A" | "B", kind: keyof DeckText, value: string) => void;
+}) => {
 	const rows: Array<{
-		kind: "runners" | "commentators" | "games";
+		kind: keyof DeckText;
 		label: string;
 		placeholder: string;
 	}> = [
@@ -219,7 +245,7 @@ const DeckTemplates = () => {
 	return (
 		<details style={{marginTop: 6}} open>
 			<summary style={{cursor: "pointer", fontSize: 13, opacity: 0.7}}>
-				卓テンプレート（デフォルト初期値）
+				卓プリセット（デフォルト初期値）
 			</summary>
 			<div style={{marginTop: 8, fontSize: 12, opacity: 0.7}}>
 				走者・解説のマイク ch とゲーム音 ch を WING channel-strip 番号 (1..40)
@@ -227,7 +253,7 @@ const DeckTemplates = () => {
 			</div>
 			{(["A", "B"] as const).map((d) => (
 				<div key={d} style={{marginTop: 6}}>
-					<label style={labelStyle}>{d}卓テンプレート</label>
+					<label style={labelStyle}>{d}卓プリセット</label>
 					<div
 						style={{display: "grid", gridTemplateColumns: "60px 1fr", gap: 6}}
 					>
@@ -238,10 +264,15 @@ const DeckTemplates = () => {
 								</div>
 								<input
 									type='text'
-									defaultValue={fmt(decks?.[d]?.[r.kind])}
+									value={
+										edit
+											? decksText[d][r.kind]
+											: fmtCsv(readDecks?.[d]?.[r.kind])
+									}
+									disabled={!edit}
 									placeholder={r.placeholder}
 									style={{width: "100%"}}
-									onBlur={(e) => setTemplate(d, r.kind, e.currentTarget.value)}
+									onChange={(e) => onText(d, r.kind, e.currentTarget.value)}
 								/>
 							</div>
 						))}
@@ -253,10 +284,88 @@ const DeckTemplates = () => {
 };
 
 const App = () => {
+	const config = useReplicant("audio-config");
+	const [edit, setEdit] = useState(false);
+	const [draft, setDraft] = useState<AudioConfig>({});
+	const [decksText, setDecksText] = useState<DecksText>(decksToText());
+
+	// 非編集中は replicant の最新値をドラフトに同期する。
+	// 編集中は外部更新でドラフトを上書きしない。
+	useEffect(() => {
+		if (!edit) {
+			setDraft(config ?? {});
+			setDecksText(decksToText(config?.decks));
+		}
+	}, [config, edit]);
+
+	const patch = (p: Partial<AudioConfig>) => setDraft((d) => ({...d, ...p}));
+	const setText = (d: "A" | "B", kind: keyof DeckText, value: string) =>
+		setDecksText((t) => ({...t, [d]: {...t[d], [kind]: value}}));
+
+	const confirm = () => {
+		configRep.value = {
+			...draft,
+			decks: {
+				A: {
+					runners: parseCsv(decksText.A.runners),
+					commentators: parseCsv(decksText.A.commentators),
+					games: parseCsv(decksText.A.games),
+				},
+				B: {
+					runners: parseCsv(decksText.B.runners),
+					commentators: parseCsv(decksText.B.commentators),
+					games: parseCsv(decksText.B.games),
+				},
+			},
+		};
+		setEdit(false);
+	};
+
+	const cancel = () => {
+		setDraft(config ?? {});
+		setDecksText(decksToText(config?.decks));
+		setEdit(false);
+	};
+
+	const value = edit ? draft : config ?? {};
+
 	return (
 		<div style={{padding: 12, fontFamily: "sans-serif"}}>
-			<ConnectionSettings />
-			<DeckTemplates />
+			<div
+				style={{
+					display: "flex",
+					alignItems: "center",
+					gap: 8,
+					marginBottom: 8,
+				}}
+			>
+				<strong style={{fontSize: 14}}>WING 設定</strong>
+				<span style={{fontSize: 12, opacity: 0.6}}>
+					{edit ? "編集中（確定で反映）" : "ロック中（鉛筆で編集）"}
+				</span>
+				<span style={{marginLeft: "auto"}} />
+				{edit ? (
+					<>
+						<IconButton size='small' title='確定' onClick={confirm}>
+							<CheckIcon />
+						</IconButton>
+						<IconButton size='small' title='取消' onClick={cancel}>
+							<UndoIcon />
+						</IconButton>
+					</>
+				) : (
+					<IconButton size='small' title='編集' onClick={() => setEdit(true)}>
+						<EditIcon />
+					</IconButton>
+				)}
+			</div>
+			<ConnectionSettings value={value} edit={edit} onPatch={patch} />
+			<DeckTemplates
+				readDecks={config?.decks}
+				decksText={decksText}
+				edit={edit}
+				onText={setText}
+			/>
 		</div>
 	);
 };
