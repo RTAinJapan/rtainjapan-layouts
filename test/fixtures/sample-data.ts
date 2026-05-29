@@ -77,6 +77,27 @@ export const commentatorVariationLayouts: string[] = [
 	"16x9-4", // VerticalRace: 4 runner race
 ];
 
+// 発光バリエーション撮影。今回追加した「走者マイク発光 / 解説マイク発光 /
+// ゲーム音 on-air 発光」を、nameplate のバリエーションを網羅する代表
+// レイアウトで撮る。全 graphics レイアウトの網羅は不要で、nameplate の
+// 見た目の種類 (solo=two-row / race-horizontal=single / race-vertical=two-row、
+// および commentator=two-row) を押さえることが目的。
+//   runners[i]      : 走者 i のマイク発光 (runner アイコン点灯)
+//   games[i]        : 走者 i のゲーム音 on-air (sound アイコン点灯、race のみ)
+//   commentators[i] : 解説 i のマイク発光 (commentary アイコン点灯)
+// 4 走者 / 2 解説に対し、mic のみ・game のみ・両方・無し・解説 mic を1画面で混在
+// させ、各 nameplate の発光状態を一度に確認できるようにする。
+export const audioGlowState = {
+	runners: [true, false, true, false],
+	commentators: [true, false],
+	games: [false, true, true, false],
+};
+export const audioGlowLayouts: string[] = [
+	"16x9-1", // solo: runner=two-row / commentator=two-row (sound アイコンは出ない)
+	"16x9-2", // race-horizontal: runner=single-row + sound アイコン
+	"16x9-4", // race-vertical: runner=two-row + sound アイコン
+];
+
 // game-scene を「start (= 走行中)」状態と「finished (= 完走後)」状態の両方で
 // 撮るための timer fixture。
 //
