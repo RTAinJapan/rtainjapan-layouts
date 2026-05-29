@@ -47,7 +47,7 @@
 		"obs-websocket-js": "^5.0.2",
 		"react-transition-group": "^4.4.5",
 		"tslib": "^2.5.0",
-		"uuid": "^9.0.0",
+		"uuid": "^14.0.0",
 		"ws": "^8.13.0"
 	},
 	"devDependencies": {
