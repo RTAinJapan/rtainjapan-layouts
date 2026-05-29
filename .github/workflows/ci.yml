@@ -36,6 +36,14 @@ jobs:
         with:
           node-version: 24.x
           cache: "npm"
+      # ダッシュボードは MUI 既定フォント＋システムフォントで日本語を描画するため、
+      # ランナーに日本語フォントが無いと豆腐(□)になる。実運用の操作端末を模して
+      # 日本語フォントを導入する。グラフィクスは Web フォント(@import)を使うので影響しない。
+      - name: Install Japanese fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends fonts-noto-cjk
+          fc-cache -f
       - run: npm ci
         env:
           # ランナー同梱の Chrome を使うので puppeteer の Chrome 自動DLは無効化する。
