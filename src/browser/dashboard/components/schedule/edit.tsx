@@ -437,14 +437,14 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 							<PersonRow key={index}>
 								<TextField
 									label={`解説${index + 1} 名前`}
-									defaultValue={commentator.name}
+									value={commentator.name ?? ""}
 									onChange={(e) => {
 										updateCommentatorInfo(index, "name", e.currentTarget.value);
 									}}
 								/>
 								<TextField
 									label={`解説${index + 1} Twitch`}
-									defaultValue={commentator.twitch}
+									value={commentator.twitch ?? ""}
 									onChange={(e) => {
 										updateCommentatorInfo(
 											index,
@@ -455,7 +455,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 								/>
 								<TextField
 									label={`解説${index + 1} Twitter`}
-									defaultValue={commentator.twitter}
+									value={commentator.twitter ?? ""}
 									onChange={(e) => {
 										updateCommentatorInfo(
 											index,
@@ -466,7 +466,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 								/>
 								<TextField
 									label={`解説${index + 1} YouTube`}
-									defaultValue={commentator.youtube}
+									value={commentator.youtube ?? ""}
 									onChange={(e) => {
 										updateCommentatorInfo(
 											index,
