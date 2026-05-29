@@ -170,7 +170,7 @@
 			},
 			{
 				"name": "wing-audio",
-				"title": "音量発光 (WING)",
+				"title": "WING連携",
 				"file": "wing-audio.html",
 				"width": 4,
 				"headerColor": "#00BEBE",

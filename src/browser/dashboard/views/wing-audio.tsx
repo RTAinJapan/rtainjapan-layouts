@@ -10,7 +10,7 @@ import {useReplicant} from "../../use-replicant";
 import {render} from "../../render";
 import type {AudioConfig} from "../../../nodecg/generated/audio-config";
 
-// このパネルは「大会開始前に1回だけ設定して放置」する内容に限定する。
+// このパネルは「イベント開始前に1回だけ設定して放置」する内容に限定する。
 //   - WING 接続情報 (IP / ポート / 閾値 / 配信 Main bus)
 //   - 卓 (A/B) プリセットのデフォルト ch
 // 各 run の卓選択・走者/解説 ch 入力は配信担当ダッシュボード (tech) の
@@ -237,19 +237,18 @@ const DeckTemplates = ({
 		label: string;
 		placeholder: string;
 	}> = [
-		{kind: "runners", label: "走者", placeholder: "1, 2, 3, 4"},
-		{kind: "commentators", label: "解説", placeholder: "5, 6"},
-		{kind: "games", label: "ゲーム音", placeholder: "9, 11, 13, 15"},
+		{kind: "runners", label: "走者", placeholder: "1, 2, ..."},
+		{kind: "commentators", label: "解説", placeholder: "5, ..."},
+		{kind: "games", label: "ゲーム音", placeholder: "9, 11, ..."},
 	];
 
 	return (
 		<details style={{marginTop: 6}} open>
 			<summary style={{cursor: "pointer", fontSize: 13, opacity: 0.7}}>
-				卓プリセット（デフォルト初期値）
+				卓プリセット
 			</summary>
 			<div style={{marginTop: 8, fontSize: 12, opacity: 0.7}}>
-				走者・解説のマイク ch とゲーム音 ch を WING channel-strip 番号 (1..40)
-				でカンマ区切り入力。モーダルで卓を選ぶとこの値が流し込まれる。
+				WINGのチャンネル番号 (1..40)をカンマ区切りで入力
 			</div>
 			{(["A", "B"] as const).map((d) => (
 				<div key={d} style={{marginTop: 6}}>
@@ -351,10 +350,7 @@ const App = () => {
 					marginBottom: 8,
 				}}
 			>
-				<strong style={{fontSize: 14}}>WING 設定</strong>
-				<span style={{fontSize: 12, opacity: 0.6}}>
-					{edit ? "編集中（確定で反映）" : "ロック中（鉛筆で編集）"}
-				</span>
+				<span style={{fontSize: 12, opacity: 0.6}}>{edit ? "編集中" : ""}</span>
 				<span style={{marginLeft: "auto"}} />
 				{edit ? (
 					<>
