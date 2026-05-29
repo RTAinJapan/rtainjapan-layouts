@@ -37,11 +37,12 @@ const RunnerRow = styled("div")({
 });
 
 // 走者・解説で列幅を揃えるための共通グリッド行。
-// 列: 名前 / Twitch / Twitter / YouTube (4×等幅) / カメラ / マイクch / ゲーム音ch / 並べ替え
+// 列: 名前 / Twitch / Twitter / YouTube (4×等幅) / カメラ / 並べ替え / マイクch / ゲーム音ch
+// 並べ替えは人物情報側の操作なのでオーディオ列の左に置く。
 // 解説行はカメラ・ゲーム音ch のセルを空 div で埋めて縦位置を揃える。
 const PersonRow = styled("div")({
 	display: "grid",
-	gridTemplateColumns: "repeat(4, minmax(0, 1fr)) 120px 100px 100px 44px",
+	gridTemplateColumns: "repeat(4, minmax(0, 1fr)) 120px 44px 100px 100px",
 	gap: "8px",
 	alignItems: "center",
 });
@@ -386,16 +387,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 										<VideocamIcon color={"secondary"} />
 									</div>
 								</FormControl>
-								{audioChField(
-									"マイク ch",
-									audioSlot?.runners?.[index] ?? -1,
-									(v) => setAudioCh("runners", index, v),
-								)}
-								{audioChField(
-									"ゲーム音 ch",
-									audioSlot?.games?.[index] ?? -1,
-									(v) => setAudioCh("games", index, v),
-								)}
+								{/* 並べ替えは人物情報側の操作。オーディオ列の左に配置 */}
 								<div
 									style={{
 										placeSelf: "center",
@@ -424,6 +416,16 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 										</IconButton>
 									)}
 								</div>
+								{audioChField(
+									"マイク ch",
+									audioSlot?.runners?.[index] ?? -1,
+									(v) => setAudioCh("runners", index, v),
+								)}
+								{audioChField(
+									"ゲーム音 ch",
+									audioSlot?.games?.[index] ?? -1,
+									(v) => setAudioCh("games", index, v),
+								)}
 							</PersonRow>
 						);
 					})}
@@ -477,14 +479,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 								/>
 								{/* カメラ列は解説に無いので空セルで揃える */}
 								<div />
-								{/* 解説不在でもマイク ch 欄は常に表示し、走者と縦位置を揃える */}
-								{audioChField(
-									"マイク ch",
-									audioSlot?.commentators?.[index] ?? -1,
-									(v) => setAudioCh("commentators", index, v),
-								)}
-								{/* ゲーム音 ch 列は解説に無いので空セル */}
-								<div />
+								{/* 並べ替えは人物情報側の操作。オーディオ列の左に配置 */}
 								<div
 									style={{
 										placeSelf: "center",
@@ -513,6 +508,14 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 										</IconButton>
 									)}
 								</div>
+								{/* 解説不在でもマイク ch 欄は常に表示し、走者と縦位置を揃える */}
+								{audioChField(
+									"マイク ch",
+									audioSlot?.commentators?.[index] ?? -1,
+									(v) => setAudioCh("commentators", index, v),
+								)}
+								{/* ゲーム音 ch 列は解説に無いので空セル */}
+								<div />
 							</PersonRow>
 						);
 					})}
