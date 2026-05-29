@@ -3,6 +3,7 @@ import FormLabel from "@mui/material/FormLabel";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
+import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import TypoGraphy from "@mui/material/Typography";
 import React, {FC, useCallback, useEffect, useState} from "react";
@@ -36,16 +37,29 @@ const RunnerRow = styled("div")({
 	gap: "8px",
 });
 
-// 走者・解説で列幅を揃えるための共通グリッド行。
+// 走者・解説で列幅を揃えるための共通グリッド列定義。
 // 列: 名前 / Twitch / Twitter / YouTube (4×等幅) / カメラ / 並べ替え / マイクch / ゲーム音ch
 // 並べ替えは人物情報側の操作なのでオーディオ列の左に置く。
 // 解説行はカメラ・ゲーム音ch のセルを空 div で埋めて縦位置を揃える。
-const PersonRow = styled("div")({
+const PERSON_GRID_COLUMNS = "repeat(4, minmax(0, 1fr)) 120px 44px 100px 100px";
+
+// 走者=青枠 / 解説=緑枠の枠線色
+const ACCENT_RUNNER = "#1976d2";
+const ACCENT_COMMENTATOR = "#2e7d32";
+
+// 各人の情報を Paper で囲って 1 行の塊を明確にする。accent で枠色を出し分ける。
+const PersonRow = styled(Paper, {
+	shouldForwardProp: (prop) => prop !== "accent",
+})<{accent: string}>(({accent}) => ({
 	display: "grid",
-	gridTemplateColumns: "repeat(4, minmax(0, 1fr)) 120px 44px 100px 100px",
+	gridTemplateColumns: PERSON_GRID_COLUMNS,
 	gap: "8px",
 	alignItems: "center",
-});
+	padding: "8px",
+	border: `2px solid ${accent}`,
+	borderRadius: "8px",
+	boxShadow: "none",
+}));
 
 const Switch: React.FC<{defaultValue: boolean; onChange: Function}> = (
 	props,
@@ -305,20 +319,37 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 							}}
 						/>
 					</RunnerRow>
-					{/* オーディオ卓選択 (右上)。選ぶと各人の行 ch 欄にテンプレを流し込む */}
+					{/* オーディオ卓選択。ドロップダウンの左端をマイク ch 列に揃える。
+					    (Paper の枠 2px + padding 8px = 10px ぶん左右に padding を入れて
+					    各行の内側グリッドと列位置を一致させる) */}
 					{edit && (
 						<div
 							style={{
-								display: "flex",
-								justifyContent: "flex-end",
-								alignItems: "center",
+								display: "grid",
+								gridTemplateColumns: PERSON_GRID_COLUMNS,
 								gap: 8,
-								flexWrap: "wrap",
+								alignItems: "center",
+								padding: "0 10px",
+								boxSizing: "border-box",
 							}}
 						>
-							<TypoGraphy variant='body2'>オーディオ卓:</TypoGraphy>
+							<div
+								style={{
+									gridColumn: "1 / 7",
+									display: "flex",
+									justifyContent: "flex-end",
+									alignItems: "center",
+									gap: 8,
+								}}
+							>
+								<TypoGraphy variant='caption' style={{opacity: 0.6}}>
+									WING channel-strip 番号 / -1 = 未割当
+								</TypoGraphy>
+								<TypoGraphy variant='body2'>オーディオ卓:</TypoGraphy>
+							</div>
 							<select
 								value={audioSlot?.deck ?? ""}
+								style={{gridColumn: "7 / 8", width: "100%"}}
 								onChange={(e) =>
 									applyAudioDeck(e.currentTarget.value as "A" | "B" | "")
 								}
@@ -327,14 +358,11 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 								<option value='A'>A卓</option>
 								<option value='B'>B卓</option>
 							</select>
-							<TypoGraphy variant='caption' style={{opacity: 0.6}}>
-								WING channel-strip 番号 / -1 = 未割当
-							</TypoGraphy>
 						</div>
 					)}
 					{run.runners.map((runner, index) => {
 						return (
-							<PersonRow key={runner.pk}>
+							<PersonRow key={runner.pk} accent={ACCENT_RUNNER} elevation={0}>
 								<TextField
 									label={`走者${index + 1} 名前`}
 									value={runner.name}
@@ -436,7 +464,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 							name: "",
 						};
 						return (
-							<PersonRow key={index}>
+							<PersonRow key={index} accent={ACCENT_COMMENTATOR} elevation={0}>
 								<TextField
 									label={`解説${index + 1} 名前`}
 									value={commentator.name ?? ""}
