@@ -131,6 +131,28 @@ const reseed = async (page: Page, data: Record<string, unknown>) => {
 	await seedReplicants(page, data);
 };
 
+// Wait until the page's web fonts (the Google Fonts pulled in via @import)
+// have finished downloading. The layout uses `display=swap`, so the browser
+// first paints a fallback face and only swaps in the real font once it
+// arrives — capturing before that yields the wrong typeface (or tofu boxes
+// for Japanese glyphs). Force the faces to load, then wait for the set to
+// settle. Best-effort: never let font loading hang or fail the capture.
+const FONT_FAMILIES = ["M PLUS 1p", "Kiwi Maru", "Chivo"];
+const waitForFonts = async (page: Page) => {
+	try {
+		await page.evaluate(async (families: string[]) => {
+			await Promise.all(
+				families.map((f) =>
+					document.fonts.load(`16px "${f}"`).catch(() => undefined),
+				),
+			);
+			await document.fonts.ready;
+		}, FONT_FAMILIES);
+	} catch {
+		/* document.fonts unsupported or evaluation failed — ignore */
+	}
+};
+
 const shootUrl = async (
 	page: Page,
 	url: string,
@@ -145,6 +167,8 @@ const shootUrl = async (
 	});
 	// Give React + replicant subscriptions time to render.
 	await sleep(2500);
+	// Ensure web fonts are applied before capturing.
+	await waitForFonts(page);
 	await page.screenshot({path: outputPath, fullPage: false});
 	console.log(`saved ${path.relative(process.cwd(), outputPath)}`);
 };
@@ -273,6 +297,7 @@ async function main() {
 		});
 		// Wait for the dashboard web components to register and panels to mount.
 		await sleep(5000);
+		await waitForFonts(page);
 		let lastHash = "";
 		for (const panel of dashboardPanels) {
 			if (panel.hash !== lastHash) {
