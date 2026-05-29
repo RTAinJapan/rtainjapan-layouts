@@ -93,27 +93,31 @@ const emptySlot = (): AudioSlot => ({
 	games: [],
 });
 
-// 走者ごとのマイク/ゲーム音 ch、解説ごとのマイク ch を audio-assignment の
-// current / next スロットに直接書き込むセクション。run の data ではなく
-// audio-assignment replicant を更新する (発光の対象は audio-assignment が真)。
-const AudioSection: FC<{
-	edit: "current" | "next";
-	runners: Runner[];
-	commentators: (Commentator | null)[];
-}> = ({edit, runners, commentators}) => {
+// audio-assignment の current/next スロットを読み書きするフック。
+// state は replicant に集約し、卓セレクターと ch 入力行で共有する。
+const useAudioSlot = (edit: "current" | "next") => {
 	const decks = useReplicant("audio-decks");
 	const assignment = useReplicant("audio-assignment");
 	const slot = assignment?.[edit];
-	const presentCommentators = commentators.filter((c): c is Commentator =>
-		Boolean(c && c.name),
-	);
-
 	const writeSlot = (patch: Partial<AudioSlot>) => {
 		const cur = assignment ?? {};
 		const base = cur[edit] ?? emptySlot();
 		assignmentRep.value = {...cur, [edit]: {...base, ...patch}};
 	};
+	return {decks, slot, writeSlot};
+};
 
+const presentOf = (commentators: (Commentator | null)[]) =>
+	commentators.filter((c): c is Commentator => Boolean(c && c.name));
+
+// 卓 (A/B) セレクター。モーダル上部に配置。選ぶとテンプレを流し込む。
+const AudioDeckSelect: FC<{
+	edit: "current" | "next";
+	runners: Runner[];
+	commentators: (Commentator | null)[];
+}> = ({edit, runners, commentators}) => {
+	const {decks, slot, writeSlot} = useAudioSlot(edit);
+	const presentCommentators = presentOf(commentators);
 	const applyDeck = (d: "A" | "B" | "") => {
 		if (d === "") {
 			writeSlot({deck: null});
@@ -129,6 +133,32 @@ const AudioSection: FC<{
 			),
 		});
 	};
+	return (
+		<div style={{display: "flex", alignItems: "center", gap: 8}}>
+			<TypoGraphy variant='body2'>オーディオ卓:</TypoGraphy>
+			<select
+				value={slot?.deck ?? ""}
+				onChange={(e) => applyDeck(e.currentTarget.value as "A" | "B" | "")}
+			>
+				<option value=''>（未選択）</option>
+				<option value='A'>A卓</option>
+				<option value='B'>B卓</option>
+			</select>
+			<TypoGraphy variant='caption' style={{opacity: 0.6}}>
+				選ぶと下のオーディオ欄にテンプレを流し込み（個別に上書き可）
+			</TypoGraphy>
+		</div>
+	);
+};
+
+// 走者/解説ごとの ch 入力。1人 = 1行のコンパクト表示。
+const AudioPersonRows: FC<{
+	edit: "current" | "next";
+	runners: Runner[];
+	commentators: (Commentator | null)[];
+}> = ({edit, runners, commentators}) => {
+	const {slot, writeSlot} = useAudioSlot(edit);
+	const presentCommentators = presentOf(commentators);
 
 	const setCh = (
 		kind: "runners" | "commentators" | "games",
@@ -156,12 +186,32 @@ const AudioSection: FC<{
 			type='number'
 			size='small'
 			value={value}
-			style={{width: 120}}
+			style={{width: 110}}
 			onChange={(e) => {
 				const n = parseInt(e.currentTarget.value, 10);
 				onValue(Number.isNaN(n) ? -1 : n);
 			}}
 		/>
+	);
+
+	const personRow = (key: string, name: string, fields: React.ReactNode) => (
+		<div
+			key={key}
+			style={{display: "flex", alignItems: "center", gap: 12, minHeight: 48}}
+		>
+			<div
+				style={{
+					width: 180,
+					overflow: "hidden",
+					textOverflow: "ellipsis",
+					whiteSpace: "nowrap",
+				}}
+				title={name}
+			>
+				{name}
+			</div>
+			{fields}
+		</div>
 	);
 
 	return (
@@ -171,41 +221,30 @@ const AudioSection: FC<{
 					オーディオ（WING channel-strip 番号 / -1 = 未割当）
 				</TypoGraphy>
 			</FormLabel>
-			<div style={{display: "grid", gridAutoFlow: "row", gap: 8, marginTop: 4}}>
-				<div style={{display: "flex", alignItems: "center", gap: 8}}>
-					<TypoGraphy variant='body2'>卓:</TypoGraphy>
-					<select
-						value={slot?.deck ?? ""}
-						onChange={(e) => applyDeck(e.currentTarget.value as "A" | "B" | "")}
-					>
-						<option value=''>（未選択）</option>
-						<option value='A'>A卓</option>
-						<option value='B'>B卓</option>
-					</select>
-				</div>
-				{runners.map((r, i) => (
-					<RunnerRow key={`r${i}`}>
-						<TypoGraphy variant='body2' style={{alignSelf: "center"}}>
-							走者{i + 1} {r.name}
-						</TypoGraphy>
-						{chField("マイク ch", slot?.runners?.[i] ?? -1, (v) =>
-							setCh("runners", i, v),
-						)}
-						{chField("ゲーム音 ch", slot?.games?.[i] ?? -1, (v) =>
-							setCh("games", i, v),
-						)}
-					</RunnerRow>
-				))}
-				{presentCommentators.map((c, i) => (
-					<RunnerRow key={`c${i}`}>
-						<TypoGraphy variant='body2' style={{alignSelf: "center"}}>
-							解説{i + 1} {c.name}
-						</TypoGraphy>
-						{chField("マイク ch", slot?.commentators?.[i] ?? -1, (v) =>
+			<div style={{display: "grid", gridAutoFlow: "row", gap: 4, marginTop: 4}}>
+				{runners.map((r, i) =>
+					personRow(
+						`r${i}`,
+						`走者${i + 1} ${r.name}`,
+						<>
+							{chField("マイク ch", slot?.runners?.[i] ?? -1, (v) =>
+								setCh("runners", i, v),
+							)}
+							{chField("ゲーム音 ch", slot?.games?.[i] ?? -1, (v) =>
+								setCh("games", i, v),
+							)}
+						</>,
+					),
+				)}
+				{presentCommentators.map((c, i) =>
+					personRow(
+						`c${i}`,
+						`解説${i + 1} ${c.name}`,
+						chField("マイク ch", slot?.commentators?.[i] ?? -1, (v) =>
 							setCh("commentators", i, v),
-						)}
-					</RunnerRow>
-				))}
+						),
+					),
+				)}
 			</div>
 		</FormControl>
 	);
@@ -325,6 +364,14 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 							}}
 						/>
 					</RunnerRow>
+					{/* オーディオ卓選択 (run 情報の直下、上部に配置) */}
+					{edit && (
+						<AudioDeckSelect
+							edit={edit}
+							runners={run.runners}
+							commentators={run.commentators}
+						/>
+					)}
 					{run.runners.map((runner, index) => {
 						return (
 							<RunnerRow key={runner.pk}>
@@ -463,9 +510,9 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 						);
 					})}
 
-					{/* オーディオ (WING ch 割り当て) — audio-assignment を直接更新 */}
+					{/* オーディオ ch 入力 (1人=1行)。卓選択は上部の AudioDeckSelect。 */}
 					{edit && (
-						<AudioSection
+						<AudioPersonRows
 							edit={edit}
 							runners={run.runners}
 							commentators={run.commentators}
