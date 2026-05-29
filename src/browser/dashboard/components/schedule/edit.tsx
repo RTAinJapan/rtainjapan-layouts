@@ -342,10 +342,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 									gap: 8,
 								}}
 							>
-								<TypoGraphy variant='caption' style={{opacity: 0.6}}>
-									WING channel-strip 番号 / -1 = 未割当
-								</TypoGraphy>
-								<TypoGraphy variant='body2'>オーディオ卓:</TypoGraphy>
+								<TypoGraphy variant='body2'>卓プリセット:</TypoGraphy>
 							</div>
 							<select
 								value={audioSlot?.deck ?? ""}
