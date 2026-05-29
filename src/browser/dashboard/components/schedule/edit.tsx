@@ -8,6 +8,7 @@ import TypoGraphy from "@mui/material/Typography";
 import React, {FC, useCallback, useEffect, useState} from "react";
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles";
 import {Commentator, Run, Runner} from "../../../../nodecg/replicants";
+import {useReplicant} from "../../../use-replicant";
 import MuiSwitch from "@mui/material/Switch";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
@@ -76,6 +77,139 @@ const theme = createTheme({
 		},
 	},
 });
+
+const assignmentRep = nodecg.Replicant("audio-assignment");
+
+type AudioSlot = {
+	deck: "A" | "B" | null;
+	runners: number[];
+	commentators: number[];
+	games: number[];
+};
+const emptySlot = (): AudioSlot => ({
+	deck: null,
+	runners: [],
+	commentators: [],
+	games: [],
+});
+
+// 走者ごとのマイク/ゲーム音 ch、解説ごとのマイク ch を audio-assignment の
+// current / next スロットに直接書き込むセクション。run の data ではなく
+// audio-assignment replicant を更新する (発光の対象は audio-assignment が真)。
+const AudioSection: FC<{
+	edit: "current" | "next";
+	runners: Runner[];
+	commentators: (Commentator | null)[];
+}> = ({edit, runners, commentators}) => {
+	const decks = useReplicant("audio-decks");
+	const assignment = useReplicant("audio-assignment");
+	const slot = assignment?.[edit];
+	const presentCommentators = commentators.filter((c): c is Commentator =>
+		Boolean(c && c.name),
+	);
+
+	const writeSlot = (patch: Partial<AudioSlot>) => {
+		const cur = assignment ?? {};
+		const base = cur[edit] ?? emptySlot();
+		assignmentRep.value = {...cur, [edit]: {...base, ...patch}};
+	};
+
+	const applyDeck = (d: "A" | "B" | "") => {
+		if (d === "") {
+			writeSlot({deck: null});
+			return;
+		}
+		const tmpl = decks?.[d] ?? {runners: [], commentators: [], games: []};
+		writeSlot({
+			deck: d,
+			runners: runners.map((_, i) => tmpl.runners?.[i] ?? -1),
+			games: runners.map((_, i) => tmpl.games?.[i] ?? -1),
+			commentators: presentCommentators.map(
+				(_, i) => tmpl.commentators?.[i] ?? -1,
+			),
+		});
+	};
+
+	const setCh = (
+		kind: "runners" | "commentators" | "games",
+		idx: number,
+		value: number,
+	) => {
+		const len =
+			kind === "commentators" ? presentCommentators.length : runners.length;
+		const curArr = slot?.[kind] ?? [];
+		const next: number[] = [];
+		for (let i = 0; i < len; i++) next[i] = curArr[i] ?? -1;
+		next[idx] = value;
+		if (kind === "runners") writeSlot({runners: next});
+		else if (kind === "games") writeSlot({games: next});
+		else writeSlot({commentators: next});
+	};
+
+	const chField = (
+		label: string,
+		value: number,
+		onValue: (n: number) => void,
+	) => (
+		<TextField
+			label={label}
+			type='number'
+			size='small'
+			value={value}
+			style={{width: 120}}
+			onChange={(e) => {
+				const n = parseInt(e.currentTarget.value, 10);
+				onValue(Number.isNaN(n) ? -1 : n);
+			}}
+		/>
+	);
+
+	return (
+		<FormControl>
+			<FormLabel>
+				<TypoGraphy variant='caption'>
+					オーディオ（WING channel-strip 番号 / -1 = 未割当）
+				</TypoGraphy>
+			</FormLabel>
+			<div style={{display: "grid", gridAutoFlow: "row", gap: 8, marginTop: 4}}>
+				<div style={{display: "flex", alignItems: "center", gap: 8}}>
+					<TypoGraphy variant='body2'>卓:</TypoGraphy>
+					<select
+						value={slot?.deck ?? ""}
+						onChange={(e) => applyDeck(e.currentTarget.value as "A" | "B" | "")}
+					>
+						<option value=''>（未選択）</option>
+						<option value='A'>A卓</option>
+						<option value='B'>B卓</option>
+					</select>
+				</div>
+				{runners.map((r, i) => (
+					<RunnerRow key={`r${i}`}>
+						<TypoGraphy variant='body2' style={{alignSelf: "center"}}>
+							走者{i + 1} {r.name}
+						</TypoGraphy>
+						{chField("マイク ch", slot?.runners?.[i] ?? -1, (v) =>
+							setCh("runners", i, v),
+						)}
+						{chField("ゲーム音 ch", slot?.games?.[i] ?? -1, (v) =>
+							setCh("games", i, v),
+						)}
+					</RunnerRow>
+				))}
+				{presentCommentators.map((c, i) => (
+					<RunnerRow key={`c${i}`}>
+						<TypoGraphy variant='body2' style={{alignSelf: "center"}}>
+							解説{i + 1} {c.name}
+						</TypoGraphy>
+						{chField("マイク ch", slot?.commentators?.[i] ?? -1, (v) =>
+							setCh("commentators", i, v),
+						)}
+					</RunnerRow>
+				))}
+			</div>
+		</FormControl>
+	);
+};
 
 export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 	const [run, setRun] = useState(() => cloneDeep(defaultValue));
@@ -328,6 +462,15 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 							</RunnerRow>
 						);
 					})}
+
+					{/* オーディオ (WING ch 割り当て) — audio-assignment を直接更新 */}
+					{edit && (
+						<AudioSection
+							edit={edit}
+							runners={run.runners}
+							commentators={run.commentators}
+						/>
+					)}
 					<div
 						style={{
 							placeSelf: "end",

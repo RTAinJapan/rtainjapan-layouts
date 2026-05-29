@@ -6,6 +6,8 @@ import iconRunner from "../../../images/icon/icon_runner.svg";
 import iconRunnerLit from "../../../images/icon/icon_runner_lit.svg";
 import iconCommentator from "../../../images/icon/icon_commentary.svg";
 import iconCommentatorLit from "../../../images/icon/icon_commentary_lit.svg";
+import iconSound from "../../../images/icon/icon_sound.svg";
+import iconSoundLit from "../../../images/icon/icon_sound_lit.svg";
 import iconTwitter from "../../../images/icon/icon_twitter.svg";
 import iconTwitch from "../../../images/icon/icon_twitch.svg";
 import iconYoutube from "../../../images/icon/icon_youtube.svg";
@@ -110,7 +112,10 @@ export const TwoRowNameplate = ({
 	race = false,
 	invert = false,
 	glow = false,
+	gameOnAir = false,
 }: NameplateProps<TwoRowProps>) => {
+	// ゲーム音 on-air アイコンは race layout の走者枠にのみ表示する。
+	const showSound = kind === "runners" && race;
 	return (
 		<div
 			style={{
@@ -126,31 +131,45 @@ export const TwoRowNameplate = ({
 					display: "grid",
 					columnGap: "10px",
 					padding: "8px 20px 8px 15px",
-					gridTemplateColumns: "37px 2px 1fr",
+					gridTemplateColumns: `${showSound ? "auto" : "37px"} 2px 1fr`,
 					gridTemplateRows: "36px 30px",
 					placeContent: "stretch",
 					placeItems: "center",
 					background: background.name,
 				}}
 			>
-				<img
-					src={
-						glow
-							? kind === "runners"
-								? iconRunnerLit
-								: iconCommentatorLit
-							: kind === "runners"
-							? iconRunner
-							: iconCommentator
-					}
-					height={32}
-					width={32}
+				<div
 					style={{
 						gridRow: "1 / 3",
 						justifySelf: "start",
-						transition: "filter 0.12s ease-out",
+						display: "flex",
+						alignItems: "center",
+						gap: "8px",
 					}}
-				></img>
+				>
+					{showSound && (
+						<img
+							src={gameOnAir ? iconSoundLit : iconSound}
+							height={32}
+							width={32}
+							style={{transition: "filter 0.12s ease-out"}}
+						></img>
+					)}
+					<img
+						src={
+							glow
+								? kind === "runners"
+									? iconRunnerLit
+									: iconCommentatorLit
+								: kind === "runners"
+								? iconRunner
+								: iconCommentator
+						}
+						height={32}
+						width={32}
+						style={{transition: "filter 0.12s ease-out"}}
+					></img>
+				</div>
 				<div
 					style={{
 						background: border.name,

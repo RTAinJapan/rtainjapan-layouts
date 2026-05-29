@@ -3,7 +3,7 @@
 
 	"type": "object",
 	"additionalProperties": false,
-	"description": "Channel assignment for current and next runs. deck はテンプレート選択用、runners/commentators は実 ch 割り当て (-1 = 未割当)。",
+	"description": "current/next run ごとの WING channel-strip 割り当て。deck はテンプレート選択用。runners/commentators はマイク ch、games はゲーム音 ch。値は channel-strip 番号 (1..40)、-1 = 未割当。",
 	"properties": {
 		"current": {"$ref": "#/definitions/deckAssignment"},
 		"next": {"$ref": "#/definitions/deckAssignment"}
@@ -20,19 +20,24 @@
 				"runners": {
 					"type": "array",
 					"items": {"type": "number"},
-					"description": "runner index → WING meter index (-1 = 未割当)"
+					"description": "runner index → WING channel-strip 番号 (-1 = 未割当)"
 				},
 				"commentators": {
 					"type": "array",
 					"items": {"type": "number"},
-					"description": "commentator index → WING meter index (-1 = 未割当)"
+					"description": "commentator index → WING channel-strip 番号 (-1 = 未割当)"
+				},
+				"games": {
+					"type": "array",
+					"items": {"type": "number"},
+					"description": "runner index → ゲーム音 WING channel-strip 番号 (-1 = 未割当)"
 				}
 			},
-			"required": ["deck", "runners", "commentators"]
+			"required": ["deck", "runners", "commentators", "games"]
 		}
 	},
 	"default": {
-		"current": {"deck": null, "runners": [], "commentators": []},
-		"next": {"deck": null, "runners": [], "commentators": []}
+		"current": {"deck": null, "runners": [], "commentators": [], "games": []},
+		"next": {"deck": null, "runners": [], "commentators": [], "games": []}
 	}
 }

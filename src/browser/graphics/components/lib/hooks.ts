@@ -27,6 +27,16 @@ export const useAudioActive = (
 	return audioActive[kind]?.[index] ?? false;
 };
 
+// 走者 index のゲーム音が配信 Main に乗っているか (on-air)。
+// runner と同じ index で audio-active.games を引く。
+export const useGameOnAir = (index: number) => {
+	const audioActive = useReplicant("audio-active");
+	if (!audioActive) {
+		return false;
+	}
+	return audioActive.games?.[index] ?? false;
+};
+
 export const useCommentators = () => {
 	const currentRun = useCurrentRun();
 	if (!currentRun) {

@@ -1,20 +1,30 @@
+import net from "net";
 import dgram from "dgram";
 import {NodeCG} from "./nodecg";
 
 /**
- * BEHRINGER WING のメーター値を OSC で購読し、
- * runner ごとに「一定以上の音量か」を判定して
- * `audio-active` replicant (boolean[]) を更新する。
+ * BEHRINGER WING と通信して audio activity を判定し `audio-active` replicant を
+ * 更新する。実機 (fw 2.0) で検証した公式仕様 (WING Remote Protocols V3.1.0-3)
+ * に基づく実装。
  *
- * 設定はすべて replicant で持ち、ダッシュボードパネルから編集する。
- *   - audio-config   : 接続先 IP / ポート / 閾値など
- *   - audio-assignment : current/next それぞれの「選択卓」と実 ch 割り当て。
- *                        判定には current.channels のみ使う。
- *   - audio-decks      : A卓/B卓ごとの ch 割り当てテンプレート（プルダウンの初期値）。
- *   - audio-meters   : 最新の全メーター値(dBFS)。ダッシュボードの ch 選択用。
- *   - audio-active   : runner ごとの ON/OFF。nameplate が購読して発光する。
+ * 取得経路は 2 系統:
+ *   1. マイク音量 (runners / commentators)
+ *      TCP 2222 のネイティブ プロトコル channel 3 (Meter Data Requests) で
+ *      対象 ch を subscribe し、UDP (meterRecvPort) に約 20Hz で届く
+ *      バイナリ メーターパケットの input L/R を見る。閾値 + ヒステリシス + hold。
+ *   2. ゲーム音 on-air (games)
+ *      OSC 2223 で `/ch/<n>/main/<m>/{on,lvl}`, `/ch/<n>/$mute`, `/ch/<n>/$fdr`
+ *      を起動時 dump + `/*S~` で変更購読し、配信 Main 送りが上がっているかで判定。
  *
- * bundleConfig (cfg/*.json) には一切依存しない。
+ * 設定はすべて replicant で持つ (bundleConfig には依存しない):
+ *   - audio-config     : 接続先 / ポート / 閾値 / 配信 Main bus
+ *   - audio-assignment : current/next run の ch 割り当て (判定は current のみ)
+ *   - audio-active     : runners/commentators/games の ON/OFF (nameplate が購読)
+ *   - audio-meters     : 監視 ch の最新 dBFS (dashboard 補助表示用、ch 番号 index)
+ *   - audio-status     : 接続状態
+ *
+ * audio-assignment の「次へ」繰り上げは schedule.ts の seekToNextRun() が行う。
+ * wing.ts は audio-assignment.current を真として subscribe を張り替えるだけ。
  */
 
 // ---- OSC ヘルパ -------------------------------------------------
@@ -24,358 +34,528 @@ const oscString = (str: string): Buffer => {
 	return Buffer.concat([buf, Buffer.alloc(pad)]);
 };
 
-const oscInt = (n: number): Buffer => {
-	const b = Buffer.alloc(4);
-	b.writeInt32BE(n, 0);
-	return b;
-};
+// OSC 値読み取り / meta-command 送信用パケット (引数なし、タグは "," のみ)
+const oscRead = (addr: string): Buffer =>
+	Buffer.concat([oscString(addr), oscString(",")]);
 
-// ---- メーターブロブのパース -------------------------------------
-// 形式: OSCアドレス + ",b"タグ + blob(4byte長 + データ)
-// blob 先頭4byte(LE) = 後続 16bit整数の個数、以降 int16 LE が並ぶ。
-// 値 / 256 = dBFS。
-const parseMeterPacket = (msg: Buffer): number[] | null => {
+type OscMessage = {addr: string; args: Array<number | string>};
+
+// 受信 OSC メッセージのパース (単一メッセージ前提。bundle は未対応)
+const parseOsc = (msg: Buffer): OscMessage | null => {
+	if (msg.length < 4 || msg[0] !== 0x2f /* '/' */) return null;
 	let i = 0;
 	while (i < msg.length && msg[i] !== 0) i++;
+	const addr = msg.toString("ascii", 0, i);
 	i = (i + 4) & ~3;
-
+	if (i >= msg.length || msg[i] !== 0x2c /* ',' */) return {addr, args: []};
 	const tagStart = i;
 	while (i < msg.length && msg[i] !== 0) i++;
 	const tags = msg.toString("ascii", tagStart, i);
 	i = (i + 4) & ~3;
 
-	if (!tags.includes("b")) return null;
-	if (i + 4 > msg.length) return null;
-
-	const blobByteLen = msg.readUInt32BE(i);
-	i += 4;
-	if (i + blobByteLen > msg.length) return null;
-
-	const count = msg.readUInt32LE(i);
-	let p = i + 4;
-
-	const values: number[] = [];
-	for (let k = 0; k < count; k++) {
-		if (p + 2 > msg.length) break;
-		values.push(msg.readInt16LE(p) / 256);
-		p += 2;
+	const args: Array<number | string> = [];
+	for (let t = 1; t < tags.length; t++) {
+		const tag = tags[t];
+		if (tag === "f") {
+			if (i + 4 > msg.length) break;
+			args.push(msg.readFloatBE(i));
+			i += 4;
+		} else if (tag === "i") {
+			if (i + 4 > msg.length) break;
+			args.push(msg.readInt32BE(i));
+			i += 4;
+		} else if (tag === "s") {
+			let j = i;
+			while (j < msg.length && msg[j] !== 0) j++;
+			args.push(msg.toString("ascii", i, j));
+			i = (j + 4) & ~3;
+		} else {
+			break; // 未対応タグが来たら以降は読めない
+		}
 	}
-	return values;
+	return {addr, args};
 };
+
+// ---- ネイティブ プロトコル (channel 3 = meters) ヘルパ ----------
+// フレーム: 0xdf 0xd3 で channel 3 に切替。token は Table 4 (公式 p.94)。
+const META = {
+	channelSwitch3: () => Buffer.from([0xdf, 0xd3]),
+};
+
+const reqIdBytes = (id: number): Buffer =>
+	Buffer.from([
+		(id >> 24) & 0xff,
+		(id >> 16) & 0xff,
+		(id >> 8) & 0xff,
+		id & 0xff,
+	]);
+
+// 受信ポート宣言: df d3 d3 <port hi> <port lo>
+const buildDeclarePort = (port: number): Buffer =>
+	Buffer.concat([
+		META.channelSwitch3(),
+		Buffer.from([0xd3, (port >> 8) & 0xff, port & 0xff]),
+	]);
+
+// メーター コレクション要求: df d3 d4 <reqid 4B> dc a0 <ch...> de
+const buildSubscribe = (reqId: number, channels: number[]): Buffer => {
+	const collection =
+		channels.length > 0
+			? Buffer.concat([
+					Buffer.from([0xdc, 0xa0]),
+					Buffer.from(channels),
+					Buffer.from([0xde]),
+			  ])
+			: Buffer.alloc(0);
+	return Buffer.concat([
+		META.channelSwitch3(),
+		Buffer.from([0xd4]),
+		reqIdBytes(reqId),
+		collection,
+	]);
+};
+
+// renew (timeout 延長): df d3 d4 <reqid 4B>
+const buildRenew = (reqId: number): Buffer =>
+	Buffer.concat([
+		META.channelSwitch3(),
+		Buffer.from([0xd4]),
+		reqIdBytes(reqId),
+	]);
+
+// メーターパケット parse。channel(0xa0) は 1 ch あたり 8 値。
+//   uint32 report_id (BE) + int16[8 × N] (BE)、dBFS = value / 256
+type ChannelMeter = {inputL: number; inputR: number};
+const parseMeterPacket = (
+	buf: Buffer,
+	expectedReqId: number,
+	channels: number[],
+): Record<number, ChannelMeter> | null => {
+	if (buf.length < 4) return null;
+	if (buf.readUInt32BE(0) !== expectedReqId) return null;
+	const result: Record<number, ChannelMeter> = {};
+	let offset = 4;
+	for (const ch of channels) {
+		if (offset + 16 > buf.length) break;
+		const inputL = buf.readInt16BE(offset) / 256;
+		const inputR = buf.readInt16BE(offset + 2) / 256;
+		offset += 16; // 8 values × 2 byte
+		result[ch] = {inputL, inputR};
+	}
+	return result;
+};
+
+const REQ_ID = 2;
 
 export const wing = (nodecg: NodeCG) => {
 	const log = new nodecg.Logger("wing");
 
 	const configRep = nodecg.Replicant("audio-config");
 	const assignmentRep = nodecg.Replicant("audio-assignment");
-	const currentRunRep = nodecg.Replicant("current-run");
 	const audioActiveRep = nodecg.Replicant("audio-active", {
-		defaultValue: {runners: [], commentators: []},
+		defaultValue: {runners: [], commentators: [], games: []},
 	});
 	const metersRep = nodecg.Replicant("audio-meters", {defaultValue: []});
 	const statusRep = nodecg.Replicant("audio-status");
 
 	// --- 起動時リセット ---
-	// replicant は永続化され、前回起動時の値が復元される。
-	// 実行時の状態を表す replicant は、前回イベントの値が残っていると
-	// WING 接続前に nameplate が光ったり「疎通OK」と誤表示されたりするので、
-	// 起動時に必ずクリアする。
-	//   audio-active : 前回 [true,...] のまま終了→起動直後に誤発光
-	//   audio-meters : 前回のレベルが残る→未接続なのに古いバーが出る
-	//   audio-status : 前回 receiving のまま終了→未接続なのに緑表示
-	// 一方、audio-config / audio-assignment / audio-decks は「設定」なので残す。
-	audioActiveRep.value = {runners: [], commentators: []};
+	// 実行時状態 (active/meters/status) は前回値が残ると誤表示の元なのでクリア。
+	// 設定 (config/assignment/decks) は永続値を維持する。
+	audioActiveRep.value = {runners: [], commentators: [], games: []};
 	metersRep.value = [];
-	statusRep.value = {
-		state: "unconfigured",
-		address: "",
-		lastReceivedAt: null,
-	};
+	statusRep.value = {state: "unconfigured", address: "", lastReceivedAt: null};
 
-	let lastRecvTime = 0; // 最後にWINGからパケットを受けた時刻（watchdog/status用）
+	let lastMeterRecv = 0;
 
-	// ステータス更新ヘルパ（差分があるときだけ書く）
 	const setStatus = (
 		state: "unconfigured" | "connecting" | "receiving",
 		address: string,
 	) => {
 		const cur = statusRep.value;
+		const lastReceivedAt = lastMeterRecv > 0 ? lastMeterRecv : null;
 		if (
 			cur &&
 			cur.state === state &&
 			cur.address === address &&
-			cur.lastReceivedAt === (lastRecvTime > 0 ? lastRecvTime : null)
+			cur.lastReceivedAt === lastReceivedAt
 		) {
 			return;
 		}
-		statusRep.value = {
-			state,
-			address,
-			lastReceivedAt: lastRecvTime > 0 ? lastRecvTime : null,
+		statusRep.value = {state, address, lastReceivedAt};
+	};
+
+	// ---- 判定用ステート ----
+	type MicKind = "runners" | "commentators";
+	const micKinds: MicKind[] = ["runners", "commentators"];
+
+	// ch 番号 → 最新メーター / OSC 状態
+	const meterState: Record<number, ChannelMeter> = {};
+	type GameState = {
+		mainOn: boolean;
+		mainLvl: number;
+		effMute: number;
+		effFdr: number;
+	};
+	const oscState: Record<number, Partial<GameState>> = {};
+
+	// mic ヒステリシス / hold (kind ごとに runner/commentator index で保持)
+	const lastOver: Record<MicKind, number[]> = {runners: [], commentators: []};
+	const micOn: Record<MicKind, boolean[]> = {runners: [], commentators: []};
+
+	const currentAssignment = () =>
+		assignmentRep.value?.current ?? {
+			deck: null,
+			runners: [] as number[],
+			commentators: [] as number[],
+			games: [] as number[],
 		};
-	};
 
-	// runners / commentators ごとに状態を分けて管理する。
-	type Kind = "runners" | "commentators";
-	const kinds: Kind[] = ["runners", "commentators"];
-	const lastOver: Record<Kind, number[]> = {runners: [], commentators: []};
-	const stateMap: Record<Kind, boolean[]> = {runners: [], commentators: []};
-
-	const writeActive = () => {
-		audioActiveRep.value = {
-			runners: [...stateMap.runners],
-			commentators: [...stateMap.commentators],
-		};
-	};
-
-	// マッピング変更時は対象 kind の状態を完全リセット（前の点灯を引き継がない）
-	const resetState = (kind: Kind, len: number) => {
-		lastOver[kind] = Array(len).fill(0);
-		stateMap[kind] = Array(len).fill(false);
-		writeActive();
-	};
-
-	// 発光判定に使うのは current の卓のチャンネル割り当てだけ
-	// （画面に出ているのは current のため）。
-	const currentChannels = (kind: Kind): number[] =>
-		assignmentRep.value?.current?.[kind] ?? [];
-
-	for (const k of kinds) resetState(k, currentChannels(k).length);
-	// current の割り当てが変わったら状態をリセット（前の点灯を引き継がない）
-	assignmentRep.on("change", (newVal) => {
-		for (const k of kinds) {
-			resetState(k, newVal?.current?.[k]?.length ?? 0);
+	// 監視対象マイク ch (runners ∪ commentators の正の値) を昇順ユニークで返す。
+	// これが meter collection の subscribe 対象 & パース順になる。
+	const micChannels = (): number[] => {
+		const a = currentAssignment();
+		const set = new Set<number>();
+		for (const ch of [...a.runners, ...a.commentators]) {
+			if (ch > 0) set.add(ch);
 		}
-	});
+		return [...set].sort((x, y) => x - y);
+	};
 
-	// --- 「次へ」で run が進んだら ch 割り当てを繰り上げる ---
-	// ダッシュボードの「次へ」は next→current コピー（schedule.ts: seekToNextRun）。
-	// 運用上 current/next は別々の卓を使うので、それに追従して
-	// next の割り当てを current に繰り上げ、next を空にする。
-	// index が +1 されたとき（=次へ）だけ繰り上げる。前へ/任意ジャンプでは
-	// 自動追従しないので、その場合はパネルで卓を選び直す。
-	let lastRunIndex: number | null = currentRunRep.value?.index ?? null;
-	currentRunRep.on("change", (newRun) => {
-		const newIndex = newRun?.index ?? null;
-		const prevIndex = lastRunIndex;
-		lastRunIndex = newIndex;
+	const gameChannels = (): number[] => {
+		const set = new Set<number>();
+		for (const ch of currentAssignment().games) if (ch > 0) set.add(ch);
+		return [...set];
+	};
 
-		if (prevIndex == null || newIndex == null || newIndex !== prevIndex + 1) {
-			return; // 「次へ」以外（初期化・前へ・ジャンプ）は追従しない
-		}
+	let subscribedChannels: number[] = [];
 
-		const asg = assignmentRep.value;
-		const promoted = asg?.next ?? {deck: null, runners: [], commentators: []};
-		assignmentRep.value = {
-			current: {
-				deck: promoted.deck ?? null,
-				runners: [...(promoted.runners ?? [])],
-				commentators: [...(promoted.commentators ?? [])],
-			},
-			next: {deck: null, runners: [], commentators: []},
-		};
-		log.info(
-			`Run advanced (#${prevIndex}->#${newIndex}); promoted next deck "${
-				promoted.deck ?? "none"
-			}" to current.`,
-		);
-	});
-
+	// ---- active 再計算 ----
 	let lastMeterPush = 0;
-	const METER_PUSH_INTERVAL = 100; // ms
+	const METER_PUSH_INTERVAL = 100;
 
-	const evaluate = (values: number[]) => {
-		const now = Date.now();
+	const recomputeActive = () => {
 		const cfg = configRep.value;
 		const thresholdDb = cfg?.thresholdDb ?? -40;
 		const hysteresisDb = cfg?.hysteresisDb ?? 3;
 		const holdMs = cfg?.holdMs ?? 300;
+		const mainSendThresholdDb = cfg?.mainSendThresholdDb ?? -60;
+		const now = Date.now();
+		const a = currentAssignment();
 
-		let anyChanged = false;
-		for (const kind of kinds) {
-			const channels = currentChannels(kind);
-			const state = stateMap[kind];
-			const over = lastOver[kind];
-			if (state.length !== channels.length) {
-				resetState(kind, channels.length);
+		// mic (runners / commentators): メーター + ヒステリシス + hold
+		for (const kind of micKinds) {
+			const channels = a[kind];
+			if (micOn[kind].length !== channels.length) {
+				micOn[kind] = Array(channels.length).fill(false);
+				lastOver[kind] = Array(channels.length).fill(0);
 			}
-
-			channels.forEach((meterIdx, idx) => {
-				if (meterIdx < 0 || meterIdx >= values.length) {
-					if (state[idx]) {
-						state[idx] = false;
-						anyChanged = true;
-					}
-					return;
-				}
-				const db = values[meterIdx];
-				if (db === undefined) return;
-
-				if (state[idx]) {
+			channels.forEach((ch, idx) => {
+				const m = ch > 0 ? meterState[ch] : undefined;
+				const db = m ? Math.max(m.inputL, m.inputR) : -Infinity;
+				if (micOn[kind][idx]) {
 					if (db >= thresholdDb - hysteresisDb) {
-						over[idx] = now;
-					} else if (now - (over[idx] ?? 0) > holdMs) {
-						state[idx] = false;
-						anyChanged = true;
+						lastOver[kind][idx] = now;
+					} else if (now - (lastOver[kind][idx] ?? 0) > holdMs) {
+						micOn[kind][idx] = false;
 					}
-				} else {
-					if (db >= thresholdDb) {
-						state[idx] = true;
-						over[idx] = now;
-						anyChanged = true;
-					}
+				} else if (db >= thresholdDb) {
+					micOn[kind][idx] = true;
+					lastOver[kind][idx] = now;
 				}
 			});
 		}
 
-		if (anyChanged) writeActive();
+		// games: OSC 由来の on-air 判定 (即時反映、hold 不要)
+		const games = a.games.map((ch) => {
+			if (ch <= 0) return false;
+			const s = oscState[ch];
+			if (!s) return false;
+			return (
+				s.mainOn === true &&
+				(s.mainLvl ?? -Infinity) > mainSendThresholdDb &&
+				s.effMute === 0 &&
+				(s.effFdr ?? -Infinity) > mainSendThresholdDb
+			);
+		});
 
+		audioActiveRep.value = {
+			runners: [...micOn.runners],
+			commentators: [...micOn.commentators],
+			games,
+		};
+
+		// dashboard 補助: 監視 ch の最新 dBFS を ch 番号 index で公開 (throttle)
 		if (now - lastMeterPush > METER_PUSH_INTERVAL) {
 			lastMeterPush = now;
-			metersRep.value = values.map((v) => Math.round(v * 10) / 10);
+			const arr: number[] = [];
+			for (const ch of subscribedChannels) {
+				const m = meterState[ch];
+				if (m) arr[ch] = Math.round(Math.max(m.inputL, m.inputR) * 10) / 10;
+			}
+			metersRep.value = arr;
 		}
 	};
 
-	// ---- 接続管理（IP/ポート/metersId が変わったら張り直す） ----
-	let udp: dgram.Socket | null = null;
-	let keepAlive: NodeJS.Timeout | null = null;
-	let currentKey = ""; // address|port|metersId
+	// ============ 接続マネージャ ============
+	let tcp: net.Socket | null = null;
+	let meterUdp: dgram.Socket | null = null;
+	let oscUdp: dgram.Socket | null = null;
+	let renewTimer: NodeJS.Timeout | null = null;
+	let oscRenewTimer: NodeJS.Timeout | null = null;
+	let watchdog: NodeJS.Timeout | null = null;
+	let reconnectTimer: NodeJS.Timeout | null = null;
+	let reconnectDelay = 1000;
+	let currentKey = "";
+	let generation = 0; // 接続世代。張り直し後の旧コールバックを無視するため
+
+	const clearTimers = () => {
+		for (const t of [renewTimer, oscRenewTimer, watchdog, reconnectTimer]) {
+			if (t) clearInterval(t as NodeJS.Timeout);
+		}
+		renewTimer = oscRenewTimer = watchdog = reconnectTimer = null;
+	};
 
 	const teardown = () => {
-		if (keepAlive) {
-			clearInterval(keepAlive);
-			keepAlive = null;
+		clearTimers();
+		if (tcp) {
+			tcp.removeAllListeners();
+			tcp.destroy();
+			tcp = null;
 		}
-		if (udp) {
-			try {
-				udp.close();
-			} catch {
-				/* noop */
+		for (const s of [meterUdp, oscUdp]) {
+			if (s) {
+				try {
+					s.removeAllListeners();
+					s.close();
+				} catch {
+					/* noop */
+				}
 			}
-			udp = null;
+		}
+		meterUdp = oscUdp = null;
+	};
+
+	const cfgPorts = () => {
+		const cfg = configRep.value;
+		return {
+			address: cfg?.address?.trim() ?? "",
+			tcpPort: cfg?.tcpPort ?? 2222,
+			oscPort: cfg?.oscPort ?? 2223,
+			meterRecvPort: cfg?.meterRecvPort ?? 14135,
+			streamingMainIndex: cfg?.streamingMainIndex ?? 1,
+		};
+	};
+
+	// --- メーター subscribe (TCP) を現在の assignment に合わせて張り直す ---
+	const sendMeterSubscribe = () => {
+		if (!tcp || tcp.destroyed) return;
+		subscribedChannels = micChannels();
+		const {meterRecvPort} = cfgPorts();
+		try {
+			tcp.write(buildDeclarePort(meterRecvPort));
+			tcp.write(buildSubscribe(REQ_ID, subscribedChannels));
+			log.info(
+				`Subscribed to meters for channels [${subscribedChannels.join(", ")}]`,
+			);
+		} catch (err) {
+			log.debug(`meter subscribe write failed: ${(err as Error).message}`);
+		}
+	};
+
+	// --- OSC: game ch の fader/mute を dump し、/*S~ で購読 ---
+	const oscReadGameState = () => {
+		if (!oscUdp) return;
+		const {address, oscPort, streamingMainIndex} = cfgPorts();
+		if (!address) return;
+		const send = (addr: string) => {
+			oscUdp?.send(oscRead(addr), oscPort, address, (err) => {
+				if (err) log.debug(`OSC read failed (${addr}): ${err.message}`);
+			});
+		};
+		for (const ch of gameChannels()) {
+			send(`/ch/${ch}/main/${streamingMainIndex}/on`);
+			send(`/ch/${ch}/main/${streamingMainIndex}/lvl`);
+			send(`/ch/${ch}/$mute`);
+			send(`/ch/${ch}/$fdr`);
+		}
+	};
+
+	const oscSubscribeEvents = () => {
+		if (!oscUdp) return;
+		const {address, oscPort} = cfgPorts();
+		if (!address) return;
+		oscUdp.send(oscRead("/*S~"), oscPort, address, (err) => {
+			if (err) log.debug(`OSC /*S~ failed: ${err.message}`);
+		});
+	};
+
+	// OSC 受信メッセージを oscState に反映
+	const handleOscMessage = (m: OscMessage) => {
+		const {streamingMainIndex} = cfgPorts();
+		// /ch/<n>/main/<m>/on | /lvl
+		const mainMatch = /^\/ch\/(\d+)\/main\/(\d+)\/(on|lvl)$/.exec(m.addr);
+		if (mainMatch) {
+			const ch = Number(mainMatch[1]);
+			const mainIdx = Number(mainMatch[2]);
+			if (mainIdx !== streamingMainIndex) return;
+			const v = m.args[0];
+			if (typeof v !== "number") return;
+			const s = (oscState[ch] ??= {});
+			if (mainMatch[3] === "on") s.mainOn = v >= 0.5;
+			else s.mainLvl = v;
+			recomputeActive();
+			return;
+		}
+		// /ch/<n>/$mute | /ch/<n>/$fdr
+		const effMatch = /^\/ch\/(\d+)\/\$(mute|fdr)$/.exec(m.addr);
+		if (effMatch) {
+			const ch = Number(effMatch[1]);
+			const v = m.args[0];
+			if (typeof v !== "number") return;
+			const s = (oscState[ch] ??= {});
+			if (effMatch[2] === "mute") s.effMute = v;
+			else s.effFdr = v;
+			recomputeActive();
 		}
 	};
 
 	const connect = () => {
-		const cfg = configRep.value;
-		const address = cfg?.address?.trim();
-		const port = cfg?.port ?? 2223;
-		const metersId = cfg?.metersId ?? 1;
-
 		teardown();
-
+		const {address, tcpPort, meterRecvPort} = cfgPorts();
 		if (!address) {
-			lastRecvTime = 0;
+			lastMeterRecv = 0;
 			setStatus("unconfigured", "");
 			log.info("WING address not set; waiting for dashboard input.");
 			return;
 		}
 
-		const sock = dgram.createSocket("udp4");
-		udp = sock;
-		lastRecvTime = 0;
-		let currentInterval = 0;
+		const gen = ++generation;
+		const alive = () => gen === generation;
+		setStatus("connecting", address);
 
-		sock.on("message", (msg) => {
-			const values = parseMeterPacket(msg);
-			if (values) {
-				lastRecvTime = Date.now();
-				setStatus("receiving", address);
-				evaluate(values);
-			}
+		// --- メーター UDP サーバ ---
+		const mu = dgram.createSocket("udp4");
+		meterUdp = mu;
+		mu.on("message", (msg) => {
+			if (!alive()) return;
+			const parsed = parseMeterPacket(msg, REQ_ID, subscribedChannels);
+			if (!parsed) return;
+			lastMeterRecv = Date.now();
+			Object.assign(meterState, parsed);
+			setStatus("receiving", address);
+			recomputeActive();
+		});
+		mu.on("error", (err) => log.warn(`meter UDP error: ${err.message}`));
+		mu.bind(meterRecvPort, () => {
+			if (alive()) log.info(`Meter UDP listening on :${meterRecvPort}`);
 		});
 
-		// WING が落ちている間の ICMP port unreachable などで error が出ても、
-		// ソケットは破棄せず保持する。意図しない close のときだけ作り直す。
+		// --- OSC UDP ソケット ---
+		const ou = dgram.createSocket("udp4");
+		oscUdp = ou;
+		ou.on("message", (msg) => {
+			if (!alive()) return;
+			const m = parseOsc(msg);
+			if (m) handleOscMessage(m);
+		});
+		ou.on("error", (err) => log.warn(`OSC UDP error: ${err.message}`));
+		ou.bind(0, () => {
+			if (!alive()) return;
+			oscReadGameState();
+			oscSubscribeEvents();
+			log.info("OSC subscription active");
+		});
+
+		// --- TCP コネクション (ネイティブ プロトコル) ---
+		const sock = net.createConnection({host: address, port: tcpPort}, () => {
+			if (!alive()) return;
+			reconnectDelay = 1000;
+			sendMeterSubscribe();
+			// renew: meter は 5s timeout なので 3s 周期
+			renewTimer = setInterval(() => {
+				if (alive() && tcp && !tcp.destroyed) {
+					try {
+						tcp.write(buildRenew(REQ_ID));
+					} catch {
+						/* noop */
+					}
+				}
+			}, 3000);
+		});
+		tcp = sock;
+
 		sock.on("error", (err) => {
-			log.warn(`UDP error (keep retrying): ${err.message}`);
+			if (alive()) log.warn(`TCP error: ${err.message}`);
 		});
 		sock.on("close", () => {
-			if (udp === sock) {
-				log.warn("UDP socket closed unexpectedly; reconnecting.");
-				udp = null;
-				connect();
-			}
+			if (!alive()) return;
+			log.warn(`TCP closed; reconnecting in ${reconnectDelay}ms`);
+			scheduleReconnect();
 		});
 
-		const sendSubscribe = () => {
-			if (udp !== sock) return; // 既に張り直されていたら無視
-			const req = Buffer.concat([
-				oscString("/meters"),
-				oscString(",si"),
-				oscString(`/meters/${metersId}`),
-				oscInt(0),
-			]);
-			sock.send(req, port, address, (err) => {
-				// 送信失敗（相手不在など）はログのみ。ソケットは保持し再送し続ける。
-				if (err) log.debug(`subscribe send failed: ${err.message}`);
-			});
-		};
+		// --- OSC subscription renew (10s timeout → 8s 周期) ---
+		oscRenewTimer = setInterval(() => {
+			if (alive()) oscSubscribeEvents();
+		}, 8000);
 
-		// keep-alive 兼リトライ。
-		// WING サブスクリプションは約10秒で失効するので、受信中は 5 秒間隔で更新。
-		// まだ受信できていない/途絶えたときは 2 秒間隔で粘り続ける。
-		// これにより「NodeCG 起動後に WING を起動」「WING 再起動」「瞬断」のいずれも
-		// 自動で復帰する。
-		const tick = () => {
-			if (udp !== sock) return;
-			const now = Date.now();
-			const receiving = lastRecvTime > 0 && now - lastRecvTime < 5000;
-
-			sendSubscribe();
-
-			// watchdog: 一度受信したのに 5 秒以上途絶えたら表示をクリア
-			if (lastRecvTime > 0 && now - lastRecvTime > 5000) {
-				if (metersRep.value && metersRep.value.length > 0) {
-					metersRep.value = [];
+		// --- watchdog: メーターが 5s 途絶えたら connecting に戻し表示クリア ---
+		watchdog = setInterval(() => {
+			if (!alive()) return;
+			if (lastMeterRecv > 0 && Date.now() - lastMeterRecv > 5000) {
+				for (const k of micKinds) {
+					micOn[k] = Array(currentAssignment()[k].length).fill(false);
 				}
-				const v = audioActiveRep.value;
-				if (
-					v &&
-					((v.runners ?? []).some((x) => x) ||
-						(v.commentators ?? []).some((x) => x))
-				) {
-					for (const k of kinds) resetState(k, currentChannels(k).length);
-				}
-				// 受信が途絶えたので「接続待ち」に戻す
-				// （lastReceivedAt は最後に受けた時刻として残す）
+				metersRep.value = [];
+				recomputeActive();
 				setStatus("connecting", address);
 			}
-
-			// 受信状況に応じて間隔を切り替える
-			const desired = receiving ? 5000 : 2000;
-			if (currentInterval !== desired) {
-				currentInterval = desired;
-				if (keepAlive) clearInterval(keepAlive);
-				keepAlive = setInterval(tick, desired);
-			}
-		};
-
-		sock.bind(0, () => {
-			log.info(
-				`Subscribing to WING meters at ${address}:${port} (/meters/${metersId})`,
-			);
-			setStatus("connecting", address);
-			sendSubscribe();
-			currentInterval = 2000;
-			keepAlive = setInterval(tick, currentInterval);
-		});
+		}, 2000);
 	};
 
-	// 設定が変わったら、接続に関わる項目だけ差分を見て張り直す
-	configRep.on("change", (newVal) => {
-		const key = `${newVal?.address ?? ""}|${newVal?.port ?? 2223}|${
-			newVal?.metersId ?? 1
-		}`;
+	const scheduleReconnect = () => {
+		clearTimers();
+		if (tcp) {
+			tcp.removeAllListeners();
+			tcp.destroy();
+			tcp = null;
+		}
+		const delay = reconnectDelay;
+		reconnectDelay = Math.min(reconnectDelay * 2, 16000);
+		reconnectTimer = setTimeout(
+			() => connect(),
+			delay,
+		) as unknown as NodeJS.Timeout;
+	};
+
+	// ---- assignment 変更で subscribe を張り替え ----
+	assignmentRep.on("change", () => {
+		// 監視 ch が変わったら meter subscribe と OSC read を更新
+		for (const k of micKinds) {
+			micOn[k] = Array(currentAssignment()[k].length).fill(false);
+			lastOver[k] = Array(currentAssignment()[k].length).fill(0);
+		}
+		sendMeterSubscribe();
+		oscReadGameState();
+		recomputeActive();
+	});
+
+	// ---- config 変更で接続情報が変わったら張り直す ----
+	const keyOf = () => {
+		const {address, tcpPort, oscPort, meterRecvPort} = cfgPorts();
+		return `${address}|${tcpPort}|${oscPort}|${meterRecvPort}`;
+	};
+	configRep.on("change", () => {
+		const key = keyOf();
 		if (key !== currentKey) {
 			currentKey = key;
 			connect();
+		} else {
+			// 閾値や streamingMainIndex だけの変更でも再計算
+			oscReadGameState();
+			recomputeActive();
 		}
 	});
 
-	// 起動時に一度接続を試みる
-	currentKey = `${configRep.value?.address ?? ""}|${
-		configRep.value?.port ?? 2223
-	}|${configRep.value?.metersId ?? 1}`;
+	currentKey = keyOf();
 	connect();
 };

@@ -3,7 +3,7 @@
 
 	"type": "object",
 	"additionalProperties": false,
-	"description": "A卓/B卓ごとのテンプレート。プルダウンで卓を選んだときに current/next の channels に流し込まれる。runners は runner index → WING meter index、commentators は commentator index → WING meter index。",
+	"description": "A卓/B卓ごとのテンプレート。卓を選んだときに current/next の channels に流し込まれる。runners/commentators はマイク ch、games はゲーム音 ch。値は WING channel-strip 番号。運用者が dashboard から実構成に合わせて変更する。",
 	"properties": {
 		"A": {"$ref": "#/definitions/deckTemplate"},
 		"B": {"$ref": "#/definitions/deckTemplate"}
@@ -16,19 +16,32 @@
 				"runners": {
 					"type": "array",
 					"items": {"type": "number"},
-					"description": "runner index → WING meter index"
+					"description": "runner index → マイク WING channel-strip 番号"
 				},
 				"commentators": {
 					"type": "array",
 					"items": {"type": "number"},
-					"description": "commentator index → WING meter index"
+					"description": "commentator index → マイク WING channel-strip 番号"
+				},
+				"games": {
+					"type": "array",
+					"items": {"type": "number"},
+					"description": "runner index → ゲーム音 WING channel-strip 番号"
 				}
 			},
-			"required": ["runners", "commentators"]
+			"required": ["runners", "commentators", "games"]
 		}
 	},
 	"default": {
-		"A": {"runners": [0, 1, 2, 3], "commentators": [4, 5]},
-		"B": {"runners": [16, 17, 18, 19], "commentators": [20, 21]}
+		"A": {
+			"runners": [1, 2, 3, 4],
+			"commentators": [5, 6],
+			"games": [9, 11, 13, 15]
+		},
+		"B": {
+			"runners": [17, 18, 19, 20],
+			"commentators": [21, 22],
+			"games": [25, 27, 29, 31]
+		}
 	}
 }

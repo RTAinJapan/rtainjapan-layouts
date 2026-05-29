@@ -6,6 +6,7 @@ export default async (nodecg: NodeCG) => {
 	const currentRunRep = nodecg.Replicant("current-run");
 	const nextRunRep = nodecg.Replicant("next-run");
 	const timerRep = nodecg.Replicant("timer");
+	const audioAssignmentRep = nodecg.Replicant("audio-assignment");
 
 	const updateCurrentRun = (index: number) => {
 		if (timerRep.value?.timerState === "Running") {
@@ -39,6 +40,23 @@ export default async (nodecg: NodeCG) => {
 		}
 		currentRunRep.value = clone(nextRunRep.value);
 		nextRunRep.value = clone(scheduleRep.value[currentIndex + 2]);
+
+		// 「次へ」で run が進んだら audio-assignment も next → current に繰り上げ、
+		// next は空で初期化する (新 next のセットアップ時に再入力する)。
+		// run 繰り上げと同じトランザクションで行うことで一貫性を保つ。
+		// 前へ / 任意ジャンプは seekToNextRun を経由しないので追従しない。
+		const asg = audioAssignmentRep.value;
+		if (asg) {
+			audioAssignmentRep.value = {
+				current: {
+					deck: asg.next?.deck ?? null,
+					runners: [...(asg.next?.runners ?? [])],
+					commentators: [...(asg.next?.commentators ?? [])],
+					games: [...(asg.next?.games ?? [])],
+				},
+				next: {deck: null, runners: [], commentators: [], games: []},
+			};
+		}
 	};
 
 	const seekToPreviousRun = () => {

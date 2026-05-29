@@ -5,16 +5,14 @@ import CssBaseline from "@mui/material/CssBaseline";
 import {useReplicant} from "../../use-replicant";
 import {render} from "../../render";
 
-const assignmentRep = nodecg.Replicant("audio-assignment");
+// このパネルは「大会開始前に1回だけ設定して放置」する内容に限定する。
+//   - WING 接続情報 (IP / ポート / 閾値 / 配信 Main bus)
+//   - 卓 (A/B) テンプレートのデフォルト ch
+// 各 run の卓選択・走者/解説 ch 入力は配信担当ダッシュボード (tech) の
+// 「編集：現在/次のゲーム」モーダル側で行う (schedule/edit.tsx の AudioSection)。
+
 const decksRep = nodecg.Replicant("audio-decks");
 const configRep = nodecg.Replicant("audio-config");
-
-// dBFS をバーの幅(%)に変換（-60dB〜0dB を 0〜100% に）
-const dbToPercent = (db: number) => {
-	const min = -60;
-	const pct = ((db - min) / (0 - min)) * 100;
-	return Math.max(0, Math.min(100, pct));
-};
 
 const labelStyle: React.CSSProperties = {
 	fontSize: 12,
@@ -49,6 +47,27 @@ const ConnectionSettings = () => {
 		configRep.value = {...(config ?? {}), ...patch};
 	};
 
+	const numInput = (
+		label: string,
+		value: number,
+		fallback: number,
+		onValue: (n: number) => void,
+		parse: (s: string) => number = (s) => parseInt(s, 10),
+	) => (
+		<div>
+			<label style={labelStyle}>{label}</label>
+			<input
+				type='number'
+				value={value}
+				style={{width: "100%"}}
+				onChange={(e) => {
+					const n = parse(e.currentTarget.value);
+					onValue(Number.isNaN(n) ? fallback : n);
+				}}
+			/>
+		</div>
+	);
+
 	return (
 		<div
 			style={{
@@ -71,62 +90,62 @@ const ConnectionSettings = () => {
 					onChange={(e) => update({address: e.currentTarget.value})}
 				/>
 			</div>
-			<div>
-				<label style={labelStyle}>ポート</label>
-				<input
-					type='number'
-					value={config?.port ?? 2223}
-					style={{width: "100%"}}
-					onChange={(e) =>
-						update({port: parseInt(e.currentTarget.value, 10) || 2223})
-					}
-				/>
-			</div>
-			<div>
-				<label style={labelStyle}>meters ID</label>
-				<input
-					type='number'
-					value={config?.metersId ?? 1}
-					style={{width: "100%"}}
-					onChange={(e) =>
-						update({metersId: parseInt(e.currentTarget.value, 10) || 1})
-					}
-				/>
-			</div>
+			{numInput("TCP ポート", config?.tcpPort ?? 2222, 2222, (n) =>
+				update({tcpPort: n}),
+			)}
+			{numInput("OSC ポート", config?.oscPort ?? 2223, 2223, (n) =>
+				update({oscPort: n}),
+			)}
 
+			{numInput("受信ポート", config?.meterRecvPort ?? 14135, 14135, (n) =>
+				update({meterRecvPort: n}),
+			)}
 			<div>
-				<label style={labelStyle}>閾値 (dBFS)</label>
-				<input
-					type='number'
-					value={config?.thresholdDb ?? -40}
+				<label style={labelStyle}>配信用 Main bus</label>
+				<select
+					value={config?.streamingMainIndex ?? 1}
 					style={{width: "100%"}}
 					onChange={(e) =>
-						update({thresholdDb: parseFloat(e.currentTarget.value) || -40})
+						update({
+							streamingMainIndex: parseInt(e.currentTarget.value, 10) || 1,
+						})
 					}
-				/>
+				>
+					{[1, 2, 3, 4].map((m) => (
+						<option key={m} value={m}>
+							Main {m}
+						</option>
+					))}
+				</select>
 			</div>
-			<div>
-				<label style={labelStyle}>ヒステリシス</label>
-				<input
-					type='number'
-					value={config?.hysteresisDb ?? 3}
-					style={{width: "100%"}}
-					onChange={(e) =>
-						update({hysteresisDb: parseFloat(e.currentTarget.value) || 0})
-					}
-				/>
-			</div>
-			<div>
-				<label style={labelStyle}>hold (ms)</label>
-				<input
-					type='number'
-					value={config?.holdMs ?? 300}
-					style={{width: "100%"}}
-					onChange={(e) =>
-						update({holdMs: parseInt(e.currentTarget.value, 10) || 0})
-					}
-				/>
-			</div>
+			<div />
+
+			{numInput(
+				"閾値 mic (dBFS)",
+				config?.thresholdDb ?? -40,
+				-40,
+				(n) => update({thresholdDb: n}),
+				parseFloat,
+			)}
+			{numInput(
+				"ヒステリシス",
+				config?.hysteresisDb ?? 3,
+				3,
+				(n) => update({hysteresisDb: n}),
+				parseFloat,
+			)}
+			{numInput("hold (ms)", config?.holdMs ?? 300, 300, (n) =>
+				update({holdMs: n}),
+			)}
+
+			{numInput(
+				"閾値 game (dB)",
+				config?.mainSendThresholdDb ?? -60,
+				-60,
+				(n) => update({mainSendThresholdDb: n}),
+				parseFloat,
+			)}
+			<div style={{gridColumn: "2 / 4"}} />
 
 			<div
 				style={{
@@ -163,242 +182,7 @@ const ConnectionSettings = () => {
 	);
 };
 
-// 1人分の行（名前・ch入力・レベルバー）。走者にも解説にも使う。
-const PersonRow = ({
-	name,
-	assigned,
-	level,
-	onChange,
-}: {
-	name: string;
-	assigned: number;
-	level: number | null;
-	onChange: (v: number) => void;
-}) => (
-	<div
-		style={{
-			display: "grid",
-			gridTemplateColumns: "120px 70px 1fr 56px",
-			gap: 8,
-			alignItems: "center",
-			padding: "5px 0",
-			borderBottom: "1px solid #2a2e36",
-		}}
-	>
-		<div
-			style={{
-				overflow: "hidden",
-				textOverflow: "ellipsis",
-				whiteSpace: "nowrap",
-			}}
-			title={name}
-		>
-			{name}
-		</div>
-		<input
-			type='number'
-			value={assigned}
-			min={-1}
-			style={{width: 60}}
-			onChange={(e) => onChange(parseInt(e.currentTarget.value, 10) || -1)}
-		/>
-		<div
-			style={{
-				height: 13,
-				background: "#23272f",
-				borderRadius: 4,
-				position: "relative",
-				overflow: "hidden",
-			}}
-		>
-			{level != null && (
-				<div
-					style={{
-						position: "absolute",
-						left: 0,
-						top: 0,
-						bottom: 0,
-						width: `${dbToPercent(level)}%`,
-						background: level >= -40 ? "#22c55e" : "#3b82f6",
-						transition: "width 0.1s linear",
-					}}
-				/>
-			)}
-		</div>
-		<div
-			style={{
-				textAlign: "right",
-				fontVariantNumeric: "tabular-nums",
-				fontSize: 12,
-			}}
-		>
-			{level == null ? "—" : level.toFixed(1)}
-		</div>
-	</div>
-);
-
-// current か next いずれかの卓割り当てセクション。
-// 走者と解説で別々に ch を持つので2つのテーブルを出す。
-const DeckSection = ({
-	slot,
-	title,
-	highlight,
-}: {
-	slot: "current" | "next";
-	title: string;
-	highlight: boolean;
-}) => {
-	const assignment = useReplicant("audio-assignment");
-	const decks = useReplicant("audio-decks");
-	const currentRun = useReplicant("current-run");
-	const nextRun = useReplicant("next-run");
-	const meters = useReplicant("audio-meters") ?? [];
-
-	const run = slot === "current" ? currentRun : nextRun;
-	const runners = run?.runners ?? [];
-	const commentators: {name?: string}[] = (run?.commentators ?? []).flatMap(
-		(c) => (c ? [c] : []),
-	);
-	const slotData = assignment?.[slot] ?? {
-		deck: null,
-		runners: [],
-		commentators: [],
-	};
-	const deck = slotData.deck ?? null;
-	const runnerCh = slotData.runners ?? [];
-	const commentatorCh = slotData.commentators ?? [];
-
-	const writeSlot = (patch: {
-		deck?: "A" | "B" | null;
-		runners?: number[];
-		commentators?: number[];
-	}) => {
-		const cur = assignment ?? {};
-		const base = cur[slot] ?? {deck: null, runners: [], commentators: []};
-		assignmentRep.value = {
-			...cur,
-			[slot]: {...base, ...patch},
-		};
-	};
-
-	// 卓を選ぶとテンプレートを channels に流し込む（人数に合わせて埋める）
-	const selectDeck = (d: "A" | "B" | "") => {
-		if (d === "") {
-			writeSlot({deck: null});
-			return;
-		}
-		const tmpl = decks?.[d] ?? {runners: [], commentators: []};
-		const fillRunners: number[] = [];
-		for (let i = 0; i < runners.length; i++) {
-			fillRunners[i] = tmpl.runners?.[i] ?? -1;
-		}
-		const fillCommentators: number[] = [];
-		for (let i = 0; i < commentators.length; i++) {
-			fillCommentators[i] = tmpl.commentators?.[i] ?? -1;
-		}
-		writeSlot({
-			deck: d,
-			runners: fillRunners,
-			commentators: fillCommentators,
-		});
-	};
-
-	const setChannel = (
-		kind: "runners" | "commentators",
-		idx: number,
-		meterIdx: number,
-	) => {
-		const len = (kind === "runners" ? runners : commentators).length;
-		const cur = kind === "runners" ? runnerCh : commentatorCh;
-		const next: number[] = [];
-		for (let i = 0; i < len; i++) next[i] = cur[i] ?? -1;
-		next[idx] = meterIdx;
-		writeSlot({[kind]: next});
-	};
-
-	const renderSection = (
-		label: string,
-		people: {name?: string}[],
-		channels: number[],
-		kind: "runners" | "commentators",
-	) => (
-		<div style={{marginTop: 6}}>
-			<div style={{fontSize: 11, opacity: 0.6, marginBottom: 2}}>{label}</div>
-			{people.length === 0 ? (
-				<div style={{opacity: 0.5, fontSize: 12, padding: "4px 0"}}>
-					（不在）
-				</div>
-			) : (
-				people.map((p, i) => {
-					const a = channels[i] ?? -1;
-					const level = a >= 0 && a < meters.length ? meters[a] ?? null : null;
-					return (
-						<PersonRow
-							key={i}
-							name={p?.name || `(${kind} ${i})`}
-							assigned={a}
-							level={level}
-							onChange={(v) => setChannel(kind, i, v)}
-						/>
-					);
-				})
-			)}
-		</div>
-	);
-
-	return (
-		<div
-			style={{
-				border: highlight ? "1px solid #00BEBE" : "1px solid #2a2e36",
-				borderRadius: 8,
-				padding: 10,
-				marginBottom: 10,
-			}}
-		>
-			<div
-				style={{
-					display: "flex",
-					alignItems: "center",
-					gap: 10,
-					marginBottom: 8,
-				}}
-			>
-				<strong style={{fontSize: 14}}>{title}</strong>
-				{highlight && (
-					<span style={{fontSize: 11, color: "#00BEBE"}}>
-						● 画面に表示中（発光対象）
-					</span>
-				)}
-				<span style={{marginLeft: "auto", fontSize: 12, opacity: 0.7}}>
-					卓:
-				</span>
-				<select
-					value={deck ?? ""}
-					onChange={(e) => selectDeck(e.currentTarget.value as "A" | "B" | "")}
-				>
-					<option value=''>（未選択）</option>
-					<option value='A'>A卓</option>
-					<option value='B'>B卓</option>
-				</select>
-			</div>
-
-			{!run?.pk ? (
-				<div style={{opacity: 0.6, fontSize: 13}}>
-					{slot === "current"
-						? "current run がありません。"
-						: "next run がありません。"}
-				</div>
-			) : (
-				<>
-					{renderSection("走者", runners, runnerCh, "runners")}
-					{renderSection("解説", commentators, commentatorCh, "commentators")}
-				</>
-			)}
-		</div>
-	);
-};
-
-// 卓テンプレートの編集（プルダウンで流し込む初期値）
+// 卓テンプレートの編集（モーダルで卓を選んだときに流し込む初期値）
 const DeckTemplates = () => {
 	const decks = useReplicant("audio-decks");
 
@@ -410,10 +194,10 @@ const DeckTemplates = () => {
 
 	const setTemplate = (
 		d: "A" | "B",
-		kind: "runners" | "commentators",
+		kind: "runners" | "commentators" | "games",
 		csv: string,
 	) => {
-		const cur = decks?.[d] ?? {runners: [], commentators: []};
+		const cur = decks?.[d] ?? {runners: [], commentators: [], games: []};
 		decksRep.value = {
 			...(decks ?? {}),
 			[d]: {...cur, [kind]: parseCsv(csv)},
@@ -422,14 +206,24 @@ const DeckTemplates = () => {
 
 	const fmt = (arr?: number[]) => (arr ?? []).join(", ");
 
+	const rows: Array<{
+		kind: "runners" | "commentators" | "games";
+		label: string;
+		placeholder: string;
+	}> = [
+		{kind: "runners", label: "走者", placeholder: "1, 2, 3, 4"},
+		{kind: "commentators", label: "解説", placeholder: "5, 6"},
+		{kind: "games", label: "ゲーム音", placeholder: "9, 11, 13, 15"},
+	];
+
 	return (
-		<details style={{marginTop: 6}}>
+		<details style={{marginTop: 6}} open>
 			<summary style={{cursor: "pointer", fontSize: 13, opacity: 0.7}}>
-				卓テンプレート編集（プルダウン選択時の初期値）
+				卓テンプレート（デフォルト初期値）
 			</summary>
 			<div style={{marginTop: 8, fontSize: 12, opacity: 0.7}}>
-				走者と解説それぞれの WING メーター index をカンマ区切りで入力。 A卓は
-				ch1-16（index 0-15）、B卓は ch17-32（index 16-31）が目安。
+				走者・解説のマイク ch とゲーム音 ch を WING channel-strip 番号 (1..40)
+				でカンマ区切り入力。モーダルで卓を選ぶとこの値が流し込まれる。
 			</div>
 			{(["A", "B"] as const).map((d) => (
 				<div key={d} style={{marginTop: 6}}>
@@ -437,67 +231,23 @@ const DeckTemplates = () => {
 					<div
 						style={{display: "grid", gridTemplateColumns: "60px 1fr", gap: 6}}
 					>
-						<div style={{fontSize: 11, opacity: 0.6, alignSelf: "center"}}>
-							走者
-						</div>
-						<input
-							type='text'
-							defaultValue={fmt(decks?.[d]?.runners)}
-							placeholder='0, 1, 2, 3'
-							style={{width: "100%"}}
-							onBlur={(e) => setTemplate(d, "runners", e.currentTarget.value)}
-						/>
-						<div style={{fontSize: 11, opacity: 0.6, alignSelf: "center"}}>
-							解説
-						</div>
-						<input
-							type='text'
-							defaultValue={fmt(decks?.[d]?.commentators)}
-							placeholder='4, 5'
-							style={{width: "100%"}}
-							onBlur={(e) =>
-								setTemplate(d, "commentators", e.currentTarget.value)
-							}
-						/>
+						{rows.map((r) => (
+							<div key={r.kind} style={{display: "contents"}}>
+								<div style={{fontSize: 11, opacity: 0.6, alignSelf: "center"}}>
+									{r.label}
+								</div>
+								<input
+									type='text'
+									defaultValue={fmt(decks?.[d]?.[r.kind])}
+									placeholder={r.placeholder}
+									style={{width: "100%"}}
+									onBlur={(e) => setTemplate(d, r.kind, e.currentTarget.value)}
+								/>
+							</div>
+						))}
 					</div>
 				</div>
 			))}
-		</details>
-	);
-};
-
-// 全メーター一覧（index特定用）
-const MeterList = () => {
-	const meters = useReplicant("audio-meters") ?? [];
-	return (
-		<details style={{marginTop: 10}}>
-			<summary style={{cursor: "pointer", fontSize: 13, opacity: 0.7}}>
-				全メーター一覧（index特定用）
-			</summary>
-			<div
-				style={{
-					display: "grid",
-					gridTemplateColumns: "repeat(auto-fill, minmax(60px,1fr))",
-					gap: 3,
-					marginTop: 6,
-				}}
-			>
-				{meters.map((v, idx) => (
-					<div
-						key={idx}
-						style={{
-							background: "#23272f",
-							borderRadius: 4,
-							padding: "4px 2px",
-							textAlign: "center",
-							fontSize: 11,
-						}}
-					>
-						<div style={{opacity: 0.5}}>#{idx}</div>
-						<div>{v.toFixed(0)}</div>
-					</div>
-				))}
-			</div>
 		</details>
 	);
 };
@@ -506,10 +256,7 @@ const App = () => {
 	return (
 		<div style={{padding: 12, fontFamily: "sans-serif"}}>
 			<ConnectionSettings />
-			<DeckSection slot='current' title='Current（本番）' highlight={true} />
-			<DeckSection slot='next' title='Next（準備）' highlight={false} />
 			<DeckTemplates />
-			<MeterList />
 		</div>
 	);
 };
