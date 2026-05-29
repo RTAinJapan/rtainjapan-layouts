@@ -1,13 +1,13 @@
-import WebSocket from "ws";
+import {WebSocketServer, type WebSocket} from "ws";
 
 const randomInt = (max: number) => {
 	return Math.ceil(Math.random() * max);
 };
 
-const ws = new WebSocket.Server({port: 8080});
+const wss = new WebSocketServer({port: 8080});
 let total = randomInt(10000);
 
-ws.on("connection", (ws) => {
+wss.on("connection", (ws: WebSocket) => {
 	const a = () => {
 		const amount = randomInt(10000);
 		total += amount;
