@@ -38,21 +38,20 @@ jobs:
           cache: "npm"
       - run: npm ci
         env:
-          # postinstall の自動 Chrome DL を無効化し、ブラウザ取得は下の明示ステップに一本化する。
-          # 自動DLはフォルダだけ作って本体DLが未完になることがあり、その後の install が
-          # 「フォルダは在るが実行ファイルが無い」で失敗するため。
+          # ランナー同梱の Chrome を使うので puppeteer の Chrome 自動DLは無効化する。
           PUPPETEER_SKIP_DOWNLOAD: "true"
       - run: npm run schema-types
       - run: npm run build
-      # ロック版 puppeteer 自身のインストーラで pin された版の Chrome を取得する。
-      - run: node node_modules/puppeteer/install.mjs
-      # install.mjs は DL 失敗を握り潰して exit 0 し得るため、直後に存在を検証する。
-      # executablePath() は puppeteer が起動時に探すのと同じパスを返し、
-      # 見つからなければ throw するので、ここで失敗を顕在化できる。
-      - name: Verify Chrome is installed
+      # GitHub ランナーにプリインストールされた Google Chrome を puppeteer に使わせる。
+      # puppeteer は PUPPETEER_EXECUTABLE_PATH があれば DL 版キャッシュを探さず
+      # その実行ファイルで launch するため、Chrome の DL/版ずれ問題を回避できる。
+      - name: Use pre-installed Chrome
         run: |
-          ls -la ~/.cache/puppeteer/chrome || true
-          node -e "console.log('executablePath:', require('puppeteer').executablePath())"
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium-browser || command -v chromium)"
+          if [ -z "$CHROME" ]; then echo "No pre-installed Chrome found" >&2; exit 1; fi
+          echo "Using Chrome at: $CHROME"
+          "$CHROME" --version
+          echo "PUPPETEER_EXECUTABLE_PATH=$CHROME" >> "$GITHUB_ENV"
       - name: Set up NodeCG host and run screenshot regression
         run: npm run screenshot:ci
       - name: Upload screenshots
