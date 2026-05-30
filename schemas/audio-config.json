@@ -99,12 +99,12 @@
 			"A": {
 				"runners": [1, 2, 3, 4],
 				"commentators": [5, 6],
-				"games": [9, 11, 13, 15]
+				"games": [25, 26, 27, 28]
 			},
 			"B": {
-				"runners": [17, 18, 19, 20],
-				"commentators": [21, 22],
-				"games": [25, 27, 29, 31]
+				"runners": [13, 14, 15, 16],
+				"commentators": [17, 18],
+				"games": [29, 30, 31, 32]
 			}
 		}
 	}
