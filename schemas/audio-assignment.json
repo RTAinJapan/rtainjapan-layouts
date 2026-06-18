@@ -1,0 +1,43 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "object",
+	"additionalProperties": false,
+	"description": "current/next run ごとの WING channel-strip 割り当て。deck はテンプレート選択用。runners/commentators はマイク ch、games はゲーム音 ch。値は channel-strip 番号 (1..40)、-1 = 未割当。",
+	"properties": {
+		"current": {"$ref": "#/definitions/deckAssignment"},
+		"next": {"$ref": "#/definitions/deckAssignment"}
+	},
+	"definitions": {
+		"deckAssignment": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"deck": {
+					"type": ["string", "null"],
+					"enum": ["A", "B", null]
+				},
+				"runners": {
+					"type": "array",
+					"items": {"type": "number"},
+					"description": "runner index → WING channel-strip 番号 (-1 = 未割当)"
+				},
+				"commentators": {
+					"type": "array",
+					"items": {"type": "number"},
+					"description": "commentator index → WING channel-strip 番号 (-1 = 未割当)"
+				},
+				"games": {
+					"type": "array",
+					"items": {"type": "number"},
+					"description": "runner index → ゲーム音 WING channel-strip 番号 (-1 = 未割当)"
+				}
+			},
+			"required": ["deck", "runners", "commentators", "games"]
+		}
+	},
+	"default": {
+		"current": {"deck": null, "runners": [], "commentators": [], "games": []},
+		"next": {"deck": null, "runners": [], "commentators": [], "games": []}
+	}
+}

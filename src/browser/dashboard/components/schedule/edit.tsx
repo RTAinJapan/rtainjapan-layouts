@@ -3,11 +3,13 @@ import FormLabel from "@mui/material/FormLabel";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
+import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import TypoGraphy from "@mui/material/Typography";
 import React, {FC, useCallback, useEffect, useState} from "react";
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles";
 import {Commentator, Run, Runner} from "../../../../nodecg/replicants";
+import {useReplicant} from "../../../use-replicant";
 import MuiSwitch from "@mui/material/Switch";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
@@ -34,6 +36,30 @@ const RunnerRow = styled("div")({
 	gridAutoFlow: "column",
 	gap: "8px",
 });
+
+// 走者・解説で列幅を揃えるための共通グリッド列定義。
+// 列: 名前 / Twitch / Twitter / YouTube (4×等幅) / カメラ / 並べ替え / マイクch / ゲーム音ch
+// 並べ替えは人物情報側の操作なのでオーディオ列の左に置く。
+// 解説行はカメラ・ゲーム音ch のセルを空 div で埋めて縦位置を揃える。
+const PERSON_GRID_COLUMNS = "repeat(4, minmax(0, 1fr)) 120px 44px 100px 100px";
+
+// 走者=青枠 / 解説=緑枠の枠線色 (パステル寄りの淡い色)
+const ACCENT_RUNNER = "#90caf9";
+const ACCENT_COMMENTATOR = "#a5d6a7";
+
+// 各人の情報を Paper で囲って 1 行の塊を明確にする。accent で枠色を出し分ける。
+const PersonRow = styled(Paper, {
+	shouldForwardProp: (prop) => prop !== "accent",
+})<{accent: string}>(({accent}) => ({
+	display: "grid",
+	gridTemplateColumns: PERSON_GRID_COLUMNS,
+	gap: "8px",
+	alignItems: "center",
+	padding: "8px",
+	border: `2px solid ${accent}`,
+	borderRadius: "8px",
+	boxShadow: "none",
+}));
 
 const Switch: React.FC<{defaultValue: boolean; onChange: Function}> = (
 	props,
@@ -76,6 +102,37 @@ const theme = createTheme({
 		},
 	},
 });
+
+const assignmentRep = nodecg.Replicant("audio-assignment");
+
+type AudioSlot = {
+	deck: "A" | "B" | null;
+	runners: number[];
+	commentators: number[];
+	games: number[];
+};
+const emptySlot = (): AudioSlot => ({
+	deck: null,
+	runners: [],
+	commentators: [],
+	games: [],
+});
+
+// audio-assignment の current/next スロットを読み書きするフック。
+// 走者/解説の行に統合された ch 入力と、上部の卓セレクターから共有する。
+const useAudioSlot = (edit: "current" | "next" | undefined) => {
+	const config = useReplicant("audio-config");
+	const decks = config?.decks;
+	const assignment = useReplicant("audio-assignment");
+	const slot = edit ? assignment?.[edit] : undefined;
+	const writeSlot = (patch: Partial<AudioSlot>) => {
+		if (!edit) return;
+		const cur = assignment ?? {};
+		const base = cur[edit] ?? emptySlot();
+		assignmentRep.value = {...cur, [edit]: {...base, ...patch}};
+	};
+	return {decks, slot, writeSlot};
+};
 
 export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 	const [run, setRun] = useState(() => cloneDeep(defaultValue));
@@ -133,6 +190,21 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 		});
 	}, []);
 
+	const swapCommentator = useCallback((index1: number, index2: number) => {
+		setRun((run) => {
+			const cs: [Commentator | null, Commentator | null] = [
+				run.commentators[0],
+				run.commentators[1],
+			];
+			if (index1 >= 0 && index1 < 2 && index2 >= 0 && index2 < 2) {
+				const tmp = cs[index1] ?? null;
+				cs[index1] = cs[index2] ?? null;
+				cs[index2] = tmp;
+			}
+			return {...run, commentators: cs};
+		});
+	}, []);
+
 	const updateClicked = useCallback(async () => {
 		if (run) {
 			await nodecg.sendMessage("modifyRun", run);
@@ -145,6 +217,63 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 			setRun(cloneDeep(defaultValue));
 		}
 	}, [edit, defaultValue]);
+
+	// --- オーディオ (WING ch) 割り当て。各人の行に統合して表示する ---
+	const {
+		decks: audioDecks,
+		slot: audioSlot,
+		writeSlot: writeAudioSlot,
+	} = useAudioSlot(edit);
+
+	const applyAudioDeck = (d: "A" | "B" | "") => {
+		if (d === "") {
+			writeAudioSlot({deck: null});
+			return;
+		}
+		const tmpl = audioDecks?.[d] ?? {runners: [], commentators: [], games: []};
+		writeAudioSlot({
+			deck: d,
+			runners: run.runners.map((_, i) => tmpl.runners?.[i] ?? -1),
+			games: run.runners.map((_, i) => tmpl.games?.[i] ?? -1),
+			commentators: run.commentators.map(
+				(_, i) => tmpl.commentators?.[i] ?? -1,
+			),
+		});
+	};
+
+	const setAudioCh = (
+		kind: "runners" | "commentators" | "games",
+		idx: number,
+		value: number,
+	) => {
+		const len =
+			kind === "commentators" ? run.commentators.length : run.runners.length;
+		const curArr = audioSlot?.[kind] ?? [];
+		const next: number[] = [];
+		for (let i = 0; i < len; i++) next[i] = curArr[i] ?? -1;
+		next[idx] = value;
+		if (kind === "runners") writeAudioSlot({runners: next});
+		else if (kind === "games") writeAudioSlot({games: next});
+		else writeAudioSlot({commentators: next});
+	};
+
+	const audioChField = (
+		label: string,
+		value: number,
+		onValue: (n: number) => void,
+	) => (
+		<TextField
+			label={label}
+			type='number'
+			size='small'
+			fullWidth
+			value={value}
+			onChange={(e) => {
+				const n = parseInt(e.currentTarget.value, 10);
+				onValue(Number.isNaN(n) ? -1 : n);
+			}}
+		/>
+	);
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -191,9 +320,47 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 							}}
 						/>
 					</RunnerRow>
+					{/* オーディオ卓選択。ドロップダウンの左端をマイク ch 列に揃える。
+					    (Paper の枠 2px + padding 8px = 10px ぶん左右に padding を入れて
+					    各行の内側グリッドと列位置を一致させる) */}
+					{edit && (
+						<div
+							style={{
+								display: "grid",
+								gridTemplateColumns: PERSON_GRID_COLUMNS,
+								gap: 8,
+								alignItems: "center",
+								padding: "0 10px",
+								boxSizing: "border-box",
+							}}
+						>
+							<div
+								style={{
+									gridColumn: "1 / 7",
+									display: "flex",
+									justifyContent: "flex-end",
+									alignItems: "center",
+									gap: 8,
+								}}
+							>
+								<TypoGraphy variant='body2'>卓プリセット:</TypoGraphy>
+							</div>
+							<select
+								value={audioSlot?.deck ?? ""}
+								style={{gridColumn: "7 / 8", width: "100%"}}
+								onChange={(e) =>
+									applyAudioDeck(e.currentTarget.value as "A" | "B" | "")
+								}
+							>
+								<option value=''>（未選択）</option>
+								<option value='A'>A卓</option>
+								<option value='B'>B卓</option>
+							</select>
+						</div>
+					)}
 					{run.runners.map((runner, index) => {
 						return (
-							<RunnerRow key={runner.pk}>
+							<PersonRow key={runner.pk} accent={ACCENT_RUNNER} elevation={0}>
 								<TextField
 									label={`走者${index + 1} 名前`}
 									value={runner.name}
@@ -246,6 +413,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 										<VideocamIcon color={"secondary"} />
 									</div>
 								</FormControl>
+								{/* 並べ替えは人物情報側の操作。オーディオ列の左に配置 */}
 								<div
 									style={{
 										placeSelf: "center",
@@ -274,7 +442,17 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 										</IconButton>
 									)}
 								</div>
-							</RunnerRow>
+								{audioChField(
+									"マイク ch",
+									audioSlot?.runners?.[index] ?? -1,
+									(v) => setAudioCh("runners", index, v),
+								)}
+								{audioChField(
+									"ゲーム音 ch",
+									audioSlot?.games?.[index] ?? -1,
+									(v) => setAudioCh("games", index, v),
+								)}
+							</PersonRow>
 						);
 					})}
 
@@ -284,17 +462,17 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 							name: "",
 						};
 						return (
-							<RunnerRow key={index}>
+							<PersonRow key={index} accent={ACCENT_COMMENTATOR} elevation={0}>
 								<TextField
 									label={`解説${index + 1} 名前`}
-									defaultValue={commentator.name}
+									value={commentator.name ?? ""}
 									onChange={(e) => {
 										updateCommentatorInfo(index, "name", e.currentTarget.value);
 									}}
 								/>
 								<TextField
 									label={`解説${index + 1} Twitch`}
-									defaultValue={commentator.twitch}
+									value={commentator.twitch ?? ""}
 									onChange={(e) => {
 										updateCommentatorInfo(
 											index,
@@ -305,7 +483,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 								/>
 								<TextField
 									label={`解説${index + 1} Twitter`}
-									defaultValue={commentator.twitter}
+									value={commentator.twitter ?? ""}
 									onChange={(e) => {
 										updateCommentatorInfo(
 											index,
@@ -316,7 +494,7 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 								/>
 								<TextField
 									label={`解説${index + 1} YouTube`}
-									defaultValue={commentator.youtube}
+									value={commentator.youtube ?? ""}
 									onChange={(e) => {
 										updateCommentatorInfo(
 											index,
@@ -325,9 +503,49 @@ export const EditRun: FC<Props> = ({edit, defaultValue, onFinish}) => {
 										);
 									}}
 								/>
-							</RunnerRow>
+								{/* カメラ列は解説に無いので空セルで揃える */}
+								<div />
+								{/* 並べ替えは人物情報側の操作。オーディオ列の左に配置 */}
+								<div
+									style={{
+										placeSelf: "center",
+										display: "grid",
+										gridTemplateRows: "1fr 1fr",
+									}}
+								>
+									{index !== 0 && (
+										<IconButton
+											style={{gridRow: "1 / 2"}}
+											onClick={() => {
+												swapCommentator(index, index - 1);
+											}}
+										>
+											<IconUp />
+										</IconButton>
+									)}
+									{index !== run.commentators.length - 1 && (
+										<IconButton
+											style={{gridRow: "2 / 3"}}
+											onClick={() => {
+												swapCommentator(index, index + 1);
+											}}
+										>
+											<IconDown />
+										</IconButton>
+									)}
+								</div>
+								{/* 解説不在でもマイク ch 欄は常に表示し、走者と縦位置を揃える */}
+								{audioChField(
+									"マイク ch",
+									audioSlot?.commentators?.[index] ?? -1,
+									(v) => setAudioCh("commentators", index, v),
+								)}
+								{/* ゲーム音 ch 列は解説に無いので空セル */}
+								<div />
+							</PersonRow>
 						);
 					})}
+
 					<div
 						style={{
 							placeSelf: "end",

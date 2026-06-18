@@ -3,7 +3,11 @@ import {ThinText, TimerText} from "../../lib/text";
 import {background, border, text} from "../../../styles/colors";
 import {Commentator, Runner, Timer} from "../../../../../nodecg/replicants";
 import iconRunner from "../../../images/icon/icon_runner.svg";
+import iconRunnerLit from "../../../images/icon/icon_runner_lit.svg";
 import iconCommentator from "../../../images/icon/icon_commentary.svg";
+import iconCommentatorLit from "../../../images/icon/icon_commentary_lit.svg";
+import iconSound from "../../../images/icon/icon_sound.svg";
+import iconSoundLit from "../../../images/icon/icon_sound_lit.svg";
 import iconTwitter from "../../../images/icon/icon_twitter.svg";
 import iconTwitch from "../../../images/icon/icon_twitch.svg";
 import iconYoutube from "../../../images/icon/icon_youtube.svg";
@@ -101,12 +105,22 @@ export const SingleRowNameplate = ({
 	person,
 	result,
 	style,
+	glow,
+	race = false,
+	gameOnAir = false,
 }: {
 	kind: "runners" | "commentators";
 	person?: Runner | Commentator;
 	result?: Timer;
 	style?: HTMLAttributes<HTMLDivElement>["style"];
+	glow?: boolean;
+	race?: boolean;
+	gameOnAir?: boolean;
 }) => {
+	const litIcon = kind === "runners" ? iconRunnerLit : iconCommentatorLit;
+	const normalIcon = kind === "runners" ? iconRunner : iconCommentator;
+	// ゲーム音 on-air アイコンは race layout の走者枠にのみ表示する。
+	const showSound = kind === "runners" && race;
 	return (
 		<div
 			style={{
@@ -114,7 +128,9 @@ export const SingleRowNameplate = ({
 				display: "grid",
 				padding: "5px 9px",
 				gridTemplateRows: "40px",
-				gridTemplateColumns: "32px 9px 2px 10px auto 1fr auto",
+				gridTemplateColumns: `${
+					showSound ? "auto" : "32px"
+				} 9px 2px 10px auto 1fr auto`,
 				placeContent: "stretch",
 				alignItems: "center",
 				justifyItems: "stretch",
@@ -122,16 +138,31 @@ export const SingleRowNameplate = ({
 				...style,
 			}}
 		>
-			<img
-				src={kind === "runners" ? iconRunner : iconCommentator}
-				height={32}
-				width={32}
+			<div
 				style={{
+					display: "flex",
+					alignItems: "center",
+					gap: "8px",
 					justifySelf: "start",
 					margin: "9px 0",
 					gridColumn: "1 / 2",
 				}}
-			></img>
+			>
+				{showSound && (
+					<img
+						src={gameOnAir ? iconSoundLit : iconSound}
+						height={32}
+						width={32}
+						style={{transition: "filter 0.12s ease-out"}}
+					></img>
+				)}
+				<img
+					src={glow ? litIcon : normalIcon}
+					height={32}
+					width={32}
+					style={{transition: "filter 0.12s ease-out"}}
+				></img>
+			</div>
 			<div
 				style={{
 					background: border.name,

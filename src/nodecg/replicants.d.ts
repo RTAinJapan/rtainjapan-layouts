@@ -26,6 +26,10 @@ import {VideoControl} from "./generated/video-control";
 import {Announcements} from "./generated/announcements";
 import {PlayingMusic} from "./generated/playing-music";
 import {CurrentEvent} from "./generated/current-event";
+import {AudioActive} from "./generated/audio-active";
+import {AudioAssignment} from "./generated/audio-assignment";
+import {AudioConfig} from "./generated/audio-config";
+import {AudioStatus} from "./generated/audio-status";
 
 type Run = NonNullable<CurrentRun>;
 type Runner = Run["runners"][number];
@@ -79,6 +83,10 @@ type ReplicantMap = {
 	announcements: Announcements;
 	"playing-music": PlayingMusic;
 	"current-event": CurrentEvent;
+	"audio-active": AudioActive;
+	"audio-assignment": AudioAssignment;
+	"audio-config": AudioConfig;
+	"audio-status": AudioStatus;
 };
 
 export type {

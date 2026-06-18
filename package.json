@@ -169,6 +169,14 @@
 				"workspace": "2-misc"
 			},
 			{
+				"name": "wing-audio",
+				"title": "WING連携",
+				"file": "wing-audio.html",
+				"width": 4,
+				"headerColor": "#00BEBE",
+				"workspace": "2-misc"
+			},
+			{
 				"name": "announcements",
 				"title": "お知らせ",
 				"file": "announcements.html",

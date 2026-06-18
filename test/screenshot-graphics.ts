@@ -24,6 +24,8 @@ import {
 	commentatorVariationLayouts,
 	gameSceneStates,
 	startTimer,
+	audioGlowState,
+	audioGlowLayouts,
 } from "./fixtures/sample-data";
 
 const BASE_URL = process.env["BASE_URL"] || "http://127.0.0.1:9090";
@@ -318,6 +320,32 @@ async function main() {
 	} catch (e) {
 		failures.push(`dashboard root: ${(e as Error).message}`);
 	}
+
+	// Audio glow variations. Light up runner mic / commentator mic / game on-air
+	// via the audio-active replicant and re-shoot representative layouts that
+	// cover each nameplate variant (solo two-row / race single-row / race
+	// two-row, plus commentator two-row). Not every layout — just enough to
+	// cover the nameplate variations the glow can appear in. current-run is
+	// still the default (4 runners / 2 commentators) at this point.
+	console.log("seeding audio glow state");
+	await reseed(page, {"audio-active": audioGlowState});
+	for (const layout of audioGlowLayouts) {
+		const url = `${BASE_URL}/bundles/${BUNDLE}/graphics/game.html?layout=${layout}`;
+		const out = path.join(
+			SCREENSHOT_DIR,
+			"variations",
+			`audio-glow-${layout}.png`,
+		);
+		try {
+			await shootUrl(page, url, out, 1920, 1030);
+		} catch (e) {
+			failures.push(`variations/audio-glow/${layout}: ${(e as Error).message}`);
+		}
+	}
+	// Reset audio-active so later (commentator-count) shots are not affected.
+	await reseed(page, {
+		"audio-active": {runners: [], commentators: [], games: []},
+	});
 
 	// Commentator-count variations. The default capture above used 2 commentators;
 	// here we re-seed current-run with 0 and 1 commentator versions and re-shoot

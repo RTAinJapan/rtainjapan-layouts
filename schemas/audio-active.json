@@ -1,0 +1,25 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "object",
+	"additionalProperties": false,
+	"description": "発光中の対象。runners/commentators はマイク音量で、games は配信 Main 送り (on-air) で点灯。各配列は runner / commentator index に対応する。",
+	"properties": {
+		"runners": {
+			"type": "array",
+			"items": {"type": "boolean"},
+			"default": []
+		},
+		"commentators": {
+			"type": "array",
+			"items": {"type": "boolean"},
+			"default": []
+		},
+		"games": {
+			"type": "array",
+			"items": {"type": "boolean"},
+			"default": []
+		}
+	},
+	"default": {"runners": [], "commentators": [], "games": []}
+}
