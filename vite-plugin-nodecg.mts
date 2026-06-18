@@ -132,7 +132,7 @@ export default async ({
 			config.command === "build"
 				? (JSON.parse(
 						await fs.readFile(
-							path.join(config.build.outDir, "manifest.json"),
+							path.join(config.build.outDir, ".vite", "manifest.json"),
 							"utf-8",
 						),
 				  ) as Manifest)
