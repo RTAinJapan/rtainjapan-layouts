@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script src="https://sdpi-components.dev/releases/v4/sdpi-components.js"></script>
+	</head>
+	<body>
+		<sdpi-item label="メッセージ名">
+			<sdpi-textfield
+				setting="messageName"
+				placeholder="例: completeRunner"
+			></sdpi-textfield>
+		</sdpi-item>
+		<sdpi-item label="内容 (JSON)">
+			<sdpi-textarea
+				setting="content"
+				placeholder='例: {"index": 0, "forfeit": false}'
+				rows="4"
+			></sdpi-textarea>
+		</sdpi-item>
+
+		<hr />
+
+		<sdpi-item label="NodeCG URL">
+			<sdpi-textfield
+				setting="url"
+				global
+				placeholder="http://localhost:9090"
+			></sdpi-textfield>
+		</sdpi-item>
+		<sdpi-item label="Bundle 名">
+			<sdpi-textfield
+				setting="bundleName"
+				global
+				placeholder="rtainjapan-layouts"
+			></sdpi-textfield>
+		</sdpi-item>
+		<sdpi-item label="認証キー (任意)">
+			<sdpi-password setting="key" global></sdpi-password>
+		</sdpi-item>
+	</body>
+</html>

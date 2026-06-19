@@ -1,0 +1,81 @@
+{
+	"$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+	"Name": "RTA in Japan Timer",
+	"Version": "0.1.0.0",
+	"Author": "RTA in Japan",
+	"Description": "NodeCG の rtainjapan-layouts タイマーを Stream Deck から操作します。",
+	"Category": "RTA in Japan",
+	"CategoryIcon": "imgs/plugin/category",
+	"Icon": "imgs/plugin/marketplace",
+	"URL": "https://github.com/RTAinJapan/rtainjapan-layouts",
+	"UUID": "jp.rtainjapan.layouts",
+	"SDKVersion": 2,
+	"CodePath": "bin/plugin.js",
+	"Nodejs": {
+		"Version": "20",
+		"Debug": "enabled"
+	},
+	"Software": {
+		"MinimumVersion": "6.5"
+	},
+	"OS": [
+		{"Platform": "mac", "MinimumVersion": "10.15"},
+		{"Platform": "windows", "MinimumVersion": "10"}
+	],
+	"Actions": [
+		{
+			"Name": "タイマー開始",
+			"UUID": "jp.rtainjapan.layouts.start-timer",
+			"Icon": "imgs/actions/icon",
+			"Tooltip": "マスタータイマーを開始（再開）します。",
+			"Controllers": ["Keypad"],
+			"PropertyInspectorPath": "ui/connection.html",
+			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
+		},
+		{
+			"Name": "タイマー停止",
+			"UUID": "jp.rtainjapan.layouts.stop-timer",
+			"Icon": "imgs/actions/icon",
+			"Tooltip": "マスタータイマーを停止（一時停止）します。",
+			"Controllers": ["Keypad"],
+			"PropertyInspectorPath": "ui/connection.html",
+			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
+		},
+		{
+			"Name": "走者 完走/リタイア",
+			"UUID": "jp.rtainjapan.layouts.complete-runner",
+			"Icon": "imgs/actions/icon",
+			"Tooltip": "指定した走者を完走（またはリタイア）にします。",
+			"Controllers": ["Keypad"],
+			"PropertyInspectorPath": "ui/complete-runner.html",
+			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
+		},
+		{
+			"Name": "走者 再開",
+			"UUID": "jp.rtainjapan.layouts.resume-runner",
+			"Icon": "imgs/actions/icon",
+			"Tooltip": "完走済みの走者を走行中に戻します。",
+			"Controllers": ["Keypad"],
+			"PropertyInspectorPath": "ui/resume-runner.html",
+			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
+		},
+		{
+			"Name": "再同期",
+			"UUID": "jp.rtainjapan.layouts.reload",
+			"Icon": "imgs/actions/icon",
+			"Tooltip": "NodeCG のレプリカントを再取得します。",
+			"Controllers": ["Keypad"],
+			"PropertyInspectorPath": "ui/connection.html",
+			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
+		},
+		{
+			"Name": "メッセージ送信",
+			"UUID": "jp.rtainjapan.layouts.send-message",
+			"Icon": "imgs/actions/icon",
+			"Tooltip": "任意の NodeCG メッセージを送信します（上級者向け）。",
+			"Controllers": ["Keypad"],
+			"PropertyInspectorPath": "ui/send-message.html",
+			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
+		}
+	]
+}

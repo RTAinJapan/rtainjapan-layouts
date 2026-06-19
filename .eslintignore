@@ -6,6 +6,7 @@ generated/
 /bundle-analyzer
 /cfg
 /shared/dist
+/streamdeck
 
 # Logs
 logs

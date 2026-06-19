@@ -12,6 +12,10 @@ generated/
 /assets
 /db
 
+# Stream Deck plugin build output
+/streamdeck/jp.rtainjapan.layouts.sdPlugin/bin
+/streamdeck/jp.rtainjapan.layouts.sdPlugin/logs
+
 # Logs
 logs
 *.log
