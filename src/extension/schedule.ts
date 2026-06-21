@@ -149,15 +149,27 @@ export default async (nodecg: NodeCG) => {
 		}
 	});
 
-	// Prevent empty current run
+	// 初回のみ、空の current-run をスケジュール先頭のゲームで初期化する。
+	// 一度初期化 (もしくは既に設定済み) された後は、スケジュールの更新
+	// (tracker からの定期反映など) で current-run を上書きしない。これにより、
+	// 最後のゲームの後に「次へ」で空欄にした状態が、スケジュール更新のたびに
+	// 勝手に先頭ゲームへ戻ってしまうのを防ぐ (#768)。
+	let hasInitializedCurrentRun = false;
 	scheduleRep.on("change", (newVal) => {
+		if (hasInitializedCurrentRun) {
+			return;
+		}
 		const isCurrentRunEmpty = !currentRunRep.value || !currentRunRep.value.pk;
-		if (isCurrentRunEmpty) {
-			const currentRun = newVal[0];
-			if (currentRun) {
-				currentRunRep.value = clone(currentRun);
-				nextRunRep.value = clone(newVal[1]);
-			}
+		if (!isCurrentRunEmpty) {
+			// 既に current-run が設定済み (永続値や操作者の選択) なら初期化不要。
+			hasInitializedCurrentRun = true;
+			return;
+		}
+		const currentRun = newVal[0];
+		if (currentRun) {
+			currentRunRep.value = clone(currentRun);
+			nextRunRep.value = clone(newVal[1]);
+			hasInitializedCurrentRun = true;
 		}
 	});
 };
