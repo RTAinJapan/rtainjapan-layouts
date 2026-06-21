@@ -13,7 +13,7 @@ const COLORS: Record<KeyColor, {bg: string; fg: string; sub: string}> = {
 	idle: {bg: "#2b2b2b", fg: "#ffffff", sub: "#b0b0b0"},
 	running: {bg: "#1565c0", fg: "#ffffff", sub: "#cfe0f5"},
 	finished: {bg: "#2e7d32", fg: "#ffffff", sub: "#d6ecd7"},
-	forfeit: {bg: "#546e7a", fg: "#ffffff", sub: "#dfe6ea"},
+	forfeit: {bg: "#424242", fg: "#ffffff", sub: "#d6d6d6"},
 	empty: {bg: "#161616", fg: "#6f6f6f", sub: "#5a5a5a"},
 	offline: {bg: "#5a1a1a", fg: "#ffd9d9", sub: "#e7a3a3"},
 };
