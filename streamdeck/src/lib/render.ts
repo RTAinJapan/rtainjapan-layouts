@@ -72,3 +72,36 @@ export function renderKey(options: {
 		"base64",
 	)}`;
 }
+
+/**
+ * Builds a three-line "action" key image:
+ *  - line 1: the target the button represents (normal size),
+ *  - line 2: its current state (small caption),
+ *  - line 3: the action the button performs (large, bold).
+ *
+ * Used by the master-timer and fan-art keys so each key reads as
+ * "{対象} / {状態} / {アクション}" (e.g. タイマー / 停止中 / 開始).
+ */
+export function renderActionKey(options: {
+	target: string;
+	state?: string;
+	action: string;
+	color: KeyColor;
+}): string {
+	const {bg, fg, sub} = COLORS[options.color];
+	const x = SIZE / 2;
+	const target = escapeXml(options.target);
+	const action = escapeXml(options.action);
+	const state = options.state === undefined ? "" : escapeXml(options.state);
+
+	const targetText = `<text x="${x}" y="34" fill="${fg}" font-family="sans-serif" font-size="20" text-anchor="middle">${target}</text>`;
+	const stateText = state
+		? `<text x="${x}" y="58" fill="${sub}" font-family="sans-serif" font-size="14" text-anchor="middle">${state}</text>`
+		: "";
+	const actionText = `<text x="${x}" y="110" fill="${fg}" font-family="sans-serif" font-size="30" font-weight="700" text-anchor="middle">${action}</text>`;
+
+	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 ${SIZE} ${SIZE}"><rect width="${SIZE}" height="${SIZE}" rx="18" fill="${bg}"/>${targetText}${stateText}${actionText}</svg>`;
+	return `data:image/svg+xml;base64,${Buffer.from(svg, "utf8").toString(
+		"base64",
+	)}`;
+}

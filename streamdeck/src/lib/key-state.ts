@@ -1,5 +1,5 @@
 import {nodecg} from "../nodecg/client";
-import {renderKey} from "./render";
+import {renderActionKey, renderKey} from "./render";
 
 /**
  * Builds the key image for a runner slot (used by the complete / resume /
@@ -43,27 +43,55 @@ export function runnerKeyImage(index: number): string {
 	});
 }
 
-/** Builds the key image for a master timer action (start / stop). */
-export function masterKeyImage(label: string): string {
+/**
+ * Builds the key image for a master timer action (start / stop), shown as
+ * "タイマー / {状態} / {アクション}".
+ */
+export function masterKeyImage(action: string): string {
+	const target = "タイマー";
 	if (!nodecg.connected) {
-		return renderKey({title: label, subtitle: "オフライン", color: "offline"});
+		return renderActionKey({
+			target,
+			state: "オフライン",
+			action,
+			color: "offline",
+		});
 	}
 	switch (nodecg.timer?.timerState) {
 		case "Running":
-			return renderKey({title: label, subtitle: "計測中", color: "running"});
+			return renderActionKey({
+				target,
+				state: "計測中",
+				action,
+				color: "running",
+			});
 		case "Finished":
-			return renderKey({title: label, subtitle: "完了", color: "finished"});
+			return renderActionKey({
+				target,
+				state: "完了",
+				action,
+				color: "finished",
+			});
 		default:
-			return renderKey({title: label, subtitle: "停止中", color: "idle"});
+			return renderActionKey({target, state: "停止中", action, color: "idle"});
 	}
 }
 
-/** Builds the key image for a fan-art queue action (start / stop). */
-export function fanArtKeyImage(label: string): string {
+/**
+ * Builds the key image for a fan-art queue action (start / stop), shown as
+ * "ファンアート / {状態} / {アクション}".
+ */
+export function fanArtKeyImage(action: string): string {
+	const target = "ファンアート";
 	if (!nodecg.connected) {
-		return renderKey({title: label, subtitle: "オフライン", color: "offline"});
+		return renderActionKey({
+			target,
+			state: "オフライン",
+			action,
+			color: "offline",
+		});
 	}
 	return nodecg.tweetQueuePlaying
-		? renderKey({title: label, subtitle: "表示中", color: "running"})
-		: renderKey({title: label, subtitle: "停止中", color: "idle"});
+		? renderActionKey({target, state: "表示中", action, color: "running"})
+		: renderActionKey({target, state: "停止中", action, color: "idle"});
 }
