@@ -21,7 +21,9 @@ export const Twitter = () => {
 	const playing = useReplicant("tweet-queue-playing");
 
 	const queuedCount = tweets?.filter((tweet) => tweet.queued).length ?? 0;
-	const isOnSetup = currentScene === setupSceneName;
+	// シーンが判明していて Setup 以外のときだけ開始をブロックする。
+	// シーン不明 (OBS未接続など) のときは制約を緩めて押せるようにする。
+	const sceneBlocked = Boolean(currentScene) && currentScene !== setupSceneName;
 	const isPlaying = playing === true;
 
 	return (
@@ -48,7 +50,7 @@ export const Twitter = () => {
 				) : (
 					<Button
 						variant='contained'
-						disabled={queuedCount === 0 || !isOnSetup}
+						disabled={queuedCount === 0 || sceneBlocked}
 						onClick={() => {
 							nodecg.sendMessage("startTweetQueue");
 						}}

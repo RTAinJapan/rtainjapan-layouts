@@ -30,15 +30,22 @@ export const setupTweetQueue = (nodecg: NodeCG) => {
 		playingRep.value = false;
 	};
 
-	// OBSのプログラム側がSetupシーンを表示しているかどうか。
-	const isOnSetupScene = () => currentSceneRep.value === setupSceneName;
+	// シーンが判明していて Setup 以外のときだけブロックする。
+	// OBS WebSocket 切断時などシーンが不明 ("") のときは Setup かどうか判断でき
+	// ないが、ここでブロックすると切断中にファンアートを一切出せなくなる。手動で
+	// 開始/停止できればよく、最悪ゲーム中に消化されてもキューが減るだけで致命的では
+	// ないため、不明なときは制約を緩めて許可する。
+	const isBlockedByScene = () => {
+		const scene = currentSceneRep.value;
+		return Boolean(scene) && scene !== setupSceneName;
+	};
 
 	const consumeNext = () => {
 		if (!isPlaying()) {
 			return;
 		}
-		// Setup以外のシーンに切り替わっていたら表示処理を停止する。
-		if (!isOnSetupScene()) {
+		// Setup以外の (判明している) シーンになっていたら表示処理を停止する。
+		if (isBlockedByScene()) {
 			stop();
 			return;
 		}
@@ -72,8 +79,9 @@ export const setupTweetQueue = (nodecg: NodeCG) => {
 		if (isPlaying()) {
 			return;
 		}
-		// Setupを表示しているときのみキューの消化を開始する。
-		if (!isOnSetupScene()) {
+		// Setup以外の (判明している) シーンのときは開始しない。
+		// シーン不明 (OBS未接続など) のときは制約を緩めて許可する。
+		if (isBlockedByScene()) {
 			logger.warn(
 				`「表示開始」を無視しました: 現在のシーンが「${setupSceneName}」ではありません (現在: 「${
 					currentSceneRep.value ?? ""
@@ -94,10 +102,11 @@ export const setupTweetQueue = (nodecg: NodeCG) => {
 		stop();
 	});
 
-	// Setup以外へ切り替わったら即座に停止する。
+	// Setup以外の (判明している) シーンへ切り替わったら即座に停止する。
+	// 切断などでシーンが不明 ("") になったときは停止しない (制約を緩める)。
 	// 再開はユーザーが再度「表示開始」を押すまで行わない。
 	currentSceneRep.on("change", (newValue) => {
-		if (isPlaying() && newValue !== setupSceneName) {
+		if (isPlaying() && Boolean(newValue) && newValue !== setupSceneName) {
 			logger.info(
 				`シーンが「${setupSceneName}」から切り替わったため、まとめて表示を停止しました`,
 			);
