@@ -31,13 +31,7 @@ const DeleteButton = (props: ButtonProps) => {
 
 const QueueButton = ({queued, ...props}: ButtonProps & {queued: boolean}) => {
 	return (
-		<Tooltip
-			title={
-				queued
-					? "「まとめて表示」のキューから外す"
-					: "「まとめて表示」のキューに追加"
-			}
-		>
+		<Tooltip title={queued ? "キューから外す" : "キューに追加"}>
 			<IconButton {...props} color={queued ? "primary" : "default"}>
 				{queued ? <PlaylistAddCheckIcon /> : <PlaylistAddIcon />}
 			</IconButton>
