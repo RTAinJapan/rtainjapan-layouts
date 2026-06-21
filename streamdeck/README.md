@@ -1,9 +1,10 @@
 # RTA in Japan Timer — Stream Deck plugin
 
-NodeCG の `rtainjapan-layouts` のタイマーを Stream Deck から操作するためのプラグインです（[#759](https://github.com/RTAinJapan/rtainjapan-layouts/issues/759)）。
+NodeCG の `rtainjapan-layouts` を Stream Deck から操作するためのプラグインです（[#759](https://github.com/RTAinJapan/rtainjapan-layouts/issues/759)）。
 
-レース中のタイマー操作（特に走者のストップ）をワンボタンで行えるようにし、
-オペレーターの負荷を下げることを目的としています。
+レース中のタイマー操作（特に走者のストップ）に加え、走者ごとの完走・リタイア
+（それぞれ独立したボタン）、ファンアートの「まとめて表示」開始/停止などをワン
+ボタンで行えるようにし、オペレーターの負荷を下げることを目的としています。
 
 ## しくみ
 
