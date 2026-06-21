@@ -110,6 +110,7 @@ class NodeCgClient extends EventEmitter {
 
 		socket.on("connect", () => {
 			this.#connected = true;
+			streamDeck.logger.info("Connected to NodeCG");
 			this.emit("status");
 			void this.#subscribeAll();
 		});
@@ -201,34 +202,23 @@ class NodeCgClient extends EventEmitter {
 	}
 
 	/**
-	 * Sends a NodeCG message (equivalent to `nodecg.sendMessage`) and resolves
-	 * with the acknowledgement value.
+	 * Sends a NodeCG message (equivalent to `nodecg.sendMessage`).
+	 *
+	 * The timer message handlers (`startTimer`, `completeRunner`, …) do not
+	 * acknowledge messages, and the dashboard sends them fire-and-forget. So we
+	 * emit without waiting for an acknowledgement that would never arrive (doing
+	 * so previously left every press hanging). The result is reflected through
+	 * the observed `timer` / `current-run` replicants instead. Rejects only when
+	 * not connected.
 	 */
-	dispatch(messageName: string, content?: unknown): Promise<unknown> {
+	dispatch(messageName: string, content?: unknown): Promise<void> {
 		const socket = this.#socket;
 		const bundleName = this.#config?.bundleName;
 		if (!socket || !this.#connected || !bundleName) {
 			return Promise.reject(new Error("NodeCG is not connected"));
 		}
-		return new Promise((resolve, reject) => {
-			socket.emit(
-				"message",
-				{messageName, bundleName, content},
-				(error: unknown, result: unknown) => {
-					if (error) {
-						reject(
-							error instanceof Error
-								? error
-								: new Error(
-										typeof error === "string" ? error : "Message failed",
-								  ),
-						);
-					} else {
-						resolve(result);
-					}
-				},
-			);
-		});
+		socket.emit("message", {messageName, bundleName, content});
+		return Promise.resolve();
 	}
 }
 

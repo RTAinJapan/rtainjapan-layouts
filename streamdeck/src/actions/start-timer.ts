@@ -13,6 +13,7 @@ export class StartTimer extends RenderingAction {
 	override async onKeyDown(ev: KeyDownEvent): Promise<void> {
 		try {
 			await nodecg.dispatch("startTimer", undefined);
+			await ev.action.showOk();
 		} catch (error) {
 			streamDeck.logger.error(`startTimer failed: ${String(error)}`);
 			await ev.action.showAlert();
