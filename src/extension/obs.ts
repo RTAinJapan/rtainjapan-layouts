@@ -7,7 +7,6 @@ const obs = new OBSWebSocket();
 export const setupObs = (nodecg: NodeCG) => {
 	const {obs: obsConfig} = nodecg.bundleConfig;
 	const logger = new nodecg.Logger("obs");
-	const obsStatus = nodecg.Replicant("obs-status");
 	const currentSceneRep = nodecg.Replicant("obs-current-scene");
 
 	if (!obsConfig) {
@@ -15,9 +14,10 @@ export const setupObs = (nodecg: NodeCG) => {
 		return;
 	}
 
+	let connected = false;
 	let attemptingToConnect = false;
 	const connect = async (emitError = true) => {
-		if (attemptingToConnect) {
+		if (attemptingToConnect || connected) {
 			return;
 		}
 		attemptingToConnect = true;
@@ -59,6 +59,7 @@ export const setupObs = (nodecg: NodeCG) => {
 		logger.info(`Connected: ${obsConfig.address}`);
 	});
 	obs.on("Identified", async () => {
+		connected = true;
 		const {outputActive} = await obs.call("GetRecordStatus");
 		if (!outputActive) {
 			await startRecording();
@@ -79,17 +80,20 @@ export const setupObs = (nodecg: NodeCG) => {
 		}
 	});
 	obs.on("ConnectionClosed", () => {
-		// 切断中はプログラムシーンが不明なので空にする (Setup と誤判定しないため)。
-		currentSceneRep.value = "";
-		if (obsStatus.value?.connected) {
+		if (connected) {
 			logger.info(`Disconnected`);
 		}
+		connected = false;
+		// 切断中はプログラムシーンが不明なので空にする (Setup と誤判定しないため)。
+		currentSceneRep.value = "";
 	});
 
 	void connect();
 
+	// 接続が切れているときだけ再接続を試みる。
+	// (接続済みなのに再接続するとシーン追跡が不安定になり、ログも溢れる)
 	setInterval(() => {
-		if (!obsStatus.value?.connected) {
+		if (!connected) {
 			void connect(false);
 		}
 	}, 1000);
