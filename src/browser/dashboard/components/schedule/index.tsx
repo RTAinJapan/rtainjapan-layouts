@@ -94,7 +94,8 @@ export const Schedule: FC = () => {
 					color={purple}
 					ButtonProps={{
 						onClick: moveNextRun,
-						disabled: disablePrevNextButtons,
+						// 閉幕表示中は最後のゲームより先が無いので「次」を無効化する。
+						disabled: disablePrevNextButtons || !!ending,
 					}}
 				>
 					次<ArrowForward />
