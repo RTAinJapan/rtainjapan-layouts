@@ -12,6 +12,9 @@ const tweetsTempImagesRep = nodecg.Replicant("tweets-temp-images");
 
 const setupSceneName = nodecg.bundleConfig.obs?.setupSceneName ?? "Setup";
 
+// リストが伸び続けないように、ツイート一覧だけをこの高さ内でスクロールさせる。
+const LIST_MAX_HEIGHT = 500;
+
 export const Twitter = () => {
 	const tweets = useReplicant("tweets-temp");
 	const currentScene = useReplicant("obs-current-scene");
@@ -23,6 +26,7 @@ export const Twitter = () => {
 
 	return (
 		<Container>
+			{/* スクロール対象外: 表示開始/停止ボタン */}
 			<div
 				style={{
 					display: "flex",
@@ -54,7 +58,8 @@ export const Twitter = () => {
 				)}
 				<span>キュー: {queuedCount}件</span>
 			</div>
-			<List>
+			{/* スクロール対象外: ツイート登録フォーム */}
+			<List disablePadding>
 				<TweetAdd
 					onSubmit={(tweets, onSuccess) => {
 						if (
@@ -79,6 +84,15 @@ export const Twitter = () => {
 						}
 					}}
 				/>
+			</List>
+			{/* スクロール対象: ツイート一覧 */}
+			<List
+				style={{
+					maxHeight: LIST_MAX_HEIGHT,
+					overflowY: "auto",
+					borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+				}}
+			>
 				{tweets?.map((tweet, index) => (
 					<TweetItem
 						key={index}
