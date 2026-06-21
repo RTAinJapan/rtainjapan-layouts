@@ -7,11 +7,10 @@ export default async (nodecg: NodeCG) => {
 	const nextRunRep = nodecg.Replicant("next-run");
 	const timerRep = nodecg.Replicant("timer");
 	const audioAssignmentRep = nodecg.Replicant("audio-assignment");
-
-	// 最後のゲームの次 (意図的な空欄) に遷移したかどうか。true の間はスケジュール
-	// 更新で空欄を自動復帰させない (#768)。データ未投入やレプリカント不整合による
-	// 「意図しない空」は false のままなので、引き続き自動復帰の対象になる。
-	let isPastScheduleEnd = false;
+	// 最後のゲームの次 (閉幕) に進んだ状態。current-run は最後のゲームのまま保持し、
+	// このフラグでグラフィクスのゲーム表示を消す (#768)。current-run / schedule の
+	// 既存ロジック (空の自動復帰など) には手を入れないための専用レプリカント。
+	const endingRep = nodecg.Replicant("ending");
 
 	const updateCurrentRun = (index: number) => {
 		if (timerRep.value?.timerState === "Running") {
@@ -26,8 +25,8 @@ export default async (nodecg: NodeCG) => {
 		}
 		currentRunRep.value = clone(newCurrentRun);
 		nextRunRep.value = clone(scheduleRep.value[index + 1]);
-		// 実在の run をセットした (空欄から復帰する経路はここを通る)。
-		isPastScheduleEnd = false;
+		// 実在の run を選び直したので閉幕表示は解除する。
+		endingRep.value = false;
 	};
 
 	const seekToNextRun = () => {
@@ -43,12 +42,10 @@ export default async (nodecg: NodeCG) => {
 			return;
 		}
 		if (currentIndex >= scheduleRep.value.length - 1) {
-			// 最後のゲームで「次へ」→ 空欄 (閉幕の挨拶用) に遷移する。
-			// current-run を null にすると、break グラフィクスの「次のゲーム」表示は
-			// まるごと非表示になる。「前へ」で最後のゲームに戻せる (seekToPreviousRun)。
-			currentRunRep.value = null;
-			nextRunRep.value = null;
-			isPastScheduleEnd = true;
+			// 最後のゲームで「次へ」→ 閉幕表示へ。current-run は最後のゲームのまま
+			// 保持し、ending フラグでグラフィクスの「次のゲーム」表示を消す。
+			// 「前へ」で ending を解除すれば元の表示に戻る (seekToPreviousRun)。
+			endingRep.value = true;
 			return;
 		}
 		currentRunRep.value = clone(nextRunRep.value);
@@ -76,12 +73,12 @@ export default async (nodecg: NodeCG) => {
 		if (timerRep.value?.timerState === "Running") {
 			return;
 		}
-		if (!scheduleRep.value) {
+		if (!currentRunRep.value || !scheduleRep.value) {
 			return;
 		}
-		// 空欄 (最後のゲームの次) から「前へ」→ 最後のゲームに戻す。
-		if (!currentRunRep.value) {
-			updateCurrentRun(scheduleRep.value.length - 1);
+		// 閉幕表示中なら、「前へ」で表示を元 (最後のゲーム) に戻すだけ。
+		if (endingRep.value) {
+			endingRep.value = false;
 			return;
 		}
 		const currentIndex = currentRunRep.value.index;
@@ -157,13 +154,8 @@ export default async (nodecg: NodeCG) => {
 		}
 	});
 
-	// 空の current-run を防ぐ (データ未投入やレプリカント不整合からの自動復帰)。
-	// スケジュール更新のたびに評価し、空なら先頭ゲームへ復帰させる。
-	// ただし、最後のゲームの次の「意図的な空欄」(#768) は維持する。
+	// Prevent empty current run
 	scheduleRep.on("change", (newVal) => {
-		if (isPastScheduleEnd) {
-			return;
-		}
 		const isCurrentRunEmpty = !currentRunRep.value || !currentRunRep.value.pk;
 		if (isCurrentRunEmpty) {
 			const currentRun = newVal[0];

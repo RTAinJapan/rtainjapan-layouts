@@ -22,6 +22,16 @@ const Container = styled(BorderedBox)({
 	alignItems: "center",
 });
 
+// 全ゲーム完了 (閉幕) 状態でタイマー欄に表示する文言。黒枠は Container 側で維持する。
+const CompletedNotice = styled("div")({
+	gridColumn: "1 / -1",
+	gridRow: "1 / -1",
+	display: "grid",
+	placeItems: "center",
+	fontSize: "40px",
+	fontWeight: "bold",
+});
+
 const Timer = styled("div")({
 	gridArea: "timer",
 	padding: "0 16px",
@@ -70,6 +80,7 @@ export const Timekeeper: FC = () => {
 	const timer = useTimer();
 	const currentRun = useReplicant("current-run");
 	const checklist = useReplicant("checklist");
+	const ending = useReplicant("ending");
 
 	const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
@@ -83,6 +94,16 @@ export const Timekeeper: FC = () => {
 			})),
 		);
 	}, [currentRun]);
+
+	// 全ゲーム完了 (閉幕) 状態。タイマー欄は黒枠を残したまま「全ゲーム完了」を表示し、
+	// 真っ白で「表示されていない (バグ?)」と見えないようにする (#768)。
+	if (ending) {
+		return (
+			<Container>
+				<CompletedNotice>全ゲーム完了</CompletedNotice>
+			</Container>
+		);
+	}
 
 	if (!currentRun || !checklist || !timer) {
 		return null;

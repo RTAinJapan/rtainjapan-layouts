@@ -67,6 +67,7 @@ export const Schedule: FC = () => {
 	const [editting, setEditting] = useState<"current" | "next">();
 	const schedule = useReplicant("schedule");
 	const timer = useReplicant("timer");
+	const ending = useReplicant("ending");
 
 	if (!timer || !schedule) {
 		return null;
@@ -102,7 +103,22 @@ export const Schedule: FC = () => {
 			<RunInfoContainer>
 				{currentRun && <RunInfo run={currentRun} label='現在のゲーム' />}
 				<Divider />
-				{nextRun && <RunInfo run={nextRun} label='次のゲーム' />}
+				{ending ? (
+					<div
+						style={{
+							alignSelf: "center",
+							fontSize: "18px",
+							fontWeight: "bold",
+							color: purple[700],
+						}}
+					>
+						閉幕表示中（次のゲームは非表示）
+						<br />
+						「前」で最後のゲームに戻ります
+					</div>
+				) : (
+					nextRun && <RunInfo run={nextRun} label='次のゲーム' />
+				)}
 			</RunInfoContainer>
 			<EditControls>
 				<ColoredButton

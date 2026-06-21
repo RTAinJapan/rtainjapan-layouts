@@ -30,6 +30,7 @@ import {AudioActive} from "./generated/audio-active";
 import {AudioAssignment} from "./generated/audio-assignment";
 import {AudioConfig} from "./generated/audio-config";
 import {AudioStatus} from "./generated/audio-status";
+import {Ending} from "./generated/ending";
 
 type Run = NonNullable<CurrentRun>;
 type Runner = Run["runners"][number];
@@ -87,6 +88,7 @@ type ReplicantMap = {
 	"audio-assignment": AudioAssignment;
 	"audio-config": AudioConfig;
 	"audio-status": AudioStatus;
+	ending: Ending;
 };
 
 export type {
