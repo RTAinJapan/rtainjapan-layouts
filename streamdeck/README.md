@@ -1,6 +1,6 @@
-# RTA in Japan Timer — Stream Deck plugin
+# RTA in Japan NodeCG レイアウト Stream Deck plugin
 
-NodeCG の `rtainjapan-layouts` を Stream Deck から操作するためのプラグインです（[#759](https://github.com/RTAinJapan/rtainjapan-layouts/issues/759)）。
+NodeCG の `rtainjapan-layouts` を Stream Deck から操作するためのプラグインです。
 
 レース中のタイマー操作（特に走者のストップ）に加え、走者ごとの完走・リタイア
 （それぞれ独立したボタン）、ファンアートの「まとめて表示」開始/停止などをワン
@@ -55,10 +55,8 @@ npx @elgato/cli link jp.rtainjapan.layouts.sdPlugin
 npx @elgato/cli restart jp.rtainjapan.layouts
 ```
 
-## TODO / 補足
+## 補足
 
-- `imgs/` のアイコンは `tools/generate-placeholder-icons.mjs` で生成した暫定の
-  単色プレースホルダーです。正式なアートに差し替えてください。
 - プロパティインスペクターは `sdpi-components`（CDN）を利用しています。完全な
   オフライン運用が必要な場合はライブラリを同梱（vendoring）してください。
 - 認証キーは NodeCG の `login` を有効化した環境向けの任意項目です。実運用環境の
