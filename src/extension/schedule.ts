@@ -8,6 +8,11 @@ export default async (nodecg: NodeCG) => {
 	const timerRep = nodecg.Replicant("timer");
 	const audioAssignmentRep = nodecg.Replicant("audio-assignment");
 
+	// 最後のゲームの次 (意図的な空欄) に遷移したかどうか。true の間はスケジュール
+	// 更新で空欄を自動復帰させない (#768)。データ未投入やレプリカント不整合による
+	// 「意図しない空」は false のままなので、引き続き自動復帰の対象になる。
+	let isPastScheduleEnd = false;
+
 	const updateCurrentRun = (index: number) => {
 		if (timerRep.value?.timerState === "Running") {
 			return;
@@ -21,6 +26,8 @@ export default async (nodecg: NodeCG) => {
 		}
 		currentRunRep.value = clone(newCurrentRun);
 		nextRunRep.value = clone(scheduleRep.value[index + 1]);
+		// 実在の run をセットした (空欄から復帰する経路はここを通る)。
+		isPastScheduleEnd = false;
 	};
 
 	const seekToNextRun = () => {
@@ -41,6 +48,7 @@ export default async (nodecg: NodeCG) => {
 			// まるごと非表示になる。「前へ」で最後のゲームに戻せる (seekToPreviousRun)。
 			currentRunRep.value = null;
 			nextRunRep.value = null;
+			isPastScheduleEnd = true;
 			return;
 		}
 		currentRunRep.value = clone(nextRunRep.value);
@@ -149,27 +157,20 @@ export default async (nodecg: NodeCG) => {
 		}
 	});
 
-	// 初回のみ、空の current-run をスケジュール先頭のゲームで初期化する。
-	// 一度初期化 (もしくは既に設定済み) された後は、スケジュールの更新
-	// (tracker からの定期反映など) で current-run を上書きしない。これにより、
-	// 最後のゲームの後に「次へ」で空欄にした状態が、スケジュール更新のたびに
-	// 勝手に先頭ゲームへ戻ってしまうのを防ぐ (#768)。
-	let hasInitializedCurrentRun = false;
+	// 空の current-run を防ぐ (データ未投入やレプリカント不整合からの自動復帰)。
+	// スケジュール更新のたびに評価し、空なら先頭ゲームへ復帰させる。
+	// ただし、最後のゲームの次の「意図的な空欄」(#768) は維持する。
 	scheduleRep.on("change", (newVal) => {
-		if (hasInitializedCurrentRun) {
+		if (isPastScheduleEnd) {
 			return;
 		}
 		const isCurrentRunEmpty = !currentRunRep.value || !currentRunRep.value.pk;
-		if (!isCurrentRunEmpty) {
-			// 既に current-run が設定済み (永続値や操作者の選択) なら初期化不要。
-			hasInitializedCurrentRun = true;
-			return;
-		}
-		const currentRun = newVal[0];
-		if (currentRun) {
-			currentRunRep.value = clone(currentRun);
-			nextRunRep.value = clone(newVal[1]);
-			hasInitializedCurrentRun = true;
+		if (isCurrentRunEmpty) {
+			const currentRun = newVal[0];
+			if (currentRun) {
+				currentRunRep.value = clone(currentRun);
+				nextRunRep.value = clone(newVal[1]);
+			}
 		}
 	});
 };
