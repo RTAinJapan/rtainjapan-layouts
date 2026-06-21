@@ -56,7 +56,16 @@
 			"Icon": "imgs/actions/icon",
 			"Tooltip": "完走済みの走者を走行中に戻します。",
 			"Controllers": ["Keypad"],
-			"PropertyInspectorPath": "ui/resume-runner.html",
+			"PropertyInspectorPath": "ui/runner.html",
+			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
+		},
+		{
+			"Name": "走者名表示",
+			"UUID": "jp.rtainjapan.layouts.runner-name",
+			"Icon": "imgs/actions/icon",
+			"Tooltip": "指定した走者の名前・状態を表示します（押しても操作しません）。",
+			"Controllers": ["Keypad"],
+			"PropertyInspectorPath": "ui/runner.html",
 			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
 		},
 		{

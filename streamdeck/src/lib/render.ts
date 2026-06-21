@@ -19,6 +19,7 @@ const COLORS: Record<KeyColor, {bg: string; fg: string; sub: string}> = {
 };
 
 const SIZE = 144;
+const MARGIN = 10;
 
 const escapeXml = (value: string): string =>
 	value.replace(/[<>&'"]/g, (char) => {
@@ -36,31 +37,32 @@ const escapeXml = (value: string): string =>
 		}
 	});
 
-const fit = (value: string, max: number): string =>
-	value.length > max ? `${value.slice(0, max - 1)}…` : value;
-
 /**
  * Builds an SVG key image with a coloured background, a bold title and an
  * optional smaller subtitle.
+ *
+ * Text is never truncated: with `align: "start"` a long title is left-aligned
+ * and simply overflows past the right edge of the key (clipped by its bounds).
  */
 export function renderKey(options: {
 	title: string;
 	subtitle?: string;
 	color: KeyColor;
+	align?: "center" | "start";
 }): string {
 	const {bg, fg, sub} = COLORS[options.color];
-	const title = escapeXml(fit(options.title, 9));
+	const align = options.align ?? "center";
+	const anchor = align === "start" ? "start" : "middle";
+	const x = align === "start" ? MARGIN : SIZE / 2;
+
+	const title = escapeXml(options.title);
 	const subtitle =
-		options.subtitle === undefined ? "" : escapeXml(fit(options.subtitle, 11));
+		options.subtitle === undefined ? "" : escapeXml(options.subtitle);
 
 	const titleY = subtitle ? 66 : 80;
-	const titleText = `<text x="${
-		SIZE / 2
-	}" y="${titleY}" fill="${fg}" font-family="sans-serif" font-size="26" font-weight="700" text-anchor="middle">${title}</text>`;
+	const titleText = `<text x="${x}" y="${titleY}" fill="${fg}" font-family="sans-serif" font-size="26" font-weight="700" text-anchor="${anchor}">${title}</text>`;
 	const subtitleText = subtitle
-		? `<text x="${
-				SIZE / 2
-		  }" y="98" fill="${sub}" font-family="sans-serif" font-size="20" text-anchor="middle">${subtitle}</text>`
+		? `<text x="${x}" y="98" fill="${sub}" font-family="sans-serif" font-size="20" text-anchor="${anchor}">${subtitle}</text>`
 		: "";
 
 	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 ${SIZE} ${SIZE}"><rect width="${SIZE}" height="${SIZE}" rx="18" fill="${bg}"/>${titleText}${subtitleText}</svg>`;

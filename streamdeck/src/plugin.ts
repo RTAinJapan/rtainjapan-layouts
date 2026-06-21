@@ -2,6 +2,7 @@ import streamDeck from "@elgato/streamdeck";
 import {CompleteRunner} from "./actions/complete-runner";
 import {Reload} from "./actions/reload";
 import {ResumeRunner} from "./actions/resume-runner";
+import {RunnerName} from "./actions/runner-name";
 import {SendMessage} from "./actions/send-message";
 import {StartTimer} from "./actions/start-timer";
 import {StopTimer} from "./actions/stop-timer";
@@ -12,6 +13,7 @@ streamDeck.actions.registerAction(new StartTimer());
 streamDeck.actions.registerAction(new StopTimer());
 streamDeck.actions.registerAction(new CompleteRunner());
 streamDeck.actions.registerAction(new ResumeRunner());
+streamDeck.actions.registerAction(new RunnerName());
 streamDeck.actions.registerAction(new Reload());
 streamDeck.actions.registerAction(new SendMessage());
 
