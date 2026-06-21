@@ -14,6 +14,10 @@ export const setupObs = (nodecg: NodeCG) => {
 		return;
 	}
 
+	// 自動録画 (接続時に録画開始 / 録画停止時に再開 / nextRun で停止) を使うか。
+	// 既定はオフ。使う場合は config の obs.autoRecord を true にする。
+	const autoRecord = obsConfig.autoRecord ?? false;
+
 	let connected = false;
 	let attemptingToConnect = false;
 	const connect = async (emitError = true) => {
@@ -52,7 +56,9 @@ export const setupObs = (nodecg: NodeCG) => {
 	};
 
 	nodecg.listenFor("nextRun", () => {
-		void stopRecording();
+		if (autoRecord) {
+			void stopRecording();
+		}
 	});
 
 	obs.on("ConnectionOpened", () => {
@@ -60,9 +66,11 @@ export const setupObs = (nodecg: NodeCG) => {
 	});
 	obs.on("Identified", async () => {
 		connected = true;
-		const {outputActive} = await obs.call("GetRecordStatus");
-		if (!outputActive) {
-			await startRecording();
+		if (autoRecord) {
+			const {outputActive} = await obs.call("GetRecordStatus");
+			if (!outputActive) {
+				await startRecording();
+			}
 		}
 		try {
 			const {sceneName} = await obs.call("GetCurrentProgramScene");
@@ -75,7 +83,7 @@ export const setupObs = (nodecg: NodeCG) => {
 		currentSceneRep.value = data.sceneName;
 	});
 	obs.on("RecordStateChanged", (data) => {
-		if (data.outputState === "OBS_WEBSOCKET_OUTPUT_STOPPED") {
+		if (autoRecord && data.outputState === "OBS_WEBSOCKET_OUTPUT_STOPPED") {
 			void startRecording();
 		}
 	});

@@ -11,7 +11,8 @@
 			"properties": {
 				"address": {"type": "string"},
 				"password": {"type": "string"},
-				"setupSceneName": {"type": "string", "default": "Setup"}
+				"setupSceneName": {"type": "string", "default": "Setup"},
+				"autoRecord": {"type": "boolean", "default": false}
 			},
 			"additionalProperties": false,
 			"required": ["address", "password"]
