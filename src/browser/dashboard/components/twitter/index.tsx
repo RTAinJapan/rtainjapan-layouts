@@ -10,10 +10,16 @@ const Container = styled("div")({});
 const tweetsTempRep = nodecg.Replicant("tweets-temp");
 const tweetsTempImagesRep = nodecg.Replicant("tweets-temp-images");
 
+const setupSceneName = nodecg.bundleConfig.obs?.setupSceneName ?? "Setup";
+
 export const Twitter = () => {
 	const tweets = useReplicant("tweets-temp");
+	const currentScene = useReplicant("obs-current-scene");
+	const playing = useReplicant("tweet-queue-playing");
 
 	const queuedCount = tweets?.filter((tweet) => tweet.queued).length ?? 0;
+	const isOnSetup = currentScene === setupSceneName;
+	const isPlaying = playing === true;
 
 	return (
 		<Container>
@@ -25,15 +31,27 @@ export const Twitter = () => {
 					padding: "8px 16px",
 				}}
 			>
-				<Button
-					variant='contained'
-					disabled={queuedCount === 0}
-					onClick={() => {
-						nodecg.sendMessage("startTweetQueue");
-					}}
-				>
-					まとめて表示
-				</Button>
+				{isPlaying ? (
+					<Button
+						variant='contained'
+						color='error'
+						onClick={() => {
+							nodecg.sendMessage("stopTweetQueue");
+						}}
+					>
+						表示停止
+					</Button>
+				) : (
+					<Button
+						variant='contained'
+						disabled={queuedCount === 0 || !isOnSetup}
+						onClick={() => {
+							nodecg.sendMessage("startTweetQueue");
+						}}
+					>
+						表示開始
+					</Button>
+				)}
 				<span>キュー: {queuedCount}件</span>
 			</div>
 			<List>

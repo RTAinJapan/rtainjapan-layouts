@@ -61,6 +61,7 @@ type ReplicantMap = {
 	tweets: Tweets;
 	"tweets-temp": TweetsTemp;
 	"tweets-temp-images": TweetsTempImages;
+	"tweet-queue-playing": boolean;
 	"obs-status": ObsStatus;
 	"obs-current-scene": ObsCurrentScene;
 	obs: Obs;

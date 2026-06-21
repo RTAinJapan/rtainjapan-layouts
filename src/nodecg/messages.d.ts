@@ -8,6 +8,7 @@ export type MessageMap = {
 		data: TweetsTemp[number];
 	};
 	startTweetQueue: {};
+	stopTweetQueue: {};
 	"twitter:logout": {};
 	"twitter:startLogin": {
 		result: string;

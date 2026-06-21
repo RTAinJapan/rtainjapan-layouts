@@ -10,26 +10,31 @@ export const setupTweetQueue = (nodecg: NodeCG) => {
 	const logger = new nodecg.Logger("tweet-queue");
 	const tweetsTempRep = nodecg.Replicant("tweets-temp");
 	const currentSceneRep = nodecg.Replicant("obs-current-scene");
+	// まとめて表示の処理中かどうか。ダッシュボードやStream Deckのボタン表示用。
+	const playingRep = nodecg.Replicant("tweet-queue-playing");
 
 	const setupSceneName =
 		nodecg.bundleConfig.obs?.setupSceneName ?? DEFAULT_SETUP_SCENE_NAME;
 
-	let playing = false;
 	let timer: NodeJS.Timeout | undefined;
+
+	const isPlaying = () => playingRep.value === true;
 
 	const stop = () => {
 		if (timer) {
 			clearTimeout(timer);
 			timer = undefined;
 		}
-		playing = false;
+		// 追加のキュー消費を止めるだけ。表示中のファンアートは規定時間まで残る
+		// (グラフィック側のアニメーションが独立して完了するため)。
+		playingRep.value = false;
 	};
 
 	// OBSのプログラム側がSetupシーンを表示しているかどうか。
 	const isOnSetupScene = () => currentSceneRep.value === setupSceneName;
 
 	const consumeNext = () => {
-		if (!playing) {
+		if (!isPlaying()) {
 			return;
 		}
 		// Setup以外のシーンに切り替わっていたら表示処理を停止する。
@@ -62,31 +67,44 @@ export const setupTweetQueue = (nodecg: NodeCG) => {
 		timer = setTimeout(consumeNext, DISPLAY_INTERVAL_MS);
 	};
 
+	// 「表示開始」。ダッシュボード/Stream Deck 共通の入口。
 	nodecg.listenFor("startTweetQueue", () => {
-		if (playing) {
+		if (isPlaying()) {
 			return;
 		}
 		// Setupを表示しているときのみキューの消化を開始する。
 		if (!isOnSetupScene()) {
 			logger.warn(
-				`「まとめて表示」を無視しました: 現在のシーンが「${setupSceneName}」ではありません (現在: 「${
+				`「表示開始」を無視しました: 現在のシーンが「${setupSceneName}」ではありません (現在: 「${
 					currentSceneRep.value ?? ""
 				}」)`,
 			);
 			return;
 		}
-		playing = true;
+		playingRep.value = true;
 		consumeNext();
 	});
 
+	// 「表示停止」。ダッシュボード/Stream Deck 共通の入口。
+	nodecg.listenFor("stopTweetQueue", () => {
+		if (!isPlaying()) {
+			return;
+		}
+		logger.info("「表示停止」により、まとめて表示を停止しました");
+		stop();
+	});
+
 	// Setup以外へ切り替わったら即座に停止する。
-	// 再開はユーザーが再度「まとめて表示」を押すまで行わない。
+	// 再開はユーザーが再度「表示開始」を押すまで行わない。
 	currentSceneRep.on("change", (newValue) => {
-		if (playing && newValue !== setupSceneName) {
+		if (isPlaying() && newValue !== setupSceneName) {
 			logger.info(
 				`シーンが「${setupSceneName}」から切り替わったため、まとめて表示を停止しました`,
 			);
 			stop();
 		}
 	});
+
+	// 起動時 (レプリカントが前回値を復元している可能性) は必ず停止状態に戻す。
+	playingRep.value = false;
 };
