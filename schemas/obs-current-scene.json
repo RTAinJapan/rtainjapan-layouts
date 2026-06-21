@@ -1,0 +1,7 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "string",
+	"default": "",
+	"description": "OBSのプログラム側に現在表示しているシーン名"
+}

@@ -311,6 +311,7 @@ export const fixtures: Record<string, unknown> = {
 		streamTime: 0,
 		recordTime: 0,
 	},
+	"obs-current-scene": "Setup",
 	tweets: [],
 	"tweets-temp": [],
 	"tweets-temp-images": [],

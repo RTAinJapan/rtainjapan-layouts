@@ -3,7 +3,8 @@ import Tooltip from "@mui/material/Tooltip";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
-import CheckIcon from "@mui/icons-material/Check";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useEffect, useState} from "react";
 import {TweetsTemp} from "../../../../nodecg/generated/tweets-temp";
@@ -12,9 +13,8 @@ type Tweet = TweetsTemp[number];
 
 type Props = {
 	tweet: Tweet;
-	onSubmit: (tweet: Tweet, onSuccess: () => void) => void;
-	onSubmitFanArt: (tweet: Tweet, onSuccess: () => void) => void;
-	onDelete: (onSuccess: () => void) => void;
+	onToggleQueue: () => void;
+	onDelete: () => void;
 };
 
 type ButtonProps = Pick<IconButtonProps, "onClick">;
@@ -29,11 +29,11 @@ const DeleteButton = (props: ButtonProps) => {
 	);
 };
 
-const SubmitButton = (props: ButtonProps) => {
+const QueueButton = ({queued, ...props}: ButtonProps & {queued: boolean}) => {
 	return (
-		<Tooltip title='ツイート表示/ファンアート表示を実行'>
-			<IconButton {...props}>
-				<CheckIcon />
+		<Tooltip title={queued ? "キューから外す" : "キューに追加"}>
+			<IconButton {...props} color={queued ? "primary" : "default"}>
+				{queued ? <PlaylistAddCheckIcon /> : <PlaylistAddIcon />}
 			</IconButton>
 		</Tooltip>
 	);
@@ -41,8 +41,7 @@ const SubmitButton = (props: ButtonProps) => {
 
 export const TweetItem = ({
 	tweet: propTweet,
-	onSubmit,
-	onSubmitFanArt,
+	onToggleQueue,
 	onDelete,
 }: Props) => {
 	const [tweet, setTweet] = useState<Tweet>(propTweet);
@@ -55,17 +54,16 @@ export const TweetItem = ({
 		<ListItem
 			secondaryAction={
 				<>
-					<SubmitButton
+					<QueueButton
+						queued={Boolean(tweet.queued)}
 						onClick={() => {
-							tweet.image
-								? onSubmitFanArt(tweet, () => {})
-								: onSubmit(tweet, () => {});
+							onToggleQueue();
 						}}
 					/>
 					/
 					<DeleteButton
 						onClick={() => {
-							onDelete(() => {});
+							onDelete();
 						}}
 					/>
 				</>
