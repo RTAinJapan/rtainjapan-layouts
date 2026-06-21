@@ -57,3 +57,13 @@ export function masterKeyImage(label: string): string {
 			return renderKey({title: label, subtitle: "停止中", color: "idle"});
 	}
 }
+
+/** Builds the key image for a fan-art queue action (start / stop). */
+export function fanArtKeyImage(label: string): string {
+	if (!nodecg.connected) {
+		return renderKey({title: label, subtitle: "オフライン", color: "offline"});
+	}
+	return nodecg.tweetQueuePlaying
+		? renderKey({title: label, subtitle: "表示中", color: "running"})
+		: renderKey({title: label, subtitle: "停止中", color: "idle"});
+}

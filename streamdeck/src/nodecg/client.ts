@@ -14,7 +14,7 @@ export type NodeCgConfig = {
 };
 
 /** Replicants the plugin observes to drive its key state. */
-const WATCHED = ["timer", "current-run"] as const;
+const WATCHED = ["timer", "current-run", "tweet-queue-playing"] as const;
 type WatchedName = (typeof WATCHED)[number];
 
 const isWatched = (name: string): name is WatchedName =>
@@ -45,6 +45,7 @@ class NodeCgClient extends EventEmitter {
 	#config: NodeCgConfig | undefined;
 	#timer: Timer | null = null;
 	#currentRun: CurrentRun | null = null;
+	#tweetQueuePlaying = false;
 	#connected = false;
 
 	constructor() {
@@ -64,6 +65,11 @@ class NodeCgClient extends EventEmitter {
 
 	get currentRun(): CurrentRun | null {
 		return this.#currentRun;
+	}
+
+	/** Whether the fan-art ("まとめて表示") queue is currently playing. */
+	get tweetQueuePlaying(): boolean {
+		return this.#tweetQueuePlaying;
 	}
 
 	/** Returns the runner name for the given slot, or `undefined` when empty. */
@@ -185,10 +191,16 @@ class NodeCgClient extends EventEmitter {
 	}
 
 	#apply(name: WatchedName, value: unknown): void {
-		if (name === "timer") {
-			this.#timer = (value as Timer) ?? null;
-		} else {
-			this.#currentRun = (value as CurrentRun) ?? null;
+		switch (name) {
+			case "timer":
+				this.#timer = (value as Timer) ?? null;
+				break;
+			case "current-run":
+				this.#currentRun = (value as CurrentRun) ?? null;
+				break;
+			case "tweet-queue-playing":
+				this.#tweetQueuePlaying = value === true;
+				break;
 		}
 	}
 

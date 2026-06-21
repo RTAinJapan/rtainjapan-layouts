@@ -42,6 +42,24 @@
 			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
 		},
 		{
+			"Name": "ファンアート 表示開始",
+			"UUID": "jp.rtainjapan.layouts.start-fanart",
+			"Icon": "imgs/actions/icon",
+			"Tooltip": "ファンアートの「まとめて表示」を開始します。",
+			"Controllers": ["Keypad"],
+			"PropertyInspectorPath": "ui/connection.html",
+			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
+		},
+		{
+			"Name": "ファンアート 表示停止",
+			"UUID": "jp.rtainjapan.layouts.stop-fanart",
+			"Icon": "imgs/actions/icon",
+			"Tooltip": "ファンアートの「まとめて表示」を停止します。",
+			"Controllers": ["Keypad"],
+			"PropertyInspectorPath": "ui/connection.html",
+			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
+		},
+		{
 			"Name": "走者 完走/リタイア",
 			"UUID": "jp.rtainjapan.layouts.complete-runner",
 			"Icon": "imgs/actions/icon",
