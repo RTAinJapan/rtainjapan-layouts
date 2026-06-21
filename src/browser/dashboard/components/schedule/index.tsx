@@ -1,4 +1,4 @@
-import {pink, purple, green} from "@mui/material/colors";
+import {pink, purple, green, grey} from "@mui/material/colors";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import {styled} from "@mui/material/styles";
@@ -39,6 +39,27 @@ const EditControls = styled("div")({
 	display: "grid",
 	gridTemplateColumns: "repeat(2, 1fr)",
 	gridGap: "16px",
+});
+
+// 閉幕表示中は右パネル全体を閉幕用表示に切り替える (最終ゲームの情報は出さない)。
+const EndingDisplay = styled("div")({
+	display: "grid",
+	placeContent: "center",
+	justifyItems: "center",
+	gap: "16px",
+	textAlign: "center",
+});
+
+// タイトルは左 (タイマー欄の「全ゲーム完了」) とフォントサイズを合わせる。
+const EndingTitle = styled("div")({
+	fontSize: "40px",
+	fontWeight: "bold",
+});
+
+// 補足は少し小さめのキャプション表示。
+const EndingHint = styled("div")({
+	fontSize: "14px",
+	color: grey[600],
 });
 
 const moveNextRun = () => {
@@ -101,26 +122,18 @@ export const Schedule: FC = () => {
 					次<ArrowForward />
 				</ColoredButton>
 			</SelectionContainer>
-			<RunInfoContainer>
-				{currentRun && <RunInfo run={currentRun} label='現在のゲーム' />}
-				<Divider />
-				{ending ? (
-					<div
-						style={{
-							alignSelf: "center",
-							fontSize: "18px",
-							fontWeight: "bold",
-							color: purple[700],
-						}}
-					>
-						閉幕表示中（次のゲームは非表示）
-						<br />
-						「前」で最後のゲームに戻ります
-					</div>
-				) : (
-					nextRun && <RunInfo run={nextRun} label='次のゲーム' />
-				)}
-			</RunInfoContainer>
+			{ending ? (
+				<EndingDisplay>
+					<EndingTitle>全ゲーム完了</EndingTitle>
+					<EndingHint>「前」で最終ゲームに戻る</EndingHint>
+				</EndingDisplay>
+			) : (
+				<RunInfoContainer>
+					{currentRun && <RunInfo run={currentRun} label='現在のゲーム' />}
+					<Divider />
+					{nextRun && <RunInfo run={nextRun} label='次のゲーム' />}
+				</RunInfoContainer>
+			)}
 			<EditControls>
 				<ColoredButton
 					color={pink}
