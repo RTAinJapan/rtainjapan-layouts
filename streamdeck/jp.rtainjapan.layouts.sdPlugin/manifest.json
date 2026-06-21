@@ -1,9 +1,9 @@
 {
 	"$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
-	"Name": "RTA in Japan Timer",
+	"Name": "RTA in Japan NodeCGレイアウト",
 	"Version": "0.1.0.0",
 	"Author": "RTA in Japan",
-	"Description": "NodeCG の rtainjapan-layouts タイマーを Stream Deck から操作します。",
+	"Description": "NodeCG の rtainjapan-layouts を Stream Deck から操作します（タイマー・走者の完走/リタイア・ファンアート表示など）。",
 	"Category": "RTA in Japan",
 	"CategoryIcon": "imgs/plugin/category",
 	"Icon": "imgs/plugin/marketplace",
