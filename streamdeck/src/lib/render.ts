@@ -66,5 +66,9 @@ export function renderKey(options: {
 		: "";
 
 	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 ${SIZE} ${SIZE}"><rect width="${SIZE}" height="${SIZE}" rx="18" fill="${bg}"/>${titleText}${subtitleText}</svg>`;
-	return `data:image/svg+xml;charset=utf8,${encodeURIComponent(svg)}`;
+	// Stream Deck accepts a base64-encoded SVG data URI; this is more reliable
+	// than a charset=utf8/URL-encoded data URI across Stream Deck versions.
+	return `data:image/svg+xml;base64,${Buffer.from(svg, "utf8").toString(
+		"base64",
+	)}`;
 }
