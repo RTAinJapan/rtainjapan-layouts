@@ -36,6 +36,11 @@ export default async (nodecg: NodeCG) => {
 			return;
 		}
 		if (currentIndex >= scheduleRep.value.length - 1) {
+			// 最後のゲームで「次へ」→ 空欄 (閉幕の挨拶用) に遷移する。
+			// current-run を null にすると、break グラフィクスの「次のゲーム」表示は
+			// まるごと非表示になる。「前へ」で最後のゲームに戻せる (seekToPreviousRun)。
+			currentRunRep.value = null;
+			nextRunRep.value = null;
 			return;
 		}
 		currentRunRep.value = clone(nextRunRep.value);
@@ -63,7 +68,12 @@ export default async (nodecg: NodeCG) => {
 		if (timerRep.value?.timerState === "Running") {
 			return;
 		}
-		if (!currentRunRep.value || !scheduleRep.value) {
+		if (!scheduleRep.value) {
+			return;
+		}
+		// 空欄 (最後のゲームの次) から「前へ」→ 最後のゲームに戻す。
+		if (!currentRunRep.value) {
+			updateCurrentRun(scheduleRep.value.length - 1);
 			return;
 		}
 		const currentIndex = currentRunRep.value.index;
