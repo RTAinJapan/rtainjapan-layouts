@@ -1,0 +1,7 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema",
+
+	"type": "boolean",
+	"default": false,
+	"description": "最終ゲームの次 (閉幕) に進み、ゲーム表示を消している状態か"
+}

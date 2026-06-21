@@ -16,6 +16,11 @@ export const useTimer = () => {
 	return timer;
 };
 
+// 最終ゲームの次 (閉幕) に進み、ゲーム表示を消している状態か (#768)。
+export const useEnding = () => {
+	return useReplicant("ending");
+};
+
 export const useAudioActive = (
 	kind: "runners" | "commentators",
 	index: number,

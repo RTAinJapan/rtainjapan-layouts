@@ -5,7 +5,7 @@ import {BoldText, ThinText} from "../components/lib/text";
 import nextGameBar from "../images/next_line.svg";
 import nextGameSpacer from "../images/next_spacer.svg";
 import setupShade from "../images/setup_shade.svg";
-import {useCurrentRun, useSchedule} from "../components/lib/hooks";
+import {useCurrentRun, useEnding, useSchedule} from "../components/lib/hooks";
 import {Run} from "../../../nodecg/replicants";
 import moment from "moment";
 import {Fragment, useCallback, useRef} from "react";
@@ -23,8 +23,10 @@ const Spacer = () => <img src={nextGameSpacer} width={50} height={60}></img>;
 const Upcoming = () => {
 	const currentRun = useCurrentRun();
 	const schedule = useSchedule();
+	const ending = useEnding();
 
-	if (!currentRun || !schedule) {
+	// 閉幕表示中 (最後のゲームの次) は「次のゲーム」表示をまるごと消す (#768)。
+	if (!currentRun || !schedule || ending) {
 		return null;
 	}
 
