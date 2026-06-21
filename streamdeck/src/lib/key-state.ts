@@ -1,46 +1,53 @@
 import {nodecg} from "../nodecg/client";
-import {renderActionKey, renderKey} from "./render";
+import {renderActionKey, renderKey, type KeyColor} from "./render";
 
-/**
- * Builds the key image for a runner slot (used by the complete / resume /
- * display actions). The runner name is left-aligned and not truncated, so a
- * long name overflows past the right edge of the key.
- */
-export function runnerKeyImage(index: number): string {
+/** Resolves a runner slot's display name, status text and colour. */
+function runnerVisual(index: number): {
+	target: string;
+	state: string;
+	color: KeyColor;
+} {
 	const slot = `走者${index + 1}`;
 	if (!nodecg.connected) {
-		return renderKey({
-			title: slot,
-			subtitle: "オフライン",
-			color: "offline",
-			align: "start",
-		});
+		return {target: slot, state: "オフライン", color: "offline"};
 	}
 	const name = nodecg.runnerName(index);
 	if (!name) {
-		return renderKey({
-			title: slot,
-			subtitle: "空き",
-			color: "empty",
-			align: "start",
-		});
+		return {target: slot, state: "空き", color: "empty"};
 	}
 	const result = nodecg.timer?.results?.[index] ?? null;
 	if (result) {
-		return renderKey({
-			title: name,
-			subtitle: result.forfeit ? "リタイア" : result.formatted || "完走",
+		return {
+			target: name,
+			state: result.forfeit ? "リタイア" : result.formatted || "完走",
 			color: result.forfeit ? "forfeit" : "finished",
-			align: "start",
-		});
+		};
 	}
 	const running = nodecg.timer?.timerState === "Running";
-	return renderKey({
-		title: name,
-		subtitle: running ? "走行中" : "待機",
+	return {
+		target: name,
+		state: running ? "走行中" : "待機",
 		color: running ? "running" : "idle",
-		align: "start",
-	});
+	};
+}
+
+/**
+ * Builds the 2-line key image for the runner-name display action (name +
+ * status). The runner name is left-aligned and not truncated, so a long name
+ * overflows past the right edge of the key.
+ */
+export function runnerKeyImage(index: number): string {
+	const {target, state, color} = runnerVisual(index);
+	return renderKey({title: target, subtitle: state, color, align: "start"});
+}
+
+/**
+ * Builds the 3-line key image for a runner action (完走 / リタイア / 再開),
+ * shown as "{走者名} / {状態} / {アクション}" with the name left-aligned.
+ */
+export function runnerActionKeyImage(index: number, action: string): string {
+	const {target, state, color} = runnerVisual(index);
+	return renderActionKey({target, state, action, color, align: "start"});
 }
 
 /**

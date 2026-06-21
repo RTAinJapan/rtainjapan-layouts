@@ -60,12 +60,21 @@
 			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
 		},
 		{
-			"Name": "走者 完走/リタイア",
+			"Name": "走者 完走",
 			"UUID": "jp.rtainjapan.layouts.complete-runner",
 			"Icon": "imgs/actions/icon",
-			"Tooltip": "指定した走者を完走（またはリタイア）にします。",
+			"Tooltip": "指定した走者を完走にします。",
 			"Controllers": ["Keypad"],
-			"PropertyInspectorPath": "ui/complete-runner.html",
+			"PropertyInspectorPath": "ui/runner.html",
+			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
+		},
+		{
+			"Name": "走者 リタイア",
+			"UUID": "jp.rtainjapan.layouts.forfeit-runner",
+			"Icon": "imgs/actions/icon",
+			"Tooltip": "指定した走者をリタイアにします。",
+			"Controllers": ["Keypad"],
+			"PropertyInspectorPath": "ui/runner.html",
 			"States": [{"Image": "imgs/actions/key", "TitleAlignment": "middle"}]
 		},
 		{

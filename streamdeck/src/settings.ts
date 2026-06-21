@@ -7,12 +7,10 @@ export type GlobalSettings = {
 	key?: string;
 };
 
-/** Settings for the runner-targeted actions (complete / resume). */
+/** Settings for the runner-targeted actions (complete / forfeit / resume). */
 export type RunnerSettings = {
 	/** Runner slot, 0-3. */
 	index?: number;
-	/** Whether "complete" marks the runner as forfeited. */
-	forfeit?: boolean;
 };
 
 /** Settings for the generic message action. */

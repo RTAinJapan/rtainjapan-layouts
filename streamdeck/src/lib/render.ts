@@ -87,18 +87,21 @@ export function renderActionKey(options: {
 	state?: string;
 	action: string;
 	color: KeyColor;
+	align?: "center" | "start";
 }): string {
 	const {bg, fg, sub} = COLORS[options.color];
-	const x = SIZE / 2;
+	const align = options.align ?? "center";
+	const anchor = align === "start" ? "start" : "middle";
+	const x = align === "start" ? MARGIN : SIZE / 2;
 	const target = escapeXml(options.target);
 	const action = escapeXml(options.action);
 	const state = options.state === undefined ? "" : escapeXml(options.state);
 
-	const targetText = `<text x="${x}" y="34" fill="${fg}" font-family="sans-serif" font-size="20" text-anchor="middle">${target}</text>`;
+	const targetText = `<text x="${x}" y="34" fill="${fg}" font-family="sans-serif" font-size="20" text-anchor="${anchor}">${target}</text>`;
 	const stateText = state
-		? `<text x="${x}" y="58" fill="${sub}" font-family="sans-serif" font-size="14" text-anchor="middle">${state}</text>`
+		? `<text x="${x}" y="58" fill="${sub}" font-family="sans-serif" font-size="14" text-anchor="${anchor}">${state}</text>`
 		: "";
-	const actionText = `<text x="${x}" y="110" fill="${fg}" font-family="sans-serif" font-size="30" font-weight="700" text-anchor="middle">${action}</text>`;
+	const actionText = `<text x="${x}" y="110" fill="${fg}" font-family="sans-serif" font-size="30" font-weight="700" text-anchor="${anchor}">${action}</text>`;
 
 	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 ${SIZE} ${SIZE}"><rect width="${SIZE}" height="${SIZE}" rx="18" fill="${bg}"/>${targetText}${stateText}${actionText}</svg>`;
 	return `data:image/svg+xml;base64,${Buffer.from(svg, "utf8").toString(

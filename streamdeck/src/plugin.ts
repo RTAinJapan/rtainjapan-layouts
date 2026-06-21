@@ -1,5 +1,6 @@
 import streamDeck from "@elgato/streamdeck";
 import {CompleteRunner} from "./actions/complete-runner";
+import {ForfeitRunner} from "./actions/forfeit-runner";
 import {Reload} from "./actions/reload";
 import {ResumeRunner} from "./actions/resume-runner";
 import {RunnerName} from "./actions/runner-name";
@@ -16,6 +17,7 @@ streamDeck.actions.registerAction(new StopTimer());
 streamDeck.actions.registerAction(new StartFanArt());
 streamDeck.actions.registerAction(new StopFanArt());
 streamDeck.actions.registerAction(new CompleteRunner());
+streamDeck.actions.registerAction(new ForfeitRunner());
 streamDeck.actions.registerAction(new ResumeRunner());
 streamDeck.actions.registerAction(new RunnerName());
 streamDeck.actions.registerAction(new Reload());
