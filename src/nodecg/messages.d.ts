@@ -7,6 +7,7 @@ export type MessageMap = {
 	showFanArtTweet: {
 		data: TweetsTemp[number];
 	};
+	startTweetQueue: {};
 	"twitter:logout": {};
 	"twitter:startLogin": {
 		result: string;

@@ -9,7 +9,8 @@
 			"name": {"type": "string"},
 			"userId": {"type": "string"},
 			"image": {"type": "string"},
-			"service": {"type": "string"}
+			"service": {"type": "string"},
+			"queued": {"type": "boolean", "default": false}
 		},
 		"additionalProperties": false,
 		"required": ["text", "name", "userId", "service"]

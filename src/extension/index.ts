@@ -4,6 +4,7 @@ import {timekeeping} from "./timekeeping";
 import {NodeCG} from "./nodecg";
 import {twitch} from "./twitch";
 import {setupObs} from "./obs";
+import {setupTweetQueue} from "./tweet-queue";
 import {tracker} from "./tracker";
 import {music} from "./music";
 import {wing} from "./wing";
@@ -15,6 +16,7 @@ export default (nodecg: NodeCG) => {
 	timekeeping(nodecg);
 	twitch(nodecg);
 	setupObs(nodecg);
+	setupTweetQueue(nodecg);
 	tracker(nodecg);
 	wing(nodecg);
 

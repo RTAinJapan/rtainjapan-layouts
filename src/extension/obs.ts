@@ -8,6 +8,7 @@ export const setupObs = (nodecg: NodeCG) => {
 	const {obs: obsConfig} = nodecg.bundleConfig;
 	const logger = new nodecg.Logger("obs");
 	const obsStatus = nodecg.Replicant("obs-status");
+	const currentSceneRep = nodecg.Replicant("obs-current-scene");
 
 	if (!obsConfig) {
 		logger.warn("OBS setting is empty");
@@ -22,7 +23,8 @@ export const setupObs = (nodecg: NodeCG) => {
 		attemptingToConnect = true;
 		try {
 			await obs.connect(obsConfig.address, obsConfig.password, {
-				eventSubscriptions: EventSubscription.Outputs,
+				eventSubscriptions:
+					EventSubscription.Outputs | EventSubscription.Scenes,
 			});
 		} catch (error: unknown) {
 			if (emitError) {
@@ -61,6 +63,15 @@ export const setupObs = (nodecg: NodeCG) => {
 		if (!outputActive) {
 			await startRecording();
 		}
+		try {
+			const {sceneName} = await obs.call("GetCurrentProgramScene");
+			currentSceneRep.value = sceneName;
+		} catch (error: unknown) {
+			logger.error("Failed to get current program scene:", error);
+		}
+	});
+	obs.on("CurrentProgramSceneChanged", (data) => {
+		currentSceneRep.value = data.sceneName;
 	});
 	obs.on("RecordStateChanged", (data) => {
 		if (data.outputState === "OBS_WEBSOCKET_OUTPUT_STOPPED") {
@@ -68,6 +79,8 @@ export const setupObs = (nodecg: NodeCG) => {
 		}
 	});
 	obs.on("ConnectionClosed", () => {
+		// 切断中はプログラムシーンが不明なので空にする (Setup と誤判定しないため)。
+		currentSceneRep.value = "";
 		if (obsStatus.value?.connected) {
 			logger.info(`Disconnected`);
 		}

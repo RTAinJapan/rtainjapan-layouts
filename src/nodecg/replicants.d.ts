@@ -12,6 +12,7 @@ import {Obs} from "./generated/obs";
 import {ObsCropInputs} from "./generated/obs-crop-inputs";
 import {ObsRemoteInputs} from "./generated/obs-remote-inputs";
 import {ObsStatus} from "./generated/obs-status";
+import {ObsCurrentScene} from "./generated/obs-current-scene";
 import {Countdown} from "./generated/countdown";
 import {CameraName} from "./generated/camera-name";
 import {CameraState} from "./generated/camera-state";
@@ -61,6 +62,7 @@ type ReplicantMap = {
 	"tweets-temp": TweetsTemp;
 	"tweets-temp-images": TweetsTempImages;
 	"obs-status": ObsStatus;
+	"obs-current-scene": ObsCurrentScene;
 	obs: Obs;
 	"obs-crop-inputs": ObsCropInputs;
 	"obs-remote-inputs": ObsRemoteInputs;
@@ -107,6 +109,7 @@ export type {
 	Commentator,
 	Tweet,
 	Obs,
+	ObsCurrentScene,
 	ObsCropInputs,
 	ObsRemoteInputs,
 	Countdown,
