@@ -16,7 +16,7 @@ const sdPlugin = "jp.rtainjapan.layouts.sdPlugin";
 const config = {
 	input: "src/plugin.ts",
 	output: {
-		file: `${sdPlugin}/bin/plugin.js`,
+		file: `${sdPlugin}/bin/plugin.cjs`,
 		format: "cjs",
 		sourcemap: true,
 	},
