@@ -1,6 +1,6 @@
 import {CSSProperties, useState, useEffect} from "react";
-import rtaijLogo from "../images/logo_main.svg";
-import rtaijLogoSetup from "../images/logo_setup.svg";
+import rtaijLogo from "../images/header_rij.svg";
+import rtaijLogoSetup from "../images/header_rij.svg";
 import {HeavyText} from "./lib/text";
 
 export const EventLogo = (props: {style: CSSProperties; setup?: boolean}) => {
