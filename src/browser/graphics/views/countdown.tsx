@@ -1,7 +1,6 @@
 import "modern-normalize";
 
 import {TimerText} from "../components/lib/text";
-import {Music} from "../components/music";
 import bg from "../images/background.png";
 import {useReplicant} from "../../use-replicant";
 import {useEffect, useRef, useState} from "react";
@@ -96,7 +95,6 @@ const App = () => {
 					height: "300px",
 				}}
 			></video>
-			<Music></Music>
 			<InGameDonationPopup
 				rows={6}
 				style={{

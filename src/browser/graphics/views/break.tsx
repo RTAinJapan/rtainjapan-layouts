@@ -11,7 +11,6 @@ import moment from "moment";
 import {Fragment, useCallback, useRef} from "react";
 import {EventLogo} from "../components/event-logo";
 import {DonationMessage} from "../components/donation-message";
-import {Music} from "../components/music";
 import {setup} from "../styles/colors";
 import {newlineString} from "../components/lib/util";
 import {useFitViewport} from "../components/lib/use-fit-viewport";
@@ -334,7 +333,6 @@ const App = () => {
 			></EventLogo>
 			<Upcoming></Upcoming>
 			<Camera></Camera>
-			<Music></Music>
 			<PopupContainer></PopupContainer>
 		</div>
 	);
