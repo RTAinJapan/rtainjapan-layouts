@@ -93,7 +93,7 @@
 		"ts-nodecg": "^0.3.1",
 		"tsx": "^4.22.4",
 		"typescript": "~5.0.4",
-		"vite": "^8.0.16"
+		"vite": "^8.3.5"
 	},
 	"nodecg": {
 		"compatibleRange": "^1.0.0 || ^2.0.0",
